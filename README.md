@@ -5,6 +5,10 @@ PUA
 # how to run it 
 ## frontend
 ### env
+```
+cd frontend
+npm install
+```
 
 ### run
 ```bash

@@ -15,10 +15,12 @@ func NewPostgressqlHelloRepo(db *sql.DB) domain.HelloRepo {
 }
 
 // sayHello implements domain.HelloRepo.
-func (p *postgresqlHelloRepo) SayHello(ctx context.Context) error {
-	row := p.db.QueryRow("")
-	if err := row.Scan(); err != nil {
-		return err
-	}
-	return nil
+func (p *postgresqlHelloRepo) SayHello(ctx context.Context) (*domain.HelloMsg, error) {
+	// TODO: need sqlmock to test
+	// row := p.db.QueryRow("SHOW TABLES")
+	name := &domain.HelloMsg{Name: "Gopher"}
+	// if err := row.Scan(); err != nil {
+	// 	return nil, err
+	// }
+	return name, nil
 }

@@ -17,10 +17,11 @@ func NewHelloUsecase(helloRepo domain.HelloRepo) domain.HelloUsecase {
 	}
 }
 
-func (hu *helloUsecase) SayHello(ctx context.Context) error {
-	err := hu.helloRepo.SayHello(ctx)
+func (hu *helloUsecase) SayHello(ctx context.Context) (*domain.HelloMsg, error) {
+	name, err := hu.helloRepo.SayHello(ctx)
 	if err != nil {
 		logrus.Error(err)
+		return nil, err
 	}
-	return nil
+	return name, nil
 }

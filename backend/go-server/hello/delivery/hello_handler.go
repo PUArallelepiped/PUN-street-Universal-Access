@@ -4,6 +4,7 @@ import (
 	"main/domain"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 type HelloHandler struct {
@@ -18,5 +19,9 @@ func NewHelloHandler(e *gin.Engine, helloUsecase domain.HelloUsecase) {
 }
 
 func (h *HelloHandler) Hello(c *gin.Context) {
-	c.JSON(200, "hello")
+	name, err := h.HelloUsecase.SayHello(c)
+	if err != nil {
+		logrus.Error(err)
+	}
+	c.JSON(200, gin.H{"name": name.Name})
 }

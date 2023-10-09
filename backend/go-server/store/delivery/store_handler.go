@@ -2,6 +2,7 @@ package delivery
 
 import (
 	"main/domain"
+	"main/swagger"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -15,7 +16,7 @@ func NewStoreHandler(e *gin.Engine, storeUsecase domain.StoreUsecase) {
 	handler := &StoreHandler{
 		StoreUsecase: storeUsecase,
 	}
-	e.GET("/api/v1/stores/:storeID", handler.GetStoreById)
+	e.GET("/api/v1/store/:storeID", handler.GetStoreById)
 }
 
 func (s *StoreHandler) GetStoreById(c *gin.Context) {
@@ -24,16 +25,19 @@ func (s *StoreHandler) GetStoreById(c *gin.Context) {
 	store, err := s.StoreUsecase.GetByID(c, storeID)
 	if err != nil {
 		logrus.Error(err)
-		c.JSON(500, gin.H{"Message": "Internal error"})
+		c.JSON(500, &swagger.ModelError{
+			Code:    3000,
+			Message: "Internal Error :(",
+		})
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"id":      store.ID,
-		"name":    store.Name,
-		"address": store.Address,
-		"email":   store.Email,
-		"phone":   store.Phone,
+	c.JSON(200, &swagger.StoreInfo{
+		Id:      store.ID,
+		Name:    store.Name,
+		Address: store.Address,
+		Email:   store.Email,
+		Phone:   store.Phone,
 	})
 
 }

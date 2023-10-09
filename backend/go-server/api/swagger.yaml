@@ -1,0 +1,85 @@
+openapi: 3.0.3
+info:
+  title: PUN street Universal Access - OpenAPI 3.0
+  description: pua
+  version: v1
+servers:
+- url: http://localhost:5000/api/v1
+paths:
+  /store/{storeID}:
+    get:
+      tags:
+      - store
+      summary: return a store by ID
+      parameters:
+      - name: storeID
+        in: path
+        description: The ID of the store to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: A Store object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreInfo'
+        "400":
+          description: The specified store ID is invalid (not a number).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    StoreInfo:
+      required:
+      - address
+      - email
+      - id
+      - name
+      - phome
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1"
+        name:
+          type: string
+          example: i'm pasta
+        address:
+          type: string
+          example: pun street
+        email:
+          type: string
+          example: pasta@pasta.com
+        phone:
+          type: string
+          example: "0912345678"
+      example:
+        address: pun street
+        phone: "0912345678"
+        name: i'm pasta
+        id: "1"
+        email: pasta@pasta.com
+    Error:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: integer

@@ -64,5 +64,5 @@ docker-compose down
 ### put txt into sql
 
 ```bash
-docker-compose down < sql.txt
+psql -h localhost -p 5432 -U user < sql.txt
 ```

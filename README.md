@@ -60,3 +60,9 @@ psql -h localhost -p 5432 -U user
 ```bash
 docker-compose down
 ```
+
+### put txt into sql
+
+```bash
+docker-compose down < sql.txt
+```

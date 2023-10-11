@@ -1,4 +1,4 @@
-CREATE TABLE User(
+CREATE TABLE UserData(
   ID int unique not null,
   Name char[32] not null,
   Password char[32] not null,

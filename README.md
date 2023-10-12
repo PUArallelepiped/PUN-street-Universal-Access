@@ -26,10 +26,10 @@ it will auto reload after code change
 
 ### env
 
-not yet use
+maybe need go get
 
-```bash
-
+```
+go get
 ```
 
 ### run

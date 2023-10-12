@@ -1,10 +1,10 @@
 CREATE TABLE Product (
-    Id INT primary key not null,
-    Store_id INT not null,
-    Name char(256) not null,
-    Describe char(256),
-    Category_id INT,
+    Id INT PRIMARY KEY NOT NULL,
+    StoreId INT NOT NULL,
+    Name CHAR(256) NOT NULL,
+    Describe CHAR(256),
+    CategoryId INT,
     Picture BYTEA,
-    Price INT not null,
-    Stock INT not null
+    Price INT NOT NULL,
+    Stock INT NOT NULL
 );

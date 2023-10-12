@@ -51,18 +51,34 @@ docker-compose up --detach
 
 ### into postgres
 
+- for have psql user
+
 ```bash
 psql -h localhost -p 5432 -U user
+```
+
+- for no psql user
+
+```bash
+docker exec -it <containerName> psql -U user
+```
+
+### put txt into sql
+
+- for have psql user
+
+```bash
+psql -h localhost -p 5432 -U user < sql.txt
+```
+
+- for no psql user
+
+```bash
+docker exec -it <containerName> psql -U user < sql.txt
 ```
 
 ### close sql
 
 ```bash
 docker-compose down
-```
-
-### put txt into sql
-
-```bash
-psql -h localhost -p 5432 -U user < sql.txt
 ```

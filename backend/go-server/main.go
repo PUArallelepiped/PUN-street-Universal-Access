@@ -19,7 +19,7 @@ func init() {
 	viper.SetConfigFile(".env")
 	viper.SetConfigType("dotenv")
 	if err := viper.ReadInConfig(); err != nil {
-		logrus.Fatal("Fatal error config file: %v\n", err)
+		logrus.Fatal("Fatal error config file: %w\n", err)
 	}
 }
 
@@ -28,7 +28,6 @@ func main() {
 
 	restfulHost := viper.GetString("RESTFUL_HOST")
 	restfulPort := viper.GetString("RESTFUL_PORT")
-	// dbHost := viper.GetString("DB_HOST")
 	dbDatabase := viper.GetString("DB_DATABASE")
 	dbUser := viper.GetString("DB_USER")
 	dbPassword := viper.GetString("DB_PASSWORD")

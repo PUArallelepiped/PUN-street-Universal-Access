@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"fmt"
 
-	_storeDelivery "main/store/delivery"
-	_storeRepo "main/store/repository"
-	_storeUsecase "main/store/usecase"
+	_storeDelivery "github.com/PUArallelepiped/PUN-street-Universal-Access/store/delivery"
+	_storeRepo "github.com/PUArallelepiped/PUN-street-Universal-Access/store/repository"
+	_storeUsecase "github.com/PUArallelepiped/PUN-street-Universal-Access/store/usecase"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"

@@ -1,4 +1,4 @@
-module main
+module github.com/PUArallelepiped/PUN-street-Universal-Access
 
 go 1.21.1
 

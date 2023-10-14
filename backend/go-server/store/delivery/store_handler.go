@@ -1,8 +1,8 @@
 package delivery
 
 import (
-	"main/domain"
-	"main/swagger"
+	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
+	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"

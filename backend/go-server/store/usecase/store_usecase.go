@@ -2,7 +2,8 @@ package usecase
 
 import (
 	"context"
-	"main/domain"
+
+	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 
 	"github.com/sirupsen/logrus"
 )

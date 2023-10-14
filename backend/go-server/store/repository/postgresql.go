@@ -3,7 +3,8 @@ package repository
 import (
 	"context"
 	"database/sql"
-	"main/domain"
+
+	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 
 	"github.com/sirupsen/logrus"
 )

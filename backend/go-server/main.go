@@ -3,9 +3,6 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	_helloDelivery "main/hello/delivery"
-	_helloRepo "main/hello/repository"
-	_helloUsecase "main/hello/usecase"
 
 	_storeDelivery "main/store/delivery"
 	_storeRepo "main/store/repository"
@@ -50,13 +47,10 @@ func main() {
 
 	r := gin.Default()
 
-	helloRepo := _helloRepo.NewPostgressqlHelloRepo(db)
 	storeRepo := _storeRepo.NewPostgressqlStoreRepo(db)
 
-	helloUsecase := _helloUsecase.NewHelloUsecase(helloRepo)
 	storeUsecase := _storeUsecase.NewStoreUsecase(storeRepo)
 
-	_helloDelivery.NewHelloHandler(r, helloUsecase)
 	_storeDelivery.NewStoreHandler(r, storeUsecase)
 
 	logrus.Fatal(r.Run(restfulHost + ":" + restfulPort))

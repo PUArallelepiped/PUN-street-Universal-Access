@@ -38,6 +38,9 @@ go run cmd/main.go
 
 ## sql
 
+### init data
+    put .sql file in db folder
+
 ### start
 
 > detach is background run, if want see its output remove --detach

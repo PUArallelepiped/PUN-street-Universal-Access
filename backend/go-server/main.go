@@ -16,10 +16,10 @@ import (
 )
 
 func init() {
-	viper.SetConfigFile(".env")
+	viper.SetConfigFile("../../.env")
 	viper.SetConfigType("dotenv")
 	if err := viper.ReadInConfig(); err != nil {
-		logrus.Fatal("Fatal error config file: %w\n", err)
+		logrus.Fatal(err)
 	}
 }
 
@@ -29,8 +29,8 @@ func main() {
 	restfulHost := viper.GetString("RESTFUL_HOST")
 	restfulPort := viper.GetString("RESTFUL_PORT")
 	dbDatabase := viper.GetString("DB_DATABASE")
-	dbUser := viper.GetString("DB_USER")
-	dbPassword := viper.GetString("DB_PASSWORD")
+	dbUser := viper.GetString("POSTGRES_USER")
+	dbPassword := viper.GetString("POSTGRES_PASSWORD")
 
 	db, err := sql.Open(
 		"postgres",

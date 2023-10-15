@@ -39,7 +39,7 @@ go run cmd/main.go
 ## sql
 
 ### init data
-    put .sql file in db folder
+* put .sql file in db folder
 
 ### start
 

@@ -26,10 +26,10 @@ it will auto reload after code change
 
 ### env
 
-not yet use
+maybe need go get
 
-```bash
-
+```
+go get
 ```
 
 ### run
@@ -52,6 +52,49 @@ npm run format
 
 ### check code format
 
-```bash
+````bash
 npm run lint
+## sql
+
+### start
+
+> detach is background run, if want see its output remove --detach
+
+```bash
+cd sql
+docker-compose up --detach
+````
+
+### into postgres
+
+- for have psql user
+
+```bash
+psql -h localhost -p 5432 -U user
+```
+
+- for no psql user
+
+```bash
+docker exec -it <containerName> psql -U user
+```
+
+### put txt into sql
+
+- for have psql user
+
+```bash
+psql -h localhost -p 5432 -U user < sql.txt
+```
+
+- for no psql user
+
+```bash
+docker exec -it <containerName> psql -U user < sql.txt
+```
+
+### close sql
+
+```bash
+docker-compose down
 ```

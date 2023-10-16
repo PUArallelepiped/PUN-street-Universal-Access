@@ -36,6 +36,22 @@ go mod download
 go run cmd/main.go
 ```
 
+## format
+
+### when to must check
+
+when open pull request
+
+### format code
+
+```bash
+npm run format
+```
+
+### check code format
+
+````bash
+npm run lint
 ## sql
 
 ### init data
@@ -47,7 +63,7 @@ go run cmd/main.go
 
 ```bash
 docker-compose up --detach
-```
+````
 
 ### into postgres
 

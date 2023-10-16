@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import BlueButton from './blueButton.svelte';
 
 	let count = 0;

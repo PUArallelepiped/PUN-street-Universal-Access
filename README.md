@@ -38,6 +38,22 @@ go get
 go run .
 ```
 
+## format
+
+### when to must check
+
+when open pull request
+
+### format code
+
+```bash
+npm run format
+```
+
+### check code format
+
+````bash
+npm run lint
 ## sql
 
 ### start
@@ -47,7 +63,7 @@ go run .
 ```bash
 cd sql
 docker-compose up --detach
-```
+````
 
 ### into postgres
 

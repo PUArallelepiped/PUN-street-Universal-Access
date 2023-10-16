@@ -1,4 +1,4 @@
-CREATE TABLEIF NOT EXISTS product (
+CREATE TABLE IF NOT EXISTS product (
     product_id SERIAL PRIMARY KEY,
     storeId SERIAL references store(store_id),
     name VARCHAR(255) NOT NULL,

@@ -1,0 +1,21 @@
+name: Format check
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    name: Format Check
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - name: Prettier
+        working-directory: ./frontend
+        run: |
+          npm install
+          npm run lint

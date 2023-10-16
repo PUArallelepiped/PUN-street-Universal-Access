@@ -7,7 +7,7 @@
 	];
 </script>
 
-<div class=" flex justify-center space-x-20 text-gray-50 p-7 m-2 text-xl bg-sky-900">
+<div class=" m-2 flex justify-center space-x-20 bg-sky-900 p-7 text-xl text-gray-50">
 	{#each routes as r}
 		<a href={r.path}>{r.title}</a>
 	{/each}

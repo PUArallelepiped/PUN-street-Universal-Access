@@ -55,6 +55,13 @@ var routes = Routes{
 	},
 
 	Route{
+		"ProductProductIDGet",
+		strings.ToUpper("Get"),
+		"/api/v1/product/{productID}",
+		ProductProductIDGet,
+	},
+
+	Route{
 		"StoreStoreIDGet",
 		strings.ToUpper("Get"),
 		"/api/v1/store/{storeID}",

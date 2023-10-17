@@ -8,15 +8,11 @@
  */
 package swagger
 
-type StoreInfo struct {
+import (
+	"net/http"
+)
 
-	Id string `json:"id,omitempty"`
-
-	Name string `json:"name"`
-
-	Address string `json:"address"`
-
-	Email string `json:"email"`
-
-	Phone string `json:"phone"`
+func ProductProductIDGet(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
 }

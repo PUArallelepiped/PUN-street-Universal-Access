@@ -3,9 +3,9 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
 	plugins: [sveltekit()],
-	server:{
-		proxy:{
-			'/api': 'http:127.0.0.1:5000'
+	server: {
+		proxy: {
+			'/api': 'http://127.0.0.1:5000'
 		}
 	}
 });

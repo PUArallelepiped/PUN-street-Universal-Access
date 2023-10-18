@@ -13,21 +13,8 @@
 		price,
 		stock
 	}
-	let response: object;
-	onMount(async () => {
-		const resp = await fetch(`http://localhost:5000/api/v1/store/1`);
-		const data = await resp.json();
-
-		return data;
-	});
 </script>
 
-<div>
-	response:
-	{#if response}
-		{response}
-	{/if}
-</div>
 <h1>
 	shop: {data.shop}
 </h1>

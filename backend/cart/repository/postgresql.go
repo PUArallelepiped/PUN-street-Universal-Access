@@ -18,7 +18,10 @@ func NewPostgressqlCartRepo(db *sql.DB) domain.CartRepo {
 }
 
 func (p *postgresqlCartRepo) GetByID(ctx context.Context, customerId string, productId string, storeId string) (*domain.Cart, error) {
-	row := p.db.QueryRow("SELECT customer_id, product_id, store_id, product_quantity FROM carts WHERE customer_id = $1 AND product_id = $2 AND store_id = $3", customerId, productId, storeId)
+	sqlStatement := `
+	SELECT customer_id, product_id, store_id, product_quantity FROM carts WHERE customer_id = $1 AND product_id = $2 AND store_id = $3
+	`
+	row := p.db.QueryRow(sqlStatement, customerId, productId, storeId)
 	cart := &domain.Cart{}
 	if err := row.Scan(&cart.CustomerID, &cart.ProductID, &cart.StoreID, &cart.ProductQuantity); err != nil {
 		logrus.Error(err)

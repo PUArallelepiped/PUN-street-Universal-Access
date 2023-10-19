@@ -30,6 +30,29 @@ func (p *postgresqlCartRepo) GetByID(ctx context.Context, customerId string, pro
 	return cart, nil
 }
 
+func (p *postgresqlCartRepo) GetByCustomerId(ctx context.Context, customerId string) (*[]domain.Cart, error) {
+	sqlStatement := `
+	SELECT customer_id, product_id, store_id, product_quantity FROM carts WHERE customer_id = $1
+	`
+	rows, err := p.db.Query(sqlStatement, customerId)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+	carts := &[]domain.Cart{}
+
+	for rows.Next() {
+		cart := &domain.Cart{}
+		if err := rows.Scan(&cart.CustomerID, &cart.ProductID, &cart.StoreID, &cart.ProductQuantity); err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+		*carts = append(*carts, *cart)
+	}
+
+	return carts, nil
+}
+
 func (p *postgresqlCartRepo) PostCart(ctx context.Context, cart *domain.Cart) (*domain.Cart, error) {
 	sqlStatement := `
 	INSERT INTO carts (product_quantity, customer_id, product_id, store_id) VALUES

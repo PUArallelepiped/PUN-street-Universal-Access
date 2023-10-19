@@ -50,12 +50,12 @@ npm run format
 
 ### check code format
 
-````bash
+```bash
 npm run lint
 ## sql
+```
 
-### init data
-* put .sql file in db folder
+## docker
 
 ### start
 
@@ -63,7 +63,10 @@ npm run lint
 
 ```bash
 docker-compose up --detach
-````
+```
+
+### init data
+* put .sql file into db folder
 
 ### into postgres
 

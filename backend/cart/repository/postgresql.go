@@ -18,7 +18,7 @@ func NewPostgressqlCartRepo(db *sql.DB) domain.CartRepo {
 }
 
 func (p *postgresqlCartRepo) GetByID(ctx context.Context, customerId string, productId string, storeId string) (*domain.Cart, error) {
-	row := p.db.QueryRow("SELECT customer_id, product_id, store_id, product_quantity FROM cart WHERE customer_id = $1 AND product_id = $2 AND store_id = $3", customerId, productId, storeId)
+	row := p.db.QueryRow("SELECT customer_id, product_id, store_id, product_quantity FROM carts WHERE customer_id = $1 AND product_id = $2 AND store_id = $3", customerId, productId, storeId)
 	cart := &domain.Cart{}
 	if err := row.Scan(&cart.CustomerID, &cart.ProductID, &cart.StoreID, &cart.ProductQuantity); err != nil {
 		logrus.Error(err)
@@ -29,8 +29,8 @@ func (p *postgresqlCartRepo) GetByID(ctx context.Context, customerId string, pro
 
 func (p *postgresqlCartRepo) PostCart(ctx context.Context, cart *domain.Cart) (*domain.Cart, error) {
 	sqlStatement := `
-	INSERT INTO cart (product_quantity, customer_id, product_id, store_id) VALUES
-    ( $1, (SELECT id FROM UserData WHERE id=$2 ), (SELECT product_id FROM product WHERE product_id=$3), (SELECT store_id FROM stores WHERE store_id=$4) );
+	INSERT INTO carts (product_quantity, customer_id, product_id, store_id) VALUES
+    ( $1, (SELECT user_id FROM user_datas WHERE user_id=$2 ), (SELECT product_id FROM products WHERE product_id=$3), (SELECT store_id FROM stores WHERE store_id=$4) );
 	`
 	_, err := p.db.Exec(sqlStatement, cart.ProductQuantity, cart.CustomerID, cart.ProductID, cart.StoreID)
 	if err != nil {
@@ -39,7 +39,7 @@ func (p *postgresqlCartRepo) PostCart(ctx context.Context, cart *domain.Cart) (*
 	}
 
 	sqlStatement = `
-	SELECT customer_id, product_id, store_id, product_quantity FROM cart WHERE customer_id = $1 AND product_id = $2 AND store_id = $3;
+	SELECT customer_id, product_id, store_id, product_quantity FROM carts WHERE customer_id = $1 AND product_id = $2 AND store_id = $3;
 	`
 	_cart := &domain.Cart{}
 	row := p.db.QueryRow(sqlStatement, cart.CustomerID, cart.ProductID, cart.StoreID)

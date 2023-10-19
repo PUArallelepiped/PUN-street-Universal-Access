@@ -52,7 +52,6 @@ npm run format
 
 ```bash
 npm run lint
-## sql
 ```
 
 ## docker

@@ -96,6 +96,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /cart:
+    post:
+      tags:
+      - cart
+      summary: add a new cart to db and return a cart from db
+      requestBody:
+        description: add a new cart.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartInfo'
+
+      responses:
+        "200":
+          description: A cart object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartInfo'
+        "400":
+          description: The specified cart ID is invalid (not a number).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         
 components:
   schemas:

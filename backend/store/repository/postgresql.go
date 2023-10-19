@@ -26,3 +26,20 @@ func (p *postgresqlStoreRepo) GetByID(ctx context.Context, id string) (*domain.S
 	}
 	return s, nil
 }
+
+func (p *postgresqlStoreRepo) GetAll(ctx context.Context) ([]domain.Store, error) {
+	rows, err := p.db.Query("SELECT store_id, name, address, email, phone FROM stores")
+	if err != nil {
+		logrus.Error(err)
+	}
+	l := []domain.Store{}
+	for rows.Next() {
+		s := domain.Store{}
+		err := rows.Scan(&s.ID, &s.Name, &s.Address, &s.Email, &s.Phone)
+		if err != nil {
+			logrus.Error(err)
+		}
+		l = append(l, s)
+	}
+	return l, nil
+}

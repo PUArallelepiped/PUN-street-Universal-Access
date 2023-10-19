@@ -26,3 +26,12 @@ func (su *storeUsecase) GetByID(ctx context.Context, id string) (*domain.Store, 
 	}
 	return s, nil
 }
+
+func (su *storeUsecase) GetAll(ctx context.Context) ([]domain.Store, error) {
+	s, err := su.storeRepo.GetAll(ctx)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+	return s, nil
+}

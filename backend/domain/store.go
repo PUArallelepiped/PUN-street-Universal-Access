@@ -1,6 +1,8 @@
 package domain
 
-import "context"
+import (
+	"context"
+)
 
 type Store struct {
 	ID      string `json:"id"`
@@ -12,8 +14,10 @@ type Store struct {
 
 type StoreRepo interface {
 	GetByID(ctx context.Context, id string) (*Store, error)
+	GetAll(ctx context.Context) ([]Store, error)
 }
 
 type StoreUsecase interface {
 	GetByID(ctx context.Context, id string) (*Store, error)
+	GetAll(ctx context.Context) ([]Store, error)
 }

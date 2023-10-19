@@ -47,7 +47,7 @@ paths:
       - cart
       summary: return a cart by ID
       parameters:
-        - name: customerID
+      - name: customerID
         in: path
         description: The ID of the table to return
         required: true
@@ -57,7 +57,7 @@ paths:
               type: string
               example: "1"
               x-content-type: application/json
-        - name: productID
+      - name: productID
         in: path
         description: The ID of the table to return
         required: true
@@ -67,7 +67,7 @@ paths:
               type: string
               example: "1"
               x-content-type: application/json
-        - name: storeID
+      - name: storeID
         in: path
         description: The ID of the table to return
         required: true
@@ -108,7 +108,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CartInfo'
-
       responses:
         "200":
           description: A cart object.

@@ -8,6 +8,10 @@ import (
 	_storeRepo "github.com/PUArallelepiped/PUN-street-Universal-Access/store/repository"
 	_storeUsecase "github.com/PUArallelepiped/PUN-street-Universal-Access/store/usecase"
 
+	_productDelivery "github.com/PUArallelepiped/PUN-street-Universal-Access/product/delivery"
+	_productRepo "github.com/PUArallelepiped/PUN-street-Universal-Access/product/repository"
+	_productUsecase "github.com/PUArallelepiped/PUN-street-Universal-Access/product/usecase"
+
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -47,10 +51,12 @@ func main() {
 	r := gin.Default()
 
 	storeRepo := _storeRepo.NewPostgressqlStoreRepo(db)
-
 	storeUsecase := _storeUsecase.NewStoreUsecase(storeRepo)
-
 	_storeDelivery.NewStoreHandler(r, storeUsecase)
+
+	productRepo := _productRepo.NewPostgressqlProductRepo(db)
+	productUsecase := _productUsecase.NewProductUsecase(productRepo)
+	_productDelivery.NewProductHandler(r, productUsecase)
 
 	logrus.Fatal(r.Run(restfulHost + ":" + restfulPort))
 }

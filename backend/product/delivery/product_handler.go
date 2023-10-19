@@ -12,7 +12,7 @@ type ProductHandler struct {
 	ProductUsecase domain.ProductUsecase
 }
 
-func NewStoreHandler(e *gin.Engine, productUsecase domain.ProductUsecase) {
+func NewProductHandler(e *gin.Engine, productUsecase domain.ProductUsecase) {
 	handler := &ProductHandler{
 		ProductUsecase: productUsecase,
 	}

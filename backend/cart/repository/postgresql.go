@@ -3,7 +3,6 @@ package repository
 import (
 	"context"
 	"database/sql"
-	"strconv"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 
@@ -31,7 +30,7 @@ func (p *postgresqlCartRepo) GetByID(ctx context.Context, customerId string, pro
 func (p *postgresqlCartRepo) PostCart(ctx context.Context, cart *domain.Cart) (*domain.Cart, error) {
 	sqlStatement := `
 	INSERT INTO cart (product_quantity, customer_id, product_id, store_id) VALUES
-    ( $1, (SELECT id from UserData LIMIT 1 OFFSET $2), (SELECT product_id from product LIMIT 1 OFFSET $3), (SELECT store_id from stores LIMIT 1 OFFSET $4));
+    ( $1, (SELECT id FROM UserData WHERE id=$2 ), (SELECT product_id FROM product WHERE product_id=$3), (SELECT store_id FROM stores WHERE store_id=$4) );
 	`
 	_, err := p.db.Exec(sqlStatement, cart.ProductQuantity, cart.CustomerID, cart.ProductID, cart.StoreID)
 	if err != nil {
@@ -39,19 +38,14 @@ func (p *postgresqlCartRepo) PostCart(ctx context.Context, cart *domain.Cart) (*
 		return nil, err
 	}
 
+	sqlStatement = `
+	SELECT customer_id, product_id, store_id, product_quantity FROM cart WHERE customer_id = $1 AND product_id = $2 AND store_id = $3;
+	`
 	_cart := &domain.Cart{}
-	row := p.db.QueryRow("SELECT customer_id, product_id, store_id, product_quantity FROM cart WHERE customer_id = $1 AND product_id = $2 AND store_id = $3", add(cart.CustomerID, 1), add(cart.ProductID, 1), add(cart.StoreID, 1))
+	row := p.db.QueryRow(sqlStatement, cart.CustomerID, cart.ProductID, cart.StoreID)
 	if err := row.Scan(&_cart.CustomerID, &_cart.ProductID, &_cart.StoreID, &_cart.ProductQuantity); err != nil {
 		logrus.Error(err)
 		return nil, err
 	}
 	return _cart, nil
-}
-
-func add(s string, n int) string {
-	i, err := strconv.Atoi(s)
-	if err != nil {
-		return s
-	}
-	return strconv.Itoa(i + n)
 }

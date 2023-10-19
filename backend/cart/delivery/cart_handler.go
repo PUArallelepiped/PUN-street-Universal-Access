@@ -1,8 +1,6 @@
 package delivery
 
 import (
-	"strconv"
-
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
 
@@ -57,10 +55,6 @@ func (s *CartHandler) PostCart(c *gin.Context) {
 		return
 	}
 
-	cart.CustomerID = sub(cart.CustomerID, 1)
-	cart.ProductID = sub(cart.ProductID, 1)
-	cart.StoreID = sub(cart.StoreID, 1)
-
 	_cart, err := s.CartUsecase.PostCart(c, &cart)
 
 	if err != nil {
@@ -78,12 +72,4 @@ func (s *CartHandler) PostCart(c *gin.Context) {
 		StoreID:         _cart.StoreID,
 		ProductQuantity: _cart.ProductQuantity,
 	})
-}
-
-func sub(s string, n int) string {
-	i, err := strconv.Atoi(s)
-	if err != nil {
-		return s
-	}
-	return strconv.Itoa(i - n)
 }

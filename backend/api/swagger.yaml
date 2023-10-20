@@ -96,6 +96,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /cart/{customerID}:
+    get:
+      tags:
+      - cart
+      summary: return carts by CustomerID
+      parameters:
+      - name: customerID
+        in: path
+        description: The ID of the table to return
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: Carts object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartArray'
+        "400":
+          description: The specified cart ID is invalid (not a number).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /cart:
     post:
       tags:
@@ -185,6 +220,12 @@ components:
         customer_id: "1"
         product_id: "1"
         store_id: "1"
+    
+    CartArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/CartInfo'
+    
     Error:
       required:
       - code

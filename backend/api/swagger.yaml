@@ -114,7 +114,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CartInfo'
+                $ref: '#/components/schemas/Success'
         "400":
           description: The specified cart ID is invalid (not a number).
           content:
@@ -140,8 +140,8 @@ components:
       type: object
       properties:
         id:
-          type: string
-          example: "1"
+          type: integer
+          example: 1
         name:
           type: string
           example: i'm pasta
@@ -158,33 +158,41 @@ components:
         address: pun street
         phone: "0912345678"
         name: i'm pasta
-        id: "1"
+        id: 1
         email: pasta@pasta.com
     CartInfo:
       required:
-      - quantity
+      - product_quantity
       - customer_id
       - product_id
       - store_id
       type: object
       properties:
-        quantity:
+        product_quantity:
           type: integer
           example: 10
         customer_id:
-          type: string
-          example: "1"
+          type: integer
+          example: 1
         product_id:
-          type: string
-          example: "1"
+          type: integer
+          example: 1
         store_id:
-          type: string
-          example: "1"
+          type: integer
+          example: 1
       example:
         quantity: 10
-        customer_id: "1"
-        product_id: "1"
-        store_id: "1"
+        customer_id: 1
+        product_id: 1
+        store_id: 1
+    Success:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 200
     Error:
       required:
       - code

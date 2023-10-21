@@ -8,13 +8,7 @@
  */
 package swagger
 
-type CartInfo struct {
+type Success struct {
 
-	ProductQuantity int64 `json:"product_quantity"`
-
-	CustomerId int64 `json:"customer_id"`
-
-	ProductId int64 `json:"product_id"`
-
-	StoreId int64 `json:"store_id"`
+	Code int64 `json:"code"`
 }

@@ -141,6 +141,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           example: 1
         name:
           type: string
@@ -170,15 +171,19 @@ components:
       properties:
         product_quantity:
           type: integer
+          format: int64
           example: 10
         customer_id:
           type: integer
+          format: int64
           example: 1
         product_id:
           type: integer
+          format: int64
           example: 1
         store_id:
           type: integer
+          format: int64
           example: 1
       example:
         quantity: 10
@@ -192,7 +197,9 @@ components:
       properties:
         code:
           type: integer
+          format: int64
           example: 200
+    
     Error:
       required:
       - code
@@ -203,3 +210,4 @@ components:
           type: string
         code:
           type: integer
+          format: int64

@@ -3,7 +3,7 @@ package domain
 import "context"
 
 type Store struct {
-	ID      int    `json:"id"`
+	ID      int64  `json:"id"`
 	Name    string `json:"name"`
 	Address string `json:"address"`
 	Email   string `json:"email"`

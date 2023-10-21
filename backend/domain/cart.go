@@ -5,10 +5,10 @@ import (
 )
 
 type Cart struct {
-	CustomerID      string `json:"customer_id"`
-	ProductID       string `json:"product_id"`
-	StoreID         string `json:"store_id"`
-	ProductQuantity string `json:"product_quantity"`
+	CustomerID      int `json:"customer_id"`
+	ProductID       int `json:"product_id"`
+	StoreID         int `json:"store_id"`
+	ProductQuantity int `json:"product_quantity"`
 }
 
 type CartRepo interface {

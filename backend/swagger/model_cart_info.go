@@ -9,11 +9,11 @@
 package swagger
 
 type CartInfo struct {
-	CustomerID string `json:"customer_id"`
+	CustomerID int `json:"customer_id"`
 
-	ProductID string `json:"product_id"`
+	ProductID int `json:"product_id"`
 
-	StoreID string `json:"store_id"`
+	StoreID int `json:"store_id"`
 
-	ProductQuantity string `json:"product_quantity"`
+	ProductQuantity int `json:"product_quantity"`
 }

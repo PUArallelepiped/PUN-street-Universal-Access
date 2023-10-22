@@ -10,7 +10,7 @@ package swagger
 
 type StoreInfo struct {
 
-	Id string `json:"id,omitempty"`
+	Id int64 `json:"id,omitempty"`
 
 	Name string `json:"name"`
 

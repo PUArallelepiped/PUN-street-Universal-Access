@@ -105,12 +105,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CartInfo'
-        "400":
-          description: The specified cart ID is invalid (not a number).
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
         "500":
           description: Unexpected error
           content:
@@ -124,31 +118,20 @@ paths:
       summary: add a new cart to db and return a cart from db
       requestBody:
         description: add a new cart.
-        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/CartInfo'
+        required: true
       responses:
         "200":
           description: A cart object.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Success'
-        "400":
-          description: The specified cart ID is invalid (not a number).
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
         "500":
           description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-        
 components:
   schemas:
     StoreInfo:
@@ -157,10 +140,10 @@ components:
       - email
       - name
       - phone
-      - storeId
+      - store_id
       type: object
       properties:
-        id:
+        store_id:
           type: integer
           format: int64
           example: 1
@@ -177,29 +160,29 @@ components:
           type: string
           example: "0912345678"
       example:
+        store_id: 1
         address: pun street
         phone: "0912345678"
         name: i'm pasta
-        id: 1
         email: pasta@pasta.com
     ProductInfo:
       required:
-      - catogoryId
+      - catogory_id
       - description
       - name
       - price
-      - productId
+      - product_id
       - storage
       type: object
       properties:
-        productId:
+        product_id:
           type: integer
           format: int64
           example: 1
         name:
           type: string
           example: pasta
-        catogoryId:
+        catogory_id:
           type: integer
           format: int64
           example: 1
@@ -211,11 +194,21 @@ components:
           format: int64
           example: 9999
         storage:
+          type: integer
+          format: int64
+          example: 100
+      example:
+        catogory_id: 1
+        price: 9999
+        product_id: 1
+        name: pasta
+        description: tasty pasta
+        storage: 100
     CartInfo:
       required:
-      - product_quantity
       - customer_id
       - product_id
+      - product_quantity
       - store_id
       type: object
       properties:
@@ -235,12 +228,11 @@ components:
           type: integer
           format: int64
           example: 1
-        productId: 1
-        catogoryId: 1
-        price: 9999
-        name: pasta
-        description: tasty pasta
-        storage: 1
+      example:
+        store_id: 1
+        product_id: 1
+        customer_id: 1
+        product_quantity: 10
     ProductArray:
       type: array
       items:
@@ -261,10 +253,10 @@ components:
           example: 3000
     products_body:
       required:
-      - StoreId
+      - store_id
       type: object
       properties:
-        StoreId:
+        store_id:
           type: integer
           format: int64
           example: 1

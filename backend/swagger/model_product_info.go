@@ -10,11 +10,11 @@ package swagger
 
 type ProductInfo struct {
 
-	ProductId int64 `json:"productId"`
+	ProductId int64 `json:"product_id"`
 
 	Name string `json:"name"`
 
-	CatogoryId int64 `json:"catogoryId"`
+	CatogoryId int64 `json:"catogory_id"`
 
 	Description string `json:"description"`
 

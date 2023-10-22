@@ -10,5 +10,5 @@ package swagger
 
 type ProductsBody struct {
 
-	StoreId int64 `json:"StoreId"`
+	StoreId int64 `json:"store_id"`
 }

@@ -34,9 +34,5 @@ func (s *ProductHandler) GetProductById(c *gin.Context) {
 		})
 		return
 	}
-
-	for p := range *products {
-		logrus.Info(p)
-	}
 	c.JSON(200, products)
 }

@@ -8,15 +8,7 @@
  */
 package swagger
 
-type StoreInfo struct {
+type Success struct {
 
-	Id int64 `json:"id"`
-
-	Name string `json:"name"`
-
-	Address string `json:"address"`
-
-	Email string `json:"email"`
-
-	Phone string `json:"phone,omitempty"`
+	Code int64 `json:"code"`
 }

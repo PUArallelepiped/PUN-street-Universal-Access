@@ -35,6 +35,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /stores:
+    get:
+      tags:
+      - store
+      summary: return store array
+      responses:
+        "200":
+          description: return store array
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreArray'
+        "500":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /products:
     post:
       tags:
@@ -49,7 +67,7 @@ paths:
         required: true
       responses:
         "200":
-          description: ok
+          description: return product array
           content:
             application/json:
               schema:
@@ -233,6 +251,11 @@ components:
         product_id: 1
         customer_id: 1
         product_quantity: 10
+    StoreArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/StoreInfo'
+      x-schema-name: StoreArray
     ProductArray:
       type: array
       items:

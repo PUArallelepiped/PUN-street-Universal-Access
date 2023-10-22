@@ -62,6 +62,93 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /cart/{customerID}/{productID}/{storeID}:
+    get:
+      tags:
+      - cart
+      summary: return a cart by ID
+      parameters:
+      - name: customerID
+        in: path
+        description: The ID of the table to return
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: productID
+        in: path
+        description: The ID of the table to return
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: storeID
+        in: path
+        description: The ID of the table to return
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: A cart object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartInfo'
+        "400":
+          description: The specified cart ID is invalid (not a number).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /cart:
+    post:
+      tags:
+      - cart
+      summary: add a new cart to db and return a cart from db
+      requestBody:
+        description: add a new cart.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartInfo'
+      responses:
+        "200":
+          description: A cart object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        "400":
+          description: The specified cart ID is invalid (not a number).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        
 components:
   schemas:
     StoreInfo:
@@ -124,10 +211,30 @@ components:
           format: int64
           example: 9999
         storage:
+    CartInfo:
+      required:
+      - product_quantity
+      - customer_id
+      - product_id
+      - store_id
+      type: object
+      properties:
+        product_quantity:
+          type: integer
+          format: int64
+          example: 10
+        customer_id:
           type: integer
           format: int64
           example: 1
-      example:
+        product_id:
+          type: integer
+          format: int64
+          example: 1
+        store_id:
+          type: integer
+          format: int64
+          example: 1
         productId: 1
         catogoryId: 1
         price: 9999
@@ -150,6 +257,7 @@ components:
           example: internal error
         code:
           type: integer
+          format: int64
           example: 3000
     products_body:
       required:

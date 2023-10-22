@@ -16,16 +16,13 @@ func NewProductHandler(e *gin.Engine, productUsecase domain.ProductUsecase) {
 	handler := &ProductHandler{
 		ProductUsecase: productUsecase,
 	}
-	e.POST("/api/v1/products", handler.GetProductArrayByStoreId)
+	e.POST("/api/v1/products", handler.GetProductById)
 }
 
-func (s *ProductHandler) GetProductArrayByStoreId(c *gin.Context) {
+func (s *ProductHandler) GetProductById(c *gin.Context) {
 	productBody := &swagger.ProductsBody{}
 	if err := c.BindJSON(productBody); err != nil {
-		c.JSON(400, &swagger.ModelError{
-			Code:    2000,
-			Message: "Bad Request",
-		})
+		c.Status(400)
 		return
 	}
 	products, err := s.ProductUsecase.GetByID(c, productBody.StoreId)

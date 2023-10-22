@@ -54,6 +54,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProductArray'
+        "400":
+          description: bad request
         "500":
           description: Unexpected error
           content:

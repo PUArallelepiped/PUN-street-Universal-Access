@@ -18,11 +18,11 @@ func NewProductUsecase(productRepo domain.ProductRepo) domain.ProductUsecase {
 	}
 }
 
-func (pu *productUsecase) GetByID(ctx context.Context, id string) (*swagger.ProductInfo, error) {
-	product, err := pu.productRepo.GetByID(ctx, id)
+func (pu *productUsecase) GetByID(ctx context.Context, id int64) (*[]swagger.ProductInfo, error) {
+	products, err := pu.productRepo.GetByID(ctx, id)
 	if err != nil {
 		logrus.Error(err)
 		return nil, err
 	}
-	return product, nil
+	return products, nil
 }

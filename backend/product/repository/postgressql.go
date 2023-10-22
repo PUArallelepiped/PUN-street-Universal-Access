@@ -17,12 +17,21 @@ func NewPostgressqlProductRepo(db *sql.DB) domain.ProductRepo {
 	return &postgresqlProductRepo{db}
 }
 
-func (p *postgresqlProductRepo) GetByID(ctx context.Context, id string) (*swagger.ProductInfo, error) {
-	row := p.db.QueryRow("SELECT product_id, name, category_id, describe, price, stock FROM products WHERE product_id = $1", id)
-	product := &swagger.ProductInfo{}
-	if err := row.Scan(&product.ProductId, &product.Name, &product.CatogoryId, &product.Description, &product.Price, &product.Storage); err != nil {
+func (p *postgresqlProductRepo) GetByID(ctx context.Context, id int64) (*[]swagger.ProductInfo, error) {
+	row, err := p.db.Query("SELECT product_id, name, category_id, describe, price, stock FROM products WHERE store_id = $1", id)
+	if err != nil {
 		logrus.Error(err)
 		return nil, err
 	}
-	return product, nil
+	products := &[]swagger.ProductInfo{}
+	for row.Next() {
+		product := &swagger.ProductInfo{}
+		err = row.Scan(&product.ProductId, &product.Name, &product.CatogoryId, &product.Description, &product.Price, &product.Storage)
+		if err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+		*products = append(*products, *product)
+	}
+	return products, nil
 }

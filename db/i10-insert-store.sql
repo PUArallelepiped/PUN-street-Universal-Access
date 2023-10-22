@@ -1,3 +1,3 @@
-INSERT INTO stores (name, address, email, phone) VALUES (
-    'im pasta', 'pun street', 'pasta@pasta.com', '0912345678'
-)
+INSERT INTO stores (name, address, email, phone) VALUES 
+('im pasta', 'pun street', 'pasta@pasta.com', '0912345678'),
+('five', 'pun street', 'five@number.com', '0912345678')

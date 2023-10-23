@@ -29,12 +29,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StoreInfo'
-        "400":
-          description: The specified store ID is invalid (not a number).
+        "500":
+          description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /stores:
+    get:
+      tags:
+      - store
+      summary: return store array
+      responses:
+        "200":
+          description: return store array
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreArray'
+        "500":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /products:
+    post:
+      tags:
+      - product
+      summary: return products array  by store ID
+      requestBody:
+        description: store id.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/products_body'
+        required: true
+      responses:
+        "200":
+          description: return product array
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductArray'
+        "400":
+          description: bad request
         "500":
           description: Unexpected error
           content:
@@ -84,12 +123,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CartInfo'
-        "400":
-          description: The specified cart ID is invalid (not a number).
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
         "500":
           description: Unexpected error
           content:
@@ -119,12 +152,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CartArray'
-        "400":
-          description: The specified cart ID is invalid (not a number).
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
         "500":
           description: Unexpected error
           content:
@@ -138,39 +165,32 @@ paths:
       summary: add a new cart to db and return a cart from db
       requestBody:
         description: add a new cart.
-        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/CartInfo'
+        required: true
       responses:
         "200":
           description: A cart object.
-        "400":
-          description: The specified cart ID is invalid (not a number).
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
         "500":
           description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-        
 components:
   schemas:
     StoreInfo:
       required:
       - address
       - email
-      - id
       - name
-      - phome
+      - phone
+      - store_id
       type: object
       properties:
-        id:
+        store_id:
           type: integer
           format: int64
           example: 1
@@ -187,16 +207,55 @@ components:
           type: string
           example: "0912345678"
       example:
+        store_id: 1
         address: pun street
         phone: "0912345678"
         name: i'm pasta
-        id: 1
         email: pasta@pasta.com
+    ProductInfo:
+      required:
+      - catogory_id
+      - description
+      - name
+      - price
+      - product_id
+      - storage
+      type: object
+      properties:
+        product_id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: pasta
+        catogory_id:
+          type: integer
+          format: int64
+          example: 1
+        description:
+          type: string
+          example: tasty pasta
+        price:
+          type: integer
+          format: int64
+          example: 9999
+        storage:
+          type: integer
+          format: int64
+          example: 100
+      example:
+        catogory_id: 1
+        price: 9999
+        product_id: 1
+        name: pasta
+        description: tasty pasta
+        storage: 100
     CartInfo:
       required:
-      - product_quantity
       - customer_id
       - product_id
+      - product_quantity
       - store_id
       type: object
       properties:
@@ -217,14 +276,25 @@ components:
           format: int64
           example: 1
       example:
-        quantity: 10
-        customer_id: 1
-        product_id: 1
         store_id: 1
+        product_id: 1
+        customer_id: 1
+        product_quantity: 10
+    StoreArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/StoreInfo'
+      x-schema-name: StoreArray
+    ProductArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/ProductInfo'
+      x-schema-name: ProductArray
     CartArray:
       type: array
       items:
         $ref: '#/components/schemas/CartInfo'
+      x-schema-name: CartArray
     Error:
       required:
       - code
@@ -233,6 +303,17 @@ components:
       properties:
         message:
           type: string
+          example: internal error
         code:
           type: integer
           format: int64
+          example: 3000
+    products_body:
+      required:
+      - store_id
+      type: object
+      properties:
+        store_id:
+          type: integer
+          format: int64
+          example: 1

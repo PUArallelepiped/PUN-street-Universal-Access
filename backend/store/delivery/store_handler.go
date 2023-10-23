@@ -33,7 +33,7 @@ func (s *StoreHandler) GetStoreById(c *gin.Context) {
 	}
 
 	c.JSON(200, &swagger.StoreInfo{
-		Id:      store.ID,
+		StoreId: store.ID,
 		Name:    store.Name,
 		Address: store.Address,
 		Email:   store.Email,

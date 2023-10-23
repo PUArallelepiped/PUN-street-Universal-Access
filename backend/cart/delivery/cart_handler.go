@@ -37,9 +37,9 @@ func (s *CartHandler) GetCartById(c *gin.Context) {
 	}
 
 	c.JSON(200, &swagger.CartInfo{
-		CustomerID:      cart.CustomerID,
-		ProductID:       cart.ProductID,
-		StoreID:         cart.StoreID,
+		CustomerId:      cart.CustomerId,
+		ProductId:       cart.ProductId,
+		StoreId:         cart.StoreId,
 		ProductQuantity: cart.ProductQuantity,
 	})
 }
@@ -60,9 +60,9 @@ func (s *CartHandler) GetCartByCustomerId(c *gin.Context) {
 	jsonData := &[]swagger.CartInfo{}
 	for _, cart := range *carts {
 		*jsonData = append(*jsonData, swagger.CartInfo{
-			CustomerID:      cart.CustomerID,
-			ProductID:       cart.ProductID,
-			StoreID:         cart.StoreID,
+			CustomerId:      cart.CustomerId,
+			ProductId:       cart.ProductId,
+			StoreId:         cart.StoreId,
 			ProductQuantity: cart.ProductQuantity,
 		})
 	}
@@ -82,7 +82,7 @@ func (s *CartHandler) PostCart(c *gin.Context) {
 		return
 	}
 
-	_cart, err := s.CartUsecase.PostCart(c, &cart)
+	_, err := s.CartUsecase.PostCart(c, &cart)
 
 	if err != nil {
 		logrus.Error(err)
@@ -93,10 +93,5 @@ func (s *CartHandler) PostCart(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, &swagger.CartInfo{
-		CustomerID:      _cart.CustomerID,
-		ProductID:       _cart.ProductID,
-		StoreID:         _cart.StoreID,
-		ProductQuantity: _cart.ProductQuantity,
-	})
+	c.Status(200)
 }

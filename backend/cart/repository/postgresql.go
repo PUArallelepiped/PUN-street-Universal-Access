@@ -23,7 +23,7 @@ func (p *postgresqlCartRepo) GetByID(ctx context.Context, customerId string, pro
 	`
 	row := p.db.QueryRow(sqlStatement, customerId, productId, storeId)
 	cart := &domain.Cart{}
-	if err := row.Scan(&cart.CustomerID, &cart.ProductID, &cart.StoreID, &cart.ProductQuantity); err != nil {
+	if err := row.Scan(&cart.CustomerId, &cart.ProductId, &cart.StoreId, &cart.ProductQuantity); err != nil {
 		logrus.Error(err)
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func (p *postgresqlCartRepo) GetByCustomerId(ctx context.Context, customerId str
 
 	for rows.Next() {
 		cart := &domain.Cart{}
-		if err := rows.Scan(&cart.CustomerID, &cart.ProductID, &cart.StoreID, &cart.ProductQuantity); err != nil {
+		if err := rows.Scan(&cart.CustomerId, &cart.ProductId, &cart.StoreId, &cart.ProductQuantity); err != nil {
 			logrus.Error(err)
 			return nil, err
 		}
@@ -55,10 +55,12 @@ func (p *postgresqlCartRepo) GetByCustomerId(ctx context.Context, customerId str
 
 func (p *postgresqlCartRepo) PostCart(ctx context.Context, cart *domain.Cart) (*domain.Cart, error) {
 	sqlStatement := `
-	INSERT INTO carts (product_quantity, customer_id, product_id, store_id) VALUES
-    ( $1, (SELECT user_id FROM user_datas WHERE user_id=$2 ), (SELECT product_id FROM products WHERE product_id=$3), (SELECT store_id FROM stores WHERE store_id=$4) );
+	INSERT INTO carts VALUES ($1,$2,$3,$4) 
+	ON CONFLICT (customer_id, product_id, store_id) DO UPDATE 
+	SET product_quantity = excluded.product_quantity;
 	`
-	_, err := p.db.Exec(sqlStatement, cart.ProductQuantity, cart.CustomerID, cart.ProductID, cart.StoreID)
+
+	_, err := p.db.Exec(sqlStatement, cart.CustomerId, cart.ProductId, cart.StoreId, cart.ProductQuantity)
 	if err != nil {
 		logrus.Error(err)
 		return nil, err
@@ -68,8 +70,8 @@ func (p *postgresqlCartRepo) PostCart(ctx context.Context, cart *domain.Cart) (*
 	SELECT customer_id, product_id, store_id, product_quantity FROM carts WHERE customer_id = $1 AND product_id = $2 AND store_id = $3;
 	`
 	_cart := &domain.Cart{}
-	row := p.db.QueryRow(sqlStatement, cart.CustomerID, cart.ProductID, cart.StoreID)
-	if err := row.Scan(&_cart.CustomerID, &_cart.ProductID, &_cart.StoreID, &_cart.ProductQuantity); err != nil {
+	row := p.db.QueryRow(sqlStatement, cart.CustomerId, cart.ProductId, cart.StoreId)
+	if err := row.Scan(&_cart.CustomerId, &_cart.ProductId, &_cart.StoreId, &_cart.ProductQuantity); err != nil {
 		logrus.Error(err)
 		return nil, err
 	}

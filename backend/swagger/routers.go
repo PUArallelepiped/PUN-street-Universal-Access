@@ -55,6 +55,27 @@ var routes = Routes{
 	},
 
 	Route{
+		"CartCustomerIDGet",
+		strings.ToUpper("Get"),
+		"/api/v1/cart/{customerID}",
+		CartCustomerIDGet,
+	},
+
+	Route{
+		"CartCustomerIDProductIDStoreIDGet",
+		strings.ToUpper("Get"),
+		"/api/v1/cart/{customerID}/{productID}/{storeID}",
+		CartCustomerIDProductIDStoreIDGet,
+	},
+
+	Route{
+		"CartPost",
+		strings.ToUpper("Post"),
+		"/api/v1/cart",
+		CartPost,
+	},
+
+	Route{
 		"StoreStoreIDGet",
 		strings.ToUpper("Get"),
 		"/api/v1/store/{storeID}",

@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"net/mail"
 	"regexp"
@@ -11,29 +12,88 @@ import (
 	_ "github.com/lib/pq"
 )
 
+func PasswordCheck(passwd string) error {
+
+	indNum := [4]int{0, 0, 0, 0}
+	spCode := []byte{'!', '@', '#', '$', '%', '^', '&', '*', '_', '-'}
+
+	if len(passwd) < 6 {
+		return errors.New("password too short")
+	}
+
+	passwdByte := []byte(passwd)
+
+	for _, i := range passwdByte {
+
+		if i >= 'A' && i <= 'Z' {
+			indNum[0] = 1
+			continue
+		}
+
+		if i >= 'a' && i <= 'z' {
+			indNum[1] = 1
+			continue
+		}
+
+		if i >= '0' && i <= '9' {
+			indNum[2] = 1
+			continue
+		}
+
+		notEnd := 0
+		for _, s := range spCode {
+			if i == s {
+				indNum[3] = 1
+				notEnd = 1
+				break
+			}
+		}
+
+		if notEnd != 1 {
+			return errors.New("Unsupport code")
+		}
+
+	}
+
+	codeCount := 0
+
+	for _, i := range indNum {
+		codeCount += i
+	}
+
+	if codeCount < 3 {
+		return errors.New("Too simple password")
+	}
+
+	return nil
+}
+
 // 手機號碼格式
-func validPhoneNumber(phoneNumber string) bool {
+func validPhoneNumber(phoneNumber string) error {
 	regex := `^8869[0-9]{8}$|^09[0-9]{8}$`
-	match, _ := regexp.MatchString(regex, phoneNumber)
-	return match
+
+	if match, _ := regexp.MatchString(regex, phoneNumber); match {
+		return nil
+	}
+	return errors.New("Wrong Number format")
 
 }
 
 // email格式
-func validMailAddress(address string) (string, bool) {
-	addr, err := mail.ParseAddress(address)
+func validMailAddress(address string) error {
+	_, err := mail.ParseAddress(address)
 	if err != nil {
-		return "", false
+		return err
 	}
-	return addr.Address, true
+	return nil
 }
 
 // 找重複email 有重複false
-func searchMailAddress(db *sql.DB, address string) bool {
+func searchMailAddress(db *sql.DB, address string) error {
 	rows, err := db.Query("SELECT id, Email FROM UserData")
 	if err != nil {
 		fmt.Println("Error running query:", err)
-		return false
+		return err
 	}
 	defer rows.Close()
 
@@ -41,20 +101,27 @@ func searchMailAddress(db *sql.DB, address string) bool {
 		var id int
 		var email string
 		if err := rows.Scan(&id, &email); err != nil {
-			fmt.Println("Error scanning row:", err)
-			return false
+			return errors.New("Error scanning row")
 		}
 
 		if strings.EqualFold(address, email) {
-			fmt.Println("This Email has been registered")
-			return false
+			return errors.New("This Email has been registered")
 		}
 	}
 
-	return true
+	return nil
 }
+func TF(tmp [4]bool) bool {
 
+	var ans bool = true
+	for i := range tmp {
+		ans = ans && tmp[i]
+	}
+	return ans
+}
 func main() {
+
+	_TFwrite := [4]bool{true, true, true, true} //TFwrite in db
 	// 建立数据库连接
 	connStr := "user=orange dbname=user_data sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
@@ -77,31 +144,35 @@ func main() {
 	}
 	data := UserData{
 		Name:        "XDD",
-		Account:     "k98006@gmail.com",
+		Account:     "k98007@gmail.com",
 		Address:     "Taiwan",
 		Birthday:    date,
-		PhoneNumber: "0912455678",
-		Password:    "orange",
+		PhoneNumber: "0912455672",
+		Password:    "OAOrange1",
 		Authority:   0,
 	}
 
-	// db.QueryRow("SELECT COUNT(*) FROM users").Scan(&_usercount)
-	if validPhoneNumber(data.PhoneNumber) {
-		fmt.Println("Correct PhoneNumber")
-	} else {
-		fmt.Println("Wrong PhoneNumber")
+	if err := validPhoneNumber(data.PhoneNumber); err != nil {
+		fmt.Println(err)
+		_TFwrite[0] = false
 	}
 
-	if addr, ok := validMailAddress(data.Account); ok {
-		fmt.Printf("value: %-30s valid email: %-10t address: %s\n", data.Account, ok, addr)
+	if err := PasswordCheck(data.Password); err != nil {
+		fmt.Println(err)
+		_TFwrite[1] = false
+	}
+
+	if err := validMailAddress(data.Account); err != nil {
+		fmt.Println(err)
+		_TFwrite[2] = false
 	} else {
-		fmt.Printf("value: %-30s valid email: %-10t\n", data.Account, ok)
+		if err2 := searchMailAddress(db, data.Account); err2 != nil {
+			fmt.Println(err2)
+			_TFwrite[3] = false
+
+		}
 	}
-	//搜尋
-	_TFwrite := searchMailAddress(db, data.Account)
-	if _TFwrite {
-		fmt.Println("Can be register :D")
-	}
+
 	// 开始事务
 	tx, err := db.Begin()
 	if err != nil {
@@ -110,7 +181,7 @@ func main() {
 	}
 
 	// 执行插入操作
-	if _TFwrite {
+	if TF(_TFwrite) {
 		_, err = tx.Exec("INSERT INTO UserData (Name, Password, Email, Address, PhoneNumber, Birthday, Authority) VALUES ($1, $2, $3, $4, $5, $6, $7)", data.Name, data.Password, data.Account, data.Address, data.PhoneNumber, data.Birthday, data.Authority)
 
 		if err != nil {

@@ -1,6 +1,6 @@
-CREATE TABLE IF NOT EXISTS product (
+CREATE TABLE IF NOT EXISTS products (
     product_id SERIAL PRIMARY KEY,
-    storeId SERIAL references stores(store_id),
+    store_id SERIAL REFERENCES stores(store_id),
     name VARCHAR(255) NOT NULL,
     describe VARCHAR(255),
     category_id INT,

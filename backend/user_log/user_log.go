@@ -12,53 +12,35 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// 只少符合三種(數字、符號、英文大寫、英文小寫)
 func PasswordCheck(passwd string) error {
-
-	indNum := [4]int{0, 0, 0, 0}
-	spCode := []byte{'!', '@', '#', '$', '%', '^', '&', '*', '_', '-'}
-
 	if len(passwd) < 6 {
 		return errors.New("password too short")
 	}
 
-	passwdByte := []byte(passwd)
+	indNum := [4]bool{false, false, false, false}
+	spCode := "!@#$%^&*_-"
 
-	for _, i := range passwdByte {
-
-		if i >= 'A' && i <= 'Z' {
-			indNum[0] = 1
-			continue
+	for _, char := range passwd {
+		switch {
+		case 'A' <= char && char <= 'Z':
+			indNum[0] = true
+		case 'a' <= char && char <= 'z':
+			indNum[1] = true
+		case '0' <= char && char <= '9':
+			indNum[2] = true
+		case strings.ContainsRune(spCode, char):
+			indNum[3] = true
+		default:
+			return errors.New("Unsupported character")
 		}
-
-		if i >= 'a' && i <= 'z' {
-			indNum[1] = 1
-			continue
-		}
-
-		if i >= '0' && i <= '9' {
-			indNum[2] = 1
-			continue
-		}
-
-		notEnd := 0
-		for _, s := range spCode {
-			if i == s {
-				indNum[3] = 1
-				notEnd = 1
-				break
-			}
-		}
-
-		if notEnd != 1 {
-			return errors.New("Unsupport code")
-		}
-
 	}
 
 	codeCount := 0
-
 	for _, i := range indNum {
-		codeCount += i
+		if i {
+			codeCount++
+		}
 	}
 
 	if codeCount < 3 {
@@ -77,15 +59,6 @@ func validPhoneNumber(phoneNumber string) error {
 	}
 	return errors.New("Wrong Number format")
 
-}
-
-// email格式
-func validMailAddress(address string) error {
-	_, err := mail.ParseAddress(address)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // 找重複email 有重複false
@@ -111,7 +84,7 @@ func searchMailAddress(db *sql.DB, address string) error {
 
 	return nil
 }
-func TF(tmp [4]bool) bool {
+func DecideWrite(tmp [4]bool) bool {
 
 	var ans bool = true
 	for i := range tmp {
@@ -162,7 +135,7 @@ func main() {
 		_TFwrite[1] = false
 	}
 
-	if err := validMailAddress(data.Account); err != nil {
+	if _, err := mail.ParseAddress(data.Account); err != nil {
 		fmt.Println(err)
 		_TFwrite[2] = false
 	} else {
@@ -181,7 +154,7 @@ func main() {
 	}
 
 	// 执行插入操作
-	if TF(_TFwrite) {
+	if DecideWrite(_TFwrite) {
 		_, err = tx.Exec("INSERT INTO UserData (Name, Password, Email, Address, PhoneNumber, Birthday, Authority) VALUES ($1, $2, $3, $4, $5, $6, $7)", data.Name, data.Password, data.Account, data.Address, data.PhoneNumber, data.Birthday, data.Authority)
 
 		if err != nil {

@@ -1,10 +1,10 @@
-CREATE TABLE UserData(
-  ID serial PRIMARY KEY,
-  Name varchar(32) not null,
-  Password varchar(32) not null,
-  Email varchar(64) unique not null,
-  Address char(64) not null,
-  PhoneNumber varchar(16) not null,
-  Birthday DATE,
-  Authority int not null
+CREATE TABLE IF NOT EXISTS user_datas(
+  user_id SERIAL PRIMARY KEY,
+  name VARCHAR(32) NOT NULL,
+  password VARCHAR(32) NOT NULL,
+  email VARCHAR(64) UNIQUE NOT NULL,
+  address VARCHAR(64) NOT NULL,
+  phone_number VARCHAR(16) NOT NULL,
+  birthday DATE,
+  authority INT NOT NULL
 );

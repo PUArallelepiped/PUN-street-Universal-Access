@@ -17,7 +17,7 @@ func NewStoreHandler(e *gin.Engine, storeUsecase domain.StoreUsecase) {
 		StoreUsecase: storeUsecase,
 	}
 	e.GET("/api/v1/store/:storeID", handler.GetStoreById)
-	e.GET("/api/v1/store/", handler.GetAllStore)
+	e.GET("/api/v1/stores", handler.GetAllStore)
 }
 
 func (s *StoreHandler) GetStoreById(c *gin.Context) {

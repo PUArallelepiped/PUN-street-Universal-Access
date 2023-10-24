@@ -12,5 +12,5 @@ type ModelError struct {
 
 	Message string `json:"message"`
 
-	Code int32 `json:"code"`
+	Code int64 `json:"code"`
 }

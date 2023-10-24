@@ -7,6 +7,7 @@ import (
 	_storeDelivery "github.com/PUArallelepiped/PUN-street-Universal-Access/store/delivery"
 	_storeRepo "github.com/PUArallelepiped/PUN-street-Universal-Access/store/repository"
 	_storeUsecase "github.com/PUArallelepiped/PUN-street-Universal-Access/store/usecase"
+	"github.com/gin-contrib/cors"
 
 	_productDelivery "github.com/PUArallelepiped/PUN-street-Universal-Access/product/delivery"
 	_productRepo "github.com/PUArallelepiped/PUN-street-Universal-Access/product/repository"
@@ -53,7 +54,7 @@ func main() {
 	}
 
 	r := gin.Default()
-
+	r.Use(cors.Default())
 	storeRepo := _storeRepo.NewPostgressqlStoreRepo(db)
 	storeUsecase := _storeUsecase.NewStoreUsecase(storeRepo)
 	_storeDelivery.NewStoreHandler(r, storeUsecase)

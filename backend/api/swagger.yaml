@@ -205,7 +205,7 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /user/{userID}/cart/{cartID}/delete/product/{productID}:
+  /customer/{userID}/cart/{cartID}/delete/product/{productID}:
     delete:
       tags:
       - customer
@@ -235,6 +235,34 @@ paths:
       responses:
         "200":
           description: delete success
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /customer/get-info/{userID}:
+    get: 
+      tags:
+      - customer
+      - user
+      summary: get user info by ID
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the user to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: return user info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserData'
         "400":
           description: bad request
         "500":
@@ -303,6 +331,80 @@ paths:
               type: string
               example: "1"
               x-content-type: application/json
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /admin/ban-user/{userID}:
+    put:
+      tags:
+      - admin
+      - user
+      summary: ban a user by ID
+      parameters:
+      - name: userID
+        in: path
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /admin/unban-user/{userID}:
+    put:
+      tags:
+      - admin
+      - user
+      summary: unban a user by ID
+      parameters:
+      - name: userID
+        in: path
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /admin/edit-user/{userID}:
+    put:
+      tags:
+      - admin
+      - user
+      summary: edit user info by ID
+      parameters:
+      - name: userID
+        in: path
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      requestBody:
+        description: user info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserData'
       responses:
         "200":
           description: ok

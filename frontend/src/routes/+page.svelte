@@ -7,31 +7,22 @@
 
 <script lang="ts">
   import * as Menubar from "$lib/components/ui/menubar";
+	import * as Card from "$lib/components/ui/card";
+	import * as Select from "$lib/components/ui/select";
   import { Input } from "$lib/components/ui/input";
 	import { Checkbox } from "$lib/components/ui/checkbox";
   import { Label } from "$lib/components/ui/label";
 	import { Slider } from "$lib/components/ui/slider";
+	import { Button } from "$lib/components/ui/button";	
   let checked = false;
 </script>
 
-<div style="width: 100%; overflow: hidden;">
-  <div style="width: 1000px; float: left;">
-		<p style="font-size: x-large; padding-left: 5%;">PUN Street Access</p>
-  </div>
-	<div style="float: right;">
-		<Menubar.Root>
-			<Menubar.Menu>
-				<Menubar.Trigger>My Profile</Menubar.Trigger>
-				<Menubar.Trigger>Shop List</Menubar.Trigger>
-				<Menubar.Trigger>Check Order</Menubar.Trigger>
-				<Menubar.Trigger>History</Menubar.Trigger>
-				<Menubar.Trigger>Carts</Menubar.Trigger>
-			</Menubar.Menu>
-		</Menubar.Root>
-  </div>
+<div style="width: 40%; overflow: hidden;">
+  <div class="text-2xl" style="float: left;">PUN Street Access</div>
 </div>
-<div style="width: 100%; overflow: hidden;">
-  <div style="width: 500px; float: left;"> 
+
+<div style="display: flex; justify-content: flex-start;">
+  <div style="width: 40%; float: left"> 
     <Input type="text" placeholder="QQㄋㄟㄋㄟ好喝到咩噗茶" class="max-w-xs" />
 
 		<p style="padding-left: 10%; font-size: large;">Sort</p>
@@ -56,8 +47,8 @@
 
 		<p style="padding-left: 10%; font-size: large;">Price</p>
 		<div>
-			<p>NT$1 &emsp;&emsp;&emsp;&emsp;NT$700 &emsp;&emsp;&emsp;&emsp;NT$1000</p>
-			<Slider value={[50]} max={100} step={1} class="max-w-[50%]" />
+			<p>NT$1 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;NT$700 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;NT$1000</p>
+			<Slider value={[50]} max={100} step={1} class="max-w-[85%]" />
 		</div>
 
 		<p style="padding-left: 10%; font-size: large;">Tag</p>
@@ -89,6 +80,135 @@
 				</div>
 			</div>
 		</div>
-  </div>
+	</div>
+
+	<div style="display: flex-wrap; float:left; max-width: 70%">
+		<div style="float: left; flex: auto;min-width: 350px">
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>Card Title</Card.Title>
+					<Card.Description>Card Description</Card.Description>
+				</Card.Header>
+				<Card.Content>
+					<p>Card Content</p>
+				</Card.Content>
+				<Card.Footer>
+					<p>Card Footer</p>
+				</Card.Footer>
+			</Card.Root>
+		</div>
+		<div style="float: left; flex: auto;min-width: 350px">
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>Card Title</Card.Title>
+					<Card.Description>Card Description</Card.Description>
+				</Card.Header>
+				<Card.Content>
+					<p>Card Content</p>
+				</Card.Content>
+				<Card.Footer>
+					<p>Card Footer</p>
+				</Card.Footer>
+			</Card.Root>
+		</div>
+		<div style="float: left; flex: auto;min-width: 350px">
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>Card Title</Card.Title>
+					<Card.Description>Card Description</Card.Description>
+				</Card.Header>
+				<Card.Content>
+					<p>Card Content</p>
+				</Card.Content>
+				<Card.Footer>
+					<p>Card Footer</p>
+				</Card.Footer>
+			</Card.Root>
+		</div>
+		<div style="float: left; flex: auto;min-width: 350px">
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>Card Title</Card.Title>
+					<Card.Description>Card Description</Card.Description>
+				</Card.Header>
+				<Card.Content>
+					<p>Card Content</p>
+				</Card.Content>
+				<Card.Footer>
+					<p>Card Footer</p>
+				</Card.Footer>
+			</Card.Root>
+		</div>
+		<div style="float: left; flex: auto;min-width: 350px">
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>Card Title</Card.Title>
+					<Card.Description>Card Description</Card.Description>
+				</Card.Header>
+				<Card.Content>
+					<p>Card Content</p>
+				</Card.Content>
+				<Card.Footer>
+					<p>Card Footer</p>
+				</Card.Footer>
+			</Card.Root>
+		</div>
+		<div style="float: left; flex: auto;min-width: 350px">
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>Card Title</Card.Title>
+					<Card.Description>Card Description</Card.Description>
+				</Card.Header>
+				<Card.Content>
+					<p>Card Content</p>
+				</Card.Content>
+				<Card.Footer>
+					<p>Card Footer</p>
+				</Card.Footer>
+			</Card.Root>
+		</div>
+		<div style="float: left; flex: auto;min-width: 350px">
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>Card Title</Card.Title>
+					<Card.Description>Card Description</Card.Description>
+				</Card.Header>
+				<Card.Content>
+					<p>Card Content</p>
+				</Card.Content>
+				<Card.Footer>
+					<p>Card Footer</p>
+				</Card.Footer>
+			</Card.Root>
+		</div>
+		<div style="float: left; flex: auto;min-width: 350px">
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>Card Title</Card.Title>
+					<Card.Description>Card Description</Card.Description>
+				</Card.Header>
+				<Card.Content>
+					<p>Card Content</p>
+				</Card.Content>
+				<Card.Footer>
+					<p>Card Footer</p>
+				</Card.Footer>
+			</Card.Root>
+		</div>
+		<div style="float: left; flex: auto;min-width: 350px">
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>Card Title</Card.Title>
+					<Card.Description>Card Description</Card.Description>
+				</Card.Header>
+				<Card.Content>
+					<p>Card Content</p>
+				</Card.Content>
+				<Card.Footer>
+					<p>Card Footer</p>
+				</Card.Footer>
+			</Card.Root>
+		</div>
+	</div>
 </div>
-<p>Visit <a href="./food" class="text-blue-400"> Shop list</a></p>
+<p>Visit <a href="./food" class="text-blue-400px"> Shop list</a></p>

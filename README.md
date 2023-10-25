@@ -3,6 +3,12 @@
 PUA
 
 # how to run it
+## need
+- git
+- docker
+- npm
+- go
+- postgres(optional)
 
 ## frontend
 

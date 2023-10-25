@@ -481,6 +481,66 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
+  /customer/{userID}/cart/{cartID}/checkout:
+    post:
+      tags:
+      - customer
+      - cart
+      - order
+      summary: checkout cart
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the user .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      - name: cartID
+        in: path
+        description: The ID of the cart .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /customer/{userID}/orders:
+    get:
+      tags:
+      - customer
+      - order
+      summary: get all orders by user ID
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the user .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderInfo'
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
   /admin/ban-user/{userID}:
     put:
       tags:
@@ -833,3 +893,50 @@ components:
           type: integer
           format: int64
           example: 1
+    OrderInfo:
+      required:
+        - customer_id
+        - discount_id
+        - cart_id
+        - store_id
+        - order_status
+        - order_date
+        - taking_address
+        - taking_method
+        - total_price
+      type: object
+      properties:
+        customer_id:
+          type: integer
+          format: int64
+          example: 1
+        discount_id:
+          type: integer
+          format: int64
+          example: 1
+        cart_id:
+          type: integer
+          format: int64
+          example: 1
+        store_id:
+          type: integer
+          format: int64
+          example: 1
+        order_status:
+          type: integer
+          format: int64
+          example: 1
+        order_date:
+          type: string
+          example: "2021-05-01"
+        taking_address:
+          type: string
+          example: "NTUT"
+        taking_method:
+          type: integer
+          format: int64
+          example: 1
+        total_price:
+          type: integer
+          format: int64
+          example: 9999

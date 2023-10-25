@@ -108,6 +108,67 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
+  /seller/add-category/{category_id}:
+    post:
+      tags:
+      - seller
+      - category
+      summary: add a category to store
+      parameters:
+      - name: category_id
+        in: path
+        description: The ID of the category to add
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /seller/remove-category/{category_id}:
+    delete:
+      tags:
+      - seller
+      - category
+      summary: remove a category from store
+      parameters:
+      - name: category_id
+        in: path
+        description: The ID of the category to remove
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /seller/get-category:
+    get:
+      tags:
+      - seller
+      - category
+      summary: get all category
+      responses:
+        "200":
+          description: return category array
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryArray'
+        "500":
+          description: Unexpected error
   /product/{productID}:
     get:
       tags:
@@ -429,13 +490,13 @@ components:
           example: 1
         name:
           type: string
-          example: i'm pasta
+          example: "i'm pasta"
         address:
           type: string
-          example: pun street
+          example: "pun street"
         email:
           type: string
-          example: pasta@pasta.com
+          example: "pasta@pasta.com"
         rate:
           type: integer
           format: int64
@@ -473,10 +534,10 @@ components:
           example: 1
         description:
           type: string
-          example: tasty pasta
+          example: "tasty pasta"
         picture:
           type: string
-          example: https://i.imgur.com/1.jpg
+          example: "https://i.imgur.com/1.jpg"
         price:
           type: integer
           format: int64
@@ -571,7 +632,7 @@ components:
           example: 1
         user_name:
           type: string
-          example: pasta
+          example: "pasta"
         user_email:
           type: string
           example:
@@ -596,3 +657,18 @@ components:
           type: integer
           format: int64
           example: 1
+    Category:
+      type: object
+      properties:
+        category_id:
+          type: integer
+          format: int64
+          example: 1
+        category_name:
+          type: string
+          example: "drink"
+    CategoryArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/Category'
+      x-schema-name: CategoryArray

@@ -6,15 +6,15 @@
 <p>here is root</p>
 
 <script lang="ts">
-  import * as Menubar from "$lib/components/ui/menubar";
+  //import * as Menubar from "$lib/components/ui/menubar";
 	import * as Card from "$lib/components/ui/card";
-	import * as Select from "$lib/components/ui/select";
+	//import * as Select from "$lib/components/ui/select";
   import { Input } from "$lib/components/ui/input";
 	import { Checkbox } from "$lib/components/ui/checkbox";
   import { Label } from "$lib/components/ui/label";
 	import { Slider } from "$lib/components/ui/slider";
-	import { Button } from "$lib/components/ui/button";	
-  let checked = false;
+	//import { Button } from "$lib/components/ui/button";	
+  //let checked = false;
 </script>
 
 <div style="width: 40%; overflow: hidden;">

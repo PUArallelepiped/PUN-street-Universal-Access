@@ -108,14 +108,24 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /seller/add-category/{category_id}:
+  /store/{storeID}/add-category/{categoryID}:
     post:
       tags:
       - seller
+      - store
       - category
       summary: add a category to store
       parameters:
-      - name: category_id
+      - name: storeID
+        in: path
+        description: The ID of the store to add
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      - name: categoryID
         in: path
         description: The ID of the category to add
         required: true
@@ -131,16 +141,26 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /seller/remove-category/{category_id}:
+  /store/{storeID}/remove-category/{categoryID}:
     delete:
       tags:
       - seller
+      - store
       - category
       summary: remove a category from store
       parameters:
-      - name: category_id
+      - name: categoryID
         in: path
         description: The ID of the category to remove
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      - name: storeID
+        in: path
+        description: The ID of the store to remove
         required: true
         content:
           application/json:
@@ -332,7 +352,7 @@ paths:
       tags:
       - customer
       - discount
-      summary: get discount by store ID
+      summary: get all discounts by store ID
       parameters:
       - name: storeID
         in: path
@@ -354,11 +374,12 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /store/{storeID}/discount:
+  /store/{storeID}/seasoning-discount:
     post:
       tags:
+      - seller
       - discount
-      summary: create a new discount
+      summary: create a seasoning discount
       parameters:
       - name: storeID
         in: path
@@ -369,6 +390,68 @@ paths:
               type: string
               example: "1"
               x-content-type: application/json
+      requestBody:
+        description: user info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SeasoningDiscount'
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /store/{storeID}/shipping-discount:
+    post:
+      tags:
+      - seller
+      - discount
+      summary: create a shipping discount
+      parameters:
+      - name: storeID
+        in: path
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      requestBody:
+        description: user info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShippingDiscount'
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /store/{storeID}/event-discount:
+    post:
+      tags:
+      - seller
+      - discount
+      summary: create a event discount
+      parameters:
+      - name: storeID
+        in: path
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      requestBody:
+        description: user info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventDiscount'
       responses:
         "200":
           description: ok
@@ -634,7 +717,7 @@ components:
           example: "pasta"
         user_email:
           type: string
-          example:
+          example: "t110595959@rice.org.tw"
         authority:
           type: integer
           format: int64
@@ -672,6 +755,13 @@ components:
         $ref: '#/components/schemas/Category'
       x-schema-name: CategoryArray
     SeasoningDiscount:
+      required:
+        - discount_id
+        - discount_name
+        - discount_description
+        - discount_start_date
+        - discount_end_date
+        - discount_percentage
       type: object
       properties:
         discount_id:
@@ -695,6 +785,11 @@ components:
           format: int64
           example: 70
     ShippingDiscount:
+      required:
+        - discount_id
+        - discount_name
+        - discount_description
+        - discount_max_price
       type: object
       properties:
         discount_id:
@@ -706,12 +801,18 @@ components:
           example: "free shipping"
         discount_description:
           type: string
-          example: "free shipping when price over 1000"
+          example: "free shipping when total price over 1000"
         discount_max_price:
           type: integer
           format: int64
           example: 1000
     EventDiscount:
+      required:
+        - discount_id
+        - discount_name
+        - discount_description
+        - discount_max_quantity
+        - product_id
       type: object
       properties:
         discount_id:
@@ -728,3 +829,7 @@ components:
           type: integer
           format: int64
           example: 2
+        product_id:
+          type: integer
+          format: int64
+          example: 1

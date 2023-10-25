@@ -1,3 +1,15 @@
+<script lang="ts">
+	//import * as Menubar from "$lib/components/ui/menubar";
+	import * as Card from '$lib/components/ui/card';
+	//import * as Select from "$lib/components/ui/select";
+	import { Input } from '$lib/components/ui/input';
+	import { Checkbox } from '$lib/components/ui/checkbox';
+	import { Label } from '$lib/components/ui/label';
+	import { Slider } from '$lib/components/ui/slider';
+	//import { Button } from "$lib/components/ui/button";
+	//let checked = false;
+</script>
+
 <h1>Welcome to PUA</h1>
 <div class="bg-neutral-900">
 	<h1 class="text-3xl font-bold underline">Hello world!</h1>
@@ -5,25 +17,13 @@
 
 <p>here is root</p>
 
-<script lang="ts">
-  //import * as Menubar from "$lib/components/ui/menubar";
-	import * as Card from "$lib/components/ui/card";
-	//import * as Select from "$lib/components/ui/select";
-  import { Input } from "$lib/components/ui/input";
-	import { Checkbox } from "$lib/components/ui/checkbox";
-  import { Label } from "$lib/components/ui/label";
-	import { Slider } from "$lib/components/ui/slider";
-	//import { Button } from "$lib/components/ui/button";	
-  //let checked = false;
-</script>
-
 <div style="width: 40%; overflow: hidden;">
-  <div class="text-2xl" style="float: left;">PUN Street Access</div>
+	<div class="text-2xl" style="float: left;">PUN Street Access</div>
 </div>
 
 <div style="display: flex; justify-content: flex-start;">
-  <div style="width: 40%; float: left"> 
-    <Input type="text" placeholder="QQㄋㄟㄋㄟ好喝到咩噗茶" class="max-w-xs" />
+	<div style="width: 40%; float: left">
+		<Input type="text" placeholder="QQㄋㄟㄋㄟ好喝到咩噗茶" class="max-w-xs" />
 
 		<p style="padding-left: 10%; font-size: large;">Sort</p>
 		<div>
@@ -47,7 +47,10 @@
 
 		<p style="padding-left: 10%; font-size: large;">Price</p>
 		<div>
-			<p>NT$1 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;NT$700 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;NT$1000</p>
+			<p>
+				NT$1 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;NT$700
+				&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;NT$1000
+			</p>
 			<Slider value={[50]} max={100} step={1} class="max-w-[85%]" />
 		</div>
 

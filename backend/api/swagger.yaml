@@ -300,10 +300,9 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /customer/get-info/{userID}:
+  /user/get-info/{userID}:
     get: 
       tags:
-      - customer
       - user
       summary: get user info by ID
       parameters:
@@ -381,7 +380,7 @@ paths:
     delete:
       tags:
       - discount
-      summary: delete a discount by ID
+      summary: deactive a discount by ID
       parameters:
       - name: discountID
         in: path
@@ -672,3 +671,60 @@ components:
       items:
         $ref: '#/components/schemas/Category'
       x-schema-name: CategoryArray
+    SeasoningDiscount:
+      type: object
+      properties:
+        discount_id:
+          type: integer
+          format: int64
+          example: 1
+        discount_name:
+          type: string
+          example: "spring discount"
+        discount_description:
+          type: string
+          example: "all products get 30% off"
+        discount_start_date:
+          type: string
+          example: "2021-05-01"
+        discount_end_date:
+          type: string
+          example: "2021-05-31"
+        discount_percentage:
+          type: integer
+          format: int64
+          example: 70
+    ShippingDiscount:
+      type: object
+      properties:
+        discount_id:
+          type: integer
+          format: int64
+          example: 1
+        discount_name:
+          type: string
+          example: "free shipping"
+        discount_description:
+          type: string
+          example: "free shipping when price over 1000"
+        discount_max_price:
+          type: integer
+          format: int64
+          example: 1000
+    EventDiscount:
+      type: object
+      properties:
+        discount_id:
+          type: integer
+          format: int64
+          example: 1
+        discount_name:
+          type: string
+          example: "new year discount"
+        discount_description:
+          type: string
+          example: "black tea get two for one free"
+        discount_max_quantity:
+          type: integer
+          format: int64
+          example: 2

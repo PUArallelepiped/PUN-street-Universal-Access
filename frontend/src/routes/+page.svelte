@@ -5,9 +5,41 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { Label } from '$lib/components/ui/label';
-	import { Slider } from '$lib/components/ui/slider';
+	//import { Slider } from '$lib/components/ui/slider';
 	//import { Button } from "$lib/components/ui/button";
 	//let checked = false;
+
+	import DoubleRangeSlider from '$lib/components/ui/doubleSlider/doubleRangeSlider.svelte';
+	let start = 0;
+	let end = 1;
+
+	let sortCheckboxes = [
+		{ id: 'Nice shop' },
+		{ id: 'Fast shop' },
+		{ id: 'Something nice for you' },
+		{ id: 'Distance' }
+	];
+
+	let tagCheckboxes = [
+		{ id: 'Fresh' },
+		{ id: 'Organic' },
+		{ id: 'Healthy' },
+		{ id: 'Dairy-free' },
+		{ id: 'Bakery' },
+		{ id: 'Cafe' },
+		{ id: 'Sugar-free' },
+		{ id: 'Vegetarian' },
+		{ id: 'Free-delivery' }
+	];
+
+	let cards = [
+		{ title: '1', description: 'aaa', content: 'aaa', footer: 'foota' },
+		{ title: '2', description: 'bbb', content: 'bbb', footer: 'footb' },
+		{ title: '3', description: 'ccc', content: 'ccc', footer: 'footc' },
+		{ title: '4', description: 'ddd', content: 'ddd', footer: 'footd' },
+		{ title: '5', description: 'eee', content: 'eee', footer: 'foote' },
+		{ title: '6', description: 'fff', content: 'fff', footer: 'footf' }
+	];
 </script>
 
 <h1>Welcome to PUA</h1>
@@ -27,191 +59,52 @@
 
 		<p style="padding-left: 10%; font-size: large;">Sort</p>
 		<div>
-			<div>
-				<Checkbox id="nice-shop" />
-				<Label for="nice-shop">Nice shop</Label>
-			</div>
-			<div>
-				<Checkbox id="fast-shop" />
-				<Label for="fast-shop">Fast shop</Label>
-			</div>
-			<div>
-				<Checkbox id="something-nice-for-you" />
-				<Label for="something-nice-for-you">Something nice for you</Label>
-			</div>
-			<div>
-				<Checkbox id="distance" />
-				<Label for="distance">Distance</Label>
-			</div>
+			{#each sortCheckboxes as { id }}
+				<div>
+					<Checkbox {id} />
+					<Label for={id}>{id}</Label>
+				</div>
+			{/each}
 		</div>
 
 		<p style="padding-left: 10%; font-size: large;">Price</p>
-		<div>
-			<p>
-				NT$1 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;NT$700
-				&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;NT$1000
-			</p>
-			<Slider value={[50]} max={100} step={1} class="max-w-[85%]" />
+		<div style="display:flex; padding-right:20%">
+			<div style="flex:1">NT$1</div>
+			<div style="flex:1">NT$700</div>
+			<div style="flex:1">NT$1000</div>
+		</div>
+		<div style="padding-right: 40%;">
+			<DoubleRangeSlider bind:start bind:end />
 		</div>
 
 		<p style="padding-left: 10%; font-size: large;">Tag</p>
 		<div>
-			<div>
-				<div>
-					<Checkbox id="fresh" />
-					<Label for="fresh">Fresh</Label>
-					<Checkbox id="organic" />
-					<Label for="organic">Organic</Label>
-					<Checkbox id="healthy" />
-					<Label for="healthy">Healthy</Label>
-					<Checkbox id="dairy-free" />
-					<Label for="dairy-free">Dairy-Free</Label>
-				</div>
-				<div>
-					<Checkbox id="bakery" />
-					<Label for="bakery">Bakery</Label>
-					<Checkbox id="cafe" />
-					<Label for="cafe">Cafe</Label>
-					<Checkbox id="sugar-free" />
-					<Label for="sugar-free">Sugar-Free</Label>
-				</div>
-				<div>
-					<Checkbox id="vegetarian" />
-					<Label for="vegetarian">Vegetarian</Label>
-					<Checkbox id="free-delivery" />
-					<Label for="free-delivery">Free-Delivery</Label>
-				</div>
+			<div style="max-width: 60%;">
+				{#each tagCheckboxes as { id }}
+					<Checkbox {id} />
+					<Label for={id}>{id}</Label>
+				{/each}
 			</div>
 		</div>
 	</div>
 
-	<div style="display: flex-wrap; float:left; max-width: 70%">
-		<div style="float: left; flex: auto;min-width: 350px">
-			<Card.Root>
-				<Card.Header>
-					<Card.Title>Card Title</Card.Title>
-					<Card.Description>Card Description</Card.Description>
-				</Card.Header>
-				<Card.Content>
-					<p>Card Content</p>
-				</Card.Content>
-				<Card.Footer>
-					<p>Card Footer</p>
-				</Card.Footer>
-			</Card.Root>
-		</div>
-		<div style="float: left; flex: auto;min-width: 350px">
-			<Card.Root>
-				<Card.Header>
-					<Card.Title>Card Title</Card.Title>
-					<Card.Description>Card Description</Card.Description>
-				</Card.Header>
-				<Card.Content>
-					<p>Card Content</p>
-				</Card.Content>
-				<Card.Footer>
-					<p>Card Footer</p>
-				</Card.Footer>
-			</Card.Root>
-		</div>
-		<div style="float: left; flex: auto;min-width: 350px">
-			<Card.Root>
-				<Card.Header>
-					<Card.Title>Card Title</Card.Title>
-					<Card.Description>Card Description</Card.Description>
-				</Card.Header>
-				<Card.Content>
-					<p>Card Content</p>
-				</Card.Content>
-				<Card.Footer>
-					<p>Card Footer</p>
-				</Card.Footer>
-			</Card.Root>
-		</div>
-		<div style="float: left; flex: auto;min-width: 350px">
-			<Card.Root>
-				<Card.Header>
-					<Card.Title>Card Title</Card.Title>
-					<Card.Description>Card Description</Card.Description>
-				</Card.Header>
-				<Card.Content>
-					<p>Card Content</p>
-				</Card.Content>
-				<Card.Footer>
-					<p>Card Footer</p>
-				</Card.Footer>
-			</Card.Root>
-		</div>
-		<div style="float: left; flex: auto;min-width: 350px">
-			<Card.Root>
-				<Card.Header>
-					<Card.Title>Card Title</Card.Title>
-					<Card.Description>Card Description</Card.Description>
-				</Card.Header>
-				<Card.Content>
-					<p>Card Content</p>
-				</Card.Content>
-				<Card.Footer>
-					<p>Card Footer</p>
-				</Card.Footer>
-			</Card.Root>
-		</div>
-		<div style="float: left; flex: auto;min-width: 350px">
-			<Card.Root>
-				<Card.Header>
-					<Card.Title>Card Title</Card.Title>
-					<Card.Description>Card Description</Card.Description>
-				</Card.Header>
-				<Card.Content>
-					<p>Card Content</p>
-				</Card.Content>
-				<Card.Footer>
-					<p>Card Footer</p>
-				</Card.Footer>
-			</Card.Root>
-		</div>
-		<div style="float: left; flex: auto;min-width: 350px">
-			<Card.Root>
-				<Card.Header>
-					<Card.Title>Card Title</Card.Title>
-					<Card.Description>Card Description</Card.Description>
-				</Card.Header>
-				<Card.Content>
-					<p>Card Content</p>
-				</Card.Content>
-				<Card.Footer>
-					<p>Card Footer</p>
-				</Card.Footer>
-			</Card.Root>
-		</div>
-		<div style="float: left; flex: auto;min-width: 350px">
-			<Card.Root>
-				<Card.Header>
-					<Card.Title>Card Title</Card.Title>
-					<Card.Description>Card Description</Card.Description>
-				</Card.Header>
-				<Card.Content>
-					<p>Card Content</p>
-				</Card.Content>
-				<Card.Footer>
-					<p>Card Footer</p>
-				</Card.Footer>
-			</Card.Root>
-		</div>
-		<div style="float: left; flex: auto;min-width: 350px">
-			<Card.Root>
-				<Card.Header>
-					<Card.Title>Card Title</Card.Title>
-					<Card.Description>Card Description</Card.Description>
-				</Card.Header>
-				<Card.Content>
-					<p>Card Content</p>
-				</Card.Content>
-				<Card.Footer>
-					<p>Card Footer</p>
-				</Card.Footer>
-			</Card.Root>
-		</div>
+	<div style="display: flex-wrap; max-width: 70%">
+		{#each cards as { title, description, content, footer }}
+			<div style="display: flex-fill;min-width: 500px; float: left">
+				<Card.Root>
+					<Card.Header style="text-align:center">
+						<Card.Title>{title}</Card.Title>
+						<Card.Description>{description}</Card.Description>
+					</Card.Header>
+					<Card.Content>
+						<p>{content}</p>
+					</Card.Content>
+					<Card.Footer>
+						<p>{footer}</p>
+					</Card.Footer>
+				</Card.Root>
+			</div>
+		{/each}
 	</div>
 </div>
 <p>Visit <a href="./food" class="text-blue-400px"> Shop list</a></p>

@@ -35,7 +35,6 @@ paths:
   /stores:
     get:
       tags:
-      - seller
       - customer
       - store
       summary: get all store
@@ -189,6 +188,93 @@ paths:
                 $ref: '#/components/schemas/CategoryArray'
         "500":
           description: Unexpected error
+  /seller/update-order-status/customer/{userID}/cart/{cartID}/store/{storeID}:
+    put:
+      tags:
+      - seller
+      - order
+      summary: update order status
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the user to update.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      - name: cartID
+        in: path
+        description: The ID of the cart to update.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      - name: storeID
+        in: path
+        description: The ID of the store to update.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      requestBody:
+        description: order status
+        content:
+          application/json:
+            schema:
+              type: integer
+              format: int64
+              example: 1
+      responses:
+        "200":
+          description: update success
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /store/{storeID}/update-product/{productID}:
+    put:
+      tags:
+      - seller
+      - product
+      summary: update a product by ID
+      parameters:
+      - name: storeID
+        in: path
+        description: The ID of the store to update.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      - name: productID
+        in: path
+        description: The ID of the product to update.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      requestBody:
+        description: product info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInfo'
+      responses:
+        "200":
+          description: update success
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
   /product/{productID}:
     get:
       tags:
@@ -271,7 +357,7 @@ paths:
       tags:
       - customer
       - cart
-      summary: add product to cart 
+      summary: add product to cart
       requestBody:
         description: add a new cart.
         content:
@@ -316,6 +402,96 @@ paths:
       responses:
         "200":
           description: delete success
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /customer/{userID}/cart/{cartID}/update/product/{productID}:
+    put:
+      tags:
+      - customer
+      - cart
+      summary: update product quantity in cart
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the user to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      - name: cartID
+        in: path
+        description: The ID of the cart to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      - name: productID
+        in: path
+        description: The ID of the product to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      requestBody:
+        description: product quantity
+        content:
+          application/json:
+            schema:
+              type: integer
+              format: int64
+              example: 10
+      responses:
+        "200":
+          description: update success
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /customer/{userID}/store/{storeID}/cart/{cartID}/cancel:
+    put:
+      tags:
+      - customer
+      - order
+      summary: cancel order
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the user.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      - name: storeID
+        in: path
+        description: The ID of the store.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      - name: cartID
+        in: path
+        description: The ID of the cart.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      responses:
+        "200":
+          description: cancel success
         "400":
           description: bad request
         "500":
@@ -459,35 +635,44 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /discount/{discountID}:
-    delete:
+  /discount/{discountID}/update-status:
+    put:
       tags:
+      - seller
       - discount
-      summary: deactive a discount by ID
+      summary: update discount status
       parameters:
       - name: discountID
         in: path
+        description: The ID of the discount to update.
         required: true
         content:
           application/json:
             schema:
               type: string
               example: "1"
-              x-content-type: application/json
+      requestBody:
+        description: discount status
+        content:
+          application/json:
+            schema:
+              type: integer
+              format: int64
+              example: 1
       responses:
         "200":
-          description: ok
+          description: update success
         "400":
           description: bad request
         "500":
           description: Unexpected error
-  /customer/{userID}/cart/{cartID}/checkout:
+  /customer/{userID}/cart/{cartID}/store/{storeID}/checkout:
     post:
       tags:
       - customer
       - cart
       - order
-      summary: checkout cart
+      summary: checkout cart (optional-> email to customer)
       parameters:
       - name: userID
         in: path
@@ -507,9 +692,75 @@ paths:
             schema:
               type: string
               example: "1"
+      - name: storeID
+        in: path
+        description: The ID of the store .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
       responses:
         "200":
           description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /customer/{userID}/cart/{cartID}/store/{storeID}/discount/{discountID}/get-total-price:
+    get:
+      tags:
+      - customer
+      - cart
+      - discount
+      summary: get total price of cart
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the user .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      - name: cartID
+        in: path
+        description: The ID of the cart .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      - name: storeID
+        in: path
+        description: The ID of the store .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      - name: discountID
+        in: path
+        description: The ID of the discount .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+                example: 9999
         "400":
           description: bad request
         "500":
@@ -536,7 +787,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderInfo'
+                $ref: '#/components/schemas/CartArray'
         "400":
           description: bad request
         "500":
@@ -611,6 +862,40 @@ paths:
       responses:
         "200":
           description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /admin/get-all-users:
+    get:
+      tags:
+      - admin
+      - user
+      summary: get all users
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserArray'
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /admin/get-all-orders:
+    get:
+      tags:
+      - admin
+      - order
+      summary: get all orders
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartArray'
         "400":
           description: bad request
         "500":
@@ -731,6 +1016,11 @@ components:
           type: integer
           format: int64
           example: 1
+    CartArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/CartInfo'
+      x-schema-name: CartArray
     DiscountInfo:
       required:
       - discount_id
@@ -799,6 +1089,11 @@ components:
           type: integer
           format: int64
           example: 1
+    UserArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserData'
+      x-schema-name: UserArray
     Category:
       type: object
       properties:

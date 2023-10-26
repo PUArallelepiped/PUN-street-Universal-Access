@@ -9,8 +9,9 @@
 package swagger
 
 type StoreInfo struct {
-
 	StoreId int64 `json:"store_id"`
+
+	Description string `json:"description"`
 
 	Name string `json:"name"`
 
@@ -18,5 +19,11 @@ type StoreInfo struct {
 
 	Email string `json:"email"`
 
-	Phone string `json:"phone"`
+	Rate float32 `json:"rate"`
+
+	RateCount int64 `json:"rate_count"`
+
+	Picture string `json:"picture"`
+
+	Status int64 `json:"status"`
 }

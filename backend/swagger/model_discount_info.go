@@ -8,9 +8,11 @@
  */
 package swagger
 
-type ModelError struct {
+type DiscountInfo struct {
 
-	Message string `json:"message"`
+	DiscountId int64 `json:"discount_id"`
 
-	Code int64 `json:"code"`
+	DiscountType int64 `json:"discount_type"`
+
+	Status int64 `json:"status"`
 }

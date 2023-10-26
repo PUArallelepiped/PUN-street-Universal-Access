@@ -1074,8 +1074,8 @@ components:
           type: string
           example: "pasta@pasta.com"
         rate:
-          type: integer
-          format: int64
+          type: number
+          format: float
           example: 5
         rate_count:
           type: integer
@@ -1430,6 +1430,6 @@ components:
       type: object
       properties:
         rate:
-          type: integer
-          format: int64
+          type: number
+          format: float
           example: 5

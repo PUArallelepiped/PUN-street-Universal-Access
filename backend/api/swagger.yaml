@@ -47,6 +47,68 @@ paths:
                 $ref: '#/components/schemas/StoreArray'
         "500":
           description: Unexpected error
+  /store/{storeID}/get-statictics:
+    post:
+      tags:
+      - seller
+      - store
+      - statistics
+      summary: get store statistics in period
+      parameters:
+      - name: storeID
+        in: path
+        description: The ID of the store.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      requestBody:
+        description: time period
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimePeriod'
+      responses:
+        "200":
+          description: return store statistics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreStatistic'
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /store/{storeID}/get-best-selling:
+    get: 
+      tags:
+      - seller
+      - store
+      - statistics
+      summary: get best selling product
+      parameters:
+      - name: storeID
+        in: path
+        description: The ID of the store.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      responses:
+        "200":
+          description: return best selling product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductStatistic'
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
   /store/{storeID}/add-product:
     post:
       tags:
@@ -73,6 +135,35 @@ paths:
       responses:
         "200":
           description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /store/{storeID}/rate:
+    post:
+      tags:
+      - customer
+      - store
+      summary: rate a store
+      parameters:
+      - name: storeID
+        in: path
+        description: The ID of the store to rate.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      requestBody:
+        description: rate info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RateInfo'
+      responses:
+        "200":
+          description: rate success
         "400":
           description: bad request
         "500":
@@ -173,7 +264,7 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /seller/get-category:
+  /categorys:
     get:
       tags:
       - seller
@@ -392,6 +483,16 @@ paths:
       - name: cartID
         in: path
         description: The ID of the cart to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: productID
+        in: path
+        description: The ID of the product to return.
         required: true
         content:
           application/json:
@@ -708,7 +809,7 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /customer/{userID}/cart/{cartID}/store/{storeID}/discount/{discountID}/get-total-price:
+  /customer/{userID}/cart/{cartID}/store/{storeID}/get-total-price:
     get:
       tags:
       - customer
@@ -743,15 +844,6 @@ paths:
             schema:
               type: string
               example: "1"
-      - name: discountID
-        in: path
-        description: The ID of the discount .
-        required: true
-        content:
-          application/json:
-            schema:
-              type: string
-              example: "1"
       responses:
         "200":
           description: ok
@@ -761,6 +853,56 @@ paths:
                 type: integer
                 format: int64
                 example: 9999
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /customer/{userID}/cart/{cartID}/store/{storeID}/add-discount:
+    post:
+      tags:
+      - customer
+      - cart
+      - discount
+      summary: add discount to cart
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the user .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      - name: cartID
+        in: path
+        description: The ID of the cart .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      - name: storeID
+        in: path
+        description: The ID of the store .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+      requestBody:
+        description: discount id
+        content:
+          application/json:
+            schema:
+              type: integer
+              format: int64
+              example: 1
+      responses:
+        "200":
+          description: add success
         "400":
           description: bad request
         "500":
@@ -909,12 +1051,19 @@ components:
       - name
       - store_id
       - rate
+      - rate_count
+      - picture
+      - status
+      - description
       type: object
       properties:
         store_id:
           type: integer
           format: int64
           example: 1
+        description:
+          type: string
+          example: "good pasta"
         name:
           type: string
           example: "i'm pasta"
@@ -928,9 +1077,17 @@ components:
           type: integer
           format: int64
           example: 5
+        rate_count:
+          type: integer
+          format: int64
+          example: 10
         picture:
           type: string
           example: https://i.imgur.com/1.jpg
+        status:
+          type: integer
+          format: int64
+          example: 1
     StoreArray:
       type: array
       items:
@@ -1235,3 +1392,44 @@ components:
           type: integer
           format: int64
           example: 9999
+    ProductStatistic:
+      type: object
+      properties:
+        product_id:
+          type: integer
+          format: int64
+          example: 1
+        product_name:
+          type: string
+          example: "pasta"
+        product_quantity:
+          type: integer
+          format: int64
+          example: 10
+        total_price:
+          type: integer
+          format: int64
+          example: 9999
+    StoreStatistic:
+      type: array
+      items:
+        $ref: '#/components/schemas/ProductStatistic'
+      x-schema-name: StoreStatistic
+    TimePeriod:
+      type: object
+      properties:
+        start_date:
+          type: string
+          example: "2021-05-01"
+        end_date:
+          type: string
+          example: "2021-05-31"
+    RateInfo:
+      required:
+        - rate
+      type: object
+      properties:
+        rate:
+          type: integer
+          format: int64
+          example: 5

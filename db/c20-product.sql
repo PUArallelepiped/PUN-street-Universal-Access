@@ -2,9 +2,10 @@ CREATE TABLE IF NOT EXISTS products (
     product_id SERIAL PRIMARY KEY,
     store_id SERIAL REFERENCES stores(store_id),
     name VARCHAR(255) NOT NULL,
-    describe VARCHAR(255),
+    description TEXT,
     category_id INT,
-    picture BYTEA,
+    picture VARCHAR(255) NOT NULL,
     price INT NOT NULL,
     stock INT NOT NULL
+    status INT NOT NULL
 );

@@ -18,7 +18,7 @@ func NewPostgressqlProductRepo(db *sql.DB) domain.ProductRepo {
 }
 
 func (p *postgresqlProductRepo) GetByID(ctx context.Context, id int64) (*[]swagger.ProductInfo, error) {
-	row, err := p.db.Query("SELECT product_id, name, category_id, describe, price, stock FROM products WHERE store_id = $1", id)
+	row, err := p.db.Query("SELECT product_id, store_id, name, description, picture, price, stock, status FROM products WHERE product_id = $1", id)
 	if err != nil {
 		logrus.Error(err)
 		return nil, err
@@ -26,7 +26,7 @@ func (p *postgresqlProductRepo) GetByID(ctx context.Context, id int64) (*[]swagg
 	products := &[]swagger.ProductInfo{}
 	for row.Next() {
 		product := &swagger.ProductInfo{}
-		err = row.Scan(&product.ProductId, &product.Name, &product.CatogoryId, &product.Description, &product.Price, &product.Storage)
+		err = row.Scan(&product.ProductId, &product.StoreId, &product.Name, &product.Description, &product.Picture, &product.Price, &product.Stock, &product.Status)
 		if err != nil {
 			logrus.Error(err)
 			return nil, err

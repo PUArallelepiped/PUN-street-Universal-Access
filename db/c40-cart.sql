@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS carts (
     product_id SERIAL REFERENCES products(product_id),
     store_id SERIAL REFERENCES stores(store_id),
     cart_id INT NOT NULL,
-    price INT NOT NULL,
+    product_quantity INT NOT NULL,
     event_discount_id SERIAL REFERENCES discounts(discount_id),
     PRIMARY KEY (customer_id, product_id, store_id)
 );

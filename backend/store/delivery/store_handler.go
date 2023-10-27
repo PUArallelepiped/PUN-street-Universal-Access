@@ -2,7 +2,6 @@ package delivery
 
 import (
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
-	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -25,19 +24,9 @@ func (s *StoreHandler) GetStoreById(c *gin.Context) {
 	store, err := s.StoreUsecase.GetByID(c, storeID)
 	if err != nil {
 		logrus.Error(err)
-		c.JSON(500, &swagger.ModelError{
-			Code:    3000,
-			Message: "Internal Error :(",
-		})
+		c.Status(500)
 		return
 	}
 
-	c.JSON(200, &swagger.StoreInfo{
-		StoreId: store.ID,
-		Name:    store.Name,
-		Address: store.Address,
-		Email:   store.Email,
-		Phone:   store.Phone,
-	})
-
+	c.JSON(200, store)
 }

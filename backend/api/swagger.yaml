@@ -1230,6 +1230,7 @@ components:
       - discount_id
       - product_id
       - product_quantity
+      - store_id
       type: object
       properties:
         product_quantity:
@@ -1252,12 +1253,17 @@ components:
           type: integer
           format: int64
           example: 1
+        store_id:
+          type: integer
+          format: int64
+          example: 1
       example:
         cart_id: 1
         product_id: 1
         customer_id: 1
         product_quantity: 10
         discount_id: 1
+        store_id: 1
     CartArray:
       type: array
       items:

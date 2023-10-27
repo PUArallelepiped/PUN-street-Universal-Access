@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
+	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
 
 	"github.com/sirupsen/logrus"
 )
@@ -18,7 +19,7 @@ func NewStoreUsecase(storeRepo domain.StoreRepo) domain.StoreUsecase {
 	}
 }
 
-func (su *storeUsecase) GetByID(ctx context.Context, id string) (*domain.Store, error) {
+func (su *storeUsecase) GetByID(ctx context.Context, id string) (*swagger.StoreInfo, error) {
 	s, err := su.storeRepo.GetByID(ctx, id)
 	if err != nil {
 		logrus.Error(err)

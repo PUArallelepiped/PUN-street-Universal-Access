@@ -10,11 +10,11 @@ package swagger
 
 type ProductStatistic struct {
 
-	ProductId int64 `json:"product_id,omitempty"`
+	ProductId int64 `json:"product_id"`
 
-	ProductName string `json:"product_name,omitempty"`
+	ProductName string `json:"product_name"`
 
-	ProductQuantity int64 `json:"product_quantity,omitempty"`
+	ProductQuantity int64 `json:"product_quantity"`
 
-	TotalPrice int64 `json:"total_price,omitempty"`
+	TotalPrice int64 `json:"total_price"`
 }

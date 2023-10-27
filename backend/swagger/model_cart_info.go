@@ -18,7 +18,5 @@ type CartInfo struct {
 
 	CartId int64 `json:"cart_id"`
 
-	ProductPrice int64 `json:"product_price"`
-
 	DiscountId int64 `json:"discount_id"`
 }

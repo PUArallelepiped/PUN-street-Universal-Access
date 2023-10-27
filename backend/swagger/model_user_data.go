@@ -27,4 +27,6 @@ type UserData struct {
 	Status int64 `json:"status"`
 
 	CartId int64 `json:"cart_id"`
+
+	Birthday string `json:"birthday"`
 }

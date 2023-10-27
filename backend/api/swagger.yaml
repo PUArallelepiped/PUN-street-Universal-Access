@@ -64,6 +64,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       requestBody:
         description: time period
         content:
@@ -82,7 +83,7 @@ paths:
         "500":
           description: Unexpected error
   /store/{storeID}/get-best-selling:
-    get: 
+    get:
       tags:
       - seller
       - store
@@ -98,6 +99,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       responses:
         "200":
           description: return best selling product
@@ -155,6 +157,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       requestBody:
         description: rate info
         content:
@@ -215,6 +218,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       - name: categoryID
         in: path
         description: The ID of the category to add
@@ -224,6 +228,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       responses:
         "200":
           description: ok
@@ -248,6 +253,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       - name: storeID
         in: path
         description: The ID of the store to remove
@@ -257,6 +263,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       responses:
         "200":
           description: ok
@@ -295,6 +302,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       - name: cartID
         in: path
         description: The ID of the cart to update.
@@ -304,6 +312,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       - name: storeID
         in: path
         description: The ID of the store to update.
@@ -313,6 +322,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       requestBody:
         description: order status
         content:
@@ -344,6 +354,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       - name: productID
         in: path
         description: The ID of the product to update.
@@ -353,6 +364,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       requestBody:
         description: product info
         content:
@@ -367,7 +379,7 @@ paths:
         "500":
           description: Unexpected error
   /product/{productID}/recommand:
-    get: 
+    get:
       tags:
       - customer
       - product
@@ -383,7 +395,7 @@ paths:
               type: string
               example: "1"
               x-content-type: application/json
-      responses:  
+      responses:
         "200":
           description: return product array
           content:
@@ -392,7 +404,6 @@ paths:
                 $ref: '#/components/schemas/ProductArray'
         "500":
           description: Unexpected error
-
   /product/{productID}:
     get:
       tags:
@@ -550,6 +561,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       - name: cartID
         in: path
         description: The ID of the cart to return.
@@ -559,6 +571,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       - name: productID
         in: path
         description: The ID of the product to return.
@@ -568,6 +581,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       requestBody:
         description: product quantity
         content:
@@ -599,6 +613,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       - name: storeID
         in: path
         description: The ID of the store.
@@ -608,6 +623,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       - name: cartID
         in: path
         description: The ID of the cart.
@@ -617,6 +633,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       responses:
         "200":
           description: cancel success
@@ -625,7 +642,7 @@ paths:
         "500":
           description: Unexpected error
   /user/get-info/{userID}:
-    get: 
+    get:
       tags:
       - user
       summary: get user info by ID
@@ -722,6 +739,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       requestBody:
         description: user info
         content:
@@ -750,6 +768,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       requestBody:
         description: user info
         content:
@@ -779,6 +798,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       requestBody:
         description: discount status
         content:
@@ -811,6 +831,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       - name: cartID
         in: path
         description: The ID of the cart .
@@ -820,6 +841,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       - name: storeID
         in: path
         description: The ID of the store .
@@ -829,6 +851,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       responses:
         "200":
           description: ok
@@ -853,6 +876,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       - name: cartID
         in: path
         description: The ID of the cart .
@@ -862,6 +886,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       - name: storeID
         in: path
         description: The ID of the store .
@@ -871,6 +896,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       responses:
         "200":
           description: ok
@@ -880,6 +906,7 @@ paths:
                 type: integer
                 format: int64
                 example: 9999
+                x-content-type: application/json
         "400":
           description: bad request
         "500":
@@ -901,6 +928,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       - name: cartID
         in: path
         description: The ID of the cart .
@@ -910,6 +938,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       - name: storeID
         in: path
         description: The ID of the store .
@@ -919,6 +948,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       - name: discountID
         in: path
         description: The ID of the discount .
@@ -928,6 +958,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       responses:
         "200":
           description: add success
@@ -949,6 +980,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       responses:
         "200":
           description: ok
@@ -1021,6 +1053,7 @@ paths:
             schema:
               type: string
               example: "1"
+              x-content-type: application/json
       requestBody:
         description: user info
         content:
@@ -1073,15 +1106,15 @@ components:
     StoreInfo:
       required:
       - address
+      - description
       - email
       - name
-      - store_id
+      - picture
       - rate
       - rate_count
-      - picture
-      - status
-      - description
       - shipping_fee
+      - status
+      - store_id
       type: object
       properties:
         store_id:
@@ -1090,16 +1123,16 @@ components:
           example: 1
         description:
           type: string
-          example: "good pasta"
+          example: good pasta
         name:
           type: string
-          example: "i'm pasta"
+          example: i'm pasta
         address:
           type: string
-          example: "pun street"
+          example: pun street
         email:
           type: string
-          example: "pasta@pasta.com"
+          example: pasta@pasta.com
         rate:
           type: number
           format: float
@@ -1119,6 +1152,17 @@ components:
           type: integer
           format: int64
           example: 100
+      example:
+        store_id: 1
+        shipping_fee: 100
+        address: pun street
+        rate_count: 10
+        rate: 5
+        name: i'm pasta
+        description: good pasta
+        email: pasta@pasta.com
+        picture: https://i.imgur.com/1.jpg
+        status: 1
     StoreArray:
       type: array
       items:
@@ -1126,14 +1170,14 @@ components:
       x-schema-name: StoreArray
     ProductInfo:
       required:
-      - product_id
-      - name
-      - store_id
       - description
+      - name
       - picture
       - price
-      - stock
+      - product_id
       - status
+      - stock
+      - store_id
       type: object
       properties:
         product_id:
@@ -1149,10 +1193,10 @@ components:
           example: 1
         description:
           type: string
-          example: "tasty pasta"
+          example: tasty pasta
         picture:
           type: string
-          example: "https://i.imgur.com/1.jpg"
+          example: https://i.imgur.com/1.jpg
         price:
           type: integer
           format: int64
@@ -1165,6 +1209,15 @@ components:
           type: integer
           format: int64
           example: 1
+      example:
+        store_id: 1
+        price: 9999
+        product_id: 1
+        name: pasta
+        description: tasty pasta
+        stock: 100
+        picture: https://i.imgur.com/1.jpg
+        status: 1
     ProductArray:
       type: array
       items:
@@ -1172,11 +1225,11 @@ components:
       x-schema-name: ProductArray
     CartInfo:
       required:
+      - cart_id
       - customer_id
+      - discount_id
       - product_id
       - product_quantity
-      - cart_id
-      - discount_id
       type: object
       properties:
         product_quantity:
@@ -1199,6 +1252,12 @@ components:
           type: integer
           format: int64
           example: 1
+      example:
+        cart_id: 1
+        product_id: 1
+        customer_id: 1
+        product_quantity: 10
+        discount_id: 1
     CartArray:
       type: array
       items:
@@ -1230,23 +1289,27 @@ components:
           type: integer
           format: int64
           example: 1
+      example:
+        discount_type: 1
+        discount_id: 1
+        status: 1
     DiscountArray:
       type: array
       items:
         $ref: '#/components/schemas/DiscountInfo'
-      x-schema-name: ProductArray
+      x-schema-name: DiscountArray
     UserData:
       required:
-      - user_id
-      - user_name
-      - user_email
-      - authority
-      - password
       - address
+      - authority
+      - birthday
+      - cart_id
+      - password
       - phone
       - status
-      - cart_id
-      - birthday
+      - user_email
+      - user_id
+      - user_name
       type: object
       properties:
         user_id:
@@ -1255,10 +1318,10 @@ components:
           example: 1
         user_name:
           type: string
-          example: "pasta"
+          example: pasta
         user_email:
           type: string
-          example: "t110595959@rice.org.tw"
+          example: t110595959@rice.org.tw
         authority:
           type: integer
           format: int64
@@ -1269,7 +1332,7 @@ components:
         address:
           type: string
           example: pun street
-        phone: 
+        phone:
           type: string
           example: "0912345678"
         status:
@@ -1282,7 +1345,18 @@ components:
           example: 1
         birthday:
           type: string
-          example: "2021-05-01"
+          example: 2021-05-01
+      example:
+        birthday: 2021-05-01
+        cart_id: 1
+        user_email: t110595959@rice.org.tw
+        password: "123456"
+        address: pun street
+        user_id: 1
+        phone: "0912345678"
+        user_name: pasta
+        authority: 100
+        status: 1
     UserArray:
       type: array
       items:
@@ -1297,7 +1371,10 @@ components:
           example: 1
         category_name:
           type: string
-          example: "drink"
+          example: drink
+      example:
+        category_name: drink
+        category_id: 1
     CategoryArray:
       type: array
       items:
@@ -1305,12 +1382,12 @@ components:
       x-schema-name: CategoryArray
     SeasoningDiscount:
       required:
-        - discount_id
-        - discount_name
-        - discount_description
-        - discount_start_date
-        - discount_end_date
-        - discount_percentage
+      - discount_description
+      - discount_end_date
+      - discount_id
+      - discount_name
+      - discount_percentage
+      - discount_start_date
       type: object
       properties:
         discount_id:
@@ -1319,26 +1396,26 @@ components:
           example: 1
         discount_name:
           type: string
-          example: "spring discount"
+          example: spring discount
         discount_description:
           type: string
-          example: "all products get 30% off"
+          example: all products get 30% off
         discount_start_date:
           type: string
-          example: "2021-05-01"
+          example: 2021-05-01
         discount_end_date:
           type: string
-          example: "2021-05-31"
+          example: 2021-05-31
         discount_percentage:
           type: integer
           format: int64
           example: 70
     ShippingDiscount:
       required:
-        - discount_id
-        - discount_name
-        - discount_description
-        - discount_max_price
+      - discount_description
+      - discount_id
+      - discount_max_price
+      - discount_name
       type: object
       properties:
         discount_id:
@@ -1347,21 +1424,21 @@ components:
           example: 1
         discount_name:
           type: string
-          example: "free shipping"
+          example: free shipping
         discount_description:
           type: string
-          example: "free shipping when total price over 1000"
+          example: free shipping when total price over 1000
         discount_max_price:
           type: integer
           format: int64
           example: 1000
     EventDiscount:
       required:
-        - discount_id
-        - discount_name
-        - discount_description
-        - discount_max_quantity
-        - product_id
+      - discount_description
+      - discount_id
+      - discount_max_quantity
+      - discount_name
+      - product_id
       type: object
       properties:
         discount_id:
@@ -1370,10 +1447,10 @@ components:
           example: 1
         discount_name:
           type: string
-          example: "new year discount"
+          example: new year discount
         discount_description:
           type: string
-          example: "black tea get two for one free"
+          example: black tea get two for one free
         discount_max_quantity:
           type: integer
           format: int64
@@ -1384,15 +1461,15 @@ components:
           example: 1
     OrderInfo:
       required:
-        - customer_id
-        - discount_id
-        - cart_id
-        - store_id
-        - order_status
-        - order_date
-        - taking_address
-        - taking_method
-        - total_price
+      - cart_id
+      - customer_id
+      - discount_id
+      - order_date
+      - order_status
+      - store_id
+      - taking_address
+      - taking_method
+      - total_price
       type: object
       properties:
         customer_id:
@@ -1417,10 +1494,10 @@ components:
           example: 1
         order_date:
           type: string
-          example: "2021-05-01"
+          example: 2021-05-01
         taking_address:
           type: string
-          example: "NTUT"
+          example: NTUT
         taking_method:
           type: integer
           format: int64
@@ -1431,10 +1508,10 @@ components:
           example: 9999
     ProductStatistic:
       required:
-        - product_id
-        - product_name
-        - product_quantity
-        - total_price
+      - product_id
+      - product_name
+      - product_quantity
+      - total_price
       type: object
       properties:
         product_id:
@@ -1443,7 +1520,7 @@ components:
           example: 1
         product_name:
           type: string
-          example: "pasta"
+          example: pasta
         product_quantity:
           type: integer
           format: int64
@@ -1452,6 +1529,11 @@ components:
           type: integer
           format: int64
           example: 9999
+      example:
+        total_price: 9999
+        product_id: 1
+        product_name: pasta
+        product_quantity: 10
     StoreStatistic:
       type: array
       items:
@@ -1459,19 +1541,19 @@ components:
       x-schema-name: StoreStatistic
     TimePeriod:
       required:
-        - start_date
-        - end_date
+      - end_date
+      - start_date
       type: object
       properties:
         start_date:
           type: string
-          example: "2021-05-01"
+          example: 2021-05-01
         end_date:
           type: string
-          example: "2021-05-31"
+          example: 2021-05-31
     RateInfo:
       required:
-        - rate
+      - rate
       type: object
       properties:
         rate:

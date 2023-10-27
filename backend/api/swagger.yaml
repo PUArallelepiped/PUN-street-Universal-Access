@@ -366,6 +366,33 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
+  /product/{productID}/recommand:
+    get: 
+      tags:
+      - customer
+      - product
+      summary: get 'who bought this also bought'
+      parameters:
+      - name: productID
+        in: path
+        description: The ID of the product to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:  
+        "200":
+          description: return product array
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductArray'
+        "500":
+          description: Unexpected error
+
   /product/{productID}:
     get:
       tags:
@@ -857,7 +884,7 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /customer/{userID}/cart/{cartID}/store/{storeID}/add-discount:
+  /customer/{userID}/cart/{cartID}/store/{storeID}/add-discount/{discountID}:
     post:
       tags:
       - customer
@@ -892,19 +919,18 @@ paths:
             schema:
               type: string
               example: "1"
-      requestBody:
-        description: discount id
+      - name: discountID
+        in: path
+        description: The ID of the discount .
+        required: true
         content:
           application/json:
             schema:
-              type: integer
-              format: int64
-              example: 1
+              type: string
+              example: "1"
       responses:
         "200":
           description: add success
-        "400":
-          description: bad request
         "500":
           description: Unexpected error
   /customer/{userID}/orders:
@@ -1037,7 +1063,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CartArray'
+                $ref: '#/components/schemas/Cart2DArray'
         "400":
           description: bad request
         "500":
@@ -1055,6 +1081,7 @@ components:
       - picture
       - status
       - description
+      - shipping_fee
       type: object
       properties:
         store_id:
@@ -1088,6 +1115,10 @@ components:
           type: integer
           format: int64
           example: 1
+        shipping_fee:
+          type: integer
+          format: int64
+          example: 100
     StoreArray:
       type: array
       items:
@@ -1145,7 +1176,6 @@ components:
       - product_id
       - product_quantity
       - cart_id
-      - product_price
       - discount_id
       type: object
       properties:
@@ -1165,10 +1195,6 @@ components:
           type: integer
           format: int64
           example: 1
-        product_price:
-          type: integer
-          format: int64
-          example: 9999
         discount_id:
           type: integer
           format: int64
@@ -1178,6 +1204,13 @@ components:
       items:
         $ref: '#/components/schemas/CartInfo'
       x-schema-name: CartArray
+    Cart2DArray:
+      type: array
+      items:
+        type: array
+        items:
+          $ref: '#/components/schemas/CartArray'
+      x-schema-name: Cart2DArray
     DiscountInfo:
       required:
       - discount_id
@@ -1213,6 +1246,7 @@ components:
       - phone
       - status
       - cart_id
+      - birthday
       type: object
       properties:
         user_id:
@@ -1246,6 +1280,9 @@ components:
           type: integer
           format: int64
           example: 1
+        birthday:
+          type: string
+          example: "2021-05-01"
     UserArray:
       type: array
       items:
@@ -1393,6 +1430,11 @@ components:
           format: int64
           example: 9999
     ProductStatistic:
+      required:
+        - product_id
+        - product_name
+        - product_quantity
+        - total_price
       type: object
       properties:
         product_id:
@@ -1416,6 +1458,9 @@ components:
         $ref: '#/components/schemas/ProductStatistic'
       x-schema-name: StoreStatistic
     TimePeriod:
+      required:
+        - start_date
+        - end_date
       type: object
       properties:
         start_date:

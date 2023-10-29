@@ -1107,7 +1107,6 @@ components:
       required:
       - address
       - description
-      - email
       - name
       - picture
       - rate
@@ -1130,9 +1129,6 @@ components:
         address:
           type: string
           example: pun street
-        email:
-          type: string
-          example: pasta@pasta.com
         rate:
           type: number
           format: float
@@ -1160,7 +1156,6 @@ components:
         rate: 5
         name: i'm pasta
         description: good pasta
-        email: pasta@pasta.com
         picture: https://i.imgur.com/1.jpg
         status: 1
     StoreArray:

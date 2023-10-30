@@ -9,7 +9,10 @@
 </script>
 
 <div class="flex h-20 place-content-between bg-white shadow-md">
-	<a href="/" class="flex h-full items-center justify-start px-11 font-serif text-4xl font-medium">
+	<a
+		href="/"
+		class="flex h-full items-center justify-start pl-2 font-serif text-4xl font-medium lg:px-11"
+	>
 		<div class="text-red-950">PU</div>
 		<div class="text-orange-500">N street</div>
 		<div class="text-red-950">&nbspa</div>
@@ -23,8 +26,8 @@
 				<a href={r.path} class="block p-2">{r.title}</a>
 			{/each}
 		</div>
-		<a href="./cart" class="flex rounded-xl bg-red-800 p-3 text-white"
-			>0 cart
+		<a href="./cart" class="m-3 flex items-center rounded-xl bg-red-800 p-3 text-white"
+			>0 Cart
 			<svg
 				width="25"
 				height="20"

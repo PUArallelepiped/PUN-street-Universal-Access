@@ -671,9 +671,9 @@ WOS-B-007 & 資料庫初始狀態要有所有員工和系統管理員的資訊 \
   \hline 
   Attribute & Type & Key & Nullable & Description \\
   \hline
-  discount_id & SERIAL & Primary & Not Null & 折扣ID \\
+  discount_id & SERIAL & Primary & Not Null & \makecell[l]{折扣ID\\1=無折扣} \\
   \hline
-  discount_type & INTEGER &  & Not Null & \makecell[l]{折扣種類\\1=無折扣\\2=運費折扣\\3=季節性折扣\\4=事件折扣} \\
+  discount_type & INTEGER &  & Not Null & \makecell[l]{折扣種類\\1=運費折扣\\2=季節性折扣\\3=事件折扣} \\
   \hline
   status & INTEGER & &Not Null &狀態\\
   \hline

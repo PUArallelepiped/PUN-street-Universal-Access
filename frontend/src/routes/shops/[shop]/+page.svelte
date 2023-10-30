@@ -29,19 +29,19 @@
 			description:
 				'EGG of tea\n expensive\n also call putting, egg,egg,egg,egg, egg, egg,limit, limit, limit, limit, limit, limit, limit, limit, limit, ',
 			price: 180,
-			href: './{shopName}/product3'
+			href: './' + shopName + '/product1'
 		},
 		{
 			name: 'watermelon',
 			description: 'a game',
 			price: 0,
-			href: './{shopName}/product3'
+			href: './' + shopName + '/product2'
 		},
 		{
 			name: 'swwika',
 			description: 'praying',
 			price: 102,
-			href: './{shopName}/product3'
+			href: './' + shopName + '/product3'
 		}
 	];
 	onMount(async () => {

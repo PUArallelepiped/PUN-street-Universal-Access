@@ -8,12 +8,21 @@
 	];
 </script>
 
-<div class="flex h-20 place-content-between bg-white">
-	<a href="/" class="flex h-full items-center justify-start px-11 text-3xl">PUN street access</a>
-	<div class="flex h-full items-center justify-end gap-10 px-10">
-		{#each routes as r}
-			<a href={r.path} class="block p-2">{r.title}</a>
-		{/each}
+<div class="flex h-20 place-content-between bg-white shadow-md">
+	<a href="/" class="flex h-full items-center justify-start px-11 font-serif text-4xl font-medium">
+		<div class="text-red-950">PU</div>
+		<div class="text-orange-500">N street</div>
+		<div class="text-red-950">&nbspa</div>
+		<div class="text-orange-500">ccess</div>
+	</a>
+	<div class="flex h-full">
+		<div
+			class="invisible flex h-full w-0 items-center justify-end gap-10 lg:visible lg:w-max lg:px-10"
+		>
+			{#each routes as r}
+				<a href={r.path} class="block p-2">{r.title}</a>
+			{/each}
+		</div>
 		<a href="./cart" class="flex rounded-xl bg-red-800 p-3 text-white"
 			>0 cart
 			<svg

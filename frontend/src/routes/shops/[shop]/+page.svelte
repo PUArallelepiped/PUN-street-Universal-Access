@@ -68,21 +68,22 @@
 	</div>
 </div>
 
-<div>
+<div class=" bg-orange-950 p-5 text-white">
+	<div class="text-lg font-bold">DEBUG AREA</div>
 	{#if response}
-		<div class="text-center text-2xl">
+		<div class="text-center">
 			{response.name}
 		</div>
-		<div class="text-center text-2xl">
+		<div class="text-center">
 			{response.address}
 		</div>
-		<div class="text-center text-2xl">
+		<div class="text-center">
 			{response.email}
 		</div>
-		<div class="text-center text-2xl">
+		<div class="text-center">
 			id: {response.id}
 		</div>
-		<div class="text-center text-2xl">
+		<div class="text-center">
 			{response.phone}
 		</div>
 	{:else}

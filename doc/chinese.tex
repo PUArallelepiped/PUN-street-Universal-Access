@@ -540,7 +540,7 @@ WOS-B-007 & 資料庫初始狀態要有所有員工和系統管理員的資訊 \
 %Product
 \noindent\begin{tabular}{ | p{7em} | p{5.5em} | p{5.5em} | p{4.5em} | p{11em} |}
   \hline
-  \multicolumn{5}{|c|}{PRODUCT} \tabularnewline
+  \multicolumn{5}{|c|}{PRODUCTS} \tabularnewline
   \hline 
   \multicolumn{5}{|c|}{Description: 商品相關資料} \tabularnewline
   \hline 
@@ -665,7 +665,7 @@ WOS-B-007 & 資料庫初始狀態要有所有員工和系統管理員的資訊 \
 %Discount
 \noindent\begin{tabular}{ | p{7em} | p{5.5em} | p{5.5em} | p{4.5em} | p{11em} |}
   \hline
-  \multicolumn{5}{|c|}{DISCOUNT} \tabularnewline
+  \multicolumn{5}{|c|}{DISCOUNTS} \tabularnewline
   \hline 
   \multicolumn{5}{|c|}{Description: 折扣資料} \tabularnewline
   \hline 
@@ -673,7 +673,7 @@ WOS-B-007 & 資料庫初始狀態要有所有員工和系統管理員的資訊 \
   \hline
   discount_id & SERIAL & Primary & Not Null & \makecell[l]{折扣ID\\1=無折扣} \\
   \hline
-  discount_type & INTEGER &  & Not Null & \makecell[l]{折扣種類\\1=運費折扣\\2=季節性折扣\\3=事件折扣} \\
+  discount_type & INTEGER &  & Not Null & \makecell[l]{折扣種類\\1=無折扣\\2=運費折扣\\3=季節性折扣\\4=事件折扣} \\
   \hline
   status & INTEGER & &Not Null &狀態\\
   \hline

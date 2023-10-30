@@ -1,5 +1,5 @@
 <script lang="ts">
-	type clickFunction = () => void;
+	type clickFunction = () => null;
 	export let text: string = 'null';
 	export let onclick: clickFunction;
 </script>

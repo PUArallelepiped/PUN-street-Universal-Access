@@ -11,6 +11,31 @@
 		email: string;
 		phone: string;
 	};
+	let prodctListResponce: {
+		name: string;
+		description: string;
+		price: number;
+		href: string;
+	}[] = [
+		{
+			name: 'TEA EGG',
+			description: 'EGG of tea',
+			price: 180,
+			href: './{shopName}/product3'
+		},
+		{
+			name: 'watermelon',
+			description: 'a game',
+			price: 0,
+			href: './{shopName}/product3'
+		},
+		{
+			name: 'swwika',
+			description: 'praying',
+			price: 102,
+			href: './{shopName}/product3'
+		}
+	];
 	onMount(async () => {
 		const resp = await fetch(`http://localhost:5000/api/v1/store/1`);
 		response = await resp.json();
@@ -43,7 +68,6 @@
 <h1>
 	here is {shopName}
 </h1>
-<p>Visit <a href="./{shopName}/product1" class="text-blue-400"> Product1 </a></p>
-<p>Visit <a href="./{shopName}/product2" class="text-blue-400"> Product2 </a></p>
-<p>Visit <a href="./{shopName}/product3" class="text-blue-400"> Product3 </a></p>
-<ProductCard />
+{#each prodctListResponce as product}
+	<ProductCard href={product.href} description={product.description} price={product.price} />
+{/each}

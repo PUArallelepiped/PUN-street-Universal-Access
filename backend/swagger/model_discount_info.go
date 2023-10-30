@@ -8,7 +8,11 @@
  */
 package swagger
 
-type ProductsBody struct {
+type DiscountInfo struct {
 
-	StoreId int64 `json:"store_id"`
+	DiscountId int64 `json:"discount_id"`
+
+	DiscountType int64 `json:"discount_type"`
+
+	Status int64 `json:"status"`
 }

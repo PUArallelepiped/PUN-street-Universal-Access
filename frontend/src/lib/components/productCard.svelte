@@ -3,17 +3,27 @@
 	export let href: string = './';
 	export let description: string = 'the shopkeeper is lazy';
 	export let price: number = 123;
+	export let name: string = 'TEA EGG';
 </script>
 
 <a {href} class="flex items-center justify-between rounded-3xl bg-white">
-	<div class="flex items-center">
-		<img src={watermelon} alt="" class="m-4 h-24 w-24 rounded-xl" />
-		<div class="p-3">
-			<div class="m-2 flex-row items-center gap-2 text-xl md:flex md:text-2xl lg:flex lg:text-2xl">
-				<div class="">TEA EGG</div>
-				<div class="rounded-lg border-2 border-green-900 px-2 text-green-900">buy n for n free</div>
+	<div class="m-4 flex h-24 items-center">
+		<img src={watermelon} alt="" class="h-full w-24 rounded-xl" />
+		<div class="mx-5 flex h-full flex-col content-start gap-1">
+			<div
+				class="flex flex-col content-start text-xl md:flex-row md:items-center md:text-2xl lg:flex-row lg:items-center lg:text-2xl"
+			>
+				<div class="mr-1">{name}</div>
+				<div class="md:flew-row flex flex-col sm:flex-row lg:flex-row">
+					<div class="mx-2 rounded-lg border-2 border-green-900 px-1 text-base text-green-900">
+						buy n for n free
+					</div>
+					<div class="mx-2 rounded-lg border-2 border-red-900 px-1 text-base text-red-900">
+						no storange
+					</div>
+				</div>
 			</div>
-			<div class="text-gray-500">
+			<div class="whitespace-pre-line text-sm text-gray-500">
 				{description}
 			</div>
 		</div>

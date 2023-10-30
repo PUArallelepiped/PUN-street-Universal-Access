@@ -26,7 +26,8 @@
 	}[] = [
 		{
 			name: 'TEA EGG',
-			description: 'EGG of tea',
+			description:
+				'EGG of tea\n expensive\n also call putting, egg,egg,egg,egg, egg, egg,limit, limit, limit, limit, limit, limit, limit, limit, limit, ',
 			price: 180,
 			href: './{shopName}/product3'
 		},
@@ -52,7 +53,7 @@
 </script>
 
 <img src={watermelon} alt="" class="h-48 w-full" />
-<div class="mx-5">
+<div class="mx-5 lg:px-40">
 	<div class="p-2">
 		<div class="m-1 p-2 text-5xl font-bold">
 			{response.name}
@@ -63,7 +64,12 @@
 	</div>
 	<div class="flex-row space-y-2 p-2">
 		{#each prodctListResponce as product}
-			<ProductCard href={product.href} description={product.description} price={product.price} />
+			<ProductCard
+				name={product.name}
+				href={product.href}
+				description={product.description}
+				price={product.price}
+			/>
 		{/each}
 	</div>
 </div>

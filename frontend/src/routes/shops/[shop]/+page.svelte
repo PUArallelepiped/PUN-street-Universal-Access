@@ -1,4 +1,5 @@
 <script lang="ts">
+	import watermelon from '$lib/assets/watermelon.png';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import ProductCard from '$lib/components/productCard.svelte';
@@ -10,6 +11,12 @@
 		address: string;
 		email: string;
 		phone: string;
+	} = {
+		id: '1',
+		name: 'Im pasta',
+		address: '100台灣台北市中正區八德路一段82巷9弄17號',
+		email: 'impasta@pun.street.tw',
+		phone: '09-1234-5678'
 	};
 	let prodctListResponce: {
 		name: string;
@@ -44,6 +51,23 @@
 	});
 </script>
 
+<img src={watermelon} alt="" class="h-48 w-full" />
+<div class="mx-5">
+	<div class="p-2">
+		<div class="m-1 p-2 text-5xl font-bold">
+			{response.name}
+		</div>
+		<div class="pl-5">
+			{response.address}
+		</div>
+	</div>
+	<div class="flex-row space-y-2 p-2">
+		{#each prodctListResponce as product}
+			<ProductCard href={product.href} description={product.description} price={product.price} />
+		{/each}
+	</div>
+</div>
+
 <div>
 	{#if response}
 		<div class="text-center text-2xl">
@@ -65,9 +89,3 @@
 		loading....
 	{/if}
 </div>
-<h1>
-	here is {shopName}
-</h1>
-{#each prodctListResponce as product}
-	<ProductCard href={product.href} description={product.description} price={product.price} />
-{/each}

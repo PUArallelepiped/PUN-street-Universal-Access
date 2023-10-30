@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
+	import ProductCard from '$lib/components/productCard.svelte';
 	export let data: PageData;
 	let shopName = data.shop;
 	let response: {
@@ -45,3 +46,4 @@
 <p>Visit <a href="./{shopName}/product1" class="text-blue-400"> Product1 </a></p>
 <p>Visit <a href="./{shopName}/product2" class="text-blue-400"> Product2 </a></p>
 <p>Visit <a href="./{shopName}/product3" class="text-blue-400"> Product3 </a></p>
+<ProductCard />

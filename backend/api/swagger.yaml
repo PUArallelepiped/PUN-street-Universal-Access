@@ -328,9 +328,12 @@ paths:
         content:
           application/json:
             schema:
-              type: integer
-              format: int64
-              example: 1
+              type: object
+              properties:
+                status:
+                  type: integer
+                  format: int64
+                  example: 1
       responses:
         "200":
           description: update success
@@ -587,9 +590,12 @@ paths:
         content:
           application/json:
             schema:
-              type: integer
-              format: int64
-              example: 10
+              type: object
+              properties:
+                product_quantity:
+                  type: integer
+                  format: int64
+                  example: 10
       responses:
         "200":
           description: update success
@@ -804,9 +810,12 @@ paths:
         content:
           application/json:
             schema:
-              type: integer
-              format: int64
-              example: 1
+              type: object
+              properties:
+                status:
+                  type: integer
+                  format: int64
+                  example: 1
       responses:
         "200":
           description: update success
@@ -903,10 +912,12 @@ paths:
           content:
             application/json:
               schema:
-                type: integer
-                format: int64
-                example: 9999
-                x-content-type: application/json
+                type: object
+                properties:
+                  price: 
+                    type: integer
+                    format: int64
+                    example: 9999
         "400":
           description: bad request
         "500":

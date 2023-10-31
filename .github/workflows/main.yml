@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: Jerome1337/gofmt-action@v1.0.5
         with:
-          gofmt-path: '../backend'
+          gofmt-path: './backend'
           gofmt-flags: '-l -d' 
       - name: pwd
         run: pwd

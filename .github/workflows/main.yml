@@ -20,3 +20,15 @@ jobs:
         run: |
           npm ci
           npm run lint
+  gofmt:
+    runs-on: ubuntu-latest
+    name: Gofmt Check
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v2
+        with:
+          go-version: "1.17"
+      - name: Gofmt
+        working-directory: ./backend
+        run: |
+          go fmt ./...

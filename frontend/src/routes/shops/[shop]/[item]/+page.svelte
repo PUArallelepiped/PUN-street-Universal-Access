@@ -1,6 +1,6 @@
 <script lang="ts">
 	import watermelon from '$lib/assets/watermelon.png';
-	import Counter from '$lib/components/counter.svelte';
+	import { Counter } from '$lib';
 	import type { PageData } from './$types';
 	export let data: PageData;
 

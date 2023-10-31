@@ -2,7 +2,7 @@
 	import watermelon from '$lib/assets/watermelon.png';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
-	import ProductCard from '$lib/components/productCard.svelte';
+	import { ProductCard } from '$lib';
 	export let data: PageData;
 	let shopName = data.shop;
 	let response: {

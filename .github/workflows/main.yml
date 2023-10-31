@@ -24,8 +24,12 @@ jobs:
     runs-on: ubuntu-latest
     name: Gofmt Check
     steps:
-      - uses: Jerome1337/gofmt-action@v1.0.5
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v2
         with:
-          gofmt-flags: '-l -d' 
-      - name: pwd
-        run: pwd
+          go-version: "1.21.1"
+      - name: Gofmt
+        working-directory: ./backend
+        run: |
+          gofmt -l -d ./backend
+          test -z "$(gofmt -l -d ./backend)" 

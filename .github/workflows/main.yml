@@ -24,9 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Gofmt Check
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v2
       - uses: Jerome1337/gofmt-action@v1.0.5
         with:
-          gofmt-path: './src'
+          gofmt-path: './backend'
           gofmt-flags: '-l -d' 

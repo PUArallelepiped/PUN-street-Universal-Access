@@ -49,50 +49,52 @@
 
 <p>here is root</p>
 
-<div style="width: 40%; overflow: hidden;">
-	<div class="text-2xl" style="float: left;">PUN Street Access</div>
+<div class="w-[40%] h-[50px] overflow-hidden">
+	<div class="text-2xl float-left">PUN Street Access</div>
 </div>
 
-<div style="display: flex; justify-content: flex-start;">
-	<div style="width: 40%; float: left">
+<div class="flex justify-start">
+	<div class="w-[40%] float-left">
 		<Input type="text" placeholder="QQㄋㄟㄋㄟ好喝到咩噗茶" class="max-w-xs" />
 
-		<p style="padding-left: 10%; font-size: large;">Sort</p>
+		<p class="text-center text-lg w-[325px] h-[30px]">Sort</p>
 		<div>
 			{#each sortCheckboxes as { id }}
-				<div>
+				<div class="h-[30px]">
 					<Checkbox {id} />
 					<Label for={id}>{id}</Label>
 				</div>
 			{/each}
 		</div>
 
-		<p style="padding-left: 10%; font-size: large;">Price</p>
-		<div style="display:flex; padding-right:20%">
-			<div style="flex:1">NT$1</div>
-			<div style="flex:1">NT$700</div>
-			<div style="flex:1">NT$1000</div>
+		<p class="text-center text-lg w-[325px] h-[30px]">Price</p>
+		<div class="flex justify-between w-[325px]">
+			<div>NT$1</div>
+			<div>NT$700</div>
+			<div>NT$1000</div>
 		</div>
-		<div style="padding-right: 40%;">
+		<div class="w-[325px] h-[30px]">
 			<DoubleRangeSlider bind:start bind:end />
 		</div>
 
-		<p style="padding-left: 10%; font-size: large;">Tag</p>
+		<p class="text-center text-lg w-[325px] h-[30px]">Tag</p>
 		<div>
-			<div style="max-width: 60%;">
+			<div class="max-w-60 pr-40">
 				{#each tagCheckboxes as { id }}
-					<Checkbox {id} />
-					<Label for={id}>{id}</Label>
+					<div class="flex-wrap">
+						<Checkbox {id} />
+						<Label for={id}>{id}</Label>
+					</div>
 				{/each}
 			</div>
 		</div>
 	</div>
 
-	<div style="display: flex-wrap; max-width: 70%">
+	<div class="flex flex-wrap pl-20">
 		{#each cards as { title, description, content, footer }}
-			<div style="display: flex-fill;min-width: 500px; float: left">
+			<div class="flex-fill w-[500px] float-left">
 				<Card.Root>
-					<Card.Header style="text-align:center">
+					<Card.Header class="text-center">
 						<Card.Title>{title}</Card.Title>
 						<Card.Description>{description}</Card.Description>
 					</Card.Header>

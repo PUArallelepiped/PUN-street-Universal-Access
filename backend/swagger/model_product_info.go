@@ -14,11 +14,15 @@ type ProductInfo struct {
 
 	Name string `json:"name"`
 
-	CatogoryId int64 `json:"catogory_id"`
+	StoreId int64 `json:"store_id"`
 
 	Description string `json:"description"`
 
+	Picture string `json:"picture"`
+
 	Price int64 `json:"price"`
 
-	Storage int64 `json:"storage"`
+	Stock int64 `json:"stock"`
+
+	Status int64 `json:"status"`
 }

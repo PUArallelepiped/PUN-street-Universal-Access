@@ -16,53 +16,23 @@ func NewCartHandler(e *gin.Engine, cartUsecase domain.CartUsecase) {
 	handler := &CartHandler{
 		CartUsecase: cartUsecase,
 	}
-	e.GET("/api/v1/cart/:customerID/:productID/:storeID", handler.GetCartById)
 	e.POST("/api/v1/cart", handler.PostCart)
 }
 
-func (s *CartHandler) GetCartById(c *gin.Context) {
-	customerID := c.Param("customerID")
-	productID := c.Param("productID")
-	storeID := c.Param("storeID")
-
-	cart, err := s.CartUsecase.GetByID(c, customerID, productID, storeID)
-	if err != nil {
-		logrus.Error(err)
-		c.JSON(500, &swagger.ModelError{
-			Code:    3000,
-			Message: "Internal Error :(",
-		})
-		return
-	}
-
-	c.JSON(200, &swagger.CartInfo{
-		CustomerId:      cart.CustomerId,
-		ProductId:       cart.ProductId,
-		StoreId:         cart.StoreId,
-		ProductQuantity: cart.ProductQuantity,
-	})
-}
-
 func (s *CartHandler) PostCart(c *gin.Context) {
-	var cart domain.Cart
+	var cart swagger.CartInfo
 
 	if err := c.BindJSON(&cart); err != nil {
 		logrus.Error(err)
-		c.JSON(500, &swagger.ModelError{
-			Code:    3000,
-			Message: "Internal Error :( ",
-		})
+		c.Status(400)
 		return
 	}
 
-	_, err := s.CartUsecase.PostCart(c, &cart)
+	err := s.CartUsecase.PostCart(c, &cart)
 
 	if err != nil {
 		logrus.Error(err)
-		c.JSON(500, &swagger.ModelError{
-			Code:    3000,
-			Message: "Internal Error :( ",
-		})
+		c.Status(500)
 		return
 	}
 

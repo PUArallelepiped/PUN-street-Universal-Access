@@ -35,3 +35,17 @@ func (p *postgresqlProductRepo) GetByID(ctx context.Context, id int64) (*[]swagg
 	}
 	return products, nil
 }
+
+func (p *postgresqlProductRepo) PostByStoreId(ctx context.Context, id int64, product *swagger.ProductInfo) error {
+	sqlStatement := `
+	INSERT INTO products (store_id, name, description, picture, price, stock, status) VALUES
+    ($1, $2, $3, $4, $5, $6, $7)
+	`
+
+	_, err := p.db.Exec(sqlStatement, id, product.Name, product.Description, product.Picture, product.Price, product.Stock, product.Status)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+	return nil
+}

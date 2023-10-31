@@ -19,8 +19,8 @@ func NewProductHandler(e *gin.Engine, productUsecase domain.ProductUsecase) {
 		ProductUsecase: productUsecase,
 	}
 	e.GET("/api/v1/store/:storeID/products", handler.GetProductById)
-	e.POST("/api/v1/store/:storeID/add-product", handler.PostProductByStoreId)
-	e.PUT("/api/v1/store/:storeID/update-product/:productID", handler.PutByStoreIdProductId)
+	e.POST("/api/v1/store/:storeID/add-product", handler.AddProduct)
+	e.PUT("/api/v1/store/:storeID/update-product/:productID", handler.UpdateProduct)
 }
 
 func (s *ProductHandler) GetProductById(c *gin.Context) {
@@ -39,7 +39,7 @@ func (s *ProductHandler) GetProductById(c *gin.Context) {
 	c.JSON(200, products)
 }
 
-func (s *ProductHandler) PostProductByStoreId(c *gin.Context) {
+func (s *ProductHandler) AddProduct(c *gin.Context) {
 	storeID, err := strconv.ParseInt(c.Param("storeID"), 10, 64)
 	if err != nil {
 		logrus.Error(err)
@@ -63,7 +63,7 @@ func (s *ProductHandler) PostProductByStoreId(c *gin.Context) {
 	c.Status(200)
 }
 
-func (s *ProductHandler) PutByStoreIdProductId(c *gin.Context) {
+func (s *ProductHandler) UpdateProduct(c *gin.Context) {
 	storeID, err := strconv.ParseInt(c.Param("storeID"), 10, 64)
 	if err != nil {
 		logrus.Error(err)

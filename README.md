@@ -53,11 +53,18 @@ when open pull request
 ```bash
 npm run format
 ```
+```bash
+gofmt -w .
+```
 
 ### check code format
 
 ```bash
 npm run lint
+```
+
+```bash
+gofmt -l -d .
 ```
 
 ## docker

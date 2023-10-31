@@ -35,3 +35,12 @@ func (pu *productUsecase) PostByStoreId(ctx context.Context, id int64, product *
 	}
 	return nil
 }
+
+func (pu *productUsecase) PutById(ctx context.Context, StoreId int64, productId int64, product *swagger.ProductInfo) error {
+	err := pu.productRepo.PutById(ctx, StoreId, productId, product)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+	return nil
+}

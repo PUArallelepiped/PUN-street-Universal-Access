@@ -4,12 +4,13 @@
 	export let description: string = 'the shopkeeper is lazy';
 	export let price: number = 123;
 	export let name: string = 'TEA EGG';
+	export let imgUrl: string = watermelon;
 </script>
 
 <a {href} class="flex items-center justify-between rounded-3xl bg-white">
 	<div class="m-4 flex h-24 items-center">
 		<div class="h-24 w-24 overflow-hidden">
-			<img src={watermelon} alt="" class="h-full object-cover object-center" />
+			<img src={imgUrl} alt="" class="h-full object-cover object-center" />
 		</div>
 		<div class="mx-5 flex h-full flex-col content-start gap-1">
 			<div

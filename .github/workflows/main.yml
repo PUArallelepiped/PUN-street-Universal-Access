@@ -31,5 +31,5 @@ jobs:
       - name: Gofmt
         working-directory: ./backend
         run: |
-          gofmt -l -d ./backend
-          test -z "$(gofmt -l -d ./backend)" 
+          gofmt -l -d .
+          test -z "$(gofmt -l -d .)" 

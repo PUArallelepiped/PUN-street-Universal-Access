@@ -86,7 +86,9 @@
 	});
 </script>
 
-<img src={watermelon} alt="" class="h-48 w-full" />
+<div class="h-48 w-full overflow-hidden">
+	<img src={watermelon} alt="" class="w-full object-cover" />
+</div>
 <div class="mx-5 lg:px-40">
 	<div class="p-2">
 		<div class="m-1 p-2 text-5xl font-bold">

@@ -44,15 +44,15 @@
 	];
 </script>
 
-<div class="w-[40%] h-[50px] overflow-hidden">
-	<div class="text-2xl float-left">PUN Street Access</div>
+<div class="h-[50px] w-[40%] overflow-hidden">
+	<div class="float-left text-2xl">PUN Street Access</div>
 </div>
 
 <div class="flex justify-start">
-	<div class="w-[40%] float-left">
+	<div class="float-left w-[40%]">
 		<Input type="text" placeholder="QQㄋㄟㄋㄟ好喝到咩噗茶" class="max-w-xs" />
 
-		<p class="text-center text-lg w-[325px] h-[30px]">Sort</p>
+		<p class="h-[30px] w-[325px] text-center text-lg">Sort</p>
 		<div>
 			{#each sortCheckboxes as { id }}
 				<div class="h-[30px]">
@@ -62,17 +62,17 @@
 			{/each}
 		</div>
 
-		<p class="text-center text-lg w-[325px] h-[30px]">Price</p>
-		<div class="flex justify-between w-[325px]">
+		<p class="h-[30px] w-[325px] text-center text-lg">Price</p>
+		<div class="flex w-[325px] justify-between">
 			<div>NT$1</div>
 			<div>NT$700</div>
 			<div>NT$1000</div>
 		</div>
-		<div class="w-[325px] h-[30px]">
+		<div class="h-[30px] w-[325px]">
 			<DoubleRangeSlider bind:start bind:end />
 		</div>
 
-		<p class="text-center text-lg w-[325px] h-[30px]">Tag</p>
+		<p class="h-[30px] w-[325px] text-center text-lg">Tag</p>
 		<div>
 			<div class="max-w-60 pr-40">
 				{#each tagCheckboxes as { id }}
@@ -87,7 +87,7 @@
 
 	<div class="flex flex-wrap pl-20">
 		{#each cards as { title, description, content, footer }}
-			<div class="flex-fill w-[500px] float-left">
+			<div class="flex-fill float-left w-[500px]">
 				<Card.Root>
 					<Card.Header class="text-center">
 						<Card.Title>{title}</Card.Title>

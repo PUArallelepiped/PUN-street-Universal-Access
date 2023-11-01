@@ -9,7 +9,6 @@
 package swagger
 
 type OrderInfo struct {
-
 	CustomerId int64 `json:"customer_id"`
 
 	DiscountId int64 `json:"discount_id"`

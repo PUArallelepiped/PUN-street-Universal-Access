@@ -9,7 +9,7 @@
 
 <a {href} class="flex items-center justify-between rounded-3xl bg-white">
 	<div class="m-4 flex h-24 items-center">
-		<div class="h-24 w-24 overflow-hidden">
+		<div class="h-24 w-24 overflow-hidden rounded-lg">
 			<img src={imgUrl} alt="" class="h-full object-cover object-center" />
 		</div>
 		<div class="mx-5 flex h-full flex-col content-start gap-1">

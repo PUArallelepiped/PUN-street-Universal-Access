@@ -27,3 +27,21 @@ func (p *postgresqlStoreRepo) GetByID(ctx context.Context, id string) (*swagger.
 	}
 	return s, nil
 }
+
+func (p *postgresqlStoreRepo) GetAllStore(ctx context.Context) ([]swagger.StoreInfo, error) {
+	rows, err := p.db.Query("SELECT name, rate, rate_count, address, picture, description, shipping_fee, status FROM stores")
+
+	if err != nil {
+		logrus.Error(err)
+	}
+	l := []swagger.StoreInfo{}
+	for rows.Next() {
+		s := swagger.StoreInfo{}
+		err := rows.Scan(&s.StoreId, &s.ShippingFee, &s.Address, &s.RateCount, &s.Rate, &s.Name, &s.Description, &s.Picture, &s.Status)
+		if err != nil {
+			logrus.Error(err)
+		}
+		l = append(l, s)
+	}
+	return l, nil
+}

@@ -53,7 +53,7 @@ func (s *ProductHandler) AddProduct(c *gin.Context) {
 		return
 	}
 
-	err = s.ProductUsecase.PostByStoreId(c, storeID, &product)
+	err = s.ProductUsecase.AddByStoreId(c, storeID, &product)
 	if err != nil {
 		logrus.Error(err)
 		c.Status(500)
@@ -84,7 +84,7 @@ func (s *ProductHandler) UpdateProduct(c *gin.Context) {
 		return
 	}
 
-	err = s.ProductUsecase.PutById(c, storeID, productID, &product)
+	err = s.ProductUsecase.UpdateById(c, storeID, productID, &product)
 	if err != nil {
 		logrus.Error(err)
 		c.Status(500)

@@ -72,3 +72,23 @@ func (p *postgresqlDiscountRepo) AddSeasoning(ctx context.Context, seasoning *sw
 
 	return nil
 }
+
+func (p *postgresqlDiscountRepo) AddShipping(ctx context.Context, shipping *swagger.ShippingDiscount, id int64) error {
+	sqlStatement := `
+	WITH ins1 AS (
+	INSERT INTO discounts(discount_type, status, description, name)
+	VALUES (2, 1, $1, $2)
+	RETURNING discount_id)
+	INSERT INTO shipping_discount (discount_id, max_price, store_id)
+	select discount_id, $3, $4 FROM ins1;
+	`
+	_, err := p.db.Exec(sqlStatement, shipping.DiscountDescription, shipping.DiscountName,
+		shipping.DiscountMaxPrice, id)
+
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}

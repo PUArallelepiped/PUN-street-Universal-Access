@@ -48,3 +48,12 @@ func (du *discountUsecase) AddSeasoning(ctx context.Context, seasoning *swagger.
 	}
 	return nil
 }
+
+func (du *discountUsecase) AddShipping(ctx context.Context, shipping *swagger.ShippingDiscount, id int64) error {
+	err := du.discountRepo.AddShipping(ctx, shipping, id)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+	return nil
+}

@@ -92,3 +92,23 @@ func (p *postgresqlDiscountRepo) AddShipping(ctx context.Context, shipping *swag
 
 	return nil
 }
+
+func (p *postgresqlDiscountRepo) AddEvent(ctx context.Context, event *swagger.EventDiscount) error {
+	sqlStatement := `
+	WITH ins1 AS (
+	INSERT INTO discounts(discount_type, status, description, name)
+	VALUES (3, 1, $1, $2)
+	RETURNING discount_id)
+	INSERT INTO event_discount (discount_id, max_quantity, product_id)
+	select discount_id, $3, $4 FROM ins1;
+	`
+	_, err := p.db.Exec(sqlStatement, event.DiscountDescription, event.DiscountName,
+		event.DiscountMaxQuantity, event.ProductId)
+
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}

@@ -57,3 +57,12 @@ func (du *discountUsecase) AddShipping(ctx context.Context, shipping *swagger.Sh
 	}
 	return nil
 }
+
+func (du *discountUsecase) AddEvent(ctx context.Context, event *swagger.EventDiscount) error {
+	err := du.discountRepo.AddEvent(ctx, event)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+	return nil
+}

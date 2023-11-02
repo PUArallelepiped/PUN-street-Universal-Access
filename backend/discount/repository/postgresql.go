@@ -52,3 +52,23 @@ func (p *postgresqlDiscountRepo) GetByDiscountID(ctx context.Context, id int64) 
 	}
 	return d, nil
 }
+
+func (p *postgresqlDiscountRepo) AddSeasoning(ctx context.Context, seasoning *swagger.SeasoningDiscount) error {
+	sqlStatement := `
+	WITH ins1 AS (
+	INSERT INTO discounts(discount_type, status, description, name)
+	VALUES (1, 1, $1, $2)
+	RETURNING discount_id)
+	INSERT INTO seasoning_discount (discount_id, discount_percentage, start_date, end_date)
+	select discount_id, $3, $4, $5 FROM ins1;
+	`
+
+	_, err := p.db.Exec(sqlStatement, seasoning.DiscountDescription, seasoning.DiscountName,
+		seasoning.DiscountPercentage, seasoning.DiscountStartDate, seasoning.DiscountEndDate)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}

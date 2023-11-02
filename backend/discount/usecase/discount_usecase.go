@@ -39,3 +39,12 @@ func (du *discountUsecase) GetByStoreID(ctx context.Context, id int64) ([]swagge
 
 	return discounts, nil
 }
+
+func (du *discountUsecase) AddSeasoning(ctx context.Context, seasoning *swagger.SeasoningDiscount) error {
+	err := du.discountRepo.AddSeasoning(ctx, seasoning)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+	return nil
+}

@@ -116,6 +116,7 @@ paths:
       tags:
       - seller
       - store
+      - product
       summary: add a product in store.
       parameters:
       - name: storeID
@@ -1436,6 +1437,7 @@ components:
       - discount_name
       - discount_percentage
       - discount_start_date
+      - status
       type: object
       properties:
         discount_id:
@@ -1458,6 +1460,10 @@ components:
           type: integer
           format: int64
           example: 70
+        status:
+          type: integer
+          format: int64
+          example: 1
     SeasoningDiscountArray:
       type: array
       items:
@@ -1469,6 +1475,7 @@ components:
       - discount_id
       - discount_max_price
       - discount_name
+      - status
       type: object
       properties:
         discount_id:
@@ -1485,6 +1492,10 @@ components:
           type: integer
           format: int64
           example: 1000
+        status:
+          type: integer
+          format: int64
+          example: 1
     ShippingDiscountArray:
       type: array
       items:
@@ -1497,6 +1508,7 @@ components:
       - discount_max_quantity
       - discount_name
       - product_id
+      - status
       type: object
       properties:
         discount_id:
@@ -1514,6 +1526,10 @@ components:
           format: int64
           example: 2
         product_id:
+          type: integer
+          format: int64
+          example: 1
+        status:
           type: integer
           format: int64
           example: 1

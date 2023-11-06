@@ -27,3 +27,12 @@ func (su *storeUsecase) GetByID(ctx context.Context, id string) (*swagger.StoreI
 	}
 	return s, nil
 }
+
+func (su *storeUsecase) GetAllStore(ctx context.Context) ([]swagger.StoreInfo, error) {
+	s, err := su.storeRepo.GetAllStore(ctx)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+	return s, nil
+}

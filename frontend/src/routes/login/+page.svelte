@@ -15,7 +15,9 @@
 				class="h-10 w-[412px] rounded-[10px] border-2 border-zinc-400 bg-gray-200 shadow-inner"
 			/>
 			<div class="flex flex-row justify-center gap-2">
-				<div>Email or Password ERROR</div>
+				<div class="text-center text-xl font-semibold leading-relaxed text-red-600">
+					Email or Password ERROR
+				</div>
 				<div>
 					<svg
 						width="26"

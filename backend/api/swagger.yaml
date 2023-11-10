@@ -808,7 +808,7 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /seaning-discounts:
+  /seasoning-discounts:
     get:
       tags:
       - customer

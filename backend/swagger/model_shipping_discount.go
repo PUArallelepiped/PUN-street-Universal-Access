@@ -16,4 +16,6 @@ type ShippingDiscount struct {
 	DiscountDescription string `json:"discount_description"`
 
 	DiscountMaxPrice int64 `json:"discount_max_price"`
+
+	Status int `json:"status"`
 }

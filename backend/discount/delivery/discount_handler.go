@@ -18,20 +18,20 @@ func NewDiscountHandler(e *gin.Engine, discountUsecase domain.DiscountUsecase) {
 	handler := &DiscountHandler{
 		DiscountUsecase: discountUsecase,
 	}
-	e.GET("/api/v1/store/:storeID/discounts", handler.GetAllDiscountByStoreId)
+	e.GET("/api/v1/store/:storeID/discounts", handler.GetAllShippingByStoreId)
 	e.POST("/api/v1/store/:storeID/seasoning-discount", handler.AddSeasoningDiscount)
 	e.POST("/api/v1/store/:storeID/shipping-discount", handler.AddShippingDiscount)
 	e.POST("/api/v1/store/:storeID/event-discount", handler.AddEventDiscount)
 }
 
-func (s *DiscountHandler) GetAllDiscountByStoreId(c *gin.Context) {
+func (s *DiscountHandler) GetAllShippingByStoreId(c *gin.Context) {
 	storeID, err := strconv.ParseInt(c.Param("storeID"), 10, 64)
 	if err != nil {
 		logrus.Error(err)
 		c.Status(400)
 		return
 	}
-	discounts, err := s.DiscountUsecase.GetByStoreID(c, storeID)
+	discounts, err := s.DiscountUsecase.GetShippingByStoreID(c, storeID)
 	if err != nil {
 		logrus.Error(err)
 		c.Status(500)

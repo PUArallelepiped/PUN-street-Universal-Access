@@ -19,7 +19,9 @@ func NewPostgressqlDiscountRepo(db *sql.DB) domain.DiscountRepo {
 
 func (p *postgresqlDiscountRepo) GetShippingByStoreID(ctx context.Context, id int64) ([]swagger.ShippingDiscount, error) {
 	sqlStatement := `
-	SELECT discount_id, max_price FROM shipping_discount WHERE store_id = $1
+	SELECT discounts.discount_id, status, description, name, max_price 
+	FROM discounts JOIN shipping_discount ON discounts.discount_id = shipping_discount.discount_id
+	WHERE store_id = $1;
 	`
 	rows, err := p.db.Query(sqlStatement, id)
 	if err != nil {
@@ -29,7 +31,7 @@ func (p *postgresqlDiscountRepo) GetShippingByStoreID(ctx context.Context, id in
 	shipping_discounts := []swagger.ShippingDiscount{}
 	for rows.Next() {
 		shipping_discount := swagger.ShippingDiscount{}
-		err := rows.Scan(&shipping_discount.DiscountId, &shipping_discount.DiscountMaxPrice)
+		err := rows.Scan(&shipping_discount.DiscountId, &shipping_discount.Status, &shipping_discount.DiscountDescription, &shipping_discount.DiscountName, &shipping_discount.DiscountMaxPrice)
 		if err != nil {
 			logrus.Error(err)
 			return nil, err
@@ -37,20 +39,6 @@ func (p *postgresqlDiscountRepo) GetShippingByStoreID(ctx context.Context, id in
 		shipping_discounts = append(shipping_discounts, shipping_discount)
 	}
 	return shipping_discounts, nil
-}
-
-func (p *postgresqlDiscountRepo) GetByDiscountID(ctx context.Context, id int64) (*swagger.DiscountInfo, error) {
-	sqlStatement := `
-	SELECT discount_id, discount_type, status FROM discounts WHERE discount_id = $1
-	`
-
-	row := p.db.QueryRow(sqlStatement, id)
-	d := &swagger.DiscountInfo{}
-	if err := row.Scan(&d.DiscountId, &d.DiscountType, &d.Status); err != nil {
-		logrus.Error(err)
-		return nil, err
-	}
-	return d, nil
 }
 
 func (p *postgresqlDiscountRepo) AddSeasoning(ctx context.Context, seasoning *swagger.SeasoningDiscount) error {

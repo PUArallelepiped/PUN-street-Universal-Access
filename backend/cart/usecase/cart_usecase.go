@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
@@ -39,18 +38,13 @@ func (cu *cartUsecase) GetTotalPriceByID(ctx context.Context, customerId int64, 
 	}
 
 	for _, cart := range *carts {
-		// var productRepo domain.ProductRepo
 		// product, err := productRepo.GetByProductID(ctx, cart.ProductId)
-		fmt.Println(cart)
 		product, err := cu.cartRepo.GetByProductID(ctx, cart.ProductId)
-		fmt.Println(product)
 		if err != nil {
 			logrus.Error(err)
 			return 0, err
 		}
 		totalPrice += product.Price * cart.ProductQuantity
-		fmt.Println(totalPrice)
-
 	}
 
 	return totalPrice, nil

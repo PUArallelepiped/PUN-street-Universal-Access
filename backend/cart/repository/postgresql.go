@@ -71,3 +71,17 @@ func (p *postgresqlCartRepo) GetByProductID(ctx context.Context, id int64) (*swa
 	}
 	return product, nil
 }
+
+func (p *postgresqlCartRepo) DeleteProduct(ctx context.Context, customerId int64, cartId int64, productId int64) error {
+	sqlStatement := `
+	DELETE FROM carts
+	WHERE customer_id = $1 AND cart_id = $2 AND product_id = $3;
+	`
+	_, err := p.db.Exec(sqlStatement, customerId, cartId, productId)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}

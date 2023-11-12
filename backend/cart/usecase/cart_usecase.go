@@ -49,3 +49,12 @@ func (cu *cartUsecase) GetTotalPriceByID(ctx context.Context, customerId int64, 
 
 	return totalPrice, nil
 }
+func (cu *cartUsecase) DeleteProduct(ctx context.Context, customerId int64, cartId int64, productId int64) error {
+	err := cu.cartRepo.DeleteProduct(ctx, customerId, cartId, productId)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}

@@ -20,6 +20,7 @@ func NewCartHandler(e *gin.Engine, cartUsecase domain.CartUsecase) {
 	}
 	e.POST("/api/v1/cart", handler.PostCart)
 	e.GET("/api/v1/customer/:userID/cart/:cartID/store/:storeID/get-total-price", handler.GetTotalPrice)
+	e.DELETE("/api/v1/customer/:userID/cart/:cartID/delete/product/:productID", handler.DeleteProduct)
 }
 
 func (s *CartHandler) PostCart(c *gin.Context) {
@@ -66,4 +67,27 @@ func (s *CartHandler) GetTotalPrice(c *gin.Context) {
 		"price": price,
 	})
 
+}
+
+func (s *CartHandler) DeleteProduct(c *gin.Context) {
+	customerID, customerErr := strconv.ParseInt(c.Param("userID"), 10, 64)
+	cartID, cartErr := strconv.ParseInt(c.Param("cartID"), 10, 64)
+	productID, productErr := strconv.ParseInt(c.Param("productID"), 10, 64)
+	errArr := []error{customerErr, cartErr, productErr}
+	for _, err := range errArr {
+		if err != nil {
+			logrus.Error(err)
+			c.Status(400)
+			return
+		}
+	}
+
+	err := s.CartUsecase.DeleteProduct(c, customerID, cartID, productID)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.Status(200)
 }

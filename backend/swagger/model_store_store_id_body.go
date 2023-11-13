@@ -9,6 +9,5 @@
 package swagger
 
 type StoreStoreIdBody struct {
-
 	Status int64 `json:"status,omitempty"`
 }

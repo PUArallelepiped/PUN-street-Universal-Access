@@ -9,7 +9,6 @@
 package swagger
 
 type CheckoutInfo struct {
-
 	SeasoningDiscountId int64 `json:"seasoning_discount_id"`
 
 	ShippingDiscountId int64 `json:"shipping_discount_id"`

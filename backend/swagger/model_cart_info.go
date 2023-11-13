@@ -9,7 +9,6 @@
 package swagger
 
 type CartInfo struct {
-
 	ProductQuantity int64 `json:"product_quantity"`
 
 	CustomerId int64 `json:"customer_id"`

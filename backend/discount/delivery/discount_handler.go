@@ -84,6 +84,13 @@ func (s *DiscountHandler) AddShippingDiscount(c *gin.Context) {
 }
 
 func (s *DiscountHandler) AddEventDiscount(c *gin.Context) {
+	productID, err := strconv.ParseInt(c.Param("productID"), 10, 64)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
 	var discount swagger.EventDiscount
 
 	if err := c.BindJSON(&discount); err != nil {
@@ -91,7 +98,7 @@ func (s *DiscountHandler) AddEventDiscount(c *gin.Context) {
 		return
 	}
 
-	err := s.DiscountUsecase.AddEvent(c, &discount)
+	err = s.DiscountUsecase.AddEvent(c, &discount, productID)
 	if err != nil {
 		logrus.Error(err)
 		c.Status(500)

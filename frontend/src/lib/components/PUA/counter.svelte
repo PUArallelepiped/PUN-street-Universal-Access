@@ -5,12 +5,14 @@
 	export let allowNegative: boolean = false;
 	function add() {
 		count += 1;
+		return null;
 	}
 	function sub() {
 		if (!allowNegative && count == 0) {
-			return;
+			return null;
 		}
 		count -= 1;
+		return null;
 	}
 </script>
 

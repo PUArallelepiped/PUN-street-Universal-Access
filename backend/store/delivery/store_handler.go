@@ -16,6 +16,7 @@ func NewStoreHandler(e *gin.Engine, storeUsecase domain.StoreUsecase) {
 		StoreUsecase: storeUsecase,
 	}
 	e.GET("/api/v1/store/:storeID", handler.GetStoreById)
+	e.GET("/api/v1/stores", handler.GetStores)
 }
 
 func (s *StoreHandler) GetStoreById(c *gin.Context) {
@@ -29,4 +30,15 @@ func (s *StoreHandler) GetStoreById(c *gin.Context) {
 	}
 
 	c.JSON(200, store)
+}
+
+func (s *StoreHandler) GetStores(c *gin.Context) {
+	stores, err := s.StoreUsecase.GetAllStore(c)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, stores)
 }

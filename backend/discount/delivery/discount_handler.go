@@ -1,7 +1,6 @@
 package delivery
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
@@ -50,7 +49,6 @@ func (s *DiscountHandler) AddSeasoningDiscount(c *gin.Context) {
 	}
 
 	err := s.DiscountUsecase.AddSeasoning(c, &discount)
-	fmt.Print(discount)
 	if err != nil {
 		logrus.Error(err)
 		c.Status(500)

@@ -8,8 +8,10 @@ import (
 
 type StoreRepo interface {
 	GetByID(ctx context.Context, id string) (*swagger.StoreInfo, error)
+	GetAllStore(ctx context.Context) ([]swagger.StoreInfo, error)
 }
 
 type StoreUsecase interface {
 	GetByID(ctx context.Context, id string) (*swagger.StoreInfo, error)
+	GetAllStore(ctx context.Context) ([]swagger.StoreInfo, error)
 }

@@ -7,4 +7,5 @@
 </div>
 
 <p>here is root</p>
-<p>Visit <a href="./food" class="text-blue-400px"> Shop list</a></p>
+
+<p>Visit <a href="./shops" class="text-blue-400"> Shop list</a></p>

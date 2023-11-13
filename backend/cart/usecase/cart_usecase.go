@@ -45,7 +45,17 @@ func (cu *cartUsecase) GetTotalPriceByID(ctx context.Context, customerId int64, 
 			logrus.Error(err)
 			return 0, err
 		}
-		totalPrice += product.Price * cart.ProductQuantity
+
+		quantity := cart.ProductQuantity
+		if cart.DiscountId != 1 {
+			discountQuantity, err := cu.cartRepo.GetEventDiscountQuantity(ctx, cart.DiscountId)
+			if err != nil {
+				logrus.Error(err)
+				return 0, err
+			}
+			quantity = cart.ProductQuantity - (cart.ProductQuantity / (discountQuantity + 1))
+		}
+		totalPrice += product.Price * quantity
 	}
 
 	return totalPrice, nil

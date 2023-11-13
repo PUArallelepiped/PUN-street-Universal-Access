@@ -131,3 +131,19 @@ func (p *postgresqlCartRepo) AddUserCartId(ctx context.Context, id int64) error 
 
 	return nil
 }
+
+func (p *postgresqlCartRepo) GetEventDiscountQuantity(ctx context.Context, id int64) (int64, error) {
+	sqlStatement := `
+	SELECT max_quantity FROM event_discount WHERE discount_id = $1;
+	`
+
+	row := p.db.QueryRow(sqlStatement, id)
+
+	var quantity int64 = 0
+	if err := row.Scan(&quantity); err != nil {
+		logrus.Error(err)
+		return 0, err
+	}
+
+	return quantity, nil
+}

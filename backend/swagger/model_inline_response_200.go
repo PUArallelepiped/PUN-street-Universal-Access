@@ -8,7 +8,7 @@
  */
 package swagger
 
-type RateInfo struct {
+type InlineResponse200 struct {
 
-	Rate float32 `json:"rate"`
+	Price int64 `json:"price,omitempty"`
 }

@@ -9,6 +9,7 @@
 package swagger
 
 type ShippingDiscount struct {
+
 	DiscountId int64 `json:"discount_id"`
 
 	DiscountName string `json:"discount_name"`
@@ -17,5 +18,5 @@ type ShippingDiscount struct {
 
 	DiscountMaxPrice int64 `json:"discount_max_price"`
 
-	Status int `json:"status"`
+	Status int64 `json:"status"`
 }

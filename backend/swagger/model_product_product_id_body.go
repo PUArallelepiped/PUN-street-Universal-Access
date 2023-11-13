@@ -8,7 +8,7 @@
  */
 package swagger
 
-type RateInfo struct {
+type ProductProductIdBody struct {
 
-	Rate float32 `json:"rate"`
+	ProductQuantity int64 `json:"product_quantity,omitempty"`
 }

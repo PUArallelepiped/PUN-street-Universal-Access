@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"fmt"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
@@ -86,9 +87,14 @@ func (p *postgresqlCartRepo) DeleteProduct(ctx context.Context, customerId int64
 	return nil
 }
 func (p *postgresqlCartRepo) AddOrder(ctx context.Context, customerId int64, cartId int64, storeId int64, order *swagger.OrderInfo) error {
-	sqlStatement := ""
+	sqlStatement := `INSERT INTO orders 
+	(cart_id, store_id, user_id, seasoning_discount_id, shipping_discount_id, status, total_price, Order_date, taking_address, taking_method) VALUES 
+    ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+	`
 
-	_, err := p.db.Exec(sqlStatement)
+	fmt.Println(order)
+
+	_, err := p.db.Exec(sqlStatement, order.CartId, order.StoreId, order.CustomerId, order.SeasoningDiscountId, order.ShippingDiscountId, order.OrderStatus, order.TotalPrice, order.OrderDate, order.TakingAddress, order.TakingMethod)
 	if err != nil {
 		logrus.Error(err)
 		return err
@@ -108,4 +114,20 @@ func (p *postgresqlCartRepo) GetUserAddressById(ctx context.Context, id int64) (
 	}
 	return user_address, nil
 
+}
+
+func (p *postgresqlCartRepo) AddUserCartId(ctx context.Context, id int64) error {
+	sqlStatement := `
+	UPDATE user_data SET 
+	current_cart_id = current_cart_id +1
+	WHERE user_id = $1;
+	`
+
+	_, err := p.db.Exec(sqlStatement, id)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
 }

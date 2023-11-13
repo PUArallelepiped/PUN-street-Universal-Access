@@ -61,29 +61,41 @@ func (cu *cartUsecase) DeleteProduct(ctx context.Context, customerId int64, cart
 }
 
 func (cu *cartUsecase) Checkout(ctx context.Context, customerId int64, cartId int64, storeId int64, checkoutInfo *swagger.CheckoutInfo) error {
-	totalPrice, err := cu.GetTotalPriceByID(ctx, customerId, cartId, storeId)
-	user, err := cu.cartRepo.GetUserById(ctx, customerId)
+	totalPrice, errTotal := cu.GetTotalPriceByID(ctx, customerId, cartId, storeId)
+	userAddress, errAddress := cu.cartRepo.GetUserAddressById(ctx, customerId)
+	for _, err := range []error{errTotal, errAddress} {
+		if err != nil {
+			logrus.Error(err)
+			return err
+		}
+	}
+
+	dt := time.Now().Format("01-02-2006 15:04:05")
+
+	order := &swagger.OrderInfo{
+		CustomerId:          customerId,
+		SeasoningDiscountId: checkoutInfo.SeasoningDiscountId,
+		ShippingDiscountId:  checkoutInfo.ShippingDiscountId,
+		CartId:              cartId,
+		StoreId:             storeId,
+		OrderStatus:         1,
+		OrderDate:           dt,
+		TakingAddress:       userAddress,
+		TakingMethod:        checkoutInfo.TakingMethod,
+		TotalPrice:          totalPrice,
+	}
+
+	err := cu.cartRepo.AddOrder(ctx, customerId, cartId, storeId, order)
 	if err != nil {
 		logrus.Error(err)
 		return err
 	}
 
-	dt := time.Now().Format("01-02-2006")
-
-	// FIX ME when api merge
-	order := &swagger.OrderInfo{
-		CustomerId:    customerId,
-		DiscountId:    checkoutInfo.SeasoningDiscountId,
-		CartId:        cartId,
-		StoreId:       storeId,
-		OrderStatus:   1,
-		OrderDate:     dt,
-		TakingAddress: user.Address,
-		TakingMethod:  checkoutInfo.TakingMethod,
-		TotalPrice:    totalPrice,
+	err = cu.cartRepo.AddUserCartId(ctx, customerId)
+	if err != nil {
+		logrus.Error(err)
+		return err
 	}
-
-	err = cu.cartRepo.AddOrder(ctx, customerId, cartId, storeId, order)
 
 	return nil
 }

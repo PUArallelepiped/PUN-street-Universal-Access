@@ -13,6 +13,7 @@ type CartRepo interface {
 	DeleteProduct(ctx context.Context, customerId int64, cartId int64, productId int64) error
 	AddOrder(ctx context.Context, customerId int64, cartId int64, storeId int64, order *swagger.OrderInfo) error
 	GetUserAddressById(ctx context.Context, id int64) (string, error)
+	AddUserCartId(ctx context.Context, id int64) error
 }
 
 type CartUsecase interface {

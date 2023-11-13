@@ -9,7 +9,6 @@
 package swagger
 
 type StoreInfo struct {
-
 	StoreId int64 `json:"store_id"`
 
 	Description string `json:"description"`

@@ -9,7 +9,6 @@
 package swagger
 
 type EventDiscount struct {
-
 	DiscountId int64 `json:"discount_id"`
 
 	DiscountName string `json:"discount_name"`

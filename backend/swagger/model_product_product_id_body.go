@@ -9,6 +9,5 @@
 package swagger
 
 type ProductProductIdBody struct {
-
 	ProductQuantity int64 `json:"product_quantity,omitempty"`
 }

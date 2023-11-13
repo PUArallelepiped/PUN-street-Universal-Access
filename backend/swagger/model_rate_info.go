@@ -9,6 +9,5 @@
 package swagger
 
 type RateInfo struct {
-
 	Rate float32 `json:"rate"`
 }

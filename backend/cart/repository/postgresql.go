@@ -85,3 +85,27 @@ func (p *postgresqlCartRepo) DeleteProduct(ctx context.Context, customerId int64
 
 	return nil
 }
+func (p *postgresqlCartRepo) AddOrder(ctx context.Context, customerId int64, cartId int64, storeId int64, order *swagger.OrderInfo) error {
+	sqlStatement := ""
+
+	_, err := p.db.Exec(sqlStatement)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+	return nil
+}
+
+func (p *postgresqlCartRepo) GetUserAddressById(ctx context.Context, id int64) (string, error) {
+	sqlStatement := `SELECT address FROM user_data WHERE user_id = $1;`
+
+	row := p.db.QueryRow(sqlStatement, id)
+
+	user_address := ""
+	if err := row.Scan(&user_address); err != nil {
+		logrus.Error(err)
+		return "", err
+	}
+	return user_address, nil
+
+}

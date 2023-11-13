@@ -861,6 +861,12 @@ paths:
               type: string
               example: "1"
               x-content-type: application/json
+      requestBody:
+        description: checkout info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutInfo'
       responses:
         "200":
           description: ok
@@ -1572,3 +1578,22 @@ components:
           type: number
           format: float
           example: 5
+    CheckoutInfo:
+      required:
+        - seasoning_discount_id
+        - shipping_discount_id
+        - taking_method
+      type: object
+      properties:
+        seasoning_discount_id:
+          type: integer
+          format: int64
+          example: 1
+        shipping_discount_id:
+          type: integer
+          format: int64
+          example: 1
+        taking_method:
+          type: integer
+          format: int64
+          example: 1

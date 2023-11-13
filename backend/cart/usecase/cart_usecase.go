@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"time"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
@@ -55,6 +56,34 @@ func (cu *cartUsecase) DeleteProduct(ctx context.Context, customerId int64, cart
 		logrus.Error(err)
 		return err
 	}
+
+	return nil
+}
+
+func (cu *cartUsecase) Checkout(ctx context.Context, customerId int64, cartId int64, storeId int64, checkoutInfo *swagger.CheckoutInfo) error {
+	totalPrice, err := cu.GetTotalPriceByID(ctx, customerId, cartId, storeId)
+	user, err := cu.cartRepo.GetUserById(ctx, customerId)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	dt := time.Now().Format("01-02-2006")
+
+	// FIX ME when api merge
+	order := &swagger.OrderInfo{
+		CustomerId:    customerId,
+		DiscountId:    checkoutInfo.SeasoningDiscountId,
+		CartId:        cartId,
+		StoreId:       storeId,
+		OrderStatus:   1,
+		OrderDate:     dt,
+		TakingAddress: user.Address,
+		TakingMethod:  checkoutInfo.TakingMethod,
+		TotalPrice:    totalPrice,
+	}
+
+	err = cu.cartRepo.AddOrder(ctx, customerId, cartId, storeId, order)
 
 	return nil
 }

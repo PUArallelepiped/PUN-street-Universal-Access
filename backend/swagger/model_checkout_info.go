@@ -8,7 +8,11 @@
  */
 package swagger
 
-type RateInfo struct {
+type CheckoutInfo struct {
 
-	Rate float32 `json:"rate"`
+	SeasoningDiscountId int64 `json:"seasoning_discount_id"`
+
+	ShippingDiscountId int64 `json:"shipping_discount_id"`
+
+	TakingMethod int64 `json:"taking_method"`
 }

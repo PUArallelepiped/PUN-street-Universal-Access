@@ -9,6 +9,7 @@
 package swagger
 
 type DiscountInfo struct {
+
 	DiscountId int64 `json:"discount_id"`
 
 	DiscountType int64 `json:"discount_type"`

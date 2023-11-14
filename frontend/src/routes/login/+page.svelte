@@ -2,9 +2,10 @@
 </script>
 
 <div>
-	<h1 class="mx-20 my-10 text-5xl font-medium leading-10 text-red-900">| Sign in to PUA</h1>
+	<h1 class="mx-20 my-10 p-12 text-5xl font-medium leading-10 text-red-900">| Sign in to PUA</h1>
 
-	<div class=" flex justify-end">
+	<div class="absolute inset-x-0 bottom-0 h-96 bg-red-900"></div>
+	<div class="absolute right-1">
 		<div class=" mx-20 rounded-2xl bg-white px-8 py-5 shadow">
 			<div class="flex flex-col items-center gap-11">
 				<div class="">

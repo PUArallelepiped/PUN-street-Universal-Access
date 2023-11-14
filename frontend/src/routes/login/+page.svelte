@@ -12,21 +12,18 @@
 						Email address
 					</div>
 					<input
-						class="h-10 w-96 rounded-lg border-2 bg-gray-200 text-xl font-medium leading-relaxed text-orange-950 shadow-inner"
+						class="h-10 w-96 rounded-lg border-2 bg-gray-200 px-2 text-xl font-medium leading-relaxed text-orange-950 shadow-inner"
 					/>
 				</div>
 				<div class="">
 					<div class="text-left text-xl font-bold leading-relaxed text-orange-950">Password</div>
 					<input
 						type="password"
-						class="h-10 w-96 rounded-lg border-2 bg-gray-200 text-xl font-medium leading-relaxed text-orange-950 shadow-inner"
+						class="h-10 w-96 rounded-lg border-2 bg-gray-200 px-2 text-xl font-medium leading-relaxed text-orange-950 shadow-inner"
 					/>
 				</div>
 			</div>
 			<div class="flex flex-row justify-center gap-2 p-4">
-				<div class="text-center text-xl font-semibold leading-relaxed text-red-600">
-					Email or Password ERROR
-				</div>
 				<div class="flex items-center">
 					<svg
 						width="20"
@@ -45,8 +42,11 @@
 						</g>
 					</svg>
 				</div>
+				<div class="text-center text-xl font-semibold leading-relaxed text-red-600">
+					Email or Password ERROR
+				</div>
 			</div>
-			<div class="flex h-16 items-end justify-between gap-11 p-3 text-center">
+			<div class="m-3 flex h-16 items-end justify-between gap-10 text-center">
 				<div class="w-48">
 					<div class="text-center text-base font-bold leading-tight text-stone-400">
 						Not a PUA member?

@@ -2,26 +2,35 @@
 </script>
 
 <div>
-	<h1 class="mx-20 my-10 text-5xl font-medium text-red-900">| Sign in to PUA</h1>
+	<h1 class="mx-20 my-10 text-5xl font-medium leading-10 text-red-900">| Sign in to PUA</h1>
 
 	<div class=" flex justify-end">
-		<div class="rounded-md bg-white p-8">
-			<div>email address</div>
-			<input
-				class="h-10 w-[412px] rounded-[10px] border-2 border-zinc-400 bg-gray-200 shadow-inner"
-			/>
-			<div>password</div>
-			<input
-				class="h-10 w-[412px] rounded-[10px] border-2 border-zinc-400 bg-gray-200 shadow-inner"
-			/>
-			<div class="flex flex-row justify-center gap-2">
+		<div class=" mx-20 rounded-2xl bg-white px-8 py-5 shadow">
+			<div class="flex flex-col items-center gap-11">
+				<div class="">
+					<div class="text-left text-xl font-bold leading-relaxed text-orange-950">
+						Email address
+					</div>
+					<input
+						class="h-10 w-96 rounded-lg border-2 bg-gray-200 text-xl font-medium leading-relaxed text-orange-950 shadow-inner"
+					/>
+				</div>
+				<div class="">
+					<div class="text-left text-xl font-bold leading-relaxed text-orange-950">Password</div>
+					<input
+						type="password"
+						class="h-10 w-96 rounded-lg border-2 bg-gray-200 text-xl font-medium leading-relaxed text-orange-950 shadow-inner"
+					/>
+				</div>
+			</div>
+			<div class="flex flex-row justify-center gap-2 p-4">
 				<div class="text-center text-xl font-semibold leading-relaxed text-red-600">
 					Email or Password ERROR
 				</div>
-				<div>
+				<div class="flex items-center">
 					<svg
-						width="26"
-						height="26"
+						width="20"
+						height="20"
 						viewBox="0 0 26 26"
 						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
@@ -37,15 +46,17 @@
 					</svg>
 				</div>
 			</div>
-			<div class="flex h-16 items-end justify-between text-center">
+			<div class="flex h-16 items-end justify-between gap-11 p-3 text-center">
 				<div class="w-48">
-					<div class="">not a PUA member?</div>
-					<button class="h-full w-full rounded-2xl bg-neutral-200">
+					<div class="text-center text-base font-bold leading-tight text-stone-400">
+						Not a PUA member?
+					</div>
+					<button class="h-9 w-full rounded-2xl bg-neutral-200">
 						<div class=" text-xl font-bold text-stone-600">Sign up</div>
 					</button>
 				</div>
 				<div class="w-48">
-					<button class=" w-full rounded-2xl bg-orange-700">
+					<button class=" h-9 w-full rounded-2xl bg-orange-700">
 						<div class="text-xl font-bold text-white">Sign in</div>
 					</button>
 				</div>

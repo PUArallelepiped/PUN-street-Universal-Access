@@ -147,3 +147,30 @@ func (p *postgresqlCartRepo) GetEventDiscountQuantity(ctx context.Context, id in
 
 	return quantity, nil
 }
+
+func (p *postgresqlCartRepo) GetCartArrayByCustomerID(ctx context.Context, id int64) (*[]swagger.CartInfo, error) {
+	sqlStatement := `SELECT 
+	customer_id, product_id, store_id, cart_id, product_quantity, event_discount_id 
+	FROM carts 
+	WHERE customer_id = $1;
+	`
+
+	rows, err := p.db.Query(sqlStatement, id)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+	carts := &[]swagger.CartInfo{}
+	for rows.Next() {
+		cart := &swagger.CartInfo{}
+		err = rows.Scan(&cart.CustomerId, &cart.ProductId, &cart.StoreId, &cart.CartId, &cart.ProductQuantity, &cart.DiscountId)
+		if err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+
+		*carts = append(*carts, *cart)
+	}
+
+	return carts, nil
+}

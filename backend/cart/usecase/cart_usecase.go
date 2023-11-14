@@ -109,3 +109,13 @@ func (cu *cartUsecase) Checkout(ctx context.Context, customerId int64, cartId in
 
 	return nil
 }
+
+func (cu *cartUsecase) GetCartArrayByCustomerID(ctx context.Context, id int64) (*[]swagger.CartInfo, error) {
+	carts, err := cu.cartRepo.GetCartArrayByCustomerID(ctx, id)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	return carts, nil
+}

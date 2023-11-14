@@ -22,6 +22,7 @@ func NewCartHandler(e *gin.Engine, cartUsecase domain.CartUsecase) {
 	e.GET("/api/v1/customer/:userID/cart/:cartID/store/:storeID/get-total-price", handler.GetTotalPrice)
 	e.DELETE("/api/v1/customer/:userID/cart/:cartID/delete/product/:productID", handler.DeleteProduct)
 	e.POST("/api/v1/customer/:userID/cart/:cartID/store/:storeID/checkout", handler.CheckoutCart)
+	e.GET("/api/v1/customer/:userID/orders", handler.GetCartArray)
 }
 
 func (s *CartHandler) PostCart(c *gin.Context) {
@@ -121,4 +122,22 @@ func (s *CartHandler) CheckoutCart(c *gin.Context) {
 	}
 
 	c.Status(200)
+}
+
+func (s *CartHandler) GetCartArray(c *gin.Context) {
+	customerID, err := strconv.ParseInt(c.Param("userID"), 10, 64)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
+	carts, err := s.CartUsecase.GetCartArrayByCustomerID(c, customerID)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, carts)
 }

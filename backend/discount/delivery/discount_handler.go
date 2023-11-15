@@ -18,13 +18,12 @@ func NewDiscountHandler(e *gin.Engine, discountUsecase domain.DiscountUsecase) {
 		DiscountUsecase: discountUsecase,
 	}
 
-	e.POST("/api/v1/seasoning-discount", handler.AddSeasoningDiscount)
-	e.POST("/api/v1/product/:productID/event-discount", handler.AddEventDiscount)
-
-	store := e.Group("/api/v1/store/:storeID")
+	v1 := e.Group("/api/v1")
 	{
-		store.GET("/discounts", handler.GetAllShippingByStoreId)
-		store.POST("/shipping-discount", handler.AddShippingDiscount)
+		v1.POST("/seasoning-discount", handler.AddSeasoningDiscount)
+		v1.POST("/product/:productID/event-discount", handler.AddEventDiscount)
+		v1.GET("/store/:storeID/discounts", handler.GetAllShippingByStoreId)
+		v1.POST("/store/:storeID/shipping-discount", handler.AddShippingDiscount)
 	}
 }
 

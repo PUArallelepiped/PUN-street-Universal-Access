@@ -23,7 +23,7 @@ func (p *postgresqlCartRepo) PostCart(ctx context.Context, cart *swagger.CartInf
 	sqlStatement := `
 	INSERT INTO carts (customer_id, product_id, store_id, cart_id, product_quantity, event_discount_id) VALUES 
 	($1,$2,$3,$4,$5,$6) 
-	ON CONFLICT (customer_id, product_id, store_id) DO UPDATE 
+	ON CONFLICT (customer_id, product_id, store_id, cart_id) DO UPDATE 
 	SET product_quantity = excluded.product_quantity;
 	`
 

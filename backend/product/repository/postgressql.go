@@ -45,7 +45,8 @@ func (p *postgresqlProductRepo) GetByProductID(ctx context.Context, id int64) (*
 		return nil, err
 	}
 	return product, nil
-  
+}
+
 func (p *postgresqlProductRepo) AddByStoreId(ctx context.Context, id int64, product *swagger.ProductInfo) error {
 	sqlStatement := `
 	INSERT INTO products (store_id, name, description, picture, price, stock, status) VALUES

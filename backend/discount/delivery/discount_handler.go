@@ -73,6 +73,7 @@ func (s *DiscountHandler) AddShippingDiscount(c *gin.Context) {
 
 	if err := c.BindJSON(&discount); err != nil {
 		logrus.Error(err)
+		c.Status(400)
 		return
 	}
 
@@ -99,6 +100,7 @@ func (s *DiscountHandler) AddEventDiscount(c *gin.Context) {
 
 	if err := c.BindJSON(&discount); err != nil {
 		logrus.Error(err)
+		c.Status(400)
 		return
 	}
 

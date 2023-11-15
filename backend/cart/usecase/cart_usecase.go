@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
+	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
 
 	"github.com/sirupsen/logrus"
 )
@@ -18,20 +19,11 @@ func NewCartUsecase(cartRepo domain.CartRepo) domain.CartUsecase {
 	}
 }
 
-func (cu *cartUsecase) GetByID(ctx context.Context, customerId string, productId string, storeId string) (*domain.Cart, error) {
-	cart, err := cu.cartRepo.GetByID(ctx, customerId, productId, storeId)
+func (cu *cartUsecase) PostCart(ctx context.Context, cart *swagger.CartInfo) error {
+	err := cu.cartRepo.PostCart(ctx, cart)
 	if err != nil {
 		logrus.Error(err)
-		return nil, err
+		return err
 	}
-	return cart, nil
-}
-
-func (cu *cartUsecase) PostCart(ctx context.Context, cart *domain.Cart) (*domain.Cart, error) {
-	cart, err := cu.cartRepo.PostCart(ctx, cart)
-	if err != nil {
-		logrus.Error(err)
-		return nil, err
-	}
-	return cart, nil
+	return nil
 }

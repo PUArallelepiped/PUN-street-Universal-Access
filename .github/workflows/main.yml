@@ -1,6 +1,7 @@
 name: Format check
 
 on:
+  workflow_dispatch:
   pull_request:
     branches:
       - main
@@ -13,9 +14,22 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "20"
       - name: Prettier
         working-directory: ./frontend
         run: |
-          npm install
+          npm ci
           npm run lint
+  gofmt:
+    runs-on: ubuntu-latest
+    name: Gofmt Check
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version-file: ./backend/go.mod
+      - name: Gofmt
+        working-directory: ./backend
+        run: |
+          gofmt -l -d .
+          test -z "$(gofmt -l -d .)" 

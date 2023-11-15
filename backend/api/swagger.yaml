@@ -9,6 +9,7 @@ paths:
   /store/{storeID}:
     get:
       tags:
+      - customer
       - store
       summary: return a store by ID
       parameters:
@@ -29,27 +30,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StoreInfo'
-        "400":
-          description: The specified store ID is invalid (not a number).
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
         "500":
           description: Unexpected error
+  /stores:
+    get:
+      tags:
+      - customer
+      - store
+      summary: get all store
+      responses:
+        "200":
+          description: return store array
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-  /cart/{customerID}/{productID}/{storeID}:
-    get:
+                $ref: '#/components/schemas/StoreArray'
+        "500":
+          description: Unexpected error
+  /store/{storeID}/get-statictics:
+    post:
       tags:
-      - cart
-      summary: return a cart by ID
+      - seller
+      - store
+      - statistics
+      summary: get store statistics in period
       parameters:
-      - name: customerID
+      - name: storeID
         in: path
-        description: The ID of the table to return
+        description: The ID of the store.
         required: true
         content:
           application/json:
@@ -57,9 +65,189 @@ paths:
               type: string
               example: "1"
               x-content-type: application/json
-      - name: productID
+      requestBody:
+        description: time period
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimePeriod'
+      responses:
+        "200":
+          description: return store statistics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreStatistic'
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /store/{storeID}/get-best-selling:
+    get:
+      tags:
+      - seller
+      - store
+      - statistics
+      summary: get best selling product
+      parameters:
+      - name: storeID
         in: path
-        description: The ID of the table to return
+        description: The ID of the store.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: return best selling product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductStatistic'
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /store/{storeID}/add-product:
+    post:
+      tags:
+      - seller
+      - store
+      - product
+      summary: add a product in store.
+      parameters:
+      - name: storeID
+        in: path
+        description: The ID of the store to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      requestBody:
+        description: a new product
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInfo'
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /store/{storeID}/rate:
+    post:
+      tags:
+      - customer
+      - store
+      summary: rate a store
+      parameters:
+      - name: storeID
+        in: path
+        description: The ID of the store to rate.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      requestBody:
+        description: rate info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RateInfo'
+      responses:
+        "200":
+          description: rate success
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /seller/{userID}/create-store:
+    post:
+      tags:
+      - seller
+      - store
+      summary: create new store
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the store to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      requestBody:
+        description: store info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreInfo'
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /store/{storeID}/add-category/{categoryID}:
+    post:
+      tags:
+      - seller
+      - store
+      - category
+      summary: add a category to store
+      parameters:
+      - name: storeID
+        in: path
+        description: The ID of the store to add
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: categoryID
+        in: path
+        description: The ID of the category to add
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /store/{storeID}/remove-category/{categoryID}:
+    delete:
+      tags:
+      - seller
+      - store
+      - category
+      summary: remove a category from store
+      parameters:
+      - name: categoryID
+        in: path
+        description: The ID of the category to remove
         required: true
         content:
           application/json:
@@ -69,7 +257,7 @@ paths:
               x-content-type: application/json
       - name: storeID
         in: path
-        description: The ID of the table to return
+        description: The ID of the store to remove
         required: true
         content:
           application/json:
@@ -79,93 +267,1012 @@ paths:
               x-content-type: application/json
       responses:
         "200":
-          description: A cart object.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CartInfo'
+          description: ok
         "400":
-          description: The specified cart ID is invalid (not a number).
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          description: bad request
         "500":
           description: Unexpected error
+  /categorys:
+    get:
+      tags:
+      - seller
+      - category
+      summary: get all category
+      responses:
+        "200":
+          description: return category array
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-  /cart:
-    post:
+                $ref: '#/components/schemas/CategoryArray'
+        "500":
+          description: Unexpected error
+  /seller/update-order-status/customer/{userID}/cart/{cartID}/store/{storeID}:
+    put:
       tags:
-      - cart
-      summary: add a new cart to db and return a cart from db
-      requestBody:
-        description: add a new cart.
+      - seller
+      - order
+      summary: update order status
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the user to update.
         required: true
         content:
           application/json:
             schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: cartID
+        in: path
+        description: The ID of the cart to update.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: storeID
+        in: path
+        description: The ID of the store to update.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      requestBody:
+        description: order status
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                  format: int64
+                  example: 1
+      responses:
+        "200":
+          description: update success
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /store/{storeID}/update-product/{productID}:
+    put:
+      tags:
+      - seller
+      - product
+      summary: update a product by ID
+      parameters:
+      - name: storeID
+        in: path
+        description: The ID of the store to update.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: productID
+        in: path
+        description: The ID of the product to update.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      requestBody:
+        description: product info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInfo'
+      responses:
+        "200":
+          description: update success
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /product/{productID}/recommand:
+    get:
+      tags:
+      - customer
+      - product
+      summary: get 'who bought this also bought'
+      parameters:
+      - name: productID
+        in: path
+        description: The ID of the product to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: return product array
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductArray'
+        "500":
+          description: Unexpected error
+  /product/{productID}:
+    get:
+      tags:
+      - customer
+      - product
+      summary: return a product by ID
+      parameters:
+      - name: productID
+        in: path
+        description: The ID of the product to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: A product object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductInfo'
+        "500":
+          description: Unexpected error
+    delete:
+      tags:
+      - seller
+      - product
+      summary: deactive a product by ID
+      parameters:
+      - name: productID
+        in: path
+        description: The ID of the product should be deleted.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: delete success
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /product/{productID}/discounts:
+    get:
+      tags:
+      - customer
+      - discount
+      - product
+      summary: get event discounts by product ID
+      parameters:
+      - name: productID
+        in: path
+        description: The ID of the product to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: return discount array
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventDiscountArray'
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /store/{storeID}/products:
+    get:
+      tags:
+      - customer
+      - product
+      summary: get all products by store ID
+      parameters:
+      - name: storeID
+        in: path
+        description: The ID of the store to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: return product array
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductArray'
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /cart:
+    post:
+      tags:
+      - customer
+      - cart
+      summary: add product to cart
+      requestBody:
+        description: add a new cart.
+        content:
+          application/json:
+            schema:
               $ref: '#/components/schemas/CartInfo'
+        required: true
       responses:
         "200":
           description: A cart object.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Success'
         "400":
-          description: The specified cart ID is invalid (not a number).
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          description: bad request
         "500":
           description: Unexpected error
+  /customer/{userID}/cart/{cartID}/delete/product/{productID}:
+    delete:
+      tags:
+      - customer
+      - cart
+      summary: remove product from cart
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the user to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: cartID
+        in: path
+        description: The ID of the cart to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: productID
+        in: path
+        description: The ID of the product to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: delete success
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /customer/{userID}/cart/{cartID}/update/product/{productID}:
+    put:
+      tags:
+      - customer
+      - cart
+      summary: update product quantity in cart
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the user to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: cartID
+        in: path
+        description: The ID of the cart to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: productID
+        in: path
+        description: The ID of the product to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      requestBody:
+        description: product quantity
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_quantity:
+                  type: integer
+                  format: int64
+                  example: 10
+      responses:
+        "200":
+          description: update success
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /customer/{userID}/store/{storeID}/cart/{cartID}/cancel:
+    put:
+      tags:
+      - customer
+      - order
+      summary: cancel order
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the user.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: storeID
+        in: path
+        description: The ID of the store.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: cartID
+        in: path
+        description: The ID of the cart.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: cancel success
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /user/get-info/{userID}:
+    get:
+      tags:
+      - user
+      summary: get user info by ID
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the user to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: return user info
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        
+                $ref: '#/components/schemas/UserData'
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /store/{storeID}/discounts:
+    get:
+      tags:
+      - customer
+      - discount
+      summary: get shipping discounts by store ID
+      parameters:
+      - name: storeID
+        in: path
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShippingDiscountArray'
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /seasoning-discount:
+    post:
+      tags:
+      - seller
+      - discount
+      summary: create a seasoning discount
+      requestBody:
+        description: user info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SeasoningDiscount'
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /store/{storeID}/shipping-discount:
+    post:
+      tags:
+      - seller
+      - discount
+      summary: create a shipping discount
+      parameters:
+      - name: storeID
+        in: path
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      requestBody:
+        description: user info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShippingDiscount'
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /product/{productID}/event-discount:
+    post:
+      tags:
+      - seller
+      - discount
+      summary: create a event discount
+      parameters:
+      - name: productID
+        in: path
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      requestBody:
+        description: user info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventDiscount'
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /seasoning-discounts:
+    get:
+      tags:
+      - customer
+      - discount
+      summary: get all seasoning discounts
+      responses:
+        "200":
+          description: return seasoning discount array
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeasoningDiscountArray'
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /discount/{discountID}/update-status:
+    put:
+      tags:
+      - seller
+      - discount
+      summary: update discount status
+      parameters:
+      - name: discountID
+        in: path
+        description: The ID of the discount to update.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      requestBody:
+        description: discount status
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                  format: int64
+                  example: 1
+      responses:
+        "200":
+          description: update success
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /customer/{userID}/cart/{cartID}/store/{storeID}/checkout:
+    post:
+      tags:
+      - customer
+      - cart
+      - order
+      summary: checkout cart (optional-> email to customer)
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the user .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: cartID
+        in: path
+        description: The ID of the cart .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: storeID
+        in: path
+        description: The ID of the store .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /customer/{userID}/cart/{cartID}/store/{storeID}/get-total-price:
+    get:
+      tags:
+      - customer
+      - cart
+      - discount
+      summary: get total price of cart
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the user .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: cartID
+        in: path
+        description: The ID of the cart .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: storeID
+        in: path
+        description: The ID of the store .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  price: 
+                    type: integer
+                    format: int64
+                    example: 9999
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /customer/{userID}/cart/{cartID}/store/{storeID}/add-discount/{discountID}:
+    post:
+      tags:
+      - customer
+      - cart
+      - discount
+      summary: add discount to cart
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the user .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: cartID
+        in: path
+        description: The ID of the cart .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: storeID
+        in: path
+        description: The ID of the store .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: discountID
+        in: path
+        description: The ID of the discount .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: add success
+        "500":
+          description: Unexpected error
+  /customer/{userID}/orders:
+    get:
+      tags:
+      - customer
+      - order
+      summary: get all orders by user ID
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the user .
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartArray'
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /admin/ban-user/{userID}:
+    put:
+      tags:
+      - admin
+      - user
+      summary: ban a user by ID
+      parameters:
+      - name: userID
+        in: path
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /admin/unban-user/{userID}:
+    put:
+      tags:
+      - admin
+      - user
+      summary: unban a user by ID
+      parameters:
+      - name: userID
+        in: path
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /admin/edit-user/{userID}:
+    put:
+      tags:
+      - admin
+      - user
+      summary: edit user info by ID
+      parameters:
+      - name: userID
+        in: path
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      requestBody:
+        description: user info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserData'
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /admin/get-all-users:
+    get:
+      tags:
+      - admin
+      - user
+      summary: get all users
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserArray'
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /admin/get-all-orders:
+    get:
+      tags:
+      - admin
+      - order
+      summary: get all orders
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart2DArray'
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
 components:
   schemas:
     StoreInfo:
       required:
       - address
-      - email
-      - id
+      - description
       - name
-      - phome
+      - picture
+      - rate
+      - rate_count
+      - shipping_fee
+      - status
+      - store_id
       type: object
       properties:
-        id:
+        store_id:
           type: integer
           format: int64
           example: 1
+        description:
+          type: string
+          example: good pasta
         name:
           type: string
           example: i'm pasta
         address:
           type: string
           example: pun street
-        email:
+        rate:
+          type: number
+          format: float
+          example: 5
+        rate_count:
+          type: integer
+          format: int64
+          example: 10
+        picture:
           type: string
-          example: pasta@pasta.com
-        phone:
-          type: string
-          example: "0912345678"
+          example: https://i.imgur.com/1.jpg
+        status:
+          type: integer
+          format: int64
+          example: 1
+        shipping_fee:
+          type: integer
+          format: int64
+          example: 100
       example:
+        store_id: 1
+        shipping_fee: 100
         address: pun street
-        phone: "0912345678"
+        rate_count: 10
+        rate: 5
         name: i'm pasta
-        id: 1
-        email: pasta@pasta.com
+        description: good pasta
+        picture: https://i.imgur.com/1.jpg
+        status: 1
+    StoreArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/StoreInfo'
+      x-schema-name: StoreArray
+    ProductInfo:
+      required:
+      - description
+      - name
+      - picture
+      - price
+      - product_id
+      - status
+      - stock
+      - store_id
+      type: object
+      properties:
+        product_id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: pasta
+        store_id:
+          type: integer
+          format: int64
+          example: 1
+        description:
+          type: string
+          example: tasty pasta
+        picture:
+          type: string
+          example: https://i.imgur.com/1.jpg
+        price:
+          type: integer
+          format: int64
+          example: 9999
+        stock:
+          type: integer
+          format: int64
+          example: 100
+        status:
+          type: integer
+          format: int64
+          example: 1
+      example:
+        store_id: 1
+        price: 9999
+        product_id: 1
+        name: pasta
+        description: tasty pasta
+        stock: 100
+        picture: https://i.imgur.com/1.jpg
+        status: 1
+    ProductArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/ProductInfo'
+      x-schema-name: ProductArray
     CartInfo:
       required:
-      - product_quantity
+      - cart_id
       - customer_id
+      - discount_id
       - product_id
+      - product_quantity
       - store_id
       type: object
       properties:
@@ -181,33 +1288,364 @@ components:
           type: integer
           format: int64
           example: 1
+        cart_id:
+          type: integer
+          format: int64
+          example: 1
+        discount_id:
+          type: integer
+          format: int64
+          example: 1
         store_id:
           type: integer
           format: int64
           example: 1
       example:
-        quantity: 10
-        customer_id: 1
+        cart_id: 1
         product_id: 1
+        customer_id: 1
+        product_quantity: 10
+        discount_id: 1
         store_id: 1
-    Success:
+    CartArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/CartInfo'
+      x-schema-name: CartArray
+    Cart2DArray:
+      type: array
+      items:
+        type: array
+        items:
+          $ref: '#/components/schemas/CartArray'
+      x-schema-name: Cart2DArray
+    DiscountInfo:
       required:
-      - code
+      - discount_id
+      - discount_type
+      - status
       type: object
       properties:
-        code:
+        discount_id:
           type: integer
           format: int64
-          example: 200
-    
-    Error:
+          example: 1
+        discount_type:
+          type: integer
+          format: int64
+          example: 1
+        status:
+          type: integer
+          format: int64
+          example: 1
+      example:
+        discount_type: 1
+        discount_id: 1
+        status: 1
+    DiscountArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/DiscountInfo'
+      x-schema-name: DiscountArray
+    UserData:
       required:
-      - code
-      - message
+      - address
+      - authority
+      - birthday
+      - cart_id
+      - password
+      - phone
+      - status
+      - user_email
+      - user_id
+      - user_name
       type: object
       properties:
-        message:
+        user_id:
+          type: integer
+          format: int64
+          example: 1
+        user_name:
           type: string
-        code:
+          example: pasta
+        user_email:
+          type: string
+          example: t110595959@rice.org.tw
+        authority:
           type: integer
           format: int64
+          example: 100
+        password:
+          type: string
+          example: "123456"
+        address:
+          type: string
+          example: pun street
+        phone:
+          type: string
+          example: "0912345678"
+        status:
+          type: integer
+          format: int64
+          example: 1
+        cart_id:
+          type: integer
+          format: int64
+          example: 1
+        birthday:
+          type: string
+          example: 2021-05-01
+      example:
+        birthday: 2021-05-01
+        cart_id: 1
+        user_email: t110595959@rice.org.tw
+        password: "123456"
+        address: pun street
+        user_id: 1
+        phone: "0912345678"
+        user_name: pasta
+        authority: 100
+        status: 1
+    UserArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserData'
+      x-schema-name: UserArray
+    Category:
+      type: object
+      properties:
+        category_id:
+          type: integer
+          format: int64
+          example: 1
+        category_name:
+          type: string
+          example: drink
+      example:
+        category_name: drink
+        category_id: 1
+    CategoryArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/Category'
+      x-schema-name: CategoryArray
+    SeasoningDiscount:
+      required:
+      - discount_description
+      - discount_end_date
+      - discount_id
+      - discount_name
+      - discount_percentage
+      - discount_start_date
+      - status
+      type: object
+      properties:
+        discount_id:
+          type: integer
+          format: int64
+          example: 1
+        discount_name:
+          type: string
+          example: spring discount
+        discount_description:
+          type: string
+          example: all products get 30% off
+        discount_start_date:
+          type: string
+          example: 2021-01-01 00:00:00
+        discount_end_date:
+          type: string
+          example: 2021-01-01 00:00:00
+        discount_percentage:
+          type: integer
+          format: int64
+          example: 70
+        status:
+          type: integer
+          format: int64
+          example: 1
+    SeasoningDiscountArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/SeasoningDiscount'
+      x-schema-name: SeasoningDiscountArray
+    ShippingDiscount:
+      required:
+      - discount_description
+      - discount_id
+      - discount_max_price
+      - discount_name
+      - status
+      type: object
+      properties:
+        discount_id:
+          type: integer
+          format: int64
+          example: 1
+        discount_name:
+          type: string
+          example: free shipping
+        discount_description:
+          type: string
+          example: free shipping when total price over 1000
+        discount_max_price:
+          type: integer
+          format: int64
+          example: 1000
+        status:
+          type: integer
+          format: int64
+          example: 1
+    ShippingDiscountArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/ShippingDiscount'
+      x-schema-name: ShippingDiscountArray
+    EventDiscount:
+      required:
+      - discount_description
+      - discount_id
+      - discount_max_quantity
+      - discount_name
+      - product_id
+      - status
+      type: object
+      properties:
+        discount_id:
+          type: integer
+          format: int64
+          example: 1
+        discount_name:
+          type: string
+          example: new year discount
+        discount_description:
+          type: string
+          example: black tea get two for one free
+        discount_max_quantity:
+          type: integer
+          format: int64
+          example: 2
+        product_id:
+          type: integer
+          format: int64
+          example: 1
+        status:
+          type: integer
+          format: int64
+          example: 1
+    EventDiscountArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/EventDiscount'
+      x-schema-name: EventDiscountArray
+    OrderInfo:
+      required:
+      - cart_id
+      - customer_id
+      - seasoning_discount_id
+      - shipping_discount_id
+      - order_date
+      - order_status
+      - store_id
+      - taking_address
+      - taking_method
+      - total_price
+      type: object
+      properties:
+        customer_id:
+          type: integer
+          format: int64
+          example: 1
+        seasoning_discount_id:
+          type: integer
+          format: int64
+          example: 1
+        shipping_discount_id:
+          type: integer
+          format: int64
+          example: 1
+        cart_id:
+          type: integer
+          format: int64
+          example: 1
+        store_id:
+          type: integer
+          format: int64
+          example: 1
+        order_status:
+          type: integer
+          format: int64
+          example: 1
+        order_date:
+          type: string
+          example: 2021-01-01 00:00:00
+        taking_address:
+          type: string
+          example: NTUT
+        taking_method:
+          type: integer
+          format: int64
+          example: 1
+        total_price:
+          type: integer
+          format: int64
+          example: 9999
+    OrderArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/OrderInfo'
+      x-schema-name: OrderArray
+    ProductStatistic:
+      required:
+      - product_id
+      - product_name
+      - product_quantity
+      - total_price
+      type: object
+      properties:
+        product_id:
+          type: integer
+          format: int64
+          example: 1
+        product_name:
+          type: string
+          example: pasta
+        product_quantity:
+          type: integer
+          format: int64
+          example: 10
+        total_price:
+          type: integer
+          format: int64
+          example: 9999
+      example:
+        total_price: 9999
+        product_id: 1
+        product_name: pasta
+        product_quantity: 10
+    StoreStatistic:
+      type: array
+      items:
+        $ref: '#/components/schemas/ProductStatistic'
+      x-schema-name: StoreStatistic
+    TimePeriod:
+      required:
+      - end_date
+      - start_date
+      type: object
+      properties:
+        start_date:
+          type: string
+          example: 2021-01-01 00:00:00
+        end_date:
+          type: string
+          example: 2021-01-01 00:00:00
+    RateInfo:
+      required:
+      - rate
+      type: object
+      properties:
+        rate:
+          type: number
+          format: float
+          example: 5

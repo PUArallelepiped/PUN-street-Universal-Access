@@ -1,19 +1,17 @@
 package domain
 
-import "context"
+import (
+	"context"
 
-type Store struct {
-	ID      int64  `json:"id"`
-	Name    string `json:"name"`
-	Address string `json:"address"`
-	Email   string `json:"email"`
-	Phone   string `json:"phone"`
-}
+	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
+)
 
 type StoreRepo interface {
-	GetByID(ctx context.Context, id string) (*Store, error)
+	GetByID(ctx context.Context, id string) (*swagger.StoreInfo, error)
+	GetAllStore(ctx context.Context) ([]swagger.StoreInfo, error)
 }
 
 type StoreUsecase interface {
-	GetByID(ctx context.Context, id string) (*Store, error)
+	GetByID(ctx context.Context, id string) (*swagger.StoreInfo, error)
+	GetAllStore(ctx context.Context) ([]swagger.StoreInfo, error)
 }

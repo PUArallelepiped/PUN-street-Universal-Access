@@ -18,13 +18,13 @@ func NewCartHandler(e *gin.Engine, cartUsecase domain.CartUsecase) {
 	handler := &CartHandler{
 		CartUsecase: cartUsecase,
 	}
-	e.POST("/api/v1/cart", handler.PostCart)
-	customer := e.Group("/api/v1/customer/:userID")
+	v1 := e.Group("/api/v1")
 	{
-		customer.GET("/cart/:cartID/store/:storeID/get-total-price", handler.GetTotalPrice)
-		customer.DELETE("/cart/:cartID/delete/product/:productID", handler.DeleteProduct)
-		customer.POST("/cart/:cartID/store/:storeID/checkout", handler.CheckoutCart)
-		customer.GET("/orders", handler.GetCartArray)
+		v1.POST("/cart", handler.PostCart)
+		v1.GET("/customer/:userID/cart/:cartID/store/:storeID/get-total-price", handler.GetTotalPrice)
+		v1.DELETE("/customer/:userID/cart/:cartID/delete/product/:productID", handler.DeleteProduct)
+		v1.POST("/customer/:userID/cart/:cartID/store/:storeID/checkout", handler.CheckoutCart)
+		v1.GET("/customer/:userID/orders", handler.GetCartArray)
 	}
 }
 

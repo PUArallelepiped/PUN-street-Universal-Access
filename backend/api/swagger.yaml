@@ -116,6 +116,7 @@ paths:
       tags:
       - seller
       - store
+      - product
       summary: add a product in store.
       parameters:
       - name: storeID
@@ -456,6 +457,35 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
+  /product/{productID}/discounts:
+    get:
+      tags:
+      - customer
+      - discount
+      - product
+      summary: get event discounts by product ID
+      parameters:
+      - name: productID
+        in: path
+        description: The ID of the product to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: return discount array
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventDiscountArray'
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
   /store/{storeID}/products:
     get:
       tags:
@@ -679,7 +709,7 @@ paths:
       tags:
       - customer
       - discount
-      summary: get all discounts by store ID
+      summary: get shipping discounts by store ID
       parameters:
       - name: storeID
         in: path
@@ -696,27 +726,17 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DiscountArray'
+                $ref: '#/components/schemas/ShippingDiscountArray'
         "400":
           description: bad request
         "500":
           description: Unexpected error
-  /store/{storeID}/seasoning-discount:
+  /seasoning-discount:
     post:
       tags:
       - seller
       - discount
       summary: create a seasoning discount
-      parameters:
-      - name: storeID
-        in: path
-        required: true
-        content:
-          application/json:
-            schema:
-              type: string
-              example: "1"
-              x-content-type: application/json
       requestBody:
         description: user info
         content:
@@ -759,14 +779,14 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /store/{storeID}/event-discount:
+  /product/{productID}/event-discount:
     post:
       tags:
       - seller
       - discount
       summary: create a event discount
       parameters:
-      - name: storeID
+      - name: productID
         in: path
         required: true
         content:
@@ -784,6 +804,23 @@ paths:
       responses:
         "200":
           description: ok
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /seasoning-discounts:
+    get:
+      tags:
+      - customer
+      - discount
+      summary: get all seasoning discounts
+      responses:
+        "200":
+          description: return seasoning discount array
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeasoningDiscountArray'
         "400":
           description: bad request
         "500":
@@ -1400,6 +1437,7 @@ components:
       - discount_name
       - discount_percentage
       - discount_start_date
+      - status
       type: object
       properties:
         discount_id:
@@ -1414,20 +1452,30 @@ components:
           example: all products get 30% off
         discount_start_date:
           type: string
-          example: 2021-05-01
+          example: 2021-01-01 00:00:00
         discount_end_date:
           type: string
-          example: 2021-05-31
+          example: 2021-01-01 00:00:00
         discount_percentage:
           type: integer
           format: int64
           example: 70
+        status:
+          type: integer
+          format: int64
+          example: 1
+    SeasoningDiscountArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/SeasoningDiscount'
+      x-schema-name: SeasoningDiscountArray
     ShippingDiscount:
       required:
       - discount_description
       - discount_id
       - discount_max_price
       - discount_name
+      - status
       type: object
       properties:
         discount_id:
@@ -1444,6 +1492,15 @@ components:
           type: integer
           format: int64
           example: 1000
+        status:
+          type: integer
+          format: int64
+          example: 1
+    ShippingDiscountArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/ShippingDiscount'
+      x-schema-name: ShippingDiscountArray
     EventDiscount:
       required:
       - discount_description
@@ -1451,6 +1508,7 @@ components:
       - discount_max_quantity
       - discount_name
       - product_id
+      - status
       type: object
       properties:
         discount_id:
@@ -1471,11 +1529,21 @@ components:
           type: integer
           format: int64
           example: 1
+        status:
+          type: integer
+          format: int64
+          example: 1
+    EventDiscountArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/EventDiscount'
+      x-schema-name: EventDiscountArray
     OrderInfo:
       required:
       - cart_id
       - customer_id
-      - discount_id
+      - seasoning_discount_id
+      - shipping_discount_id
       - order_date
       - order_status
       - store_id
@@ -1488,7 +1556,11 @@ components:
           type: integer
           format: int64
           example: 1
-        discount_id:
+        seasoning_discount_id:
+          type: integer
+          format: int64
+          example: 1
+        shipping_discount_id:
           type: integer
           format: int64
           example: 1
@@ -1506,7 +1578,7 @@ components:
           example: 1
         order_date:
           type: string
-          example: 2021-05-01
+          example: 2021-01-01 00:00:00
         taking_address:
           type: string
           example: NTUT
@@ -1518,6 +1590,11 @@ components:
           type: integer
           format: int64
           example: 9999
+    OrderArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/OrderInfo'
+      x-schema-name: OrderArray
     ProductStatistic:
       required:
       - product_id
@@ -1559,10 +1636,10 @@ components:
       properties:
         start_date:
           type: string
-          example: 2021-05-01
+          example: 2021-01-01 00:00:00
         end_date:
           type: string
-          example: 2021-05-31
+          example: 2021-01-01 00:00:00
     RateInfo:
       required:
       - rate

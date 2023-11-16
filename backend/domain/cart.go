@@ -16,7 +16,8 @@ type CartRepo interface {
 	AddUserCartId(ctx context.Context, id int64) error
 	GetEventDiscountQuantity(ctx context.Context, id int64) (int64, error)
 	GetCartArrayByCustomerID(ctx context.Context, id int64) (*[]swagger.CartInfo, error)
-	GetOrderById(ctx context.Context, customer_id int64, cart_id int64, store_id int64) (*[]swagger.OrderInfo, error)
+	GetOrderById(ctx context.Context, customerId int64, cartId int64, storeId int64) (*[]swagger.OrderInfo, error)
+	CheckoutOrder(ctx context.Context, customerId int64, cartId int64, storeId int64, totalPrice int64, orderDate string) error
 }
 
 type CartUsecase interface {

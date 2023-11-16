@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"os"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
 	"github.com/go-playground/validator/v10"
@@ -14,15 +14,8 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var db *sql.DB
-
 func init() {
-	connStr := "user=orange dbname=user_data sslmode=disable"
-	db, err := sql.Open("postgres", connStr)
-	if err != nil {
-		fmt.Println("Error opening database:", err)
-	}
-	defer db.Close()
+
 }
 
 type CustomValidator struct {
@@ -141,31 +134,51 @@ var data = []swagger.UserData{
 		UserName:  "apple",
 		UserEmail: "apple@gmail.com",
 		Authority: 0,
-		Password:  "123",
+		Password:  "orangeOAO123",
 		Address:   "Taipei",
 		Phone:     "0912345628",
 		Status:    1,
 		CartId:    1},
 }
 
-func WriteInDB() {
-
-	// 建立数据库连接
-	tx, _ := db.Begin()
-	content, err := os.ReadFile("../../db/i30-user_data.sql")
+func WriteInDB(db *sql.DB, data swagger.UserData) {
+	Birthday, _ := time.Parse("2006-01-02", data.Birthday)
+	_, err := db.Exec("INSERT INTO user_data (name, password, email, address, phone_number, birthday, authority, current_cart_id, status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)", data.UserName, data.Password, data.UserEmail, data.Address, data.Phone, Birthday, data.Authority, data.CartId, data.Status)
 	if err != nil {
-		fmt.Println("ERROR")
+		fmt.Println(err)
 	}
-	statement := string(content)
-	fmt.Println(statement)
-	_, err = tx.Exec(statement)
-	err = tx.Commit()
+}
 
+func UpdateInDB(db *sql.DB, int, data swagger.UserData) error {
+	_, err := db.Exec("UPDATE user_data SET (name, password, email, address, phone_number, birthday, authority, current_cart_id, ,status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)", data.UserName, data.Password, data.UserEmail, data.Address, data.Phone, data.Birthday, data.Authority, data.CartId, data.Status)
+	if err != nil {
+		return errors.New("ERROR　UPDATE")
+	}
+
+	return nil
 }
 
 func Register() {
-	fmt.Println((data[0].Password))
+	connStr := "user=orange dbname=user_data sslmode=disable"
+	var _allErr [3]error
+	if db, err := sql.Open("postgres", connStr); err == nil {
+		_flag := true
+		_allErr[0] = PasswordCheck(data[1].Password)
+		_allErr[1] = validPhoneNumber(data[1].Phone)
+		_allErr[2] = searchRepeat(db, data[1].UserEmail, data[1].Phone)
+		for i := 0; i < 3; i++ {
+			if _allErr[i] != nil {
+				fmt.Println(_allErr[i])
+				_flag = false
+				break
+			}
+		}
+		if _flag {
+			WriteInDB(db, data[1])
+			fmt.Println("OAO")
+		}
+		defer db.Close()
 
-	// validPhoneNumber(data[0].Phone)
-	// searchRepeat(db, data[0].UserEmail, data[0].Phone)
+	}
+
 }

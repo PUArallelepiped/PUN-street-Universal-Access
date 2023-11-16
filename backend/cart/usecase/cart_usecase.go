@@ -20,8 +20,8 @@ func NewCartUsecase(cartRepo domain.CartRepo) domain.CartUsecase {
 	}
 }
 
-func (cu *cartUsecase) PostCart(ctx context.Context, cart *swagger.CartInfo) error {
-	err := cu.cartRepo.PostCart(ctx, cart)
+func (cu *cartUsecase) PostCart(ctx context.Context, cart *swagger.CartInfo, id int64) error {
+	err := cu.cartRepo.PostCart(ctx, cart, id)
 	if err != nil {
 		logrus.Error(err)
 		return err

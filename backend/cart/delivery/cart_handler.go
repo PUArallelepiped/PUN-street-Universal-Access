@@ -20,7 +20,7 @@ func NewCartHandler(e *gin.Engine, cartUsecase domain.CartUsecase) {
 	}
 	v1 := e.Group("/api/v1")
 	{
-		v1.POST("/cart", handler.PostCart)
+		v1.POST("/customer/:userID/cart", handler.PostCart)
 		v1.GET("/customer/:userID/cart/:cartID/store/:storeID/get-total-price", handler.GetTotalPrice)
 		v1.DELETE("/customer/:userID/cart/:cartID/delete/product/:productID", handler.DeleteProduct)
 		v1.POST("/customer/:userID/cart/:cartID/store/:storeID/checkout", handler.CheckoutCart)
@@ -29,6 +29,13 @@ func NewCartHandler(e *gin.Engine, cartUsecase domain.CartUsecase) {
 }
 
 func (s *CartHandler) PostCart(c *gin.Context) {
+	customerID, err := strconv.ParseInt(c.Param("userID"), 10, 64)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
 	var cart swagger.CartInfo
 
 	if err := c.BindJSON(&cart); err != nil {
@@ -37,7 +44,7 @@ func (s *CartHandler) PostCart(c *gin.Context) {
 		return
 	}
 
-	err := s.CartUsecase.PostCart(c, &cart)
+	err = s.CartUsecase.PostCart(c, &cart, customerID)
 
 	if err != nil {
 		logrus.Error(err)

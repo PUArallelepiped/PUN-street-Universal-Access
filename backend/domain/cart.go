@@ -7,7 +7,7 @@ import (
 )
 
 type CartRepo interface {
-	PostCart(ctx context.Context, cart *swagger.CartInfo) error
+	PostCart(ctx context.Context, cart *swagger.CartInfo, id int64) error
 	GetCartByID(ctx context.Context, customerId int64, cartId int64, storeId int64) (*[]swagger.CartInfo, error)
 	GetByProductID(ctx context.Context, id int64) (*swagger.ProductInfo, error)
 	DeleteProduct(ctx context.Context, customerId int64, cartId int64, productId int64) error
@@ -19,7 +19,7 @@ type CartRepo interface {
 }
 
 type CartUsecase interface {
-	PostCart(ctx context.Context, cart *swagger.CartInfo) error
+	PostCart(ctx context.Context, cart *swagger.CartInfo, id int64) error
 	GetTotalPriceByID(ctx context.Context, customerId int64, cartId int64, storeId int64) (int64, error)
 	DeleteProduct(ctx context.Context, customerId int64, cartId int64, productId int64) error
 	Checkout(ctx context.Context, customerId int64, cartId int64, storeId int64, checkoutInfo *swagger.CheckoutInfo) error

@@ -3,7 +3,6 @@
 	import { onMount } from 'svelte';
 
 	//import * as Menubar from "$lib/components/ui/menubar";
-	import * as Card from '$lib/components/ui/card';
 	//import * as Select from "$lib/components/ui/select";
 	import { Input } from '$lib/components/ui/input';
 	import { Checkbox } from '$lib/components/ui/checkbox';
@@ -14,7 +13,6 @@
 
 	import DoubleRangeSlider from '$lib/components/ui/doubleSlider/doubleRangeSlider.svelte';
 	import { backendPath } from '$lib/components/PUA/env';
-	import type { Link } from 'lucide-svelte';
 	import StoreCard from '$lib/components/ui/storeCard/storeCard.svelte';
 	let start = 0;
 	let end = 1;

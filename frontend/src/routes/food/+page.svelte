@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
 
 	//import * as Menubar from "$lib/components/ui/menubar";
 	import * as Card from '$lib/components/ui/card';
@@ -88,18 +89,20 @@
 	<div class="flex flex-wrap pl-20">
 		{#each cards as { title, description, content, footer }}
 			<div class="flex-fill float-left w-[500px]">
-				<Card.Root>
-					<Card.Header class="text-center">
-						<Card.Title>{title}</Card.Title>
-						<Card.Description>{description}</Card.Description>
-					</Card.Header>
-					<Card.Content>
-						<p>{content}</p>
-					</Card.Content>
-					<Card.Footer>
-						<p>{footer}</p>
-					</Card.Footer>
-				</Card.Root>
+				<a href="{$page.route.id}/{title}">
+					<Card.Root>
+						<Card.Header class="text-center">
+							<Card.Title>{title}</Card.Title>
+							<Card.Description>{description}</Card.Description>
+						</Card.Header>
+						<Card.Content>
+							<p>{content}</p>
+						</Card.Content>
+						<Card.Footer>
+							<p>{footer}</p>
+						</Card.Footer>
+					</Card.Root>
+				</a>
 			</div>
 		{/each}
 	</div>

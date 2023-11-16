@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS discounts (
-    discount_id SERIAL PRIMARY KEY,
+    discount_id SERIAL PRIMARY KEY UNIQUE,
     discount_type INT NOT NULL,
     status INT NOT NULL,
     description TEXT,

@@ -3,7 +3,6 @@ package repository
 import (
 	"context"
 	"database/sql"
-	"fmt"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
@@ -90,8 +89,6 @@ func (p *postgresqlCartRepo) AddOrder(ctx context.Context, customerId int64, car
     ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
 	`
 
-	fmt.Println(order)
-
 	_, err := p.db.Exec(sqlStatement, order.CartId, order.StoreId, order.CustomerId, order.SeasoningDiscountId, order.ShippingDiscountId, order.OrderStatus, order.TotalPrice, order.OrderDate, order.TakingAddress, order.TakingMethod)
 	if err != nil {
 		logrus.Error(err)
@@ -171,4 +168,36 @@ func (p *postgresqlCartRepo) GetCartArrayByCustomerID(ctx context.Context, id in
 	}
 
 	return carts, nil
+}
+
+func (p *postgresqlCartRepo) GetOrderById(ctx context.Context, customer_id int64, cart_id int64, store_id int64) (*[]swagger.OrderInfo, error) {
+	sqlStatement := `SELECT 
+	cart_id, store_id, user_id, seasoning_discount_id, shipping_discount_id, status, total_price, Order_date, taking_address, taking_method
+	FROM orders 
+	WHERE user_id = $1 AND cart_id = $2 AND store_id = $3;
+	`
+
+	rows, err := p.db.Query(sqlStatement, customer_id, cart_id, store_id)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	orders := &[]swagger.OrderInfo{}
+	for rows.Next() {
+		order := &swagger.OrderInfo{}
+		err = rows.Scan(
+			&order.CartId, &order.StoreId, &order.CustomerId,
+			&order.SeasoningDiscountId, &order.ShippingDiscountId,
+			&order.OrderStatus, &order.TotalPrice, &order.OrderDate,
+			&order.TakingAddress, &order.TakingMethod)
+		if err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+
+		*orders = append(*orders, *order)
+	}
+
+	return orders, nil
 }

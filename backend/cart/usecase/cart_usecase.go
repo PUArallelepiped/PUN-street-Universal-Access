@@ -21,11 +21,39 @@ func NewCartUsecase(cartRepo domain.CartRepo) domain.CartUsecase {
 }
 
 func (cu *cartUsecase) PostCart(ctx context.Context, cart *swagger.CartInfo, id int64) error {
-	err := cu.cartRepo.PostCart(ctx, cart, id)
-	if err != nil {
-		logrus.Error(err)
-		return err
+	errCart := cu.cartRepo.PostCart(ctx, cart, id)
+	orders, errOrder := cu.cartRepo.GetOrderById(ctx, id, cart.CartId, cart.StoreId)
+	userAddress, errAddress := cu.cartRepo.GetUserAddressById(ctx, id)
+	dt := time.Now().Format("01-02-2006 15:04:05")
+
+	for _, err := range []error{errCart, errOrder, errAddress} {
+		if err != nil {
+			logrus.Error(err)
+			return err
+		}
 	}
+
+	if len(*orders) == 0 {
+		order := &swagger.OrderInfo{
+			CustomerId:          id,
+			SeasoningDiscountId: 1,
+			ShippingDiscountId:  1,
+			CartId:              cart.CartId,
+			StoreId:             cart.StoreId,
+			OrderStatus:         0,
+			OrderDate:           dt,
+			TakingAddress:       userAddress,
+			TakingMethod:        1,
+			TotalPrice:          0,
+		}
+
+		err := cu.cartRepo.AddOrder(ctx, id, cart.CartId, cart.StoreId, order)
+		if err != nil {
+			logrus.Error(err)
+			return err
+		}
+	}
+
 	return nil
 }
 

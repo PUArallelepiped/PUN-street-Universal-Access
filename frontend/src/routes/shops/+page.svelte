@@ -13,6 +13,9 @@
 	//let checked = false;
 
 	import DoubleRangeSlider from '$lib/components/ui/doubleSlider/doubleRangeSlider.svelte';
+	import { backendPath } from '$lib/components/PUA/env';
+	import type { Link } from 'lucide-svelte';
+	import StoreCard from '$lib/components/ui/storeCard/storeCard.svelte';
 	let start = 0;
 	let end = 1;
 
@@ -35,14 +38,57 @@
 		{ id: 'Free-delivery' }
 	];
 
-	let cards = [
-		{ title: '1', description: 'aaa', content: 'aaa', footer: 'foota' },
-		{ title: '2', description: 'bbb', content: 'bbb', footer: 'footb' },
-		{ title: '3', description: 'ccc', content: 'ccc', footer: 'footc' },
-		{ title: '4', description: 'ddd', content: 'ddd', footer: 'footd' },
-		{ title: '5', description: 'eee', content: 'eee', footer: 'foote' },
-		{ title: '6', description: 'fff', content: 'fff', footer: 'footf' }
+	let shopListResponse: {
+		address: string;
+		description: string;
+		name: string;
+		picture: string;
+		rate: number;
+		rate_count: number;
+		shipping_fee: number;
+		status: number;
+		store_id: number;
+	}[] = [
+		{
+			store_id: 1,
+			description: 'you are not pasta',
+			name: 'im pasta',
+			address: 'pun street',
+			rate: 4,
+			rate_count: 100,
+			picture: 'https://i.imgur.com/3i3tyXJ.gif',
+			status: 1,
+			shipping_fee: 35
+		},
+		{
+			store_id: 2,
+			description: 'special meal',
+			name: 'number five',
+			address: 'pun street',
+			rate: 3.5,
+			rate_count: 5,
+			picture: 'https://i.imgur.com/3i3tyXJ.gif',
+			status: 1,
+			shipping_fee: 15
+		},
+		{
+			store_id: 3,
+			description: 'moooooooooooooos',
+			name: 'mos burger',
+			address: 'NTUT',
+			rate: 4,
+			rate_count: 123,
+			picture: 'https://i.imgur.com/3i3tyXJ.gif',
+			status: 1,
+			shipping_fee: 55
+		}
 	];
+
+	onMount(async () => {
+		const resp = await fetch(backendPath + '/stores');
+		shopListResponse = await resp.json();
+		console.log(shopListResponse);
+	});
 </script>
 
 <div class="h-[50px] w-[40%] overflow-hidden">
@@ -87,22 +133,14 @@
 	</div>
 
 	<div class="flex flex-wrap pl-20">
-		{#each cards as { title, description, content, footer }}
+		{#each shopListResponse as shop}
 			<div class="flex-fill float-left w-[500px]">
-				<a href="{$page.route.id}/{title}">
-					<Card.Root>
-						<Card.Header class="text-center">
-							<Card.Title>{title}</Card.Title>
-							<Card.Description>{description}</Card.Description>
-						</Card.Header>
-						<Card.Content>
-							<p>{content}</p>
-						</Card.Content>
-						<Card.Footer>
-							<p>{footer}</p>
-						</Card.Footer>
-					</Card.Root>
-				</a>
+				<StoreCard
+					name={shop.name}
+					description={shop.description}
+					picture={shop.picture}
+					address={shop.address}
+				/>
 			</div>
 		{/each}
 	</div>

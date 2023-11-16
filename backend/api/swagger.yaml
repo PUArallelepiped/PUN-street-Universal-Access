@@ -514,12 +514,23 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /cart:
+  /customer/{userID}/cart:
     post:
       tags:
       - customer
       - cart
       summary: add product to cart
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the user to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
       requestBody:
         description: add a new cart.
         content:

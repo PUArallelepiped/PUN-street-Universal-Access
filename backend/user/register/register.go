@@ -149,12 +149,19 @@ func WriteInDB(db *sql.DB, data swagger.UserData) {
 	}
 }
 
-func UpdateInDB(db *sql.DB, int, data swagger.UserData) error {
-	_, err := db.Exec("UPDATE user_data SET (name, password, email, address, phone_number, birthday, authority, current_cart_id, ,status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)", data.UserName, data.Password, data.UserEmail, data.Address, data.Phone, data.Birthday, data.Authority, data.CartId, data.Status)
-	if err != nil {
-		return errors.New("ERROR　UPDATE")
-	}
+func UpdateInDB(emailChanged string, data swagger.UserData) error {
+	connStr := "user=orange dbname=user_data sslmode=disable"
+	Birthday, _ := time.Parse("2006-01-02", data.Birthday)
+	if db, err := sql.Open("postgres", connStr); err == nil {
+		_, err1 := db.Exec("UPDATE user_data SET name=$1, password=$2, email=$3, address=$4, phone_number=$5, birthday=$6, authority=$7, current_cart_id=$8, status=$9 WHERE email=$10", data.UserName, data.Password, data.UserEmail, data.Address, data.Phone, Birthday, data.Authority, data.CartId, data.Status, emailChanged)
+		if err1 != nil {
+			fmt.Println(err1)
+			return err1
+		}
 
+	} else {
+		return err
+	}
 	return nil
 }
 
@@ -180,5 +187,30 @@ func Register() {
 		defer db.Close()
 
 	}
+
+}
+
+func UpdateData() {
+	var tempData = []swagger.UserData{
+		{UserId: 1,
+			UserName:  "orange",
+			UserEmail: "orange@gmail.com",
+			Authority: 1,
+			Password:  "Temp123Password123",
+			Address:   "Taipei",
+			Phone:     "0912345678",
+			Status:    1,
+			CartId:    1},
+		{UserId: 2,
+			UserName:  "apple",
+			UserEmail: "apple@gmail.com",
+			Authority: 0,
+			Password:  "orangeOAO123",
+			Address:   "Taipei",
+			Phone:     "0912345628",
+			Status:    1,
+			CartId:    1},
+	}
+	UpdateInDB("orange@gmail.com", tempData[0])
 
 }

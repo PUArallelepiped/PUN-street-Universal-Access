@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
@@ -66,12 +65,10 @@ func (cu *cartUsecase) GetTotalPriceByID(ctx context.Context, customerId int64, 
 		logrus.Error(err)
 		return 0, err
 	}
-	fmt.Println("carts", carts)
 
 	// cal event discount
 	for _, cart := range *carts {
 		// product, err := productRepo.GetByProductID(ctx, cart.ProductId)
-		fmt.Println("product_id", cart.ProductId)
 		product, err := cu.cartRepo.GetByProductID(ctx, cart.ProductId)
 		if err != nil {
 			logrus.Error(err)
@@ -79,8 +76,6 @@ func (cu *cartUsecase) GetTotalPriceByID(ctx context.Context, customerId int64, 
 		}
 
 		quantity := cart.ProductQuantity
-		fmt.Println("prodcut_quantity", cart.ProductQuantity)
-		fmt.Println("cart discount", cart.DiscountId)
 		if cart.DiscountId != 1 {
 			discountQuantity, err := cu.cartRepo.GetEventDiscountQuantity(ctx, cart.DiscountId)
 			if err != nil {
@@ -91,11 +86,9 @@ func (cu *cartUsecase) GetTotalPriceByID(ctx context.Context, customerId int64, 
 		}
 		totalPrice += product.Price * quantity
 	}
-	fmt.Println("eventDiscount", totalPrice)
 
 	//cal seasoning and shipping
 	order, cartErr := cu.cartRepo.GetOrderById(ctx, customerId, cartId, storeId)
-	fmt.Println("shipping ", order.ShippingDiscountId, "season", order.SeasoningDiscountId)
 	shippingFee, shippingFeeErr := cu.cartRepo.GetStoreShippingFeeByID(ctx, storeId)
 	for _, err := range []error{cartErr, shippingFeeErr} {
 		if err != nil {
@@ -114,7 +107,6 @@ func (cu *cartUsecase) GetTotalPriceByID(ctx context.Context, customerId int64, 
 		if totalPrice < max_price {
 			totalPrice += shippingFee
 		}
-		fmt.Println("shippingDiscount", max_price, "total", totalPrice)
 	}
 	// seasoning  discount
 	if order.SeasoningDiscountId != 1 {
@@ -124,9 +116,7 @@ func (cu *cartUsecase) GetTotalPriceByID(ctx context.Context, customerId int64, 
 			return 0, err
 		}
 
-		fmt.Println("percent", float32(discountPercentage)/100)
 		totalPrice = int64(float32(totalPrice) * (float32(discountPercentage) / 100))
-		fmt.Println("seasoningDiscount", discountPercentage, "total", totalPrice)
 	}
 
 	return totalPrice, nil
@@ -149,7 +139,6 @@ func (cu *cartUsecase) Checkout(ctx context.Context, customerId int64, cartId in
 		return err
 	}
 
-	fmt.Println(totalPrice)
 	err = cu.cartRepo.CheckoutOrder(ctx, customerId, cartId, storeId, totalPrice, dt)
 	if err != nil {
 		logrus.Error(err)

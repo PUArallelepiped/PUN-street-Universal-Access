@@ -170,36 +170,27 @@ func (p *postgresqlCartRepo) GetCartArrayByCustomerID(ctx context.Context, id in
 	return carts, nil
 }
 
-func (p *postgresqlCartRepo) GetOrderById(ctx context.Context, customerId int64, cartId int64, storeId int64) (*[]swagger.OrderInfo, error) {
+func (p *postgresqlCartRepo) GetOrderById(ctx context.Context, customerId int64, cartId int64, storeId int64) (*swagger.OrderInfo, error) {
 	sqlStatement := `SELECT 
 	cart_id, store_id, user_id, seasoning_discount_id, shipping_discount_id, status, total_price, Order_date, taking_address, taking_method
 	FROM orders 
 	WHERE user_id = $1 AND cart_id = $2 AND store_id = $3;
 	`
 
-	rows, err := p.db.Query(sqlStatement, customerId, cartId, storeId)
+	row := p.db.QueryRow(sqlStatement, customerId, cartId, storeId)
+
+	order := &swagger.OrderInfo{}
+	err := row.Scan(
+		&order.CartId, &order.StoreId, &order.CustomerId,
+		&order.SeasoningDiscountId, &order.ShippingDiscountId,
+		&order.OrderStatus, &order.TotalPrice, &order.OrderDate,
+		&order.TakingAddress, &order.TakingMethod)
 	if err != nil {
 		logrus.Error(err)
 		return nil, err
 	}
 
-	orders := &[]swagger.OrderInfo{}
-	for rows.Next() {
-		order := &swagger.OrderInfo{}
-		err = rows.Scan(
-			&order.CartId, &order.StoreId, &order.CustomerId,
-			&order.SeasoningDiscountId, &order.ShippingDiscountId,
-			&order.OrderStatus, &order.TotalPrice, &order.OrderDate,
-			&order.TakingAddress, &order.TakingMethod)
-		if err != nil {
-			logrus.Error(err)
-			return nil, err
-		}
-
-		*orders = append(*orders, *order)
-	}
-
-	return orders, nil
+	return order, nil
 }
 
 func (p *postgresqlCartRepo) CheckoutOrder(ctx context.Context, customerId int64, cartId int64, storeId int64, totalPrice int64, orderDate string) error {
@@ -217,4 +208,49 @@ func (p *postgresqlCartRepo) CheckoutOrder(ctx context.Context, customerId int64
 	}
 
 	return nil
+}
+
+func (p *postgresqlCartRepo) GetStoreShippingFeeByID(ctx context.Context, id int64) (int64, error) {
+	row := p.db.QueryRow("SELECT shipping_fee FROM stores WHERE store_id = $1", id)
+
+	var shippingFee int64 = 0
+	if err := row.Scan(&shippingFee); err != nil {
+		logrus.Error(err)
+		return 0, err
+	}
+	return shippingFee, nil
+}
+
+func (p *postgresqlCartRepo) GetMaxPriceByID(ctx context.Context, id int64) (int64, error) {
+	sqlStatement := `
+	SELECT max_price FROM shipping_discount
+	WHERE discount_id = $1;
+	`
+
+	row := p.db.QueryRow(sqlStatement, id)
+
+	var maxPrice int64 = 0
+	if err := row.Scan(&maxPrice); err != nil {
+		logrus.Error(err)
+		return 0, err
+	}
+
+	return maxPrice, nil
+}
+
+func (p *postgresqlCartRepo) GetPercentageByID(ctx context.Context, id int64) (int64, error) {
+	sqlStatement := `
+	SELECT discount_percentage FROM seasoning_discount
+	WHERE discount_id = $1;
+	`
+
+	row := p.db.QueryRow(sqlStatement, id)
+
+	var percentage int64 = 0
+	if err := row.Scan(&percentage); err != nil {
+		logrus.Error(err)
+		return 0, err
+	}
+
+	return percentage, nil
 }

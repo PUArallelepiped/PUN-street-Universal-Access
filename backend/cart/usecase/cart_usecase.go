@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
@@ -22,18 +23,18 @@ func NewCartUsecase(cartRepo domain.CartRepo) domain.CartUsecase {
 
 func (cu *cartUsecase) PostCart(ctx context.Context, cart *swagger.CartInfo, id int64) error {
 	errCart := cu.cartRepo.PostCart(ctx, cart, id)
-	orders, errOrder := cu.cartRepo.GetOrderById(ctx, id, cart.CartId, cart.StoreId)
 	userAddress, errAddress := cu.cartRepo.GetUserAddressById(ctx, id)
 	dt := time.Now().Format("01-02-2006 15:04:05")
 
-	for _, err := range []error{errCart, errOrder, errAddress} {
+	for _, err := range []error{errCart, errAddress} {
 		if err != nil {
 			logrus.Error(err)
 			return err
 		}
 	}
 
-	if len(*orders) == 0 {
+	_, errOrder := cu.cartRepo.GetOrderById(ctx, id, cart.CartId, cart.StoreId)
+	if errOrder != nil {
 		order := &swagger.OrderInfo{
 			CustomerId:          id,
 			SeasoningDiscountId: 1,
@@ -65,9 +66,12 @@ func (cu *cartUsecase) GetTotalPriceByID(ctx context.Context, customerId int64, 
 		logrus.Error(err)
 		return 0, err
 	}
+	fmt.Println("carts", carts)
 
+	// cal event discount
 	for _, cart := range *carts {
 		// product, err := productRepo.GetByProductID(ctx, cart.ProductId)
+		fmt.Println("product_id", cart.ProductId)
 		product, err := cu.cartRepo.GetByProductID(ctx, cart.ProductId)
 		if err != nil {
 			logrus.Error(err)
@@ -75,6 +79,8 @@ func (cu *cartUsecase) GetTotalPriceByID(ctx context.Context, customerId int64, 
 		}
 
 		quantity := cart.ProductQuantity
+		fmt.Println("prodcut_quantity", cart.ProductQuantity)
+		fmt.Println("cart discount", cart.DiscountId)
 		if cart.DiscountId != 1 {
 			discountQuantity, err := cu.cartRepo.GetEventDiscountQuantity(ctx, cart.DiscountId)
 			if err != nil {
@@ -84,6 +90,43 @@ func (cu *cartUsecase) GetTotalPriceByID(ctx context.Context, customerId int64, 
 			quantity = cart.ProductQuantity - (cart.ProductQuantity / (discountQuantity + 1))
 		}
 		totalPrice += product.Price * quantity
+	}
+	fmt.Println("eventDiscount", totalPrice)
+
+	//cal seasoning and shipping
+	order, cartErr := cu.cartRepo.GetOrderById(ctx, customerId, cartId, storeId)
+	fmt.Println("shipping ", order.ShippingDiscountId, "season", order.SeasoningDiscountId)
+	shippingFee, shippingFeeErr := cu.cartRepo.GetStoreShippingFeeByID(ctx, storeId)
+	for _, err := range []error{cartErr, shippingFeeErr} {
+		if err != nil {
+			logrus.Error(err)
+			return 0, err
+		}
+	}
+
+	// shipping discount
+	if order.ShippingDiscountId != 1 {
+		max_price, err := cu.cartRepo.GetMaxPriceByID(ctx, order.ShippingDiscountId)
+		if err != nil {
+			logrus.Error(err)
+			return 0, err
+		}
+		if totalPrice < max_price {
+			totalPrice += shippingFee
+		}
+		fmt.Println("shippingDiscount", max_price, "total", totalPrice)
+	}
+	// seasoning  discount
+	if order.SeasoningDiscountId != 1 {
+		discountPercentage, err := cu.cartRepo.GetPercentageByID(ctx, order.SeasoningDiscountId)
+		if err != nil {
+			logrus.Error(err)
+			return 0, err
+		}
+
+		fmt.Println("percent", float32(discountPercentage)/100)
+		totalPrice = int64(float32(totalPrice) * (float32(discountPercentage) / 100))
+		fmt.Println("seasoningDiscount", discountPercentage, "total", totalPrice)
 	}
 
 	return totalPrice, nil

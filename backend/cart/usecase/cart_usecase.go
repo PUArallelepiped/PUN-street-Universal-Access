@@ -143,15 +143,14 @@ func (cu *cartUsecase) DeleteProduct(ctx context.Context, customerId int64, cart
 
 func (cu *cartUsecase) Checkout(ctx context.Context, customerId int64, cartId int64, storeId int64, checkoutInfo *swagger.CheckoutInfo) error {
 	dt := time.Now().Format("01-02-2006 15:04:05")
-	// totalPrice, err := cu.GetTotalPriceByID(ctx, customerId, cartId, storeId)
-	// if err != nil {
-	// 	logrus.Error(err)
-	// 	return err
-	// }
+	totalPrice, err := cu.GetTotalPriceByID(ctx, customerId, cartId, storeId)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
 
-	// fmt.Println(totalPrice)
-	// err = cu.cartRepo.CheckoutOrder(ctx, customerId, cartId, storeId, totalPrice, dt)
-	err := cu.cartRepo.CheckoutOrder(ctx, customerId, cartId, storeId, 400, dt)
+	fmt.Println(totalPrice)
+	err = cu.cartRepo.CheckoutOrder(ctx, customerId, cartId, storeId, totalPrice, dt)
 	if err != nil {
 		logrus.Error(err)
 		return err

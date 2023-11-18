@@ -54,3 +54,13 @@ func (du *discountUsecase) AddEvent(ctx context.Context, event *swagger.EventDis
 	}
 	return nil
 }
+
+func (du *discountUsecase) GetAllSeasoning(ctx context.Context) ([]swagger.SeasoningDiscount, error) {
+	discounts, err := du.discountRepo.GetAllSeasoning(ctx)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	return discounts, nil
+}

@@ -24,6 +24,7 @@ func NewDiscountHandler(e *gin.Engine, discountUsecase domain.DiscountUsecase) {
 		v1.POST("/product/:productID/event-discount", handler.AddEventDiscount)
 		v1.GET("/store/:storeID/discounts", handler.GetAllShippingByStoreId)
 		v1.POST("/store/:storeID/shipping-discount", handler.AddShippingDiscount)
+		v1.GET("seasoning-discounts", handler.GetAllSeasoningDiscount)
 	}
 }
 
@@ -113,4 +114,15 @@ func (s *DiscountHandler) AddEventDiscount(c *gin.Context) {
 	}
 
 	c.Status(200)
+}
+
+func (s *DiscountHandler) GetAllSeasoningDiscount(c *gin.Context) {
+	discounts, err := s.DiscountUsecase.GetAllSeasoning(c)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, discounts)
 }

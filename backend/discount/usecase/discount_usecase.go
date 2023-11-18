@@ -64,3 +64,13 @@ func (du *discountUsecase) GetAllSeasoning(ctx context.Context) ([]swagger.Seaso
 
 	return discounts, nil
 }
+
+func (du *discountUsecase) GetAllEventByProductID(ctx context.Context, id int64) ([]swagger.EventDiscount, error) {
+	discounts, err := du.discountRepo.GetAllEventByProductID(ctx, id)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	return discounts, nil
+}

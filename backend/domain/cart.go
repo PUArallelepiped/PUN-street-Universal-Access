@@ -21,6 +21,7 @@ type CartRepo interface {
 	GetStoreShippingFeeByID(ctx context.Context, id int64) (int64, error)
 	GetMaxPriceByID(ctx context.Context, id int64) (int64, error)
 	GetPercentageByID(ctx context.Context, id int64) (int64, error)
+	DeleteOrder(ctx context.Context, customerId int64, cartId int64, storeId int64) error
 }
 
 type CartUsecase interface {

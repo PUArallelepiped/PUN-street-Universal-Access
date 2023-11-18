@@ -122,10 +122,24 @@ func (cu *cartUsecase) GetTotalPriceByID(ctx context.Context, customerId int64, 
 	return totalPrice, nil
 }
 func (cu *cartUsecase) DeleteProduct(ctx context.Context, customerId int64, cartId int64, productId int64) error {
-	err := cu.cartRepo.DeleteProduct(ctx, customerId, cartId, productId)
-	if err != nil {
-		logrus.Error(err)
-		return err
+	product, productErr := cu.cartRepo.GetByProductID(ctx, productId)
+	deleteErr := cu.cartRepo.DeleteProduct(ctx, customerId, cartId, productId)
+	for _, err := range []error{productErr, deleteErr} {
+		if err != nil {
+			logrus.Error(err)
+			return err
+		}
+	}
+
+	carts, cartsErr := cu.cartRepo.GetCartByID(ctx, customerId, cartId, product.StoreId)
+	if len(*carts) == 0 {
+		deleteErr = cu.cartRepo.DeleteOrder(ctx, customerId, cartId, product.StoreId)
+	}
+	for _, err := range []error{cartsErr, deleteErr} {
+		if err != nil {
+			logrus.Error(err)
+			return err
+		}
 	}
 
 	return nil

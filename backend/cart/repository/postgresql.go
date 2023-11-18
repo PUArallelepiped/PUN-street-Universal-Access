@@ -83,6 +83,21 @@ func (p *postgresqlCartRepo) DeleteProduct(ctx context.Context, customerId int64
 
 	return nil
 }
+
+func (p *postgresqlCartRepo) DeleteOrder(ctx context.Context, customerId int64, cartId int64, storeId int64) error {
+	sqlStatement := `
+	DELETE FROM orders
+	WHERE user_id = $1 AND cart_id = $2 AND store_id = $3;
+	`
+	_, err := p.db.Exec(sqlStatement, customerId, cartId, storeId)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}
+
 func (p *postgresqlCartRepo) AddOrder(ctx context.Context, customerId int64, cartId int64, storeId int64, order *swagger.OrderInfo) error {
 	sqlStatement := `INSERT INTO orders 
 	(cart_id, store_id, user_id, seasoning_discount_id, shipping_discount_id, status, total_price, Order_date, taking_address, taking_method) VALUES 

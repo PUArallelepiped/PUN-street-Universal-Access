@@ -14,10 +14,6 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func init() {
-
-}
-
 type CustomValidator struct {
 	validator *validator.Validate
 }
@@ -111,37 +107,29 @@ func searchRepeat(db *sql.DB, address string, phoneNumber string) error {
 
 	return nil
 }
-func DecideWrite(tmp [4]bool) bool {
 
-	var ans bool = true
-	for i := range tmp {
-		ans = ans && tmp[i]
-	}
-	return ans
-}
+// var data = []swagger.UserData{
+// 	{UserId: 1,
+// 		UserName:  "orange",
+// 		UserEmail: "orange@gmail.com",
+// 		Authority: 1,
+// 		Password:  "123",
+// 		Address:   "Taipei",
+// 		Phone:     "0912345678",
+// 		Status:    1,
+// 		CartId:    1},
+// 	{UserId: 2,
+// 		UserName:  "apple",
+// 		UserEmail: "apple@gmail.com",
+// 		Authority: 0,
+// 		Password:  "orangeOAO123",
+// 		Address:   "Taipei",
+// 		Phone:     "0912345628",
+// 		Status:    1,
+// 		CartId:    1},
+// }
 
-var data = []swagger.UserData{
-	{UserId: 1,
-		UserName:  "orange",
-		UserEmail: "orange@gmail.com",
-		Authority: 1,
-		Password:  "123",
-		Address:   "Taipei",
-		Phone:     "0912345678",
-		Status:    1,
-		CartId:    1},
-	{UserId: 2,
-		UserName:  "apple",
-		UserEmail: "apple@gmail.com",
-		Authority: 0,
-		Password:  "orangeOAO123",
-		Address:   "Taipei",
-		Phone:     "0912345628",
-		Status:    1,
-		CartId:    1},
-}
-
-func WriteInDB(db *sql.DB, data swagger.UserData) {
+func writeInDB(db *sql.DB, data swagger.UserData) {
 	Birthday, _ := time.Parse("2006-01-02", data.Birthday)
 	_, err := db.Exec("INSERT INTO user_data (name, password, email, address, phone_number, birthday, authority, current_cart_id, status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)", data.UserName, data.Password, data.UserEmail, data.Address, data.Phone, Birthday, data.Authority, data.CartId, data.Status)
 	if err != nil {
@@ -149,14 +137,21 @@ func WriteInDB(db *sql.DB, data swagger.UserData) {
 	}
 }
 
-func UpdateInDB(emailChanged string, data swagger.UserData) error {
+func updateInDB(emailChanged string, data swagger.UserData) error {
+
 	connStr := "user=orange dbname=user_data sslmode=disable"
+
 	Birthday, _ := time.Parse("2006-01-02", data.Birthday)
 	if db, err := sql.Open("postgres", connStr); err == nil {
-		_, err1 := db.Exec("UPDATE user_data SET name=$1, password=$2, email=$3, address=$4, phone_number=$5, birthday=$6, authority=$7, current_cart_id=$8, status=$9 WHERE email=$10", data.UserName, data.Password, data.UserEmail, data.Address, data.Phone, Birthday, data.Authority, data.CartId, data.Status, emailChanged)
-		if err1 != nil {
+		if err1 := searchRepeat(db, emailChanged, ""); err1 == nil {
+			_, err2 := db.Exec("UPDATE user_data SET name=$1, password=$2, email=$3, address=$4, phone_number=$5, birthday=$6, authority=$7, current_cart_id=$8, status=$9 WHERE email=$10", data.UserName, data.Password, data.UserEmail, data.Address, data.Phone, Birthday, data.Authority, data.CartId, data.Status, emailChanged)
+			if err2 != nil {
+				fmt.Println(err2)
+				return err2
+			}
+		} else {
+			fmt.Println("ERROR")
 			fmt.Println(err1)
-			return err1
 		}
 
 	} else {
@@ -165,14 +160,14 @@ func UpdateInDB(emailChanged string, data swagger.UserData) error {
 	return nil
 }
 
-func Register() {
+func RegisterData(data swagger.UserData) {
 	connStr := "user=orange dbname=user_data sslmode=disable"
 	var _allErr [3]error
 	if db, err := sql.Open("postgres", connStr); err == nil {
 		_flag := true
-		_allErr[0] = PasswordCheck(data[1].Password)
-		_allErr[1] = validPhoneNumber(data[1].Phone)
-		_allErr[2] = searchRepeat(db, data[1].UserEmail, data[1].Phone)
+		_allErr[0] = PasswordCheck(data.Password)
+		_allErr[1] = validPhoneNumber(data.Phone)
+		_allErr[2] = searchRepeat(db, data.UserEmail, data.Phone)
 		for i := 0; i < 3; i++ {
 			if _allErr[i] != nil {
 				fmt.Println(_allErr[i])
@@ -181,7 +176,7 @@ func Register() {
 			}
 		}
 		if _flag {
-			WriteInDB(db, data[1])
+			writeInDB(db, data)
 			fmt.Println("OAO")
 		}
 		defer db.Close()
@@ -190,27 +185,27 @@ func Register() {
 
 }
 
-func UpdateData() {
-	var tempData = []swagger.UserData{
-		{UserId: 1,
-			UserName:  "orange",
-			UserEmail: "orange@gmail.com",
-			Authority: 1,
-			Password:  "Temp123Password123",
-			Address:   "Taipei",
-			Phone:     "0912345678",
-			Status:    1,
-			CartId:    1},
-		{UserId: 2,
-			UserName:  "apple",
-			UserEmail: "apple@gmail.com",
-			Authority: 0,
-			Password:  "orangeOAO123",
-			Address:   "Taipei",
-			Phone:     "0912345628",
-			Status:    1,
-			CartId:    1},
-	}
-	UpdateInDB("orange@gmail.com", tempData[0])
+func UpdateData(data swagger.UserData) {
+	// var tempData = []swagger.UserData{
+	// 	{UserId: 1,
+	// 		UserName:  "orange",
+	// 		UserEmail: "orange@gmail.com",
+	// 		Authority: 1,
+	// 		Password:  "Temp123Password123",
+	// 		Address:   "Taipei",
+	// 		Phone:     "0912345678",
+	// 		Status:    1,
+	// 		CartId:    1},
+	// 	{UserId: 2,
+	// 		UserName:  "apple",
+	// 		UserEmail: "apple@gmail.com",
+	// 		Authority: 0,
+	// 		Password:  "orangeOAO123",
+	// 		Address:   "Taipei",
+	// 		Phone:     "0912345628",
+	// 		Status:    1,
+	// 		CartId:    1},
+	// }
+	updateInDB("orange@gmail.com", data)
 
 }

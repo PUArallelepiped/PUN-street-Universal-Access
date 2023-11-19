@@ -25,6 +25,7 @@ func NewCartHandler(e *gin.Engine, cartUsecase domain.CartUsecase) {
 		v1.DELETE("/customer/:userID/cart/:cartID/delete/product/:productID", handler.DeleteProduct)
 		v1.POST("/customer/:userID/cart/:cartID/store/:storeID/checkout", handler.CheckoutCart)
 		v1.GET("/customer/:userID/orders", handler.GetCartArray)
+		v1.PUT("/customer/:userID/cart/:cartID/update/product/:productID", handler.UpdateCartProductQuantity)
 	}
 }
 
@@ -150,4 +151,36 @@ func (s *CartHandler) GetCartArray(c *gin.Context) {
 	}
 
 	c.JSON(200, carts)
+}
+
+func (s *CartHandler) UpdateCartProductQuantity(c *gin.Context) {
+	customerID, customerErr := strconv.ParseInt(c.Param("userID"), 10, 64)
+	cartID, cartErr := strconv.ParseInt(c.Param("cartID"), 10, 64)
+	productID, productErr := strconv.ParseInt(c.Param("productID"), 10, 64)
+	errArr := []error{customerErr, cartErr, productErr}
+	for _, err := range errArr {
+		if err != nil {
+			logrus.Error(err)
+			c.Status(400)
+			return
+		}
+	}
+
+	var cart swagger.CartInfo
+	if err := c.BindJSON(&cart); err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
+	productQuantity := cart.ProductQuantity
+	err := s.CartUsecase.UpdateProduct(c, customerID, cartID, productID, productQuantity)
+
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.Status(200)
 }

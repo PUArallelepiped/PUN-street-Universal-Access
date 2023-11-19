@@ -177,3 +177,13 @@ func (cu *cartUsecase) GetCartArrayByCustomerID(ctx context.Context, id int64) (
 
 	return carts, nil
 }
+
+func (cu *cartUsecase) UpdateProduct(ctx context.Context, customerId int64, cartId int64, productId int64, quantity int64) error {
+	err := cu.cartRepo.UpdateProduct(ctx, customerId, cartId, productId, quantity)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}

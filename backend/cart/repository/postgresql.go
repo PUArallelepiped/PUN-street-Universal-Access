@@ -269,3 +269,19 @@ func (p *postgresqlCartRepo) GetPercentageByID(ctx context.Context, id int64) (i
 
 	return percentage, nil
 }
+
+func (p *postgresqlCartRepo) UpdateProduct(ctx context.Context, customerId int64, cartId int64, productId int64, quantity int64) error {
+	sqlStatement := `
+	UPDATE carts SET 
+	product_quantity = $1
+	WHERE customer_id = $2 AND cart_id = $3 AND product_id = $4;
+	`
+
+	_, err := p.db.Exec(sqlStatement, quantity, customerId, cartId, productId)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}

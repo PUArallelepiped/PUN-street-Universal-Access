@@ -22,6 +22,7 @@ type CartRepo interface {
 	GetMaxPriceByID(ctx context.Context, id int64) (int64, error)
 	GetPercentageByID(ctx context.Context, id int64) (int64, error)
 	DeleteOrder(ctx context.Context, customerId int64, cartId int64, storeId int64) error
+	UpdateProduct(ctx context.Context, customerId int64, cartId int64, productId int64, quantity int64) error
 }
 
 type CartUsecase interface {
@@ -30,4 +31,5 @@ type CartUsecase interface {
 	DeleteProduct(ctx context.Context, customerId int64, cartId int64, productId int64) error
 	Checkout(ctx context.Context, customerId int64, cartId int64, storeId int64, checkoutInfo *swagger.CheckoutInfo) error
 	GetCartArrayByCustomerID(ctx context.Context, id int64) (*[]swagger.CartInfo, error)
+	UpdateProduct(ctx context.Context, customerId int64, cartId int64, productId int64, quantity int64) error
 }

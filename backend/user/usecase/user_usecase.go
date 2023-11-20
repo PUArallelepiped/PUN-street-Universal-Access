@@ -2,10 +2,12 @@ package usecase
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/golang-jwt/jwt"
+	"github.com/spf13/viper"
 )
 
 type userUsecase struct {
@@ -24,7 +26,13 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-var jwtSecret = []byte("secret")
+func init() {
+	viper.SetConfigFile("../.env")
+	viper.SetConfigType("dotenv")
+	if err := viper.ReadInConfig(); err != nil {
+		log.Fatal(err)
+	}
+}
 
 func CreateToken(email string, authority int) (string, error) {
 	expiresAt := time.Now().Add(24 * time.Hour).Unix()
@@ -35,6 +43,7 @@ func CreateToken(email string, authority int) (string, error) {
 		Email:     email,
 		Authority: authority,
 	})
+	jwtSecret := []byte(viper.GetString("JWT_SECRET"))
 	tokenString, err := token.SignedString(jwtSecret)
 	if err != nil {
 		return "", err

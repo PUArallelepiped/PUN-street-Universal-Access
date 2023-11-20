@@ -7,6 +7,9 @@ import (
 	_storeDelivery "github.com/PUArallelepiped/PUN-street-Universal-Access/store/delivery"
 	_storeRepo "github.com/PUArallelepiped/PUN-street-Universal-Access/store/repository"
 	_storeUsecase "github.com/PUArallelepiped/PUN-street-Universal-Access/store/usecase"
+	_userDelivery "github.com/PUArallelepiped/PUN-street-Universal-Access/user/delivery"
+	_userRepo "github.com/PUArallelepiped/PUN-street-Universal-Access/user/repository"
+	_userUsecase "github.com/PUArallelepiped/PUN-street-Universal-Access/user/usecase"
 	"github.com/gin-contrib/cors"
 
 	_productDelivery "github.com/PUArallelepiped/PUN-street-Universal-Access/product/delivery"
@@ -66,6 +69,10 @@ func main() {
 	cartRepo := _cartRepo.NewPostgressqlCartRepo(db)
 	cartUsecase := _cartUsecase.NewCartUsecase(cartRepo)
 	_cartDelivery.NewCartHandler(r, cartUsecase)
+
+	UserRepo := _userRepo.NewPostgressqlUserRepo(db)
+	UserUsecase := _userUsecase.NewUserUsecase(UserRepo)
+	_userDelivery.NewUserHandler(r, UserUsecase)
 
 	logrus.Fatal(r.Run(restfulHost + ":" + restfulPort))
 }

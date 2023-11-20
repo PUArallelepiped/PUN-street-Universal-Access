@@ -107,3 +107,8 @@ func ValidPhoneNumber(phoneNumber string) error {
 	err := cv.Validate(Number)
 	return err
 }
+
+func (su *UserUsecase) LogIn(ctx context.Context, userName string, userPassword string) (bool, error) {
+	correctLogIn, err := su.userRepo.LogIn(ctx, userName, userPassword)
+	return correctLogIn, err
+}

@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"errors"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 )
@@ -15,18 +16,19 @@ func NewPostgressqlUserRepo(db *sql.DB) domain.UserRepo {
 	return &postgresqlUserRepo{db}
 }
 
-func (p *postgresqlUserRepo) Login(ctx context.Context, email string, password string) error {
+func (p *postgresqlUserRepo) Login(ctx context.Context, email string, password string) (int, error) {
 	sqlStatement := `
-	SELECT password FROM users WHERE email = $1;
+	SELECT password, authority FROM users WHERE email = $1;
 	`
 	var hashedPassword string
-	err := p.db.QueryRow(sqlStatement, email).Scan(&hashedPassword)
+	var authority int
+	err := p.db.QueryRow(sqlStatement, email).Scan(&authority, &hashedPassword)
 	if err != nil {
-		return err
+		return 0, err
 	}
 	if hashedPassword != password {
-		return err
+		return 0, errors.New("wrong password")
 	}
 
-	return nil
+	return authority, nil
 }

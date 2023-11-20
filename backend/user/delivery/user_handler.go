@@ -31,12 +31,13 @@ func (u *UserHandler) Login(c *gin.Context) {
 		return
 	}
 
-	err := u.UserUsecase.Login(c, user.UserEmail, user.Password)
+	token, err := u.UserUsecase.Login(c, user.UserEmail, user.Password)
 	if err != nil {
 		logrus.Error(err)
 		c.Status(500)
 		return
 	}
+	c.SetCookie("token", token, 3600, "/", "localhost", false, true)
 
 	c.JSON(200, "Login Success")
 }

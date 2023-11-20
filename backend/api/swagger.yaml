@@ -329,12 +329,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                status:
-                  type: integer
-                  format: int64
-                  example: 1
+              $ref: '#/components/schemas/store_storeID_body'
       responses:
         "200":
           description: update success
@@ -620,12 +615,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                product_quantity:
-                  type: integer
-                  format: int64
-                  example: 10
+              $ref: '#/components/schemas/product_productID_body'
       responses:
         "200":
           description: update success
@@ -700,6 +690,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserData'
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /login:
+    post:
+      tags:
+      - user
+      summary: login
+      requestBody:
+        description: login info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInfo'
+      responses:
+        "200":
+          description: login success
         "400":
           description: bad request
         "500":
@@ -847,12 +855,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                status:
-                  type: integer
-                  format: int64
-                  example: 1
+              $ref: '#/components/schemas/discountID_updatestatus_body'
       responses:
         "200":
           description: update success
@@ -949,12 +952,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  price: 
-                    type: integer
-                    format: int64
-                    example: 9999
+                $ref: '#/components/schemas/inline_response_200'
         "400":
           description: bad request
         "500":
@@ -1464,6 +1462,14 @@ components:
           type: integer
           format: int64
           example: 1
+      example:
+        discount_start_date: 2021-01-01 00:00:00
+        discount_name: spring discount
+        discount_end_date: 2021-01-01 00:00:00
+        discount_description: all products get 30% off
+        discount_percentage: 70
+        discount_id: 1
+        status: 1
     SeasoningDiscountArray:
       type: array
       items:
@@ -1496,6 +1502,12 @@ components:
           type: integer
           format: int64
           example: 1
+      example:
+        discount_name: free shipping
+        discount_description: free shipping when total price over 1000
+        discount_max_price: 1000
+        discount_id: 1
+        status: 1
     ShippingDiscountArray:
       type: array
       items:
@@ -1533,6 +1545,13 @@ components:
           type: integer
           format: int64
           example: 1
+      example:
+        discount_max_quantity: 2
+        product_id: 1
+        discount_name: new year discount
+        discount_description: black tea get two for one free
+        discount_id: 1
+        status: 1
     EventDiscountArray:
       type: array
       items:
@@ -1542,10 +1561,10 @@ components:
       required:
       - cart_id
       - customer_id
-      - seasoning_discount_id
-      - shipping_discount_id
       - order_date
       - order_status
+      - seasoning_discount_id
+      - shipping_discount_id
       - store_id
       - taking_address
       - taking_method
@@ -1649,3 +1668,44 @@ components:
           type: number
           format: float
           example: 5
+    LoginInfo:
+      required:
+      - password
+      - user_email
+      properties:
+        user_email:
+          type: string
+          example: a@gmail.com
+        password:
+          type: string
+          example: pwd1
+    store_storeID_body:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int64
+          example: 1
+    product_productID_body:
+      type: object
+      properties:
+        product_quantity:
+          type: integer
+          format: int64
+          example: 10
+    discountID_updatestatus_body:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int64
+          example: 1
+    inline_response_200:
+      type: object
+      properties:
+        price:
+          type: integer
+          format: int64
+          example: 9999
+      example:
+        price: 9999

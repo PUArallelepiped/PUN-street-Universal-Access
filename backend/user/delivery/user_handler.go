@@ -23,7 +23,7 @@ func NewUserHandler(e *gin.Engine, userUsecase domain.UserUsecase) {
 }
 
 func (u *UserHandler) Login(c *gin.Context) {
-	var user swagger.UserData
+	var user swagger.LoginInfo
 
 	if err := c.BindJSON(&user); err != nil {
 		logrus.Error(err)

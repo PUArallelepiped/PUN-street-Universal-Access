@@ -21,6 +21,10 @@ import (
 	_discountRepo "github.com/PUArallelepiped/PUN-street-Universal-Access/discount/repository"
 	_discountUsecase "github.com/PUArallelepiped/PUN-street-Universal-Access/discount/usecase"
 
+	_userDelivery "github.com/PUArallelepiped/PUN-street-Universal-Access/user/delivery"
+	_userRepo "github.com/PUArallelepiped/PUN-street-Universal-Access/user/repository"
+	_userUsecase "github.com/PUArallelepiped/PUN-street-Universal-Access/user/usecase"
+
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -74,6 +78,10 @@ func main() {
 	discountRepo := _discountRepo.NewPostgressqlDiscountRepo(db)
 	discountUsecase := _discountUsecase.NewDiscountUsecase(discountRepo)
 	_discountDelivery.NewDiscountHandler(r, discountUsecase)
+
+	userRepo := _userRepo.NewPostgressqlUserRepo(db)
+	userUsecase := _userUsecase.NewUserUsecase(userRepo)
+	_userDelivery.NewUserHandler(r, userUsecase)
 
 	logrus.Fatal(r.Run(restfulHost + ":" + restfulPort))
 }

@@ -6,6 +6,7 @@ import (
 	"errors"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
+	"github.com/sirupsen/logrus"
 )
 
 type postgresqlUserRepo struct {
@@ -18,14 +19,16 @@ func NewPostgressqlUserRepo(db *sql.DB) domain.UserRepo {
 
 func (p *postgresqlUserRepo) Login(ctx context.Context, email string, password string) (int, error) {
 	sqlStatement := `
-	SELECT password, authority FROM users WHERE email = $1;
+	SELECT password, authority FROM user_data WHERE email = $1;
 	`
 	var hashedPassword string
 	var authority int
-	err := p.db.QueryRow(sqlStatement, email).Scan(&authority, &hashedPassword)
+	err := p.db.QueryRow(sqlStatement, email).Scan(&hashedPassword, &authority)
 	if err != nil {
 		return 0, err
 	}
+	logrus.Info(hashedPassword)
+	logrus.Info(password)
 	if hashedPassword != password {
 		return 0, errors.New("wrong password")
 	}

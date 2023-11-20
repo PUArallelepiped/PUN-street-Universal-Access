@@ -6,7 +6,6 @@ import (
 	"errors"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
-	"github.com/sirupsen/logrus"
 )
 
 type postgresqlUserRepo struct {
@@ -27,8 +26,6 @@ func (p *postgresqlUserRepo) Login(ctx context.Context, email string, password s
 	if err != nil {
 		return 0, err
 	}
-	logrus.Info(hashedPassword)
-	logrus.Info(password)
 	if hashedPassword != password {
 		return 0, errors.New("wrong password")
 	}

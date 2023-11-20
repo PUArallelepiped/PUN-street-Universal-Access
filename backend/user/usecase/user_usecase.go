@@ -2,11 +2,11 @@ package usecase
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/golang-jwt/jwt"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
@@ -30,7 +30,7 @@ func init() {
 	viper.SetConfigFile("../.env")
 	viper.SetConfigType("dotenv")
 	if err := viper.ReadInConfig(); err != nil {
-		log.Fatal(err)
+		logrus.Fatal(err)
 	}
 }
 

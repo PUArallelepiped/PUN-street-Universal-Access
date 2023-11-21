@@ -23,6 +23,3 @@ go.work
 # editor
 .vs
 .vscode
-
-# env
-.env

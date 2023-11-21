@@ -11,3 +11,5 @@ import Label from './components/PUA/Label.svelte';
 export { Label as PUALabel };
 import CartLabelBox from './components/PUA/cartLabelBox.svelte';
 export { CartLabelBox };
+import ShippingCoupon from './components/PUA/shippingCoupon.svelte';
+export { ShippingCoupon };

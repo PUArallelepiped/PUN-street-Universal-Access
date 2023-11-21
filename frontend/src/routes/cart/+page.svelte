@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CartItemCard, CartLabelBox } from '$lib/index';
+	import { CartItemCard, CartLabelBox, ShippingCoupon } from '$lib/index';
 	let orderInfo = {
 		name: 'Order Name',
 		phone: 'Phone Number',
@@ -33,6 +33,12 @@
 		<div>
 			<div class="text-xl font-semibold leading-normal text-stone-600">Discount</div>
 			<hr class="border-orange-950" />
+			<div class="grid grid-cols-3 gap-3">
+				<ShippingCoupon />
+				<ShippingCoupon />
+				<ShippingCoupon />
+				<ShippingCoupon />
+			</div>
 		</div>
 		<CartLabelBox></CartLabelBox>
 	</div>

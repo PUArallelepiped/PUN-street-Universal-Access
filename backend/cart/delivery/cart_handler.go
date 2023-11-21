@@ -27,6 +27,7 @@ func NewCartHandler(e *gin.Engine, cartUsecase domain.CartUsecase) {
 		v1.GET("/customer/:userID/orders", handler.GetCartArray)
 		v1.PUT("/customer/:userID/cart/:cartID/update/product/:productID", handler.UpdateCartProductQuantity)
 	}
+
 }
 
 func (s *CartHandler) PostCart(c *gin.Context) {

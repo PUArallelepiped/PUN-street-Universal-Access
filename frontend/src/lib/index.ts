@@ -5,3 +5,5 @@ import Counter from './components/PUA/counter.svelte';
 export { Counter };
 import ProductCard from './components/PUA/productCard.svelte';
 export { ProductCard };
+import CartItemCard from './components/PUA/cartItemCard.svelte';
+export { CartItemCard };

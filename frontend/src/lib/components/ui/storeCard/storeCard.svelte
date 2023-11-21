@@ -2,10 +2,10 @@
   import { page } from '$app/stores';
 	import * as Card from '$lib/components/ui/card';
 
-  export let name: string = "";
-  export let description: string = "";
-  export let picture: string = "";
-  export let address: string = "";
+  export let name: string = "im pasta";
+  export let description: string = "you are not pasta";
+  export let picture: string = "https://i.imgur.com/3i3tyXJ.gif";
+  export let address: string = "pun street";
 </script>
 
 <a href="{$page.route.id}/{name}">

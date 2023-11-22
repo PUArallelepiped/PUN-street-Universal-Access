@@ -1,6 +1,6 @@
 <script lang="ts">
 	async function changeColor(reverse: boolean) {
-		let bgColor = 'white';
+		let bgColor = 'PUA-gray';
 		let textColor = 'PUA-stone';
 		if (reverse) {
 			bgColor = [textColor, (textColor = bgColor)][0];
@@ -8,11 +8,13 @@
 		console.log(textColor);
 		return { textColor, bgColor };
 	}
+	export let used: boolean = true;
 </script>
 
-{#await changeColor(true)}
-	<p class="text-PUA-stone border-PUA-stone bg-PUA-gray">loading</p>
-	<p class="text-PUA-gray border-PUA-gray bg-PUA-stone">loading</p>
+{#await changeColor(used)}
+	loading
+	<p class="text-PUA-stone border-PUA-stone bg-PUA-gray w-0"></p>
+	<p class="text-PUA-gray border-PUA-gray bg-PUA-stone w-0"></p>
 {:then color}
 	<div class="flex flex-col">
 		<div class="text-PUA-stone text-xl font-semibold">IM pasta</div>

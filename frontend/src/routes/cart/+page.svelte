@@ -15,10 +15,10 @@
 			<div class="flex justify-between">
 				<div class="text-xl font-semibold leading-normal text-stone-600">IM pasta</div>
 				<div>
-					<span style="text-stone-600 text-xl font-semibold  leading-normal"
+					<span class="text-xl font-semibold leading-normal text-stone-600"
 						>Shipping Fee
-					</span><span style="text-stone-600 text-base font-semibold  leading-tight">NT$</span><span
-						style="text-stone-600 text-xl font-semibold  leading-normal"
+					</span><span class="text-base font-semibold leading-tight text-stone-600">NT$</span><span
+						class="text-xl font-semibold leading-normal text-stone-600"
 					>
 						60</span
 					>
@@ -34,7 +34,10 @@
 			<div class="text-xl font-semibold leading-normal text-stone-600">Discount</div>
 			<hr class="border-orange-950" />
 			<div class="grid grid-cols-3 gap-3">
-				<ShippingCoupon />
+				<ShippingCoupon used={false} />
+				<ShippingCoupon used={false} />
+				<ShippingCoupon used={true} />
+				<ShippingCoupon used={true} />
 				<ShippingCoupon />
 				<ShippingCoupon />
 				<ShippingCoupon />

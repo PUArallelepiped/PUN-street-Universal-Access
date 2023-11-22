@@ -40,6 +40,14 @@ func init() {
 	}
 }
 
+func HandlCors() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		ctx.Writer.Header().Set("Access-Control-Allow-Origin", ctx.GetHeader("Origin"))
+		ctx.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		ctx.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+	}
+}
+
 func main() {
 	logrus.Info("HTTP server started!!!")
 
@@ -62,7 +70,7 @@ func main() {
 	}
 
 	r := gin.Default()
-	r.Use(cors.Default())
+	r.Use(cors.Default(), HandlCors())
 	storeRepo := _storeRepo.NewPostgressqlStoreRepo(db)
 	storeUsecase := _storeUsecase.NewStoreUsecase(storeRepo)
 	_storeDelivery.NewStoreHandler(r, storeUsecase)

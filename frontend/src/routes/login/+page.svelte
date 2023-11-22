@@ -30,6 +30,10 @@
 			errorMsgVisible = true;
 		}
 	}
+
+	function handleInput() {
+		errorMsgVisible = false;
+	}
 </script>
 
 <div>
@@ -46,6 +50,7 @@
 					<input
 						class="h-10 w-96 rounded-lg border-2 bg-gray-200 px-2 text-xl font-medium leading-relaxed text-orange-950 shadow-inner"
 						bind:value={user_email}
+						on:input={handleInput}
 					/>
 				</div>
 				<div class="">
@@ -54,6 +59,7 @@
 						type="password"
 						class="h-10 w-96 rounded-lg border-2 bg-gray-200 px-2 text-xl font-medium leading-relaxed text-orange-950 shadow-inner"
 						bind:value={password}
+						on:input={handleInput}
 					/>
 				</div>
 			</div>

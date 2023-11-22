@@ -24,7 +24,7 @@
 						buy n for n free
 					</div>
 					<div
-						class="text-PUA-red border-PUA-red mx-2 rounded-lg border-2 px-1 text-base font-semibold"
+						class="border-PUA-red text-PUA-red mx-2 rounded-lg border-2 px-1 text-base font-semibold"
 					>
 						no storange
 					</div>

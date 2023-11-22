@@ -13,8 +13,8 @@
 
 {#await changeColor(used)}
 	loading
-	<p class="text-PUA-stone border-PUA-stone bg-PUA-gray w-0"></p>
-	<p class="text-PUA-gray border-PUA-gray bg-PUA-stone w-0"></p>
+	<p class="border-PUA-stone bg-PUA-gray text-PUA-stone w-0"></p>
+	<p class="border-PUA-gray bg-PUA-stone text-PUA-gray w-0"></p>
 {:then color}
 	<div class="flex w-96 flex-col">
 		<div class="text-PUA-stone py-1 text-xl font-semibold">IM pasta</div>

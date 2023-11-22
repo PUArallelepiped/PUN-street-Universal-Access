@@ -7,13 +7,13 @@
 		CartLabelBox,
 		ShippingCoupon
 	} from '$lib/index';
-	let orderInfo = {
-		name: 'Order Name',
-		phone: 'Phone Number',
-		method: 'Taking Method',
-		totalShippingFee: 'Total Shipping Fee',
-		address: 'Taking Address'
-	};
+	// let orderInfo = {
+	// 	name: 'Order Name',
+	// 	phone: 'Phone Number',
+	// 	method: 'Taking Method',
+	// 	totalShippingFee: 'Total Shipping Fee',
+	// 	address: 'Taking Address'
+	// };
 </script>
 
 <div class="flex flex-col items-center justify-center gap-5 p-8">

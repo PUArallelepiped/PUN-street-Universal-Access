@@ -4,6 +4,7 @@
 
 	let user_email = ""
 	let password = ""
+	let errorMsgVisible = false;
 
 	onMount(() => {
 		let errorMsg =  window.document.getElementById("errorMsg")! as HTMLElement
@@ -24,8 +25,7 @@
 			console.log(data)
 		} else {
 			console.log("error")
-			let errorMsg =  window.document.getElementById("errorMsg")! as HTMLElement
-			errorMsg.style.visibility = "visible"
+			errorMsgVisible = true;
 		}
 	}
 </script>
@@ -35,7 +35,7 @@
 
 	<div class="absolute inset-x-0 bottom-0 h-96 bg-red-900"></div>
 	<div class="absolute right-1">
-		<div class=" mx-20 rounded-2xl bg-white px-8 py-5 shadow">
+		<form class=" mx-20 rounded-2xl bg-white px-8 py-5 shadow" on:submit|preventDefault={login}>
 			<div class="flex flex-col items-center gap-11">
 				<div class="">
 					<div class="text-left text-xl font-bold leading-relaxed text-orange-950">
@@ -55,7 +55,7 @@
 					/>
 				</div>
 			</div>
-			<div class="flex flex-row justify-center gap-2 p-4" id="errorMsg">
+			<div class="flex flex-row justify-center gap-2 p-4" id="errorMsg" style="visibility: {errorMsgVisible ? 'visible' : 'hidden'}">
 				<div class="flex items-center">
 					<svg
 						width="20"
@@ -88,12 +88,11 @@
 					</button>
 				</div>
 				<div class="w-48">
-					<button class=" h-9 w-full rounded-2xl bg-orange-700">
-						<div class="text-xl font-bold text-white" on:click={login} on:keydown={login} role="button" tabindex="0">Sign in</div>
-						<!-- <div class="text-xl font-bold text-white">Sign in</div> -->
+					<button class=" h-9 w-full rounded-2xl bg-orange-700" type="submit">
+						<div class="text-xl font-bold text-white">Sign in</div>
 					</button>
 				</div>
 			</div>
-		</div>
+		</form>
 	</div>
 </div>

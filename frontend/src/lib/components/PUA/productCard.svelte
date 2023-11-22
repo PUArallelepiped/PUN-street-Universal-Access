@@ -30,7 +30,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="text-PUA-gray whitespace-pre-line text-base font-normal">
+			<div class="text-PUA-dark-gray whitespace-pre-line text-base font-normal">
 				{description}
 			</div>
 		</div>

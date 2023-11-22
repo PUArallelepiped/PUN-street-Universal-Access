@@ -19,6 +19,7 @@ const config = {
 				'PUA-orange': '#C65633',
 				'PUA-dark-orange': '#461616',
 				'PUA-gray': 'rgb(229 231 235 / var(--tw-bg-opacity))',
+				'PUA-dark-gray': '#9B9B9B',
 				'PUA-stone': '#755555',
 				'PUA-green': '#577246',
 				border: 'hsl(var(--border))',

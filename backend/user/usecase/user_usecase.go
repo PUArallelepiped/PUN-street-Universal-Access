@@ -36,9 +36,11 @@ func init() {
 
 func CreateToken(email string, authority int) (string, error) {
 	expiresAt := time.Now().Add(24 * time.Hour).Unix()
+	issuedAt := time.Now().Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, Claims{
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expiresAt,
+			IssuedAt:  issuedAt,
 		},
 		Email:     email,
 		Authority: authority,
@@ -62,4 +64,16 @@ func (uu *userUsecase) Login(ctx context.Context, email string, password string)
 	}
 
 	return token, nil
+}
+
+func (uu *userUsecase) ValidateToken(ctx context.Context, token string) error {
+	jwtSecret := []byte(viper.GetString("JWT_SECRET"))
+	claims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
+		return jwtSecret, nil
+	})
+	if err != nil {
+		return err
+	}
+	logrus.Info(claims)
+	return nil
 }

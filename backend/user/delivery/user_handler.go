@@ -21,6 +21,7 @@ func NewUserHandler(e *gin.Engine, userUsecase domain.UserUsecase) {
 	v1 := e.Group("/api/v1")
 	{
 		v1.POST("/login", handler.Login)
+		v1.GET("/validate", handler.ValidateToken)
 	}
 }
 
@@ -43,4 +44,20 @@ func (u *UserHandler) Login(c *gin.Context) {
 	c.SetCookie("jwttoken", token, 3600, "/", "localhost", false, true)
 
 	c.JSON(200, "Login Success")
+}
+
+func (u *UserHandler) ValidateToken(c *gin.Context) {
+	token, err := c.Cookie("jwttoken")
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+	err = u.UserUsecase.ValidateToken(c, token)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+	c.JSON(200, "Validate Success")
 }

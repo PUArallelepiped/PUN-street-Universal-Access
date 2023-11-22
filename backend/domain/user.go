@@ -8,4 +8,5 @@ type UserRepo interface {
 
 type UserUsecase interface {
 	Login(ctx context.Context, email string, password string) (string, error)
+	ValidateToken(ctx context.Context, token string) error
 }

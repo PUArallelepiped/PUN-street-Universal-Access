@@ -14,6 +14,7 @@
 	import DoubleRangeSlider from '$lib/components/ui/doubleSlider/doubleRangeSlider.svelte';
 	import { backendPath } from '$lib/components/PUA/env';
 	import StoreCard from '$lib/components/ui/storeCard/storeCard.svelte';
+	import { validateToken } from '$lib/components/PUA/validation';
 	let start = 0;
 	let end = 1;
 
@@ -83,6 +84,7 @@
 	];
 
 	onMount(async () => {
+		validateToken();
 		const resp = await fetch(backendPath + '/stores');
 		shopListResponse = await resp.json();
 		console.log(shopListResponse);

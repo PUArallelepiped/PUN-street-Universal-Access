@@ -2,6 +2,7 @@ package delivery
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
@@ -41,7 +42,7 @@ func (u *UserHandler) Login(c *gin.Context) {
 		return
 	}
 	c.SetSameSite(http.SameSiteStrictMode)
-	c.SetCookie("jwttoken", token, 3600, "/", "localhost", false, true)
+	c.SetCookie("jwttoken", token, (int)(24*time.Hour), "/", "localhost", false, true)
 
 	c.JSON(200, "Login Success")
 }
@@ -56,7 +57,7 @@ func (u *UserHandler) ValidateToken(c *gin.Context) {
 	err = u.UserUsecase.ValidateToken(c, token)
 	if err != nil {
 		logrus.Error(err)
-		c.Status(500)
+		c.Status(http.StatusUnauthorized)
 		return
 	}
 	c.JSON(200, "Validate Success")

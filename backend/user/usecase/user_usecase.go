@@ -68,12 +68,27 @@ func (uu *userUsecase) Login(ctx context.Context, email string, password string)
 
 func (uu *userUsecase) ValidateToken(ctx context.Context, token string) error {
 	jwtSecret := []byte(viper.GetString("JWT_SECRET"))
-	claims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
+	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		return jwtSecret, nil
 	})
+	_ = tokenClaims
 	if err != nil {
-		return err
+		ve, ok := err.(*jwt.ValidationError)
+		if ok {
+			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
+				logrus.Error("That's not even a token")
+				return err
+			} else if ve.Errors&(jwt.ValidationErrorExpired|jwt.ValidationErrorNotValidYet) != 0 {
+				logrus.Error("Timing is everything")
+				return err
+			} else {
+				logrus.Error("Couldn't handle this token:", err)
+				return err
+			}
+		} else {
+			logrus.Error("Couldn't handle this token:", err)
+			return err
+		}
 	}
-	logrus.Info(claims)
 	return nil
 }

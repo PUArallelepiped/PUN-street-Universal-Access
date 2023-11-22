@@ -72,9 +72,9 @@
 							<div
 								class="flex h-[30px] w-[100%] items-center border-b-[1px] border-solid border-red-950"
 							>
-								<div class=" font-bold text-amber-900">{label}</div>
+								<div class="font-bold text-amber-900">{label}</div>
 								<div
-									class="ml-[10px] rounded-[20px] border-[2px] border-solid border-orange-700 px-[10px] py-[0px] text-[13px] font-bold text-orange-700"
+									class="ml-[10px] rounded-[20px] border-[2px] border-solid border-orange-700 px-[8px] py-[0px] text-[9px] font-bold text-orange-700"
 								>
 									必填
 								</div>
@@ -84,8 +84,10 @@
 									<div
 										class="m-1 flex w-[100%] items-center space-x-2 border-b-[1px] border-solid border-amber-900"
 									>
-										<input type="radio" name={group} class="form-radio text-primary" />
+										<!-- <input type="radio" name={group} class="h-[15px] w-[15px] form-radio text-primary" /> -->
+										<input type="radio" name={group} class="red_input" checked />
 										<label for={id} class="ml-auto text-primary text-red-950">{label}</label>
+										<!-- <label for={id} class="rdobutton_label"></label> -->
 									</div>
 								{/each}
 							</div>
@@ -147,5 +149,11 @@
 		border-bottom: 10px solid transparent;
 		border-left: 15px solid rgb(87, 19, 11); /* 按钮颜色 */
 		cursor: pointer;
+	}
+	.red_input {
+		/* accent-color: rgb(100, 24, 24);	 */
+		background-color: #993535;
+		height: 20px;
+		width: 20px;
 	}
 </style>

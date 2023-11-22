@@ -102,7 +102,7 @@
 									class="h-[20px] w-[30%] rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400"
 								/>
 								<div
-									class="ml-[10px] rounded-[20px] border-[2px] border-solid border-orange-700 px-[10px] py-[0px] text-[13px] font-bold text-orange-700"
+									class="ml-[10px] rounded-[20px] border-[2px] border-solid border-orange-700 px-[8px] py-[0px] text-[9px] font-bold text-orange-700"
 								>
 									必填
 								</div>

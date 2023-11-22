@@ -14,6 +14,13 @@ const config = {
 		},
 		extend: {
 			colors: {
+				'PUA-red': '#DD0808',
+				'PUA-dark-red': '#822E2E',
+				'PUA-orange': '#C65633',
+				'PUA-dark-orange': '#461616',
+				'PUA-gray': '#9B9B9B',
+				'PUA-stone': '#755555',
+				'PUA-green': '#577246',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',

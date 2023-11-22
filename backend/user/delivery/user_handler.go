@@ -1,6 +1,8 @@
 package delivery
 
 import (
+	"net/http"
+
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
 	"github.com/gin-gonic/gin"
@@ -37,6 +39,7 @@ func (u *UserHandler) Login(c *gin.Context) {
 		c.Status(500)
 		return
 	}
+	c.SetSameSite(http.SameSiteStrictMode)
 	c.SetCookie("token", token, 3600, "/", "localhost", false, true)
 
 	c.JSON(200, "Login Success")

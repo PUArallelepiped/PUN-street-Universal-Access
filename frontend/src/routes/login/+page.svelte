@@ -3,30 +3,30 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
-	let user_email = ""
-	let password = ""
+	let user_email = '';
+	let password = '';
 	let errorMsgVisible = false;
 
 	onMount(() => {
-		let errorMsg =  window.document.getElementById("errorMsg")! as HTMLElement
-		errorMsg.style.visibility = "hidden"
-	})
+		let errorMsg = window.document.getElementById('errorMsg')! as HTMLElement;
+		errorMsg.style.visibility = 'hidden';
+	});
 
 	async function login() {
 		const res = await fetch(backendPath + '/login', {
 			method: 'POST',
-			credentials: "include",
+			credentials: 'include',
 			body: JSON.stringify({
 				user_email,
 				password
 			})
-		})
+		});
 		if (res.status == 200) {
-			const data = await res.json()
-			goto("/shops")
-			console.log(data)
+			const data = await res.json();
+			goto('/shops');
+			console.log(data);
 		} else {
-			console.log("error")
+			console.log('error');
 			errorMsgVisible = true;
 		}
 	}
@@ -63,7 +63,11 @@
 					/>
 				</div>
 			</div>
-			<div class="flex flex-row justify-center gap-2 p-4" id="errorMsg" style="visibility: {errorMsgVisible ? 'visible' : 'hidden'}">
+			<div
+				class="flex flex-row justify-center gap-2 p-4"
+				id="errorMsg"
+				style="visibility: {errorMsgVisible ? 'visible' : 'hidden'}"
+			>
 				<div class="flex items-center">
 					<svg
 						width="20"
@@ -91,7 +95,11 @@
 					<div class="text-center text-base font-bold leading-tight text-stone-400">
 						Not a PUA member?
 					</div>
-					<button class="h-9 w-full rounded-2xl bg-neutral-200" type="button" on:click={() => goto('/signUp')}>
+					<button
+						class="h-9 w-full rounded-2xl bg-neutral-200"
+						type="button"
+						on:click={() => goto('/signUp')}
+					>
 						<div class=" text-xl font-bold text-stone-600">Sign up</div>
 					</button>
 				</div>

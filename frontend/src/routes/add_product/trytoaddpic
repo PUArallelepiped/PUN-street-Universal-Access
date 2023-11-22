@@ -1,0 +1,45 @@
+<script lang="ts">
+
+	import { page } from '$app/stores';
+
+  let imageUrl;
+
+  const handleFileSelect = (event) => {
+    const fileInput = event.target;
+    const files = fileInput.files;
+
+    if (files && files.length > 0) {
+      const selectedFile = files[0];
+
+      // 顯示檔案資訊
+      console.log('檔案名稱:', selectedFile.name);
+      console.log('檔案大小:', selectedFile.size, 'bytes');
+      console.log('檔案類型:', selectedFile.type);
+
+      // 顯示選擇的圖片
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        imageUrl = e.target.result;
+      };
+
+      reader.readAsDataURL(selectedFile);
+    }
+  };
+</script>
+
+<style>
+  img {
+    max-width: 100%;
+    max-height: 300px;
+    margin-top: 20px;
+  }
+</style>
+
+<main>
+  <input type="file" accept="image/*" on:change={handleFileSelect} />
+
+  {#if imageUrl}
+    <img src={imageUrl} alt="選擇的圖片" />
+  {/if}
+</main>

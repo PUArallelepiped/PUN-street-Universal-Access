@@ -151,8 +151,7 @@
 		cursor: pointer;
 	}
 	.red_input {
-		/* accent-color: rgb(100, 24, 24);	 */
-		background-color: #993535;
+		accent-color: rgb(120, 40, 40);
 		height: 20px;
 		width: 20px;
 	}

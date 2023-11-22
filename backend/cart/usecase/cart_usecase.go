@@ -187,3 +187,13 @@ func (cu *cartUsecase) UpdateProduct(ctx context.Context, customerId int64, cart
 
 	return nil
 }
+
+func (cu *cartUsecase) GetCartByCustomerCartID(ctx context.Context, customerId int64, cartId int64) (*[]swagger.CartInfo, error) {
+	carts, err := cu.cartRepo.GetCartArrayByCustomerCartID(ctx, customerId, cartId)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	return carts, nil
+}

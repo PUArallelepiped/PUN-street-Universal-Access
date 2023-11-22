@@ -1,6 +1,5 @@
 <script lang="ts">
 	import error from '$lib/assets/error.png';
-	import { page } from '$app/stores';
 	import { Input } from '$lib/components/ui/input';
 
 	let options = [

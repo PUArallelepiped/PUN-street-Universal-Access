@@ -1,6 +1,5 @@
 <script lang="ts">
 	import drink from '$lib/assets/watermelon.png';
-	import { page } from '$app/stores';
 
 	let options = [
 		{ id: 'option1', label: 'Vertical Option 1' },

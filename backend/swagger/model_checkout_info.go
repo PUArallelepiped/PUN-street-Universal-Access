@@ -8,24 +8,10 @@
  */
 package swagger
 
-type OrderInfo struct {
-	CustomerId int64 `json:"customer_id"`
-
+type CheckoutInfo struct {
 	SeasoningDiscountId int64 `json:"seasoning_discount_id"`
 
 	ShippingDiscountId int64 `json:"shipping_discount_id"`
 
-	CartId int64 `json:"cart_id"`
-
-	StoreId int64 `json:"store_id"`
-
-	OrderStatus int64 `json:"order_status"`
-
-	OrderDate string `json:"order_date"`
-
-	TakingAddress string `json:"taking_address"`
-
 	TakingMethod int64 `json:"taking_method"`
-
-	TotalPrice int64 `json:"total_price"`
 }

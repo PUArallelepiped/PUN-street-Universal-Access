@@ -17,3 +17,5 @@ import DenyButton from './components/PUA/denyButton.svelte';
 export { DenyButton };
 import OkButton from './components/PUA/OkButton.svelte';
 export { OkButton };
+import SeasoningCoupon from './components/PUA/seasoningCoupon.svelte';
+export { SeasoningCoupon };

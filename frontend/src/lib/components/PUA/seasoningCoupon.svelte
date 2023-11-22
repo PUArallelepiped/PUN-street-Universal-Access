@@ -16,16 +16,15 @@
 	<p class="text-PUA-stone border-PUA-stone bg-PUA-gray w-0"></p>
 	<p class="text-PUA-gray border-PUA-gray bg-PUA-stone w-0"></p>
 {:then color}
-	<div class="flex w-96 flex-col">
-		<div class="text-PUA-stone py-1 text-xl font-semibold">IM pasta</div>
+	<div class="flex h-32 w-96 flex-col">
 		<div
-			class="text-{color?.textColor} bg-{color?.bgColor} border-{color?.textColor} flex items-center rounded-xl border-2 text-center font-semibold"
+			class="text-{color?.textColor} bg-{color?.bgColor} border-{color?.textColor} flex h-full items-center rounded-xl border-2 text-center font-semibold"
 		>
-			<div class=" px-6 py-5 text-base">Shipping Discount</div>
+			<div class=" px-6 py-5 text-base">Seasoning Discount</div>
 			<div class="bg-{color?.textColor} h-12 w-1"></div>
-			<div class="w-full px-11">
-				<div><span class="text-base">NT$</span><span class="text-2xl"> 1000</span></div>
-				<div class="text-xl">free shipping</div>
+			<div class="w-full">
+				<div class="text-3xl">80%</div>
+				<div>2023/01/01~2023/12/12</div>
 			</div>
 		</div>
 	</div>

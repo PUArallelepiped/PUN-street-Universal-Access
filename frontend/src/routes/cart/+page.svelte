@@ -1,5 +1,12 @@
 <script lang="ts">
-	import { OkButton, CartItemCard, DenyButton, CartLabelBox, ShippingCoupon } from '$lib/index';
+	import {
+		OkButton,
+		SeasoningCoupon,
+		CartItemCard,
+		DenyButton,
+		CartLabelBox,
+		ShippingCoupon
+	} from '$lib/index';
 	let orderInfo = {
 		name: 'Order Name',
 		phone: 'Phone Number',
@@ -41,6 +48,7 @@
 				<ShippingCoupon />
 				<ShippingCoupon />
 				<ShippingCoupon />
+				<SeasoningCoupon></SeasoningCoupon>
 			</div>
 		</div>
 		<CartLabelBox></CartLabelBox>

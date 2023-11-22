@@ -10,7 +10,7 @@
 </script>
 
 <div class="flex flex-col items-center justify-center gap-5 p-8">
-	<div class="flex max-w-7xl flex-col gap-3">
+	<div class="flex max-w-7xl flex-col gap-10">
 		<div class="flex flex-col">
 			<div class="flex justify-between">
 				<div class="px-3 text-xl font-semibold leading-normal text-stone-600">IM pasta</div>
@@ -25,10 +25,10 @@
 				</div>
 			</div>
 			<hr class="my-3 border-orange-950" />
-		</div>
-		<div class="grid grid-cols-3 gap-3">
-			<CartItemCard></CartItemCard>
-			<CartItemCard></CartItemCard>
+			<div class="grid grid-cols-3 gap-3">
+				<CartItemCard></CartItemCard>
+				<CartItemCard></CartItemCard>
+			</div>
 		</div>
 		<div>
 			<div class="px-3 text-xl font-semibold leading-normal text-stone-600">Discount</div>

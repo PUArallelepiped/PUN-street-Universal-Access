@@ -13,3 +13,7 @@ import CartLabelBox from './components/PUA/cartLabelBox.svelte';
 export { CartLabelBox };
 import ShippingCoupon from './components/PUA/shippingCoupon.svelte';
 export { ShippingCoupon };
+import DenyButton from './components/PUA/denyButton.svelte';
+export { DenyButton };
+import OkButton from './components/PUA/OkButton.svelte';
+export { OkButton };

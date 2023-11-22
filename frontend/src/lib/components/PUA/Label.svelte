@@ -4,7 +4,7 @@
 </script>
 
 <div class="flex justify-end">
-	<div class="flex w-1/3 justify-between">
+	<div class="flex w-1/2 justify-between">
 		<div>
 			{labelName}
 		</div>

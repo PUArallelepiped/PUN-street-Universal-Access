@@ -40,7 +40,7 @@ func (u *UserHandler) Login(c *gin.Context) {
 		return
 	}
 	c.SetSameSite(http.SameSiteStrictMode)
-	c.SetCookie("token", token, 3600, "/", "localhost", false, true)
+	c.SetCookie("jwttoken", token, 3600, "/", "localhost", false, true)
 
 	c.JSON(200, "Login Success")
 }

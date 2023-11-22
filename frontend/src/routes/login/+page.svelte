@@ -91,7 +91,7 @@
 					<div class="text-center text-base font-bold leading-tight text-stone-400">
 						Not a PUA member?
 					</div>
-					<button class="h-9 w-full rounded-2xl bg-neutral-200">
+					<button class="h-9 w-full rounded-2xl bg-neutral-200" type="button" on:click={() => goto('/signUp')}>
 						<div class=" text-xl font-bold text-stone-600">Sign up</div>
 					</button>
 				</div>

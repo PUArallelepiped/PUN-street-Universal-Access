@@ -1,4 +1,33 @@
 <script lang="ts">
+	import { backendPath } from '$lib/components/PUA/env';
+	import { onMount } from 'svelte';
+
+	let user_email = ""
+	let password = ""
+
+	onMount(() => {
+		let errorMsg =  window.document.getElementById("errorMsg")! as HTMLElement
+		errorMsg.style.visibility = "hidden"
+	})
+
+	async function login() {
+		const res = await fetch(backendPath + '/login', {
+			method: 'POST',
+			credentials: "include",
+			body: JSON.stringify({
+				user_email,
+				password
+			})
+		})
+		if (res.status == 200) {
+			const data = await res.json()
+			console.log(data)
+		} else {
+			console.log("error")
+			let errorMsg =  window.document.getElementById("errorMsg")! as HTMLElement
+			errorMsg.style.visibility = "visible"
+		}
+	}
 </script>
 
 <div>
@@ -14,6 +43,7 @@
 					</div>
 					<input
 						class="h-10 w-96 rounded-lg border-2 bg-gray-200 px-2 text-xl font-medium leading-relaxed text-orange-950 shadow-inner"
+						bind:value={user_email}
 					/>
 				</div>
 				<div class="">
@@ -21,10 +51,11 @@
 					<input
 						type="password"
 						class="h-10 w-96 rounded-lg border-2 bg-gray-200 px-2 text-xl font-medium leading-relaxed text-orange-950 shadow-inner"
+						bind:value={password}
 					/>
 				</div>
 			</div>
-			<div class="flex flex-row justify-center gap-2 p-4">
+			<div class="flex flex-row justify-center gap-2 p-4" id="errorMsg">
 				<div class="flex items-center">
 					<svg
 						width="20"
@@ -58,7 +89,8 @@
 				</div>
 				<div class="w-48">
 					<button class=" h-9 w-full rounded-2xl bg-orange-700">
-						<div class="text-xl font-bold text-white">Sign in</div>
+						<div class="text-xl font-bold text-white" on:click={login} on:keydown={login} role="button" tabindex="0">Sign in</div>
+						<!-- <div class="text-xl font-bold text-white">Sign in</div> -->
 					</button>
 				</div>
 			</div>

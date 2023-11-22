@@ -1052,7 +1052,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CartArray'
+                $ref: '#/components/schemas/OrderArray'
         "400":
           description: bad request
         "500":
@@ -1567,6 +1567,7 @@ components:
       - taking_address
       - taking_method
       - total_price
+      - cart_array
       type: object
       properties:
         customer_id:
@@ -1607,6 +1608,10 @@ components:
           type: integer
           format: int64
           example: 9999
+        cart_array:
+          type : array
+          items:
+            $ref: '#/components/schemas/CartInfo'
     OrderArray:
       type: array
       items:

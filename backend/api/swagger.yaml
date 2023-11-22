@@ -712,6 +712,18 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
+  /validate:
+    get:
+      tags: 
+      - user
+      summary: validate jwt token
+      responses:
+        "200":
+          description: validate success
+        "401":
+          description: Unauthorized
+        "500":
+          description: Unexpected error
   /store/{storeID}/discounts:
     get:
       tags:

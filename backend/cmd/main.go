@@ -40,7 +40,7 @@ func init() {
 	}
 }
 
-func HandlCors() gin.HandlerFunc {
+func HandlHeaders() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		ctx.Writer.Header().Set("Access-Control-Allow-Origin", ctx.GetHeader("Origin"))
 		ctx.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -70,7 +70,7 @@ func main() {
 	}
 
 	r := gin.Default()
-	r.Use(cors.Default(), HandlCors())
+	r.Use(cors.Default(), HandlHeaders())
 	storeRepo := _storeRepo.NewPostgressqlStoreRepo(db)
 	storeUsecase := _storeUsecase.NewStoreUsecase(storeRepo)
 	_storeDelivery.NewStoreHandler(r, storeUsecase)

@@ -43,7 +43,7 @@
 			/>
 			<div class="flex">
 				<div class="flex items-center">
-					<img src={error} alt="Error" class="h-[40px] w-[40px] object-cover object-cover" />
+					<img src={error} alt="Error" class="h-[35px] w-[35px] object-cover object-cover" />
 
 					<p class="text-[20px] font-bold text-red-500">Error message</p>
 				</div>
@@ -61,7 +61,7 @@
 					>
 				</div>
 				<div class="flex items-center">
-					<img src={error} alt="Error" class="h-[40px] w-[40px] object-cover object-cover" />
+					<img src={error} alt="Error" class="h-[35px] w-[35px] object-cover object-cover" />
 					<p class="text-[20px] font-bold text-red-500">Error message</p>
 				</div>
 
@@ -74,7 +74,7 @@
 					/>
 				</div>
 				<div class="flex items-center">
-					<img src={error} alt="Error" class="h-[40px] w-[40px] object-cover object-cover" />
+					<img src={error} alt="Error" class="h-[35px] w-[35px] object-cover object-cover" />
 					<p class="text-[20px] font-bold text-red-500">Error message</p>
 				</div>
 
@@ -84,16 +84,15 @@
 						placeholder="Enter text"
 						class="max-w-xs rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400"
 					/>
-
 				</div>
 				<div class="flex items-center">
-					<img src={error} alt="Error" class="h-[40px] w-[40px] object-cover object-cover" />
+					<img src={error} alt="Error" class="h-[35px] w-[35px] object-cover object-cover" />
 					<p class="text-[20px] font-bold text-red-500">Error message</p>
 				</div>
 			</div>
 			<div class="relative h-[100%] w-[100%]">
 				<div class="relative mb-[10px] w-[100%]">
-					{#each options_con as { val, label, group }}
+					{#each options_con as { val, group }}
 						<div class=" mb-[15px]">
 							<div
 								class="flex h-[30px] w-[100%] items-center border-b-[1px] border-solid border-red-950"
@@ -126,13 +125,13 @@
 								<label for="Choice">No</label>
 							</div>
 							<div class="relative ml-[25px] w-[90%] flex-col items-start space-y-2">
-								{#each opt[val] as { id, label }}
+								{#each opt[val] as { id }}
 									<!--have some bug  -->
 									<div
 										class="m-1 flex w-[100%] items-center space-x-2 border-b-[1px] border-solid border-amber-900"
 									>
 										<input type="radio" name={group} class="form-radio text-primary" />
-										<label for={id} class="text-primary ml-auto text-red-950"></label>
+										<label for={id} class="ml-auto text-primary text-red-950"></label>
 										<div class="flex h-[30px] w-[100%] items-center justify-end">
 											<Input
 												type="text"
@@ -167,7 +166,7 @@
 						<div class=" font-bold text-amber-900">Choose Discount</div>
 					</div>
 					<div class="ml-[25px] mt-[10px] flex w-[90%] flex-wrap">
-						{#each buttons as { id, label }, index (id)}
+						{#each buttons as { label }}
 							<button
 								class="mb-4 mr-4 w-[90px] rounded rounded-[10px] border-[3px]
 						border-lime-800 bg-transparent px-1 py-0 text-center
@@ -189,8 +188,8 @@
 					<div class=" font-bold text-amber-900">Set Stock</div>
 				</div>
 				<div class="flex items-center justify-center">
-				<div class="relative ml-[40px] h-[100%] ">
-						<div class="mt-[10px] w-[200px] flex flex-1 items-center space-x-4">
+					<div class="relative ml-[40px] h-[100%]">
+						<div class="mt-[10px] flex w-[200px] flex-1 items-center space-x-4">
 							<button class="triangle-button-d" on:click={decrease}> </button>
 
 							<div
@@ -202,19 +201,15 @@
 
 							<button class="triangle-button-u" on:click={increase}> </button>
 						</div>
-						<button class="mt-[10px] rounded-[20px] bg-orange-700 p-2 px-[70px] text-white">Add Product</button>
+						<button class="mt-[10px] rounded-[20px] bg-orange-700 p-2 px-[50px] text-white"
+							>Add Product</button
+						>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-
-<h1>here is shop list</h1>
-
-<p>Visit <a href="{$page.route.id}/impasta" class="text-blue-400"> Shop </a></p>
-
-<!-- href =>連結 -->
 
 <style>
 	.triangle-button-d {

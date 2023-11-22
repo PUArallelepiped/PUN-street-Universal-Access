@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { backendPath } from '$lib/components/PUA/env';
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 
 	let user_email = ""
 	let password = ""
@@ -22,6 +23,7 @@
 		})
 		if (res.status == 200) {
 			const data = await res.json()
+			goto("/shops")
 			console.log(data)
 		} else {
 			console.log("error")

@@ -168,12 +168,22 @@ func (cu *cartUsecase) Checkout(ctx context.Context, customerId int64, cartId in
 	return nil
 }
 
-func (cu *cartUsecase) GetCartArrayByCustomerID(ctx context.Context, id int64) (*[]swagger.CartInfo, error) {
-	carts, err := cu.cartRepo.GetCartArrayByCustomerID(ctx, id)
+func (cu *cartUsecase) GetOrderArrayByCustomerID(ctx context.Context, id int64) (*[]swagger.OrderInfo, error) {
+	orders, err := cu.cartRepo.GetOrderByCustomerID(ctx, id)
 	if err != nil {
 		logrus.Error(err)
 		return nil, err
 	}
 
-	return carts, nil
+	for i := 0; i < len(*orders); i++ {
+		order := &(*orders)[i]
+		carts, err := cu.cartRepo.GetCartByID(ctx, order.CustomerId, order.CartId, order.StoreId)
+		if err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+		order.CartArray = *carts
+	}
+
+	return orders, nil
 }

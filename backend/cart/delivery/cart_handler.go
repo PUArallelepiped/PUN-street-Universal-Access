@@ -46,7 +46,11 @@ func (s *CartHandler) PostCart(c *gin.Context) {
 
 	err = s.CartUsecase.PostCart(c, &cart, customerID)
 
-	if err != nil {
+	if err.Error() == "The inventory is not enough for the supply" {
+		logrus.Error(err)
+		c.Status(418)
+		return
+	} else if err != nil {
 		logrus.Error(err)
 		c.Status(500)
 		return

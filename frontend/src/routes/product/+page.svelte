@@ -2,14 +2,15 @@
 	import drink from '$lib/assets/watermelon.png';
 
 	let options = [
-		{ id: 'option1', label: 'Vertical Option 1' },
-		{ id: 'option1', label: 'Vertical Option 2' },
-		{ id: 'option1', label: 'Vertical Option 3' },
-		{ id: 'option1', label: 'Vertical Option 4' }
+		{ id: 'option1', label: '正常糖' },
+		{ id: 'option1', label: '半糖' },
+		{ id: 'option1', label: '微糖' },
+		{ id: 'option1', label: '少糖' },
+		{ id: 'option1', label: '無糖' }
 	];
 	let options2 = [
-		{ id: 'option2', label: 'Vertical happy 1' },
-		{ id: 'option2', label: 'Vertical happy 4' }
+		{ id: 'option2', label: '是' },
+		{ id: 'option2', label: '否' }
 	];
 
 	let options_con = [
@@ -79,15 +80,15 @@
 									必填
 								</div>
 							</div>
-							<div class="relative ml-[25px] w-[90%] flex-col items-start space-y-2">
+							<div class="relative ml-[25px] mt-[10px] w-[90%] flex-col items-start">
 								{#each opt[val] as { id, label }}
 									<div
-										class="m-1 flex w-[100%] items-center space-x-2 border-b-[1px] border-solid border-amber-900"
+										class="flex w-[100%] items-center space-x-2 border-b-[1px] border-solid border-amber-900"
 									>
-										<!-- <input type="radio" name={group} class="h-[15px] w-[15px] form-radio text-primary" /> -->
-										<input type="radio" name={group} class="red_input" checked />
-										<label for={id} class="ml-auto text-primary text-red-950">{label}</label>
-										<!-- <label for={id} class="rdobutton_label"></label> -->
+										<input type="radio" name={group} class="h-[20px] w-[20px]" />
+										<div class="flex h-[30px] w-[100%] items-center justify-end">
+											<label for={id} class="font-bold text-primary text-red-950">{label}</label>
+										</div>
 									</div>
 								{/each}
 							</div>
@@ -102,13 +103,15 @@
 					</div>
 					<div class="ml-[25px] mt-[10px] flex w-[90%] flex-wrap">
 						{#each buttons as { label }}
-							<button
-								class="mb-4 mr-4 w-[90px] rounded rounded-[10px] border-[3px]
+							<div class="ml-[5px] flex justify-center">
+								<button
+									class="m-[10px] w-[90px] rounded rounded-[10px] border-[3px]
 						border-lime-800 bg-transparent px-1 py-0 text-center
 						font-bold text-lime-800 transition-all duration-300 hover:bg-lime-800 hover:text-white"
-							>
-								{label}
-							</button>
+								>
+									{label}
+								</button>
+							</div>
 						{/each}
 					</div>
 				</div>
@@ -132,6 +135,9 @@
 		</div>
 	</div>
 </div>
+<br />
+<br />
+<br />
 
 <style>
 	.triangle-button-d {
@@ -150,9 +156,7 @@
 		border-left: 15px solid rgb(87, 19, 11); /* 按钮颜色 */
 		cursor: pointer;
 	}
-	.red_input {
+	input[type='radio'] {
 		accent-color: rgb(120, 40, 40);
-		height: 20px;
-		width: 20px;
 	}
 </style>

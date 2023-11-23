@@ -13,8 +13,8 @@
 
 {#await changeColor(used)}
 	loading
-	<p class="border-PUA-stone bg-PUA-gray text-PUA-stone w-0"></p>
-	<p class="border-PUA-gray bg-PUA-stone text-PUA-gray w-0"></p>
+	<p class="w-0 border-PUA-stone bg-PUA-gray text-PUA-stone"></p>
+	<p class="w-0 border-PUA-gray bg-PUA-stone text-PUA-gray"></p>
 {:then color}
 	<div class="flex h-32 w-96 flex-col">
 		<div

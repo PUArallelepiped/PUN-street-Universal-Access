@@ -5,7 +5,6 @@
 		if (reverse) {
 			bgColor = [textColor, (textColor = bgColor)][0];
 		}
-		console.log(textColor);
 		return { textColor, bgColor };
 	}
 	export let used: boolean = true;
@@ -13,11 +12,11 @@
 
 {#await changeColor(used)}
 	loading
-	<p class="border-PUA-stone bg-PUA-gray text-PUA-stone w-0"></p>
-	<p class="border-PUA-gray bg-PUA-stone text-PUA-gray w-0"></p>
+	<p class="w-0 border-PUA-stone bg-PUA-gray text-PUA-stone"></p>
+	<p class="w-0 border-PUA-gray bg-PUA-stone text-PUA-gray"></p>
 {:then color}
 	<div class="flex w-96 flex-col">
-		<div class="text-PUA-stone py-1 text-xl font-semibold">IM pasta</div>
+		<div class="py-1 text-xl font-semibold text-PUA-stone">IM pasta</div>
 		<div
 			class="text-{color?.textColor} bg-{color?.bgColor} border-{color?.textColor} flex items-center rounded-xl border-2 text-center font-semibold"
 		>

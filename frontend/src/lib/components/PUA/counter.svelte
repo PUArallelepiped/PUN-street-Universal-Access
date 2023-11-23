@@ -1,6 +1,6 @@
 <script lang="ts">
-	import BlueButton from './blueButton.svelte';
-
+	import triangle_sub from '$lib/assets/triangle_sub.png';
+	import triangle_add from '$lib/assets/triangle_add.png';
 	let count = 0;
 	export let allowNegative: boolean = false;
 	function add() {
@@ -16,12 +16,21 @@
 	}
 </script>
 
-<div class="m-3 p-3">
-	<BlueButton text="-" onclick={sub} />
+<div class="flex items-center justify-center">
+	<button class="flex items-center" on:click={sub}>
+		<img src={triangle_sub} alt="" class="h-[25px] object-cover" />
+	</button>
+
 	<input
-		class="m-3 rounded-full bg-slate-500 p-3 text-center text-2xl text-blue-100"
+		class="ml-[12px] mr-[12px] rounded-[20px] border-[3px] border-red-900 bg-transparent text-center"
 		type="text"
 		bind:value={count}
 	/>
-	<BlueButton text="+" onclick={add} />
+
+	<button class="triangle-button-add" on:click={add}>
+		<img src={triangle_add} alt="" class="h-[25px] object-cover" />
+	</button>
 </div>
+
+<style>
+</style>

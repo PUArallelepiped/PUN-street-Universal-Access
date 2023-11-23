@@ -514,12 +514,23 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /cart:
+  /customer/{userID}/cart:
     post:
       tags:
       - customer
       - cart
       summary: add product to cart
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the user to return.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
       requestBody:
         description: add a new cart.
         content:
@@ -898,6 +909,12 @@ paths:
               type: string
               example: "1"
               x-content-type: application/json
+      requestBody:
+        description: checkout info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutInfo'
       responses:
         "200":
           description: ok
@@ -1035,7 +1052,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CartArray'
+                $ref: '#/components/schemas/OrderArray'
         "400":
           description: bad request
         "500":
@@ -1550,6 +1567,7 @@ components:
       - taking_address
       - taking_method
       - total_price
+      - cart_array
       type: object
       properties:
         customer_id:
@@ -1590,6 +1608,10 @@ components:
           type: integer
           format: int64
           example: 9999
+        cart_array:
+          type : array
+          items:
+            $ref: '#/components/schemas/CartInfo'
     OrderArray:
       type: array
       items:
@@ -1649,3 +1671,22 @@ components:
           type: number
           format: float
           example: 5
+    CheckoutInfo:
+      required:
+        - seasoning_discount_id
+        - shipping_discount_id
+        - taking_method
+      type: object
+      properties:
+        seasoning_discount_id:
+          type: integer
+          format: int64
+          example: 1
+        shipping_discount_id:
+          type: integer
+          format: int64
+          example: 1
+        taking_method:
+          type: integer
+          format: int64
+          example: 1

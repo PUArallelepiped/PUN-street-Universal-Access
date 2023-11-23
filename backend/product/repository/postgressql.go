@@ -36,6 +36,17 @@ func (p *postgresqlProductRepo) GetByID(ctx context.Context, id int64) (*[]swagg
 	return products, nil
 }
 
+func (p *postgresqlProductRepo) GetByProductID(ctx context.Context, id int64) (*swagger.ProductInfo, error) {
+	row := p.db.QueryRow("SELECT product_id, store_id, name, description, picture, price, stock, status FROM products WHERE product_id = $1", id)
+
+	product := &swagger.ProductInfo{}
+	if err := row.Scan(&product.ProductId, &product.StoreId, &product.Name, &product.Description, &product.Picture, &product.Price, &product.Stock, &product.Status); err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+	return product, nil
+}
+
 func (p *postgresqlProductRepo) AddByStoreId(ctx context.Context, id int64, product *swagger.ProductInfo) error {
 	sqlStatement := `
 	INSERT INTO products (store_id, name, description, picture, price, stock, status) VALUES

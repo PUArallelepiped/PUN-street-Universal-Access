@@ -28,4 +28,6 @@ type OrderInfo struct {
 	TakingMethod int64 `json:"taking_method"`
 
 	TotalPrice int64 `json:"total_price"`
+
+	CartArray []CartInfo `json:"cart_array"`
 }

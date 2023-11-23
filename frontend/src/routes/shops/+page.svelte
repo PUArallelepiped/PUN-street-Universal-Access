@@ -89,12 +89,8 @@
 	});
 </script>
 
-<div class="h-[50px] w-[40%] overflow-hidden">
-	<div class="float-left text-2xl">PUN Street Access</div>
-</div>
-
-<div class="flex justify-start">
-	<div class="float-left w-[40%]">
+<div class="flex justify-start bg-gradient-to-b from-zinc-500 to-neutral-100 shadow">
+	<div class="float-left w-[30%] pt-[15px]">
 		<Input type="text" placeholder="QQㄋㄟㄋㄟ好喝到咩噗茶" class="max-w-xs" />
 
 		<p class="h-[30px] w-[325px] text-center text-lg">Sort</p>
@@ -130,9 +126,9 @@
 		</div>
 	</div>
 
-	<div class="flex flex-wrap pl-20">
+	<div class="grid gap-x-25 grid-cols-2 w-[900px] justify-start items-start">
 		{#each shopListResponse as shop}
-			<div class="flex-fill float-left w-[500px]">
+			<div class="px-6 py-3 rounded-[10px] flex-col justify-start items-start gap-3 inline-flex">
 				<StoreCard
 					name={shop.name}
 					description={shop.description}

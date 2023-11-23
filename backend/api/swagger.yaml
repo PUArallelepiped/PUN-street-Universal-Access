@@ -541,6 +541,8 @@ paths:
       responses:
         "200":
           description: A cart object.
+        "418":
+          description: The inventory is not enough for the supply.
         "400":
           description: bad request
         "500":

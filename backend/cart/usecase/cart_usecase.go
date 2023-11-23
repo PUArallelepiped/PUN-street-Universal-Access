@@ -3,7 +3,6 @@ package usecase
 import (
 	"context"
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
@@ -27,7 +26,7 @@ func (cu *cartUsecase) CheckProductStatus(ctx context.Context, id int64) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(product.Status)
+
 	if product.Status == 2 {
 		return errors.New("The inventory is not enough for the supply")
 	}

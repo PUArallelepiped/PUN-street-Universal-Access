@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
@@ -21,6 +22,14 @@ func NewCartUsecase(cartRepo domain.CartRepo) domain.CartUsecase {
 }
 
 func (cu *cartUsecase) PostCart(ctx context.Context, cart *swagger.CartInfo, id int64) error {
+	product, err := cu.cartRepo.GetByProductID(ctx, cart.ProductId)
+	if err != nil {
+		return err
+	}
+	if product.Stock < cart.ProductQuantity {
+		return errors.New("The inventory is not enough for the supply")
+	}
+
 	errCart := cu.cartRepo.PostCart(ctx, cart, id)
 	userAddress, errAddress := cu.cartRepo.GetUserAddressById(ctx, id)
 	dt := time.Now().Format("01-02-2006 15:04:05")

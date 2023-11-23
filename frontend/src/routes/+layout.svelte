@@ -4,13 +4,13 @@
 	import Navbar from '$lib/navbar.svelte';
 	import { validateToken } from '$lib/components/PUA/validation';
 	import { browser } from '$app/environment';
-  
-	$: if(browser && $page) {
-			validateToken().catch(error => {
-				console.log(error);
-			});
+
+	$: if (browser && $page) {
+		validateToken().catch((error) => {
+			console.log(error);
+		});
 	}
-  </script>
-  
-  <Navbar />
-  <slot />
+</script>
+
+<Navbar />
+<slot />

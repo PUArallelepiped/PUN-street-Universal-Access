@@ -8,5 +8,6 @@ export async function validateToken() {
 	});
 	if (response.status !== 200) {
 		goto('/login');
+		return;
 	}
 }

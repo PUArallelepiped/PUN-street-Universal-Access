@@ -21,6 +21,7 @@ func NewCategoryHandler(e *gin.Engine, categoryUsecase domain.CategoryUsecase) {
 	{
 		v1.GET("/categorys", handler.GetCategory)
 		v1.POST("/store/:storeID/add-category/:categoryID", handler.AddCategoryToStore)
+		v1.DELETE("/store/:storeID/remove-category/:categoryID", handler.DeleteCategory)
 	}
 }
 
@@ -47,6 +48,27 @@ func (s *CategoryHandler) AddCategoryToStore(c *gin.Context) {
 	}
 
 	err := s.CategoryUsecase.AddCategoryToStore(c, storeID, categoryID)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.Status(200)
+}
+
+func (s *CategoryHandler) DeleteCategory(c *gin.Context) {
+	storeID, storeErr := strconv.ParseInt(c.Param("storeID"), 10, 64)
+	categoryID, categoryErr := strconv.ParseInt(c.Param("categoryID"), 10, 64)
+	for _, err := range []error{storeErr, categoryErr} {
+		if err != nil {
+			logrus.Error(err)
+			c.Status(400)
+			return
+		}
+	}
+
+	err := s.CategoryUsecase.DeleteCategoryToStore(c, storeID, categoryID)
 	if err != nil {
 		logrus.Error(err)
 		c.Status(500)

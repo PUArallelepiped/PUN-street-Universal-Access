@@ -37,3 +37,13 @@ func (cu *categoryUsecase) AddCategoryToStore(ctx context.Context, store_id int6
 
 	return nil
 }
+
+func (cu *categoryUsecase) DeleteCategoryToStore(ctx context.Context, store_id int64, category_id int64) error {
+	err := cu.categoryRepo.DeleteCategoryToStore(ctx, store_id, category_id)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}

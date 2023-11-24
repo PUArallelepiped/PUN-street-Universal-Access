@@ -43,3 +43,18 @@ func (p *postgresqlCategoty) GetAllCategory(ctx context.Context) (*[]swagger.Cat
 	return categorys, nil
 
 }
+
+func (p *postgresqlCategoty) AddCategoryToStore(ctx context.Context, store_id int64, category_id int64) error {
+	sqlStatement := `INSERT INTO labels 
+	(store_id, category_id) VALUES
+    ($1, $2)
+	`
+
+	_, err := p.db.Exec(sqlStatement, store_id, category_id)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}

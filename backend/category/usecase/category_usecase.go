@@ -27,3 +27,13 @@ func (cu *categoryUsecase) GetAllCategory(ctx context.Context) (*[]swagger.Categ
 
 	return categorys, nil
 }
+
+func (cu *categoryUsecase) AddCategoryToStore(ctx context.Context, store_id int64, category_id int64) error {
+	err := cu.categoryRepo.AddCategoryToStore(ctx, store_id, category_id)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}

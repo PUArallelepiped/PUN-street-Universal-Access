@@ -2,25 +2,17 @@
 	import drink from '$lib/assets/watermelon.png';
 	import Counter from '$lib/components/PUA/counter.svelte';
 	import Discountbutton from '$lib/components/PUA/discountButton.svelte';
+	import Redradiobox from '$lib/components/PUA/redRadioBox.svelte';
 
-	let options = [
-		{ id: 'option1', label: '正常糖' },
-		{ id: 'option1', label: '半糖' },
-		{ id: 'option1', label: '微糖' },
-		{ id: 'option1', label: '少糖' },
-		{ id: 'option1', label: '無糖' }
+	let data = [
+		{
+			id: 0,
+			need_choose: 1,
+			category: '調整甜度',
+			subcategories: ['正常糖', '半糖', '微糖', '少糖', '無糖']
+		},
+		{ id: 1, need_choose: 0, category: '加牛奶', subcategories: ['是', '否'] }
 	];
-	let options2 = [
-		{ id: 'option2', label: '是' },
-		{ id: 'option2', label: '否' }
-	];
-
-	let options_con = [
-		{ val: 0, label: '調整甜度', group: 'op_1', nes_choose: true },
-		{ val: 1, label: '加牛奶', group: 'op_2', nes_choose: false }
-	];
-
-	let opt = [options, options2];
 
 	// 改動態增加長度
 	let buttons = [
@@ -41,7 +33,7 @@
 
 <div class="flex justify-start">
 	<div class="relative left-1/2 top-[25px] h-full w-[80%] -translate-x-1/2 transform">
-		<div class="flex h-[100px] w-full items-center justify-center text-[33px] text-red-950">
+		<div class="h-100 mb-8 flex w-full items-center justify-center text-4xl text-red-950">
 			{product_title}
 		</div>
 
@@ -66,26 +58,28 @@
 			</div>
 			<div class="relative h-full w-full">
 				<div class="relative mb-[10px] w-full">
-					{#each options_con as { val, label, group }}
+					{#each data as { category, subcategories }}
 						<div class=" mb-[15px]">
 							<div
 								class="flex h-[30px] w-full items-center border-b-[1px] border-solid border-red-950"
 							>
-								<div class="font-bold text-amber-900">{label}</div>
+								<div class="font-bold text-amber-900">{category}</div>
 								<div
 									class="ml-[10px] rounded-[20px] border-[2px] border-solid border-orange-700 px-[8px] py-[0px] text-[9px] font-bold text-orange-700"
 								>
 									必填
 								</div>
 							</div>
-							<div class="relative ml-[25px] mt-[10px] w-[90%] flex-col items-start">
-								{#each opt[val] as { id, label }}
+							<div class="w-9/10 relative ml-[25px] mt-[10px] flex-col items-start">
+								{#each subcategories as subcategory}
 									<div
 										class="flex w-full items-center space-x-2 border-b-[1px] border-solid border-amber-900"
 									>
-										<input type="radio" name={group} class="h-[20px] w-[20px]" />
+										<Redradiobox name={category} />
 										<div class="flex h-[30px] w-full items-center justify-end">
-											<label for={id} class="font-bold text-primary text-red-950">{label}</label>
+											<label for={category} class="font-bold text-primary text-red-950"
+												>{subcategory}</label
+											>
 										</div>
 									</div>
 								{/each}
@@ -98,7 +92,7 @@
 						<div class=" font-bold text-amber-900">Choose Discount</div>
 					</div>
 					<div class="flex items-center justify-center">
-						<div class="flex w-[63%] flex-wrap">
+						<div class="flex w-[61%] flex-wrap">
 							{#each buttons as { label }}
 								<div class="mt-[10px] flex justify-center">
 									<Discountbutton text={label} />
@@ -119,9 +113,3 @@
 <br />
 <br />
 <br />
-
-<style>
-	input[type='radio'] {
-		accent-color: rgb(120, 40, 40);
-	}
-</style>

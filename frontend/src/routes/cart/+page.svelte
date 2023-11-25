@@ -21,15 +21,11 @@
 	<div class="flex max-w-7xl flex-col gap-10">
 		<div class="flex flex-col">
 			<div class="flex justify-between">
-				<div class="px-3 text-xl font-semibold leading-normal text-stone-600">IM pasta</div>
-				<div class="px-7">
-					<span class="text-xl font-semibold leading-normal text-stone-600"
-						>Shipping Fee
-					</span><span class="text-base font-semibold leading-tight text-stone-600">NT$</span><span
-						class="text-xl font-semibold leading-normal text-stone-600"
-					>
-						60</span
-					>
+				<div class="px-3 text-xl font-semibold leading-normal text-PUA-stone">IM pasta</div>
+				<div class="flex items-baseline gap-2 px-7">
+					<span class="text-xl font-semibold leading-normal text-PUA-stone">Shipping Fee </span>
+					<span class="text-base font-semibold leading-tight text-PUA-stone">NT$</span>
+					<span class="text-xl font-semibold leading-normal text-PUA-stone">60</span>
 				</div>
 			</div>
 			<hr class="my-3 border-orange-950" />
@@ -40,7 +36,7 @@
 			</div>
 		</div>
 		<div>
-			<div class="px-3 text-xl font-semibold leading-normal text-stone-600">Discount</div>
+			<div class="px-3 text-xl font-semibold leading-normal text-PUA-stone">Discount</div>
 			<hr class="my-3 border-orange-950" />
 			<div class="grid grid-cols-3 gap-3">
 				<ShippingCoupon used={false} />

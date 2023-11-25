@@ -24,7 +24,8 @@
 				</svg>
 			</div>
 			<div class="flex items-end gap-4">
-				<span class=" text-base font-semibold text-red-900">NT$160</span>
+				<span class=" text-base font-semibold text-red-900">NT$ </span>
+				<span class=" text-xl font-semibold text-red-900">160</span>
 				<span class=" text-xl font-semibold text-red-900">x2</span>
 			</div>
 		</div>

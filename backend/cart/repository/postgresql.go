@@ -158,33 +158,6 @@ func (p *postgresqlCartRepo) GetEventDiscountQuantity(ctx context.Context, id in
 	return quantity, nil
 }
 
-func (p *postgresqlCartRepo) GetCartArrayByCustomerID(ctx context.Context, id int64) (*[]swagger.CartInfo, error) {
-	sqlStatement := `SELECT 
-	customer_id, product_id, store_id, cart_id, product_quantity, event_discount_id 
-	FROM carts 
-	WHERE customer_id = $1;
-	`
-
-	rows, err := p.db.Query(sqlStatement, id)
-	if err != nil {
-		logrus.Error(err)
-		return nil, err
-	}
-	carts := &[]swagger.CartInfo{}
-	for rows.Next() {
-		cart := &swagger.CartInfo{}
-		err = rows.Scan(&cart.CustomerId, &cart.ProductId, &cart.StoreId, &cart.CartId, &cart.ProductQuantity, &cart.DiscountId)
-		if err != nil {
-			logrus.Error(err)
-			return nil, err
-		}
-
-		*carts = append(*carts, *cart)
-	}
-
-	return carts, nil
-}
-
 func (p *postgresqlCartRepo) GetOrderById(ctx context.Context, customerId int64, cartId int64, storeId int64) (*swagger.OrderInfo, error) {
 	sqlStatement := `SELECT 
 	cart_id, store_id, user_id, seasoning_discount_id, shipping_discount_id, status, total_price, Order_date, taking_address, taking_method
@@ -270,6 +243,33 @@ func (p *postgresqlCartRepo) GetPercentageByID(ctx context.Context, id int64) (i
 	return percentage, nil
 }
 
+func (p *postgresqlCartRepo) GetOrderByCustomerID(ctx context.Context, id int64) (*[]swagger.OrderInfo, error) {
+	sqlStatement := `SELECT 
+	user_id, cart_id, store_id, seasoning_discount_id, shipping_discount_id, status, total_price, Order_date, taking_address, taking_method 
+	FROM orders
+	WHERE user_id = $1;
+	`
+
+	rows, err := p.db.Query(sqlStatement, id)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+	orders := &[]swagger.OrderInfo{}
+	for rows.Next() {
+		order := &swagger.OrderInfo{}
+		err = rows.Scan(&order.CustomerId, &order.CartId, &order.StoreId, &order.SeasoningDiscountId, &order.ShippingDiscountId, &order.OrderStatus, &order.TotalPrice, &order.OrderDate, &order.TakingAddress, &order.TakingMethod)
+		if err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+
+		*orders = append(*orders, *order)
+	}
+
+	return orders, nil
+}
+
 func (p *postgresqlCartRepo) UpdateProduct(ctx context.Context, customerId int64, cartId int64, productId int64, quantity int64) error {
 	sqlStatement := `
 	UPDATE carts SET 
@@ -284,4 +284,31 @@ func (p *postgresqlCartRepo) UpdateProduct(ctx context.Context, customerId int64
 	}
 
 	return nil
+}
+
+func (p *postgresqlCartRepo) GetCartArrayByCustomerCartID(ctx context.Context, customerId int64, cartId int64) (*[]swagger.CartInfo, error) {
+	sqlStatement := `SELECT 
+	customer_id, product_id, store_id, cart_id, product_quantity, event_discount_id 
+	FROM carts 
+	WHERE customer_id = $1 AND cart_id = $2;
+	`
+
+	rows, err := p.db.Query(sqlStatement, customerId, cartId)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+	carts := &[]swagger.CartInfo{}
+	for rows.Next() {
+		cart := &swagger.CartInfo{}
+		err = rows.Scan(&cart.CustomerId, &cart.ProductId, &cart.StoreId, &cart.CartId, &cart.ProductQuantity, &cart.DiscountId)
+		if err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+
+		*carts = append(*carts, *cart)
+	}
+
+	return carts, nil
 }

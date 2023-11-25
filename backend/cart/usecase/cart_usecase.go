@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
@@ -20,7 +21,24 @@ func NewCartUsecase(cartRepo domain.CartRepo) domain.CartUsecase {
 	}
 }
 
+func (cu *cartUsecase) CheckProductStatus(ctx context.Context, id int64) error {
+	product, err := cu.cartRepo.GetByProductID(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	if product.Status == 2 {
+		return errors.New("The inventory is not enough for the supply")
+	}
+	return nil
+}
+
 func (cu *cartUsecase) PostCart(ctx context.Context, cart *swagger.CartInfo, id int64) error {
+	if err := cu.CheckProductStatus(ctx, cart.ProductId); err != nil {
+		logrus.Error(err)
+		return err
+	}
+
 	errCart := cu.cartRepo.PostCart(ctx, cart, id)
 	userAddress, errAddress := cu.cartRepo.GetUserAddressById(ctx, id)
 	dt := time.Now().Format("01-02-2006 15:04:05")
@@ -168,14 +186,24 @@ func (cu *cartUsecase) Checkout(ctx context.Context, customerId int64, cartId in
 	return nil
 }
 
-func (cu *cartUsecase) GetCartArrayByCustomerID(ctx context.Context, id int64) (*[]swagger.CartInfo, error) {
-	carts, err := cu.cartRepo.GetCartArrayByCustomerID(ctx, id)
+func (cu *cartUsecase) GetOrderArrayByCustomerID(ctx context.Context, id int64) (*[]swagger.OrderInfo, error) {
+	orders, err := cu.cartRepo.GetOrderByCustomerID(ctx, id)
 	if err != nil {
 		logrus.Error(err)
 		return nil, err
 	}
 
-	return carts, nil
+	for i := 0; i < len(*orders); i++ {
+		order := &(*orders)[i]
+		carts, err := cu.cartRepo.GetCartByID(ctx, order.CustomerId, order.CartId, order.StoreId)
+		if err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+		order.CartArray = *carts
+	}
+
+	return orders, nil
 }
 
 func (cu *cartUsecase) UpdateProduct(ctx context.Context, customerId int64, cartId int64, productId int64, quantity int64) error {
@@ -186,4 +214,14 @@ func (cu *cartUsecase) UpdateProduct(ctx context.Context, customerId int64, cart
 	}
 
 	return nil
+}
+
+func (cu *cartUsecase) GetCartByCustomerCartID(ctx context.Context, customerId int64, cartId int64) (*[]swagger.CartInfo, error) {
+	carts, err := cu.cartRepo.GetCartArrayByCustomerCartID(ctx, customerId, cartId)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	return carts, nil
 }

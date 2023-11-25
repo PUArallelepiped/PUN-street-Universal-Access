@@ -4,6 +4,7 @@
 		SeasoningCoupon,
 		CartItemCard,
 		DenyButton,
+		CartMoreItemCard,
 		CartLabelBox,
 		ShippingCoupon
 	} from '$lib/index';
@@ -35,6 +36,7 @@
 			<div class="grid grid-cols-3 gap-3">
 				<CartItemCard></CartItemCard>
 				<CartItemCard></CartItemCard>
+				<CartMoreItemCard></CartMoreItemCard>
 			</div>
 		</div>
 		<div>

@@ -19,3 +19,5 @@ import OkButton from './components/PUA/OkButton.svelte';
 export { OkButton };
 import SeasoningCoupon from './components/PUA/seasoningCoupon.svelte';
 export { SeasoningCoupon };
+import CartMoreItemCard from './components/PUA/cartMoreItemCard.svelte';
+export { CartMoreItemCard };

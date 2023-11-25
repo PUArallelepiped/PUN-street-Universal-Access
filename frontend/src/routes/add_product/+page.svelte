@@ -114,7 +114,7 @@
 									<Textcontainer
 										width="100"
 										min_width="100"
-										max_Width="400"
+										max_Width="200"
 										id={category}
 										text_size="14"
 									/>

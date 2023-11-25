@@ -3,13 +3,14 @@
 
 	export let width: string = 'null';
 
-	function handleInput(event: Event & { target: HTMLInputElement }) {
-		inputValue = event.target.value;
+	function handleInput(event: Event) {
+		const target = event.target as HTMLTextAreaElement;
+		inputValue = target.value;
 		adjustTextareaHeight();
 	}
 
 	function adjustTextareaHeight() {
-		const textarea = document.getElementById('svelteTextarea');
+		const textarea = document.getElementById('svelteTextarea') as HTMLTextAreaElement;
 		if (textarea) {
 			textarea.style.height = '0px';
 			textarea.style.height = `${textarea.scrollHeight}px`;

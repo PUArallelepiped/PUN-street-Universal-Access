@@ -9,12 +9,13 @@
 	export let text_size: string = '14';
 
 	let max = Number(max_Width);
+
 	onMount(() => {
 		adjustInputWidth();
 	});
 
-	function handleInput(event: Event & { target: HTMLInputElement }) {
-		inputValue = event.target.value;
+	function handleInput(event: Event) {
+		inputValue = (event.target as HTMLInputElement).value;
 		adjustInputWidth();
 	}
 

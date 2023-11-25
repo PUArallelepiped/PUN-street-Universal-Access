@@ -15,6 +15,7 @@ type CartRepo interface {
 	GetUserAddressById(ctx context.Context, id int64) (string, error)
 	AddUserCartId(ctx context.Context, id int64) error
 	GetEventDiscountQuantity(ctx context.Context, id int64) (int64, error)
+	GetCartArrayByCustomerCartID(ctx context.Context, customerId int64, cartId int64) (*[]swagger.CartInfo, error)
 	GetOrderById(ctx context.Context, customerId int64, cartId int64, storeId int64) (*swagger.OrderInfo, error)
 	GetOrderByCustomerID(ctx context.Context, id int64) (*[]swagger.OrderInfo, error)
 	CheckoutOrder(ctx context.Context, customerId int64, cartId int64, storeId int64, totalPrice int64, orderDate string) error
@@ -22,6 +23,7 @@ type CartRepo interface {
 	GetMaxPriceByID(ctx context.Context, id int64) (int64, error)
 	GetPercentageByID(ctx context.Context, id int64) (int64, error)
 	DeleteOrder(ctx context.Context, customerId int64, cartId int64, storeId int64) error
+	UpdateProduct(ctx context.Context, customerId int64, cartId int64, productId int64, quantity int64) error
 }
 
 type CartUsecase interface {
@@ -30,4 +32,6 @@ type CartUsecase interface {
 	DeleteProduct(ctx context.Context, customerId int64, cartId int64, productId int64) error
 	Checkout(ctx context.Context, customerId int64, cartId int64, storeId int64, checkoutInfo *swagger.CheckoutInfo) error
 	GetOrderArrayByCustomerID(ctx context.Context, id int64) (*[]swagger.OrderInfo, error)
+	UpdateProduct(ctx context.Context, customerId int64, cartId int64, productId int64, quantity int64) error
+	GetCartByCustomerCartID(ctx context.Context, customerId int64, cartId int64) (*[]swagger.CartInfo, error)
 }

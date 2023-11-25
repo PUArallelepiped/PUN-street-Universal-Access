@@ -21,3 +21,5 @@ import SeasoningCoupon from './components/PUA/seasoningCoupon.svelte';
 export { SeasoningCoupon };
 import CartMoreItemCard from './components/PUA/cartMoreItemCard.svelte';
 export { CartMoreItemCard };
+import BuyNforOneFree from './components/PUA/buyNforMFree.svelte';
+export { BuyNforOneFree };

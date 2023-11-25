@@ -1,5 +1,6 @@
 <script lang="ts">
 	import watermelon from '$lib/assets/watermelon.png';
+	import { BuyNforOneFree } from '$lib';
 	export let href: string = './';
 	export let description: string = 'the shopkeeper is lazy';
 	export let price: number = 123;
@@ -18,11 +19,7 @@
 			>
 				<div class="mr-1 font-semibold text-PUA-dark-orange">{name}</div>
 				<div class="md:flew-row flex flex-col sm:flex-row lg:flex-row">
-					<div
-						class="mx-2 rounded-lg border-2 border-PUA-green px-1 text-base font-semibold text-PUA-green"
-					>
-						buy n for n free
-					</div>
+					<BuyNforOneFree></BuyNforOneFree>
 					<div
 						class="mx-2 rounded-lg border-2 border-PUA-red px-1 text-base font-semibold text-PUA-red"
 					>

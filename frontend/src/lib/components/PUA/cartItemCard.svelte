@@ -1,5 +1,6 @@
 <script lang="ts">
 	import watermelon from '$lib/assets/watermelon.png';
+	import BuyNforMFree from '$lib/components/PUA/buyNforMFree.svelte';
 </script>
 
 <div class="flex w-96 flex-col rounded-xl bg-white p-2.5">
@@ -29,8 +30,6 @@
 				<span class=" text-xl font-semibold text-red-900">x2</span>
 			</div>
 		</div>
-		<div class="rounded-xl border-2 border-stone-600 p-2 text-sm font-semibold text-stone-600">
-			買二送一
-		</div>
+		<BuyNforMFree></BuyNforMFree>
 	</div>
 </div>

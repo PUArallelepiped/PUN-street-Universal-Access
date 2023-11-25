@@ -6,8 +6,6 @@ import (
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
 	"github.com/sirupsen/logrus"
-
-	_ "github.com/lib/pq"
 )
 
 type UserUsecase struct {
@@ -20,7 +18,7 @@ func NewUserUsecase(userRepo domain.UserRepo) domain.UserUsecase {
 	}
 }
 
-func (su *UserUsecase) GetByID(ctx context.Context, id string) (*swagger.UserData, error) {
+func (su *UserUsecase) GetByID(ctx context.Context, id int64) (*swagger.UserData, error) {
 	s, err := su.userRepo.GetByID(ctx, id)
 	if err != nil {
 		logrus.Error(err)

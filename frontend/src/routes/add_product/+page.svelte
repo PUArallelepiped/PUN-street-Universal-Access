@@ -55,7 +55,7 @@
 		buttons = [...buttons, { id: 6, label: `買二送一` }];
 	}
 
-	let showModal = true; //only 模擬
+	let showModal = false; //only 模擬
 	let discount_name_Input = '';
 	let discount_maxquantity_Input = '';
 	let discount_description_Input = '';

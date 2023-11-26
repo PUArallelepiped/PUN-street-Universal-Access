@@ -49,7 +49,7 @@
 <input
 	bind:value={inputValue}
 	on:input={handleInput}
-	style={`min-width: ${min_width}px; width: ${width}; overflow: hidden;`}
+	class={`min-w-${min_width} w-${width} overflow-hidden`}
 	placeholder="Enter label"
 	{id}
 />

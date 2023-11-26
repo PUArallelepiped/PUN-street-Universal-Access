@@ -2,22 +2,22 @@
 	export let text: string = 'null';
 </script>
 
-<div id="checkbox">
+<div id="radio">
 	<label
-		><input type="checkbox" name="variety" value="" />
+		><input type="radio" name="variety" value="" />
 		<span class="round button">{text}</span></label
 	>
 </div>
 
 <style>
-	#checkbox input[type='checkbox'] {
+	#radio input[type='radio'] {
 		display: none;
 	}
-	#checkbox input:checked + .button {
+	#radio input:checked + .button {
 		background: #487444;
 		color: white;
 	}
-	#checkbox .button {
+	#radio .button {
 		display: inline-block;
 		margin: 0 5px 10px 0;
 		padding: 5px 10px;
@@ -28,10 +28,10 @@
 		padding-top: 0px;
 		padding-bottom: 0px;
 	}
-	#checkbox .button:hover {
+	#radio .button:hover {
 		border-color: #287821;
 	}
-	#checkbox .round {
+	#radio .round {
 		border-radius: 10px;
 		border: 2px solid #2d9a25;
 		border-color: #287821;

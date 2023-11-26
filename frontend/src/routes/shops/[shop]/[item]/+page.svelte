@@ -56,7 +56,7 @@
 </h2>
 
 <div class="flex justify-start">
-	<div class="relative left-1/2 top-[25px] h-full w-[80%] -translate-x-1/2 transform">
+	<div class="relative left-1/2 top-[25px] h-full w-4/5 -translate-x-1/2 transform">
 		<div class="h-100 mb-8 flex w-full items-center justify-center text-4xl text-red-950">
 			{product.title}
 		</div>

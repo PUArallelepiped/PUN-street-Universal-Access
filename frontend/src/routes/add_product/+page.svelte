@@ -2,8 +2,9 @@
 	import error from '$lib/assets/error.png';
 	import { Input } from '$lib/components/ui/input';
 	import transhcan from '$lib/assets/transhcan.png';
+	import close from '$lib/assets/close.png';
 	import Counter from '$lib/components/PUA/counter.svelte';
-	import Discountbutton from '$lib/components/PUA/discountButton.svelte';
+	// import Discountbutton from '$lib/components/PUA/discountButton.svelte';
 	import Redradiobox from '$lib/components/PUA/redRadioBox.svelte';
 	import Textcontainer from '$lib/components/PUA/inputContainer.svelte';
 	import Textarea from '$lib/components/PUA/textareaContainer.svelte';
@@ -52,6 +53,16 @@
 
 	function addDiscountButton() {
 		buttons = [...buttons, { id: 6, label: `買二送一` }];
+	}
+
+	let showModal = true; //only 模擬
+	let discount_name_Input = '';
+	let discount_maxquantity_Input = '';
+	let discount_description_Input = '';
+	let modalInput = '';
+
+	function toggleModal() {
+		showModal = !showModal;
 	}
 </script>
 
@@ -184,14 +195,18 @@
 					<div class="flex items-center justify-center">
 						<div class="flex w-[61%] flex-wrap">
 							{#each buttons as { label }}
-								<div class="mt-[10px] flex justify-center">
-									<Discountbutton text={label} />
+								<div class="mt-2 flex justify-center">
+									<button
+										on:click={toggleModal}
+										class=" m-0 mb-0 ml-[5px] rounded-[10px] border-2 border-lime-800 p-5 px-2 py-0 font-bold text-lime-800 hover:bg-lime-800 hover:text-white active:bg-lime-800"
+										>{label}</button
+									>
 								</div>
 							{/each}
-							<div class="flex w-[90px] items-center">
+							<div class="mt-2 flex w-[90px] items-center">
 								<button
 									on:click={addDiscountButton}
-									class="m-[3px] h-[20px] w-[20px] rounded-[10px] bg-lime-800 text-center text-[13px] font-bold text-white"
+									class="m-0 mb-0 ml-2 mr-2 h-[20px] w-[20px] rounded-[10px] bg-lime-800 text-center text-[13px] font-bold text-white"
 									>+</button
 								>
 							</div>
@@ -200,7 +215,7 @@
 				</div>
 
 				<div class="flex h-[30px] w-full items-center border-b-[1px] border-solid border-red-950">
-					<div class=" font-bold text-amber-900">Set Stock</div>
+					<div class=" font-bold text-amber-900">Set Status</div>
 				</div>
 				<div class="flex items-center justify-center">
 					<div class="mt-[20px] flex flex-col">
@@ -214,3 +229,91 @@
 		</div>
 	</div>
 </div>
+
+<!-- <ChangePage /> -->
+<!-- <button on:click={toggleModal} class="rounded bg-blue-500 px-4 py-2 text-white">Open Modal</button> -->
+
+{#if showModal}
+	<div
+		class="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50 backdrop-blur"
+	>
+		<div class="w-2/5 rounded bg-white p-5">
+			<div class="flex">
+				<div class="w-1/2 text-left text-xl font-bold text-red-900">
+					<h2>Add A Discount</h2>
+				</div>
+				<div class="flex w-1/2 justify-end">
+					<button on:click={toggleModal}>
+						<img src={close} alt="" class="h-[25px] object-cover" />
+					</button>
+				</div>
+			</div>
+			<div class="relative ml-20 mr-20">
+				<div class="flex w-full items-center justify-center pb-2 pt-2">
+					<div class="flex w-5/6 rounded-[10px] border-[3px] border-red-900 p-3 text-red-900">
+						<div class="w-2/5 text-center">{discount_name_Input}</div>
+						<div class="ml-1 mr-1 border-r-[2px] border-red-900"></div>
+						<div class="flex w-3/5 flex-wrap items-center justify-center text-center">
+							<p>Get</p>
+							<p class="ml-1 mr-1 text-xl">{discount_maxquantity_Input}</p>
+							<p>{discount_description_Input}</p>
+						</div>
+					</div>
+				</div>
+				<div class="mt-2">
+					<p class="text-3 font-bold text-red-900">Enter Max Quantity</p>
+					<input
+						type="text"
+						class="w-full border-b-[2px] border-red-900 font-bold"
+						bind:value={discount_maxquantity_Input}
+						placeholder=" Enter Max Quantity"
+					/>
+					<div class="flex items-center">
+						<img src={error} alt="Error" class="h-[25px] w-[25px] object-cover object-cover" />
+						<p class="ml-2 text-[15px] font-bold text-red-500">Error message</p>
+					</div>
+				</div>
+				<div class="mt-2">
+					<p class="text-3 font-bold text-red-900">Discount Name</p>
+					<input
+						type="text"
+						class="w-full border-b-[2px] border-red-900 font-bold"
+						bind:value={discount_name_Input}
+						placeholder=" Enter Discount Name"
+					/>
+					<div class="flex items-center">
+						<img src={error} alt="Error" class="h-[25px] w-[25px] object-cover object-cover" />
+						<p class="ml-2 text-[15px] font-bold text-red-500">Error message</p>
+					</div>
+				</div>
+				<div class="mt-2">
+					<p class="text-3 font-bold text-red-900">Description</p>
+					<input
+						type="text"
+						class="w-full border-b-[2px] border-red-900 font-bold"
+						bind:value={discount_description_Input}
+						placeholder=" Enter Discount Description"
+					/>
+					<div class="flex items-center">
+						<img src={error} alt="Error" class="h-[25px] w-[25px] object-cover object-cover" />
+						<p class="ml-2 text-[15px] font-bold text-red-500">Error message</p>
+					</div>
+				</div>
+			</div>
+			<div class="mt-5 flex items-center text-center">
+				<div class="w-1/2">
+					<button class="w-4/5 rounded-[20px] bg-gray-200 font-bold font-bold text-red-900">
+						Delete
+					</button>
+				</div>
+				<div class="w-1/2">
+					<button class="w-4/5 rounded-[20px] bg-orange-700 font-bold font-bold text-white">
+						Save
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+{/if}
+
+<p>{modalInput}</p>

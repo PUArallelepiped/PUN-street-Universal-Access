@@ -40,6 +40,8 @@ func init() {
 }
 
 func main() {
+	logrus.SetReportCaller(true)
+
 	logrus.Info("HTTP server started!!!")
 
 	restfulHost := viper.GetString("RESTFUL_HOST")

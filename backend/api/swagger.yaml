@@ -1796,6 +1796,8 @@ components:
           format: int64
           example: 1
     inline_response_200:
+      required:
+      - price
       type: object
       properties:
         price:

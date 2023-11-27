@@ -45,3 +45,24 @@ func (p *postgresqlStoreRepo) GetAllStore(ctx context.Context) ([]swagger.StoreI
 	}
 	return l, nil
 }
+
+func (p *postgresqlStoreRepo) GetMonthTotalPriceById(ctx context.Context, id int64, year int64, month int64) (*swagger.InlineResponse200, error) {
+	sqlStatement := `
+	SELECT COALESCE(SUM(total_price), 0)
+	FROM orders 
+	WHERE store_id = $1 AND 
+	extract(year from order_date) = $2 AND 
+	extract(month from order_date) = $3;
+	`
+
+	row := p.db.QueryRow(sqlStatement, id, year, month)
+
+	price := &swagger.InlineResponse200{}
+	if err := row.Scan(&price.Price); err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	return price, nil
+
+}

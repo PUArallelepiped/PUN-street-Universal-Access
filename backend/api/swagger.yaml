@@ -47,7 +47,7 @@ paths:
                 $ref: '#/components/schemas/StoreArray'
         "500":
           description: Unexpected error
-  /store/{storeID}/get-statictics/{year}:
+  /store/{storeID}/get-statistics/{year}:
     get:
       tags:
       - seller

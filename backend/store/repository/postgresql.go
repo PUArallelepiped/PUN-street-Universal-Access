@@ -51,8 +51,8 @@ func (p *postgresqlStoreRepo) GetMonthTotalPriceById(ctx context.Context, id int
 	SELECT COALESCE(SUM(total_price), 0)
 	FROM orders 
 	WHERE store_id = $1 AND 
-	extract(year from order_date) = $2 AND 
-	extract(month from order_date) = $3;
+	EXTRACT(year FROM order_date) = $2 AND 
+	EXTRACT(month FROM order_date) = $3;
 	`
 
 	row := p.db.QueryRow(sqlStatement, id, year, month)
@@ -64,5 +64,34 @@ func (p *postgresqlStoreRepo) GetMonthTotalPriceById(ctx context.Context, id int
 	}
 
 	return price, nil
+
+}
+
+func (p *postgresqlStoreRepo) GetAllProductSellingById(ctx context.Context, id int64, year int64, month int64) (*[]swagger.ProductStatistic, error) {
+	sqlStatement := `
+	SELECT carts.product_id, products.name, SUM(carts.product_quantity) 
+	FROM orders, carts, products 
+	WHERE orders.store_id = $1 AND 
+	orders.cart_id = carts.cart_id AND customer_id = user_id AND carts.product_id = products.product_id AND 
+	EXTRACT(year FROM order_date) = $2 AND EXTRACT(month FROM order_date) = $3
+	GROUP BY carts.product_id, products.name
+	`
+	rows, err := p.db.Query(sqlStatement, id, year, month)
+	if err != nil {
+		logrus.Error(err)
+	}
+
+	productSellingArray := &[]swagger.ProductStatistic{}
+	for rows.Next() {
+		productSelling := &swagger.ProductStatistic{}
+		err := rows.Scan(&productSelling.ProductId, &productSelling.ProductName, &productSelling.ProductQuantity)
+		if err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+		*productSellingArray = append(*productSellingArray, *productSelling)
+
+	}
+	return productSellingArray, nil
 
 }

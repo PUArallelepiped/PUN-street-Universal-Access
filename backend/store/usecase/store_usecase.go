@@ -50,3 +50,13 @@ func (su *storeUsecase) GetStatisticsById(ctx context.Context, id int64, year in
 
 	return &priceArray, nil
 }
+
+func (su *storeUsecase) GetAllProductSellingById(ctx context.Context, id int64, year int64, month int64) (*[]swagger.ProductStatistic, error) {
+	productStatistics, err := su.storeRepo.GetAllProductSellingById(ctx, id, year, month)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	return productStatistics, nil
+}

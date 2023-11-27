@@ -3,21 +3,19 @@
 	import { Input } from '$lib/components/ui/input';
 	import transhcan from '$lib/assets/transhcan.png';
 	import close from '$lib/assets/close.png';
-	import Counter from '$lib/components/PUA/counter.svelte';
-	// import Discountbutton from '$lib/components/PUA/discountButton.svelte';
 	import Redradiobox from '$lib/components/PUA/redRadioBox.svelte';
 	import Textcontainer from '$lib/components/PUA/inputContainer.svelte';
 	import Textarea from '$lib/components/PUA/textareaContainer.svelte';
+	import DisCountArea from '$lib/components/PUA/discountArea.svelte';
+	import OkButton from '$lib/components/PUA/OkButton.svelte';
+	import StatusButton from '$lib/components/PUA/statusButton.svelte';
 
-	let data = [{ id: 0, category: '1', subcategories: [1, 2, 3] }];
+	let data = [{ id: 0, category: '0', subcategories: ['1', '2', '3'] }];
 
 	let nextCategoryId = data.length + 1;
 
 	function addNewCategory() {
-		data = [
-			...data,
-			{ id: nextCategoryId, category: `New Category ${nextCategoryId}`, subcategories: [] }
-		];
+		data = [...data, { id: nextCategoryId, category: `${nextCategoryId}`, subcategories: [] }];
 		nextCategoryId++;
 	}
 
@@ -25,7 +23,10 @@
 		const currentData = data[index];
 		data[index] = {
 			...currentData,
-			subcategories: [...currentData.subcategories, currentData.subcategories.length + 1]
+			subcategories: [
+				...currentData.subcategories,
+				(currentData.subcategories.length + 1).toString()
+			]
 		};
 	}
 
@@ -51,8 +52,11 @@
 		{ id: 5, label: '買二送一' }
 	];
 
+	let Status = [{ label: '下架中' }, { label: '上架中' }, { label: '已售完' }];
+
 	function addDiscountButton() {
 		buttons = [...buttons, { id: 6, label: `買二送一` }];
+		return null;
 	}
 
 	let showModal = false; //only 模擬
@@ -64,7 +68,7 @@
 	function toggleModal() {
 		showModal = !showModal;
 	}
-	// 新增完之後，根據輸入的discount_maxquantity_Input來算discount
+	// 新增完之後，根據輸入的discount_maxquantity_Input來算discount 優惠
 </script>
 
 <div class="flex w-5/6 items-center justify-center">
@@ -76,7 +80,7 @@
 				class="max-wxs w-full rounded-[0] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-3xl"
 			/>
 			<div class="flex items-center">
-				<img src={error} alt="Error" class="h-[35px] w-[35px] object-cover object-cover" />
+				<img src={error} alt="Error" class="h-[35px] w-[35px] object-cover" />
 
 				<p class="text-[20px] font-bold text-red-500">Error message</p>
 			</div>
@@ -92,7 +96,7 @@
 					>
 				</div>
 				<div class="flex items-center">
-					<img src={error} alt="Error" class="h-[35px] w-[35px] object-cover object-cover" />
+					<img src={error} alt="Error" class="h-[35px] w-[35px] object-cover" />
 					<p class="text-[20px] font-bold text-red-500">Error message</p>
 				</div>
 
@@ -105,7 +109,7 @@
 					/>
 				</div>
 				<div class="flex items-center">
-					<img src={error} alt="Error" class="h-[35px] w-[35px] object-cover object-cover" />
+					<img src={error} alt="Error" class="h-[35px] w-[35px] object-cover" />
 					<p class="text-[20px] font-bold text-red-500">Error message</p>
 				</div>
 
@@ -113,7 +117,7 @@
 					<Textarea width="250" />
 				</div>
 				<div class="flex items-center">
-					<img src={error} alt="Error" class="h-[35px] w-[35px] object-cover object-cover" />
+					<img src={error} alt="Error" class="h-[35px] w-[35px] object-cover" />
 					<p class="text-[20px] font-bold text-red-500">Error message</p>
 				</div>
 			</div>
@@ -127,23 +131,24 @@
 										width="100"
 										min_width="100"
 										max_Width="200"
-										id={category}
+										id={category + 'label'}
 										text_size="14"
 									/>
 									<div
-										class="ml-[10px] w-[40px] rounded-[20px] border-[2px] border-solid border-orange-700 px-[8px] py-[0px] text-[9px] font-bold text-orange-700"
+										class="w-[40px] rounded-[20px] border-[2px] border-solid border-orange-700 px-[8px] py-[0px] text-center text-[9px] font-bold text-orange-700"
 									>
 										必填
 									</div>
-									<div class="m-2 flex items-center justify-center">
-										<Redradiobox name={category} />
+
+									<div class="ml-2 mr-2 flex items-center justify-center">
+										<Redradiobox name={category + 'Choice'} id={category + 'yes'} status={true} />
 									</div>
 
-									<label for="Choice">Yes</label>
-									<div class="m-2 flex items-center justify-center">
-										<Redradiobox name={category} />
+									<label for="Choice" class="text-red-950">Yes</label>
+									<div class="ml-2 mr-2 flex items-center justify-center">
+										<Redradiobox name={category + 'Choice'} id={category + 'No'} />
 									</div>
-									<label for="Choice">No</label>
+									<label for="Choice" class="text-red-950">No</label>
 								</div>
 								<div class="flex w-1/3 items-center justify-end">
 									<button on:click={() => removeCategory(id)} class="flex">
@@ -156,7 +161,7 @@
 									<div
 										class="m-1 flex w-full items-center space-x-2 border-b-[1px] border-solid border-amber-900"
 									>
-										<Redradiobox name={category} />
+										<Redradiobox name={category} id={category + subcategory} />
 
 										<div class="mx-auto flex w-full justify-end">
 											<input
@@ -189,42 +194,42 @@
 						class="h-[30px] w-[30px] rounded-[15px] bg-red-900 font-bold text-white">+</button
 					>
 				</div>
-				<div class="relative h-full w-full">
-					<div class="flex h-[30px] w-full items-center border-b-[1px] border-solid border-red-950">
-						<div class=" font-bold text-amber-900">Add Discount</div>
-					</div>
-					<div class="flex items-center justify-center">
-						<div class="flex flex-wrap">
-							{#each buttons as { label }}
-								<div class="flex justify-center">
-									<button
-										on:click={toggleModal}
-										class="mb-2 ml-1 mt-2 rounded-[10px] border-2 border-lime-800 p-5 px-2 py-0 font-bold text-lime-800 hover:bg-lime-800 hover:text-white active:bg-lime-800"
-										>{label}</button
-									>
-								</div>
-							{/each}
-							<div class="flex w-[90px] items-center">
-								<button
-									on:click={addDiscountButton}
-									on:click={toggleModal}
-									class="ml-1 h-[20px] w-[20px] rounded-[10px] bg-lime-800 text-center text-[13px] font-bold text-white"
-									>+</button
-								>
-							</div>
-						</div>
-					</div>
-				</div>
+				<DisCountArea
+					toggleModal={() => {
+						showModal = !showModal;
+						return null;
+					}}
+					discount={buttons}
+					{addDiscountButton}
+					addSign={true}
+					type={false}
+				></DisCountArea>
 
-				<div class="flex h-[30px] w-full items-center border-b-[1px] border-solid border-red-950">
-					<div class=" font-bold text-amber-900">Set Status</div>
+				<div
+					class="mt-4 flex h-[30px] w-full items-center border-b-[1px] border-solid border-PUA-stone"
+				>
+					<div class="font-bold text-PUA-stone">Set Status</div>
+				</div>
+				<div class="m-4 flex">
+					{#each Status as { label }}
+						<div class="flex w-1/3 items-center justify-center">
+							<StatusButton
+								onclick={() => {
+									return null;
+								}}
+								text={label}
+							></StatusButton>
+						</div>
+					{/each}
 				</div>
 				<div class="flex items-center justify-center">
-					<div class="mt-[20px] flex flex-col">
-						<Counter />
-						<button class="mt-[20px] rounded-[20px] bg-orange-700 p-2 font-bold text-white"
-							>Add Product</button
-						>
+					<div class="flex flex-col">
+						<OkButton
+							onclick={() => {
+								return null;
+							}}
+							text="Add Product"
+						></OkButton>
 					</div>
 				</div>
 			</div>
@@ -236,15 +241,12 @@
 <!-- <button on:click={toggleModal} class="rounded bg-blue-500 px-4 py-2 text-white">Open Modal</button> -->
 
 {#if showModal}
-	<!-- <div
-		class="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50 backdrop-blur"
-	> -->
 	<div
-		class="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50"
+		class="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50 backdrop-blur"
 	>
 		<div class=" rounded bg-white p-5">
 			<div class="flex">
-				<div class="w-1/2 text-left text-xl font-bold text-red-900">
+				<div class="w-1/2 text-left text-xl font-bold text-PUA-stone">
 					<h2>Add A Discount</h2>
 				</div>
 				<div class="flex w-1/2 justify-end">
@@ -255,7 +257,7 @@
 			</div>
 			<div class="relative ml-16 mr-16">
 				<div class="flex w-full items-center justify-center pb-2 pt-2">
-					<div class="flex w-5/6 rounded-[10px] border-[3px] border-red-900 p-3 text-red-900">
+					<div class="flex w-64 rounded-[10px] border-[3px] border-red-900 p-3 text-red-900">
 						<div class="w-2/5 text-center font-bold">Event Discount</div>
 						<div class="ml-1 mr-1 border-r-[2px] border-red-900"></div>
 						<div class="flex w-3/5 flex-wrap items-center justify-center text-center font-bold">
@@ -274,7 +276,7 @@
 						placeholder=" Enter Max Quantity"
 					/>
 					<div class="flex items-center">
-						<img src={error} alt="Error" class="h-[25px] w-[25px] object-cover object-cover" />
+						<img src={error} alt="Error" class="h-[25px] w-[25px] object-cover" />
 						<p class="ml-2 text-[15px] font-bold text-red-500">Error message</p>
 					</div>
 				</div>
@@ -287,7 +289,7 @@
 						placeholder=" Enter Discount Name"
 					/>
 					<div class="flex items-center">
-						<img src={error} alt="Error" class="h-[25px] w-[25px] object-cover object-cover" />
+						<img src={error} alt="Error" class="h-[25px] w-[25px] object-cover" />
 						<p class="ml-2 text-[15px] font-bold text-red-500">Error message</p>
 					</div>
 				</div>
@@ -300,21 +302,17 @@
 						placeholder=" Enter Discount Description"
 					/>
 					<div class="flex items-center">
-						<img src={error} alt="Error" class="h-[25px] w-[25px] object-cover object-cover" />
+						<img src={error} alt="Error" class="h-[25px] w-[25px] object-cover" />
 						<p class="ml-2 text-[15px] font-bold text-red-500">Error message</p>
 					</div>
 				</div>
 			</div>
 			<div class="mt-5 flex items-center text-center">
 				<div class="w-1/2">
-					<button class="w-4/5 rounded-[20px] bg-gray-200 font-bold font-bold text-red-900">
-						Delete
-					</button>
+					<button class="w-4/5 rounded-[20px] bg-gray-200 font-bold text-red-900"> Delete </button>
 				</div>
 				<div class="w-1/2">
-					<button class="w-4/5 rounded-[20px] bg-orange-700 font-bold font-bold text-white">
-						Save
-					</button>
+					<button class="w-4/5 rounded-[20px] bg-orange-700 font-bold text-white"> Save </button>
 				</div>
 			</div>
 		</div>

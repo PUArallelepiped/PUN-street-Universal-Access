@@ -4,8 +4,9 @@
 	import type { PageData } from './$types';
 	export let data: PageData;
 
-	import Discountbutton from '$lib/components/PUA/discountButton.svelte';
 	import Redradiobox from '$lib/components/PUA/redRadioBox.svelte';
+	import OkButton from '$lib/components/PUA/OkButton.svelte';
+	import DiscountArea from '$lib/components/PUA/discountArea.svelte';
 
 	let product: {
 		title: string;
@@ -54,10 +55,9 @@
 <h2>
 	item: {data.item}
 </h2>
-
 <div class="flex justify-start">
 	<div class="relative left-1/2 top-[25px] h-full w-4/5 -translate-x-1/2 transform">
-		<div class="h-100 mb-8 flex w-full items-center justify-center text-4xl text-red-950">
+		<div class="h-100 mb-8 flex w-full items-center text-4xl text-red-950">
 			{product.title}
 		</div>
 
@@ -66,9 +66,9 @@
 				<img
 					src={product.picture}
 					alt=""
-					class="mt-100 flex h-[250px] w-[250px] rounded-[10px] object-cover object-cover"
+					class="mt-100 flex h-[250px] w-[250px] rounded-[10px] object-cover"
 				/>
-				<div class="flex items-center py-[20px] font-bold text-red-950">
+				<div class="flex items-baseline py-[20px] font-bold text-red-950">
 					<p class="text-[28px]">NT$</p>
 					<p>&nbsp</p>
 					<p>&nbsp</p>
@@ -84,12 +84,12 @@
 					{#each product.choose as { need_choose, category, subcategories }}
 						<div class=" mb-[15px]">
 							<div
-								class="flex h-[30px] w-full items-center border-b-[1px] border-solid border-red-950"
+								class="flex h-[30px] w-full items-center border-b-[1px] border-solid border-PUA-stone"
 							>
-								<div class="font-bold text-amber-900">{category}</div>
+								<div class="font-bold text-PUA-stone">{category}</div>
 								{#if need_choose === 1}
 									<div
-										class="ml-[10px] rounded-[20px] border-[2px] border-solid border-orange-700 px-[8px] py-[0px] text-[9px] font-bold text-orange-700"
+										class="ml-2 w-[40px] rounded-[20px] border-[2px] border-solid border-orange-700 px-[8px] py-[0px] text-center text-[9px] font-bold text-orange-700"
 									>
 										必填
 									</div>
@@ -100,36 +100,39 @@
 									<div
 										class="flex w-full items-center space-x-2 border-b-[1px] border-solid border-amber-900"
 									>
-										<Redradiobox name={category} />
-										<div class="flex h-[30px] w-full items-center justify-end">
+										<div class="flex h-[30px] w-full items-center justify-start">
 											<label for={category} class="font-bold text-primary text-red-950"
 												>{subcategory}</label
 											>
 										</div>
+										<Redradiobox name={category} id={category + subcategory} />
 									</div>
 								{/each}
 							</div>
 						</div>
 					{/each}
 				</div>
-				<div class="relative h-full w-full">
-					<div class="flex h-[30px] w-full items-center border-b-[1px] border-solid border-red-950">
-						<div class=" font-bold text-amber-900">Choose Discount</div>
-					</div>
-					<div class="flex items-center justify-center">
-						<div class="flex w-[61%] flex-wrap">
-							{#each product.discount as { label }}
-								<div class="mt-[10px] flex justify-center">
-									<Discountbutton text={label} />
-								</div>
-							{/each}
-						</div>
-					</div>
-				</div>
+				<DiscountArea
+					discount={product.discount}
+					toggleModal={() => {
+						return null;
+					}}
+					addDiscountButton={() => {
+						return null;
+					}}
+					addSign={false}
+					type={true}
+				></DiscountArea>
 
 				<div class="ml-[40px] flex h-full items-center space-x-4">
 					<Counter />
-					<button class="rounded-[20px] bg-orange-700 p-2 px-[70px] text-white">Add cart</button>
+
+					<OkButton
+						onclick={() => {
+							return null;
+						}}
+						text="Add Cart"
+					></OkButton>
 				</div>
 			</div>
 		</div>

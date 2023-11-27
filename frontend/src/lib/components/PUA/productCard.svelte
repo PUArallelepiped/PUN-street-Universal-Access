@@ -1,5 +1,6 @@
 <script lang="ts">
 	import watermelon from '$lib/assets/watermelon.png';
+	import { BuyNforOneFree } from '$lib';
 	export let href: string = './';
 	export let description: string = 'the shopkeeper is lazy';
 	export let price: number = 123;
@@ -16,22 +17,22 @@
 			<div
 				class="flex flex-col content-start text-xl md:flex-row md:items-center md:text-2xl lg:flex-row lg:items-center lg:text-2xl"
 			>
-				<div class="mr-1">{name}</div>
+				<div class="mr-1 font-semibold text-PUA-dark-orange">{name}</div>
 				<div class="md:flew-row flex flex-col sm:flex-row lg:flex-row">
-					<div class="mx-2 rounded-lg border-2 border-green-900 px-1 text-base text-green-900">
-						buy n for n free
-					</div>
-					<div class="mx-2 rounded-lg border-2 border-red-900 px-1 text-base text-red-900">
+					<BuyNforOneFree></BuyNforOneFree>
+					<div
+						class="mx-2 rounded-lg border-2 border-PUA-red px-1 text-base font-semibold text-PUA-red"
+					>
 						no storange
 					</div>
 				</div>
 			</div>
-			<div class="whitespace-pre-line text-sm text-gray-500">
+			<div class="whitespace-pre-line text-base font-normal text-PUA-dark-gray">
 				{description}
 			</div>
 		</div>
 	</div>
-	<div class="mr-5 flex w-24 items-baseline justify-end text-sm">
+	<div class="mr-5 flex w-24 items-baseline justify-end text-sm font-semibold text-PUA-dark-orange">
 		NT$ <p class="w-10 text-end text-xl">{price}</p>
 	</div>
 </a>

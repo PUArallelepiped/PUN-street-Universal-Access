@@ -13,7 +13,7 @@
 	<PUALabel labelName={orderInfo.name} value="0912345678"></PUALabel>
 	<PUALabel labelName={orderInfo.phone} value="0912345678"></PUALabel>
 	<PUALabel labelName={orderInfo.method} value="0912345678"></PUALabel>
-	<PUALabel labelName={orderInfo.totalShippingFee} value="100"></PUALabel>
+	<PUALabel labelName={orderInfo.totalShippingFee} value="NT$ 100"></PUALabel>
 	<PUALabel labelName={orderInfo.address} value="a street b floor c city d country nnumber e"
 	></PUALabel>
 </div>

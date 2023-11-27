@@ -18,7 +18,7 @@
 	<div class="flex w-96 flex-col">
 		<div class="py-1 text-xl font-semibold text-PUA-stone">IM pasta</div>
 		<div
-			class="text-{color?.textColor} bg-{color?.bgColor} border-{color?.textColor} flex items-center rounded-xl border-2 text-center font-semibold"
+			class="text-{color?.textColor} bg-{color?.bgColor} border-{color?.textColor} flex items-center rounded-xl border-4 text-center font-semibold"
 		>
 			<div class="px-6 py-5 text-base font-semibold">Shipping Discount</div>
 			<div class="bg-{color?.textColor} h-12 w-1"></div>

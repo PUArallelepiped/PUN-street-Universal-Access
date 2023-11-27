@@ -31,7 +31,7 @@
 	印度及印尼。 冰飲。總熱量為 372.1大卡。標準糖量為 83.7 克。含咖啡因 59.5 毫克。';
 </script>
 
-<div class="flex justify-start">
+<div class="flex w-5/6 items-center justify-center">
 	<div class="relative left-1/2 top-[25px] h-full w-[80%] -translate-x-1/2 transform">
 		<div class="h-100 mb-8 flex w-full items-center justify-center text-4xl text-red-950">
 			{product_title}

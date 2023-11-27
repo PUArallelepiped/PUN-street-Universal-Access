@@ -64,9 +64,10 @@
 	function toggleModal() {
 		showModal = !showModal;
 	}
+	// 新增完之後，根據輸入的discount_maxquantity_Input來算discount
 </script>
 
-<div class="flex justify-start">
+<div class="flex w-5/6 items-center justify-center">
 	<div class="relative left-1/2 top-[30px] h-full w-4/5 -translate-x-1/2 transform">
 		<div class="h-100 text-33 flex w-full flex-col justify-center text-red-950">
 			<Input
@@ -193,20 +194,21 @@
 						<div class=" font-bold text-amber-900">Add Discount</div>
 					</div>
 					<div class="flex items-center justify-center">
-						<div class="flex w-[61%] flex-wrap">
+						<div class="flex flex-wrap">
 							{#each buttons as { label }}
-								<div class="mt-2 flex justify-center">
+								<div class="flex justify-center">
 									<button
 										on:click={toggleModal}
-										class=" m-0 mb-0 ml-[5px] rounded-[10px] border-2 border-lime-800 p-5 px-2 py-0 font-bold text-lime-800 hover:bg-lime-800 hover:text-white active:bg-lime-800"
+										class="mb-2 ml-1 mt-2 rounded-[10px] border-2 border-lime-800 p-5 px-2 py-0 font-bold text-lime-800 hover:bg-lime-800 hover:text-white active:bg-lime-800"
 										>{label}</button
 									>
 								</div>
 							{/each}
-							<div class="mt-2 flex w-[90px] items-center">
+							<div class="flex w-[90px] items-center">
 								<button
 									on:click={addDiscountButton}
-									class="m-0 mb-0 ml-2 mr-2 h-[20px] w-[20px] rounded-[10px] bg-lime-800 text-center text-[13px] font-bold text-white"
+									on:click={toggleModal}
+									class="ml-1 h-[20px] w-[20px] rounded-[10px] bg-lime-800 text-center text-[13px] font-bold text-white"
 									>+</button
 								>
 							</div>
@@ -220,7 +222,7 @@
 				<div class="flex items-center justify-center">
 					<div class="mt-[20px] flex flex-col">
 						<Counter />
-						<button class="mt-[20px] rounded-[20px] bg-orange-700 p-2 text-white"
+						<button class="mt-[20px] rounded-[20px] bg-orange-700 p-2 font-bold text-white"
 							>Add Product</button
 						>
 					</div>
@@ -234,10 +236,13 @@
 <!-- <button on:click={toggleModal} class="rounded bg-blue-500 px-4 py-2 text-white">Open Modal</button> -->
 
 {#if showModal}
-	<div
+	<!-- <div
 		class="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50 backdrop-blur"
+	> -->
+	<div
+		class="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50"
 	>
-		<div class="w-2/5 rounded bg-white p-5">
+		<div class=" rounded bg-white p-5">
 			<div class="flex">
 				<div class="w-1/2 text-left text-xl font-bold text-red-900">
 					<h2>Add A Discount</h2>
@@ -248,15 +253,15 @@
 					</button>
 				</div>
 			</div>
-			<div class="relative ml-20 mr-20">
+			<div class="relative ml-16 mr-16">
 				<div class="flex w-full items-center justify-center pb-2 pt-2">
 					<div class="flex w-5/6 rounded-[10px] border-[3px] border-red-900 p-3 text-red-900">
-						<div class="w-2/5 text-center">{discount_name_Input}</div>
+						<div class="w-2/5 text-center font-bold">Event Discount</div>
 						<div class="ml-1 mr-1 border-r-[2px] border-red-900"></div>
-						<div class="flex w-3/5 flex-wrap items-center justify-center text-center">
+						<div class="flex w-3/5 flex-wrap items-center justify-center text-center font-bold">
 							<p>Get</p>
 							<p class="ml-1 mr-1 text-xl">{discount_maxquantity_Input}</p>
-							<p>{discount_description_Input}</p>
+							<p>FOR FREE ONE</p>
 						</div>
 					</div>
 				</div>

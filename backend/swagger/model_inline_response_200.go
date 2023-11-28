@@ -9,5 +9,5 @@
 package swagger
 
 type InlineResponse200 struct {
-	Price int64 `json:"price,omitempty"`
+	Price int64 `json:"price"`
 }

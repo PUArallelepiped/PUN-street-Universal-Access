@@ -310,7 +310,7 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /categorys:
+  /categories:
     get:
       tags:
       - seller

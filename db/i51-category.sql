@@ -4,4 +4,4 @@ INSERT INTO categorys (name) VALUES
     ('Fresh'),
     ('Bakery'),
     ('Local'),
-    ('Spices')
+    ('sus thing')

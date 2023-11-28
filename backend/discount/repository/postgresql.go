@@ -100,3 +100,50 @@ func (p *postgresqlDiscountRepo) AddEvent(ctx context.Context, event *swagger.Ev
 
 	return nil
 }
+
+func (p *postgresqlDiscountRepo) GetAllSeasoning(ctx context.Context) ([]swagger.SeasoningDiscount, error) {
+	sqlStatement := `
+	SELECT discounts.discount_id, name, description, start_date, end_date, discount_percentage, status 
+	FROM discounts JOIN seasoning_discount ON discounts.discount_id = seasoning_discount.discount_id;
+	`
+	rows, err := p.db.Query(sqlStatement)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+	seasoningDiscounts := []swagger.SeasoningDiscount{}
+	for rows.Next() {
+		seasoningDiscount := swagger.SeasoningDiscount{}
+		err := rows.Scan(&seasoningDiscount.DiscountId, &seasoningDiscount.DiscountName, &seasoningDiscount.DiscountDescription, &seasoningDiscount.DiscountStartDate, &seasoningDiscount.DiscountEndDate, &seasoningDiscount.DiscountPercentage, &seasoningDiscount.Status)
+		if err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+		seasoningDiscounts = append(seasoningDiscounts, seasoningDiscount)
+	}
+	return seasoningDiscounts, nil
+}
+
+func (p *postgresqlDiscountRepo) GetAllEventByProductID(ctx context.Context, id int64) ([]swagger.EventDiscount, error) {
+	sqlStatement := `
+	SELECT discounts.discount_id, name, description, max_quantity, product_id,  status 
+	FROM discounts JOIN event_discount ON discounts.discount_id = event_discount.discount_id
+	WHERE product_id = $1;
+	`
+	rows, err := p.db.Query(sqlStatement, id)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+	eventDiscounts := []swagger.EventDiscount{}
+	for rows.Next() {
+		eventDiscount := swagger.EventDiscount{}
+		err := rows.Scan(&eventDiscount.DiscountId, &eventDiscount.DiscountName, &eventDiscount.DiscountDescription, &eventDiscount.DiscountMaxQuantity, &eventDiscount.ProductId, &eventDiscount.Status)
+		if err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+		eventDiscounts = append(eventDiscounts, eventDiscount)
+	}
+	return eventDiscounts, nil
+}

@@ -18,9 +18,13 @@ func NewProductHandler(e *gin.Engine, productUsecase domain.ProductUsecase) {
 	handler := &ProductHandler{
 		ProductUsecase: productUsecase,
 	}
-	e.GET("/api/v1/store/:storeID/products", handler.GetProductById)
-	e.POST("/api/v1/store/:storeID/add-product", handler.AddProduct)
-	e.PUT("/api/v1/store/:storeID/update-product/:productID", handler.UpdateProduct)
+
+	store := e.Group("/api/v1/store/:storeID")
+	{
+		store.GET("/products", handler.GetProductById)
+		store.POST("/add-product", handler.AddProduct)
+		store.PUT("/update-product/:productID", handler.UpdateProduct)
+	}
 }
 
 func (s *ProductHandler) GetProductById(c *gin.Context) {

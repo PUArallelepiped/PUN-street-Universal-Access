@@ -19,7 +19,7 @@ func NewCategoryHandler(e *gin.Engine, categoryUsecase domain.CategoryUsecase) {
 
 	v1 := e.Group("/api/v1")
 	{
-		v1.GET("/categorys", handler.GetCategory)
+		v1.GET("/categories", handler.GetCategory)
 		v1.POST("/store/:storeID/add-category/:categoryID", handler.AddCategoryToStore)
 		v1.DELETE("/store/:storeID/remove-category/:categoryID", handler.DeleteCategory)
 	}

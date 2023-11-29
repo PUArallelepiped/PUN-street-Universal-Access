@@ -59,16 +59,15 @@
 		return null;
 	}
 
-	let showModal = false; //only 模擬
+	let showModel = false; //only 模擬
 	let discount_name_Input = '';
 	let discount_maxquantity_Input = '';
 	let discount_description_Input = '';
-	let modalInput = '';
+	let modelInput = '';
 
-	function toggleModal() {
-		showModal = !showModal;
+	function toggleModel() {
+		showModel = !showModel;
 	}
-	// 新增完之後，根據輸入的discount_maxquantity_Input來算discount 優惠
 </script>
 
 <div class="flex w-5/6 items-center justify-center">
@@ -82,7 +81,7 @@
 			<div class="flex items-center">
 				<img src={error} alt="Error" class="h-[35px] w-[35px] object-cover" />
 
-				<p class="text-[20px] font-bold text-red-500">Error message</p>
+				<p class=" text-xl font-bold text-red-500">Error message</p>
 			</div>
 		</div>
 		<div class="flex h-full w-full">
@@ -97,11 +96,11 @@
 				</div>
 				<div class="flex items-center">
 					<img src={error} alt="Error" class="h-[35px] w-[35px] object-cover" />
-					<p class="text-[20px] font-bold text-red-500">Error message</p>
+					<p class="text-xl font-bold text-red-500">Error message</p>
 				</div>
 
 				<div class="flex items-center">
-					<div class="py-[20px] text-[30px] font-bold text-red-950">NT$</div>
+					<div class="py-[20px] text-3xl font-bold text-red-950">NT$</div>
 					<Input
 						type="text"
 						placeholder="Enter price"
@@ -110,15 +109,15 @@
 				</div>
 				<div class="flex items-center">
 					<img src={error} alt="Error" class="h-[35px] w-[35px] object-cover" />
-					<p class="text-[20px] font-bold text-red-500">Error message</p>
+					<p class="text-xl font-bold text-red-500">Error message</p>
 				</div>
 
-				<div class="w-[250px] text-[15px] text-gray-600">
+				<div class="w-[250px] text-base text-gray-600">
 					<Textarea width="250" />
 				</div>
 				<div class="flex items-center">
 					<img src={error} alt="Error" class="h-[35px] w-[35px] object-cover" />
-					<p class="text-[20px] font-bold text-red-500">Error message</p>
+					<p class="text-xl font-bold text-red-500">Error message</p>
 				</div>
 			</div>
 			<div class="relative h-full w-full">
@@ -175,12 +174,12 @@
 								<div class="flex h-[30px] w-full items-center justify-end">
 									<button
 										on:click={() => removeNewSubcategory(index)}
-										class="m-[3px] h-[20x] w-[20px] rounded-[10px] bg-red-900 px-[0px] py-[0px] text-[13px] font-bold text-white"
+										class="m-[3px] h-[20x] w-[20px] rounded-[10px] bg-red-900 px-[0px] py-[0px] text-sm font-bold text-white"
 										>-</button
 									>
 									<button
 										on:click={() => addNewSubcategory(index)}
-										class="m-[3px] h-[20x] w-[20px] rounded-[10px] bg-red-900 px-[0px] py-[0px] text-[13px] font-bold text-white"
+										class="m-[3px] h-[20x] w-[20px] rounded-[10px] bg-red-900 px-[0px] py-[0px] text-sm font-bold text-white"
 										>+</button
 									>
 								</div>
@@ -195,8 +194,8 @@
 					>
 				</div>
 				<DisCountArea
-					toggleModal={() => {
-						showModal = !showModal;
+					toggleModel={() => {
+						showModel = !showModel;
 						return null;
 					}}
 					discount={buttons}
@@ -231,11 +230,7 @@
 		</div>
 	</div>
 </div>
-
-<!-- <ChangePage /> -->
-<!-- <button on:click={toggleModal} class="rounded bg-blue-500 px-4 py-2 text-white">Open Modal</button> -->
-
-{#if showModal}
+{#if showModel}
 	<div
 		class="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50 backdrop-blur"
 	>
@@ -245,7 +240,7 @@
 					<h2>Add A Discount</h2>
 				</div>
 				<div class="flex w-1/2 justify-end">
-					<button on:click={toggleModal}>
+					<button on:click={toggleModel}>
 						<img src={close} alt="" class="h-[25px] object-cover" />
 					</button>
 				</div>
@@ -302,16 +297,13 @@
 					</div>
 				</div>
 			</div>
-			<div class="mt-5 flex items-center text-center">
-				<div class="w-1/2">
-					<button class="w-4/5 rounded-[20px] bg-gray-200 font-bold text-red-900"> Delete </button>
-				</div>
-				<div class="w-1/2">
-					<button class="w-4/5 rounded-[20px] bg-orange-700 font-bold text-white"> Save </button>
-				</div>
+			<div class="mt-5 flex items-center justify-between gap-5 text-center">
+				<button class="w-4/5 rounded-[20px] bg-gray-200 font-bold text-red-900"> Delete </button>
+
+				<button class="w-4/5 rounded-[20px] bg-orange-700 font-bold text-white"> Save </button>
 			</div>
 		</div>
 	</div>
 {/if}
 
-<p>{modalInput}</p>
+<p>{modelInput}</p>

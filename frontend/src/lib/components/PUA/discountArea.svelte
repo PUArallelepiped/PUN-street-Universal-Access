@@ -5,7 +5,7 @@
 		id: number;
 		label: string;
 	}[];
-	export let toggleModal: () => null;
+	export let toggleModel: () => null;
 	export let addDiscountButton: () => null;
 	export let addSign: boolean = true;
 
@@ -26,7 +26,7 @@
 						</div>
 					{:else}
 						<button
-							on:click={toggleModal}
+							on:click={toggleModel}
 							class="mb-2 ml-1 mt-2 rounded-[10px] border-2 border-lime-800 p-5 px-2 py-0 font-bold text-lime-800 hover:bg-lime-800 hover:text-white active:bg-lime-800"
 							>{label}</button
 						>
@@ -37,7 +37,7 @@
 				<div class="flex w-[90px] items-center">
 					<button
 						on:click={addDiscountButton}
-						on:click={toggleModal}
+						on:click={toggleModel}
 						class="ml-1 h-[20px] w-[20px] rounded-[10px] bg-lime-800 text-center text-[13px] font-bold text-white"
 						>+</button
 					>

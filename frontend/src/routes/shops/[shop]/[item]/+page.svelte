@@ -101,7 +101,7 @@
 				</div>
 				<DiscountArea
 					discount={product.discount}
-					toggleModal={() => {
+					toggleModel={() => {
 						return null;
 					}}
 					addDiscountButton={() => {

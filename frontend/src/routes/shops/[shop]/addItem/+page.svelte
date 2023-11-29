@@ -141,7 +141,7 @@
 									</div>
 
 									<div class="ml-2 mr-2 flex items-center justify-center">
-										<Redradiobox name={category + 'Choice'} id={category + 'yes'} status={true} />
+										<Redradiobox name={category + 'Choice'} id={category + 'yes'} checked={true} />
 									</div>
 
 									<label for="Choice" class="text-red-950">Yes</label>

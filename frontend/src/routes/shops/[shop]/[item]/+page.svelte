@@ -1,12 +1,10 @@
 <script lang="ts">
 	import watermelon from '$lib/assets/watermelon.png';
 	import { Counter } from '$lib';
-	import type { PageData } from './$types';
-	export let data: PageData;
 
-	import Redradiobox from '$lib/components/PUA/redRadioBox.svelte';
 	import OkButton from '$lib/components/PUA/OkButton.svelte';
 	import DiscountArea from '$lib/components/PUA/discountArea.svelte';
+	import Checkcontainer from '$lib/components/PUA/checkcontainer.svelte';
 
 	let product: {
 		title: string;
@@ -49,12 +47,6 @@
 	};
 </script>
 
-<h1>
-	shop: {data.shop}
-</h1>
-<h2>
-	item: {data.item}
-</h2>
 <div class="flex justify-start">
 	<div class="relative left-1/2 top-[25px] h-full w-4/5 -translate-x-1/2 transform">
 		<div class="h-100 mb-8 flex w-full items-center text-4xl text-red-950">
@@ -100,13 +92,7 @@
 									<div
 										class="flex w-full items-center space-x-2 border-b-[1px] border-solid border-amber-900"
 									>
-										<Redradiobox name={category} id={category + subcategory} />
-
-										<div class="flex h-[30px] w-full items-center justify-end">
-											<label for={category} class="font-bold text-primary text-red-950"
-												>{subcategory}</label
-											>
-										</div>
+										<Checkcontainer {category} {subcategory}></Checkcontainer>
 									</div>
 								{/each}
 							</div>

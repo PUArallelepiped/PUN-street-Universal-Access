@@ -1,21 +1,15 @@
 <script lang="ts">
 	export let name: string = '';
 	export let id: string = '';
-	// export let value: string = 'null';
-	export let status: boolean = false;
+	export let checked: boolean = false;
 </script>
 
-{#if status}
-	<div class="redradiobo">
-		<input type="radio" {id} {name} checked />
+<div class="flex">
+	<div class="reddiobo">
+		<input type="radio" {id} {name} {checked} />
 		<label for={id}></label>
 	</div>
-{:else}
-	<div class="redradiobox">
-		<input type="radio" {id} {name} />
-		<label for={id}></label>
-	</div>
-{/if}
+</div>
 
 <style>
 	input[type='radio'] + label::before {

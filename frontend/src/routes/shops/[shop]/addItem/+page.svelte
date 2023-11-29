@@ -52,7 +52,7 @@
 		{ id: 5, label: '買二送一' }
 	];
 
-	let Status = [{ label: '下架中' }, { label: '上架中' }, { label: '已售完' }];
+	let Status = [{ label: '下架中' }, { label: '已售完' }];
 
 	function addDiscountButton() {
 		buttons = [...buttons, { id: 6, label: `買二送一` }];
@@ -209,9 +209,9 @@
 				>
 					<div class="font-bold text-PUA-stone">Set Status</div>
 				</div>
-				<div class="m-4 flex px-12">
+				<div class="m-4 flex justify-between px-28">
 					{#each Status as { label }}
-						<div class="flex w-1/3 items-center justify-center">
+						<div class="flex items-center justify-center">
 							<StatusButton text={label}></StatusButton>
 						</div>
 					{/each}

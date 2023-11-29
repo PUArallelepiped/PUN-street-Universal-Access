@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS user_data(
   address VARCHAR(64) NOT NULL,
   phone_number VARCHAR(16) NOT NULL,
   birthday DATE NOT NULL,
-  authority INT NOT NULL,
-  current_cart_id INT NOT NULL,
-  status INT NOT NULL
+  authority INTEGER NOT NULL,
+  current_cart_id INTEGER NOT NULL,
+  status INTEGER NOT NULL
 );

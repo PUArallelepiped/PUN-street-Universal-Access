@@ -5,7 +5,6 @@
 	export let status: boolean = false;
 </script>
 
-<!-- <p>{id}</p> -->
 {#if status}
 	<div class="redradiobo">
 		<input type="radio" {id} {name} checked />

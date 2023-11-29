@@ -159,7 +159,7 @@
 							<div class="relative ml-[25px] mt-[10px] w-[90%] flex-col items-start">
 								{#each subcategories as subcategory, subIndex (subcategory)}
 									<div
-										class="m-1 flex w-full items-center space-x-2 border-b-[1px] border-solid border-amber-900"
+										class="m-1 flex w-full items-center space-x-2 border-b-[1px] border-solid border-red-900"
 									>
 										<Redradiobox name={category} id={category + subcategory} />
 
@@ -210,15 +210,10 @@
 				>
 					<div class="font-bold text-PUA-stone">Set Status</div>
 				</div>
-				<div class="m-4 flex">
+				<div class="m-4 flex px-12">
 					{#each Status as { label }}
 						<div class="flex w-1/3 items-center justify-center">
-							<StatusButton
-								onclick={() => {
-									return null;
-								}}
-								text={label}
-							></StatusButton>
+							<StatusButton text={label}></StatusButton>
 						</div>
 					{/each}
 				</div>
@@ -244,7 +239,7 @@
 	<div
 		class="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50 backdrop-blur"
 	>
-		<div class=" rounded bg-white p-5">
+		<div class="rounded bg-white p-5">
 			<div class="flex">
 				<div class="w-1/2 text-left text-xl font-bold text-PUA-stone">
 					<h2>Add A Discount</h2>

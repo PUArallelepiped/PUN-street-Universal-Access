@@ -1,6 +1,4 @@
 <script lang="ts">
-	type clickFunction = () => null;
-	export let onclick: clickFunction;
 	export let text: string;
 </script>
 
@@ -28,7 +26,7 @@
 		font-weight: bold;
 		padding-top: 0px;
 		padding-bottom: 0px;
-		width: 110px;
+		width: 100px;
 		text-align: center;
 	}
 	#radio .button:hover {

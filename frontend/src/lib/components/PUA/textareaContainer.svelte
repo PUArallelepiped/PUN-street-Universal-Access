@@ -28,8 +28,6 @@
 
 <style>
 	textarea {
-		/* width: 200px;
-		min-height: 30px; */
 		height: 35px;
 		font-size: 20px;
 		padding: 0;

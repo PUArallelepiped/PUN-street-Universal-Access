@@ -100,12 +100,13 @@
 									<div
 										class="flex w-full items-center space-x-2 border-b-[1px] border-solid border-amber-900"
 									>
-										<div class="flex h-[30px] w-full items-center justify-start">
+										<Redradiobox name={category} id={category + subcategory} />
+
+										<div class="flex h-[30px] w-full items-center justify-end">
 											<label for={category} class="font-bold text-primary text-red-950"
 												>{subcategory}</label
 											>
 										</div>
-										<Redradiobox name={category} id={category + subcategory} />
 									</div>
 								{/each}
 							</div>

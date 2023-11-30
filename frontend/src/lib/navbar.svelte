@@ -4,7 +4,7 @@
 		{ path: '/', title: 'My profile' }, // TODO
 		{ path: '/shops', title: 'ShopList' },
 		{ path: '/', title: 'Check Order' }, // TODO
-		{ path: '/', title: 'History' } // TODO
+		{ path: '/history', title: 'History' } // TODO
 	];
 </script>
 

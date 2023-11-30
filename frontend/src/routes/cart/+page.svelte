@@ -141,7 +141,7 @@
 					<div class="text-right text-3xl font-semibold text-orange-950">9999</div>
 				</div>
 			</div>
-			<OkButton onclick={checkout}><div class="px-16 text-xl font-bold">Check out</div></OkButton>
+			<OkButton onclick={checkout} text="Check Out"></OkButton>
 		</div>
 	</div>
 </div>

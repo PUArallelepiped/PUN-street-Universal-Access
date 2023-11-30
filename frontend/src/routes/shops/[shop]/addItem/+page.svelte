@@ -1,14 +1,19 @@
 <script lang="ts">
-	import error from '$lib/assets/error.png';
+	// import error from '$lib/assets/error.png';
 	import { Input } from '$lib/components/ui/input';
 	import transhcan from '$lib/assets/transhcan.png';
 	import close from '$lib/assets/close.png';
-	import Redradiobox from '$lib/components/PUA/redRadioBox.svelte';
-	import Textcontainer from '$lib/components/PUA/inputContainer.svelte';
-	import Textarea from '$lib/components/PUA/textareaContainer.svelte';
-	import DisCountArea from '$lib/components/PUA/discountArea.svelte';
-	import OkButton from '$lib/components/PUA/OkButton.svelte';
-	import StatusButton from '$lib/components/PUA/statusButton.svelte';
+
+	import {
+		Redradiobox,
+		Textcontainer,
+		Textarea,
+		DisCountArea,
+		OkButton,
+		StatusButton,
+		ErrorMsg,
+		NeedChooseLabel
+	} from '$lib/index';
 
 	let data = [{ id: 0, category: '0', subcategories: ['1', '2', '3'] }];
 
@@ -63,41 +68,33 @@
 	let discount_name_Input = '';
 	let discount_maxquantity_Input = '';
 	let discount_description_Input = '';
-	let modelInput = '';
-
 	function toggleModel() {
 		showModel = !showModel;
 	}
 </script>
 
-<div class="flex w-5/6 items-center justify-center">
-	<div class="relative left-1/2 top-[30px] h-full w-4/5 -translate-x-1/2 transform">
+<div class="flex justify-start">
+	<div class="relative left-1/2 top-6 h-full w-4/5 -translate-x-1/2 transform">
 		<div class="h-100 text-33 flex w-full flex-col justify-center text-red-950">
 			<Input
 				type="text"
 				placeholder="Enter Product Name"
 				class="max-wxs w-full rounded-[0] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-3xl"
 			/>
-			<div class="flex items-center">
-				<img src={error} alt="Error" class="h-[35px] w-[35px] object-cover" />
 
-				<p class=" text-xl font-bold text-red-500">Error message</p>
-			</div>
+			<ErrorMsg height={'10'} width={'10'}></ErrorMsg>
 		</div>
 		<div class="flex h-full w-full">
 			<div class="relative h-full w-[500px]">
 				<div
 					class="mt-100 flex h-[250px] w-[250px] items-center justify-center rounded-[10px] bg-gray-300 shadow-inner"
 				>
-					<button
-						class="h-[45px] rounded-[20px] bg-gray-400 px-[50px] py-[3px] text-white shadow-md"
+					<button class="h-11 rounded-[20px] bg-gray-400 px-[50px] py-[3px] text-white shadow-md"
 						>Upload Image</button
 					>
 				</div>
-				<div class="flex items-center">
-					<img src={error} alt="Error" class="h-[35px] w-[35px] object-cover" />
-					<p class="text-xl font-bold text-red-500">Error message</p>
-				</div>
+
+				<ErrorMsg height={'10'} width={'10'}></ErrorMsg>
 
 				<div class="flex items-center">
 					<div class="py-[20px] text-3xl font-bold text-red-950">NT$</div>
@@ -107,18 +104,14 @@
 						class="ml-[10px] w-3/5 max-w-xs rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-[30px]"
 					/>
 				</div>
-				<div class="flex items-center">
-					<img src={error} alt="Error" class="h-[35px] w-[35px] object-cover" />
-					<p class="text-xl font-bold text-red-500">Error message</p>
-				</div>
+
+				<ErrorMsg height={'10'} width={'10'}></ErrorMsg>
 
 				<div class="w-[250px] text-base text-gray-600">
 					<Textarea width="250" />
 				</div>
-				<div class="flex items-center">
-					<img src={error} alt="Error" class="h-[35px] w-[35px] object-cover" />
-					<p class="text-xl font-bold text-red-500">Error message</p>
-				</div>
+
+				<ErrorMsg height={'10'} width={'10'}></ErrorMsg>
 			</div>
 			<div class="relative h-full w-full">
 				<div class="relative mb-[10px] w-full">
@@ -133,11 +126,7 @@
 										id={category + 'label'}
 										text_size="14"
 									/>
-									<div
-										class="w-[40px] rounded-[20px] border-[2px] border-solid border-orange-700 px-[8px] py-[0px] text-center text-[9px] font-bold text-orange-700"
-									>
-										必填
-									</div>
+									<NeedChooseLabel></NeedChooseLabel>
 
 									<div class="ml-2 mr-2 flex items-center justify-center">
 										<Redradiobox name={category + 'Choice'} id={category + 'yes'} checked={true} />
@@ -158,7 +147,7 @@
 							<div class="relative ml-[25px] mt-[10px] w-[90%] flex-col items-start">
 								{#each subcategories as subcategory, subIndex (subcategory)}
 									<div
-										class="m-1 flex w-full items-center space-x-2 border-b-[1px] border-solid border-red-900"
+										class="flex w-full items-center space-x-2 border-b-[1px] border-solid border-red-900"
 									>
 										<Redradiobox name={category} id={category + subcategory} />
 
@@ -230,6 +219,7 @@
 		</div>
 	</div>
 </div>
+
 {#if showModel}
 	<div
 		class="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50 backdrop-blur"
@@ -265,10 +255,8 @@
 						bind:value={discount_maxquantity_Input}
 						placeholder=" Enter Max Quantity"
 					/>
-					<div class="flex items-center">
-						<img src={error} alt="Error" class="h-[25px] w-[25px] object-cover" />
-						<p class="ml-2 text-[15px] font-bold text-red-500">Error message</p>
-					</div>
+
+					<ErrorMsg height={'6'} width={'6'}></ErrorMsg>
 				</div>
 				<div class="mt-2">
 					<p class="text-3 font-bold text-red-900">Discount Name</p>
@@ -278,10 +266,8 @@
 						bind:value={discount_name_Input}
 						placeholder=" Enter Discount Name"
 					/>
-					<div class="flex items-center">
-						<img src={error} alt="Error" class="h-[25px] w-[25px] object-cover" />
-						<p class="ml-2 text-[15px] font-bold text-red-500">Error message</p>
-					</div>
+
+					<ErrorMsg height={'6'} width={'6'}></ErrorMsg>
 				</div>
 				<div class="mt-2">
 					<p class="text-3 font-bold text-red-900">Description</p>
@@ -291,10 +277,7 @@
 						bind:value={discount_description_Input}
 						placeholder=" Enter Discount Description"
 					/>
-					<div class="flex items-center">
-						<img src={error} alt="Error" class="h-[25px] w-[25px] object-cover" />
-						<p class="ml-2 text-[15px] font-bold text-red-500">Error message</p>
-					</div>
+					<ErrorMsg height={'6'} width={'6'}></ErrorMsg>
 				</div>
 			</div>
 			<div class="mt-5 flex items-center justify-between gap-5 text-center">
@@ -305,5 +288,3 @@
 		</div>
 	</div>
 {/if}
-
-<p>{modelInput}</p>

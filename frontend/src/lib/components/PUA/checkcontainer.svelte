@@ -4,12 +4,14 @@
 	export let subcategory: string = '';
 </script>
 
-<div class="flex h-[30px] w-full items-center justify-center hover:bg-gray-400">
-	<Redradiobox name={category} id={category + subcategory} />
-	<label
-		for={category + subcategory}
-		class="flex h-full w-full items-center justify-end font-bold text-primary text-red-950"
-	>
-		{subcategory}
-	</label>
+<div class="flex w-full items-center space-x-2 border-b-[1px] border-solid border-red-900">
+	<div class="focus: flex h-[30px] w-full items-center justify-center hover:bg-gray-300">
+		<Redradiobox name={category} id={category + subcategory} />
+		<label
+			for={category + subcategory}
+			class="flex h-full w-full cursor-pointer items-center justify-end font-bold text-primary text-red-950"
+		>
+			{subcategory}
+		</label>
+	</div>
 </div>

@@ -2,9 +2,9 @@
 	import watermelon from '$lib/assets/watermelon.png';
 	import { Counter } from '$lib';
 
-	import OkButton from '$lib/components/PUA/OkButton.svelte';
-	import DiscountArea from '$lib/components/PUA/discountArea.svelte';
-	import Checkcontainer from '$lib/components/PUA/checkcontainer.svelte';
+	// import OkButton from '$lib/components/PUA/OkButton.svelte';
+
+	import { DiscountArea, Checkcontainer, OkButton, NeedChooseLabel } from '$lib/index';
 
 	let product: {
 		title: string;
@@ -48,7 +48,7 @@
 </script>
 
 <div class="flex justify-start">
-	<div class="relative left-1/2 top-[25px] h-full w-4/5 -translate-x-1/2 transform">
+	<div class="relative left-1/2 top-6 h-full w-4/5 -translate-x-1/2 transform">
 		<div class="h-100 mb-8 flex w-full items-center text-4xl text-red-950">
 			{product.title}
 		</div>
@@ -75,25 +75,15 @@
 				<div class="relative mb-[10px] w-full">
 					{#each product.choose as { need_choose, category, subcategories }}
 						<div class=" mb-[15px]">
-							<div
-								class="flex h-[30px] w-full items-center border-b-[1px] border-solid border-PUA-stone"
-							>
+							<div class="flex h-[30px] items-center border-b-[1px] border-solid border-red-950">
 								<div class="font-bold text-PUA-stone">{category}</div>
 								{#if need_choose === 1}
-									<div
-										class="ml-2 w-[40px] rounded-[20px] border-[2px] border-solid border-orange-700 px-[8px] py-[0px] text-center text-[9px] font-bold text-orange-700"
-									>
-										必填
-									</div>
+									<NeedChooseLabel></NeedChooseLabel>
 								{/if}
 							</div>
-							<div class="w-9/10 relative ml-[25px] mt-[10px] flex-col items-start">
+							<div class="relative ml-[25px] mt-[10px] w-[90%] flex-col items-start">
 								{#each subcategories as subcategory}
-									<div
-										class="flex w-full items-center space-x-2 border-b-[1px] border-solid border-amber-900"
-									>
-										<Checkcontainer {category} {subcategory}></Checkcontainer>
-									</div>
+									<Checkcontainer {category} {subcategory}></Checkcontainer>
 								{/each}
 							</div>
 						</div>
@@ -125,6 +115,3 @@
 		</div>
 	</div>
 </div>
-<br />
-<br />
-<br />

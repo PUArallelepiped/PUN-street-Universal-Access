@@ -11,7 +11,7 @@
 	} from '$lib/index';
 	import { onMount } from 'svelte';
 
-	let showDetail = false;
+	let showDetail = true;
 
 	type cartInfo = {
 		cart_id: number;
@@ -130,7 +130,11 @@
 			</div>
 		</div>
 		{#if showDetail}
-			<CartLabelBox></CartLabelBox>
+			<div class="flex justify-end">
+				<div class="w-1/2">
+					<CartLabelBox></CartLabelBox>
+				</div>
+			</div>
 		{/if}
 		<div class="flex justify-between">
 			<DenyButton onclick={() => null}><div class="px-4">Delete All</div></DenyButton>

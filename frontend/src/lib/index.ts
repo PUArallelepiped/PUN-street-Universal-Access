@@ -25,3 +25,7 @@ import BuyNforOneFree from './components/PUA/buyNforMFree.svelte';
 export { BuyNforOneFree };
 import HistoryCard from './components/PUA/historyCard.svelte';
 export { HistoryCard };
+import CheckOrderPart from './components/PUA/checkOrderPart.svelte';
+export { CheckOrderPart };
+import ProgressBar from './components/PUA/progressBar.svelte';
+export { ProgressBar };

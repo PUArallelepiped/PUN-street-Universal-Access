@@ -31,7 +31,7 @@
 	let processedInfo: cartInfo[][];
 	let processedIndex: number[] = [];
 	onMount(async () => {
-		const resp = await fetch(backendPath + `/customer/1/cart/1/carts`);
+		const resp = await fetch(backendPath + '/customer/1/cart/1/carts');
 		cartInfos = await resp.json();
 		processedInfo = test(cartInfos);
 		console.log(processedIndex);
@@ -49,6 +49,20 @@
 			}
 		});
 		return processedInfo;
+	}
+	async function checkout() {
+		//TODO customer id need to change
+		const resp = await fetch(backendPath + '/customer/1/cart/1/store/1/checkout', {
+			method: 'POST',
+			body: JSON.stringify({
+				seasoning_discount_id: null,
+				shipping_discount_id: null,
+				taking_method: null
+			})
+		});
+		let response: Promise<any> = await resp.json();
+		console.log(response);
+		return null;
 	}
 </script>
 
@@ -121,7 +135,7 @@
 					<div class="text-right text-3xl font-semibold text-orange-950">9999</div>
 				</div>
 			</div>
-			<OkButton onclick={() => null}><div class="px-16 text-xl font-bold">Check out</div></OkButton>
+			<OkButton onclick={checkout}><div class="px-16 text-xl font-bold">Check out</div></OkButton>
 		</div>
 	</div>
 </div>

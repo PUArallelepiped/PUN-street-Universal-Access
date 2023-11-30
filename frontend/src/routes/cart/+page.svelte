@@ -10,6 +10,9 @@
 		ShippingCoupon
 	} from '$lib/index';
 	import { onMount } from 'svelte';
+
+	let showDetail = false;
+
 	type cartInfo = {
 		cart_id: number;
 		customer_id: number;
@@ -50,18 +53,20 @@
 		});
 		return processedInfo;
 	}
-	async function checkout() {
+	function checkout() {
 		//TODO customer id need to change
-		const resp = await fetch(backendPath + '/customer/1/cart/1/store/1/checkout', {
-			method: 'POST',
-			body: JSON.stringify({
-				seasoning_discount_id: null,
-				shipping_discount_id: null,
-				taking_method: null
-			})
-		});
-		let response: Promise<any> = await resp.json();
-		console.log(response);
+		async () => {
+			const resp = await fetch(backendPath + '/customer/1/cart/1/store/1/checkout', {
+				method: 'POST',
+				body: JSON.stringify({
+					seasoning_discount_id: null,
+					shipping_discount_id: null,
+					taking_method: null
+				})
+			});
+			let response: Promise<any> = await resp.json();
+			console.log(response);
+		};
 		return null;
 	}
 </script>
@@ -78,7 +83,7 @@
 				</div>
 			</div>
 			<hr class="my-3 border-orange-950" />
-			<div class="grid grid-cols-3 gap-3">
+			<div class="flex flex-wrap gap-3">
 				<CartItemCard></CartItemCard>
 				<CartItemCard></CartItemCard>
 				<CartMoreItemCard></CartMoreItemCard>
@@ -98,9 +103,8 @@
 						</div>
 					</div>
 					<hr class="my-3 border-orange-950" />
-					<div class="grid grid-cols-3 gap-3">
+					<div class="flex flex-wrap gap-3">
 						{#each info as item}
-							{item.product_id}
 							<CartItemCard {...item}></CartItemCard>
 						{/each}
 						<CartItemCard></CartItemCard>
@@ -114,7 +118,7 @@
 		<div>
 			<div class="px-3 text-xl font-semibold leading-normal text-PUA-stone">Discount</div>
 			<hr class="my-3 border-orange-950" />
-			<div class="grid grid-cols-3 gap-3">
+			<div class="flex flex-wrap gap-3">
 				<ShippingCoupon used={false} />
 				<ShippingCoupon used={false} />
 				<ShippingCoupon used={true} />
@@ -125,7 +129,9 @@
 				<SeasoningCoupon></SeasoningCoupon>
 			</div>
 		</div>
-		<CartLabelBox></CartLabelBox>
+		{#if showDetail}
+			<CartLabelBox></CartLabelBox>
+		{/if}
 		<div class="flex justify-between">
 			<DenyButton onclick={() => null}><div class="px-4">Delete All</div></DenyButton>
 			<div class="flex place-items-baseline justify-between gap-7">

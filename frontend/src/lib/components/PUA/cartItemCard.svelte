@@ -10,7 +10,7 @@
 	export let product_quantity: number = 1;
 </script>
 
-<div class="flex w-96 flex-col rounded-xl bg-white p-2.5">
+<div class="flex h-32 w-96 flex-col rounded-xl bg-white p-2.5">
 	<div class="flex gap-4">
 		<img class="h-20 w-20 rounded-xl shadow-inner" src={watermelon} alt="img" />
 		<div class="flex flex-col gap-3">

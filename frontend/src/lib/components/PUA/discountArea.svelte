@@ -2,7 +2,7 @@
 	import DiscountButton from './discountButton.svelte';
 
 	export let discount: {
-		id: number;
+		id: string;
 		label: string;
 	}[];
 	export let toggleModel: () => null;
@@ -13,32 +13,34 @@
 </script>
 
 <div class="relative h-full w-full">
-	<div class="flex h-[30px] w-full items-center border-b-[1px] border-solid border-PUA-stone">
+	<div class="flex h-7 w-full items-center border-b-[1px] border-solid border-PUA-stone">
 		<div class=" font-bold text-PUA-stone">Add Discount</div>
 	</div>
 	<div class="flex items-center justify-center">
-		<div class="flex flex-wrap">
-			{#each discount as { label }}
+		<div class="my-4 flex flex-wrap gap-1">
+			{#each discount as { id, label }}
 				<div class="flex justify-center">
 					{#if type}
-						<div class="mb-2 ml-1 mt-2">
-							<DiscountButton text={label} />
+						<div class="">
+							<DiscountButton text={label} {id} />
 						</div>
 					{:else}
-						<button
-							on:click={toggleModel}
-							class="mb-2 ml-1 mt-2 rounded-[10px] border-2 border-lime-800 p-5 px-2 py-0 font-bold text-lime-800 hover:bg-lime-800 hover:text-white active:bg-lime-800"
-							>{label}</button
-						>
+						<div class="">
+							<button
+								on:click={toggleModel}
+								class="rounded-[10px] border-2 border-lime-800 px-2 py-0 font-bold text-lime-800 hover:bg-lime-800 hover:text-white active:bg-lime-800"
+								>{label}</button
+							>
+						</div>
 					{/if}
 				</div>
 			{/each}
 			{#if addSign}
-				<div class="flex w-[90px] items-center">
+				<div class="flex items-center">
 					<button
 						on:click={addDiscountButton}
 						on:click={toggleModel}
-						class="ml-1 h-[20px] w-[20px] rounded-[10px] bg-lime-800 text-center text-[13px] font-bold text-white"
+						class="h-5 w-5 rounded-[10px] bg-lime-800 text-center text-[13px] font-bold text-white"
 						>+</button
 					>
 				</div>

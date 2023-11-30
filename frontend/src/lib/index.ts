@@ -25,7 +25,7 @@ import BuyNforOneFree from './components/PUA/buyNforMFree.svelte';
 export { BuyNforOneFree };
 import Redradiobox from './components/PUA/redRadioBox.svelte';
 export { Redradiobox };
-import Textcontainer from './components/PUA/inputContainer.svelte';
+import Textcontainer from './components/PUA/textContainer.svelte';
 export { Textcontainer };
 import Textarea from '$lib/components/PUA/textareaContainer.svelte';
 export { Textarea };

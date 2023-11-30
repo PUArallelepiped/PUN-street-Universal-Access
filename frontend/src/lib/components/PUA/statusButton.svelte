@@ -1,40 +1,13 @@
 <script lang="ts">
 	export let text: string;
+	export let id: string;
 </script>
 
-<div id="radio">
+<div class=" w-28">
+	<input type="radio" name="option" class="peer hidden" {id} />
 	<label
-		><input type="radio" name="status" value="" />
-		<span class="round button">{text}</span></label
+		for={id}
+		class="block cursor-pointer select-none rounded-[20px] border-2 border-PUA-stone px-2 py-0 text-center font-bold font-bold text-PUA-stone peer-checked:bg-PUA-stone peer-checked:font-bold peer-checked:text-white"
+		>{text}</label
 	>
 </div>
-
-<style>
-	#radio input[type='radio'] {
-		display: none;
-	}
-	#radio input:checked + .button {
-		background: rgb(129, 80, 80);
-		color: white;
-	}
-	#radio .button {
-		display: inline-block;
-		padding: 5px 10px;
-		background: transparent;
-		cursor: pointer;
-		color: rgb(129, 80, 80);
-		font-weight: bold;
-		padding-top: 0px;
-		padding-bottom: 0px;
-		width: 100px;
-		text-align: center;
-	}
-	#radio .button:hover {
-		border-color: rgb(129, 80, 80);
-	}
-	#radio .round {
-		border-radius: 24px;
-		border: 2px solid rgb(129, 80, 80);
-		border-color: rgb(129, 80, 80);
-	}
-</style>

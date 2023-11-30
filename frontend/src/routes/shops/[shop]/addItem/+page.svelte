@@ -1,7 +1,6 @@
 <script lang="ts">
-	// import error from '$lib/assets/error.png';
 	import { Input } from '$lib/components/ui/input';
-	import transhcan from '$lib/assets/transhcan.png';
+	import transhcan from '$lib/assets/transhcan.svg';
 	import close from '$lib/assets/close.png';
 
 	import {
@@ -50,17 +49,17 @@
 	}
 
 	let buttons = [
-		{ id: 1, label: '買二送一' },
-		{ id: 2, label: '買二送一' },
-		{ id: 3, label: '買二送一' },
-		{ id: 4, label: '買二送一' },
-		{ id: 5, label: '買二送一' }
+		{ id: '1', label: '買二送一' },
+		{ id: '2', label: '買二送一' },
+		{ id: '3', label: '買二送一' },
+		{ id: '4', label: '買二送一' },
+		{ id: '5', label: '買二送一' }
 	];
 
 	let Status = [{ label: '下架中' }, { label: '已售完' }];
 
 	function addDiscountButton() {
-		buttons = [...buttons, { id: 6, label: `買二送一` }];
+		buttons = [...buttons, { id: '6', label: `買二送一` }];
 		return null;
 	}
 
@@ -75,7 +74,7 @@
 
 <div class="flex justify-start">
 	<div class="relative left-1/2 top-6 h-full w-4/5 -translate-x-1/2 transform">
-		<div class="h-100 text-33 flex w-full flex-col justify-center text-red-950">
+		<div class="h-100 text-33 flex w-full flex-col justify-center text-PUA-dark-red">
 			<Input
 				type="text"
 				placeholder="Enter Product Name"
@@ -97,18 +96,18 @@
 				<ErrorMsg height={'10'} width={'10'}></ErrorMsg>
 
 				<div class="flex items-center">
-					<div class="py-[20px] text-3xl font-bold text-red-950">NT$</div>
+					<div class="gap-3 py-[20px] text-3xl font-bold">NT$</div>
 					<Input
 						type="text"
 						placeholder="Enter price"
-						class="ml-[10px] w-3/5 max-w-xs rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-[30px]"
+						class="ml-[10px] w-[180px] max-w-xs rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-[30px]"
 					/>
 				</div>
 
 				<ErrorMsg height={'10'} width={'10'}></ErrorMsg>
 
 				<div class="w-[250px] text-base text-gray-600">
-					<Textarea width="250" />
+					<Textarea width="64" />
 				</div>
 
 				<ErrorMsg height={'10'} width={'10'}></ErrorMsg>
@@ -153,7 +152,7 @@
 
 										<div class="mx-auto flex w-full justify-end">
 											<input
-												class="w-full border-0 border-b-4 border-solid border-transparent bg-transparent text-end underline outline-none"
+												class="w-full border-b-[1px] border-solid border-gray-300 border-transparent bg-transparent text-end underline outline-none"
 												type="text"
 												placeholder="item{subIndex + 1}"
 											/>
@@ -193,15 +192,13 @@
 					type={false}
 				></DisCountArea>
 
-				<div
-					class="mt-4 flex h-[30px] w-full items-center border-b-[1px] border-solid border-PUA-stone"
-				>
+				<div class="flex h-[30px] w-full items-center border-b-[1px] border-solid border-PUA-stone">
 					<div class="font-bold text-PUA-stone">Set Status</div>
 				</div>
-				<div class="m-4 flex justify-between px-28">
+				<div class="m-4 flex justify-center gap-10">
 					{#each Status as { label }}
 						<div class="flex items-center justify-center">
-							<StatusButton text={label}></StatusButton>
+							<StatusButton text={label} id={label}></StatusButton>
 						</div>
 					{/each}
 				</div>
@@ -256,7 +253,7 @@
 						placeholder=" Enter Max Quantity"
 					/>
 
-					<ErrorMsg height={'6'} width={'6'}></ErrorMsg>
+					<ErrorMsg></ErrorMsg>
 				</div>
 				<div class="mt-2">
 					<p class="text-3 font-bold text-red-900">Discount Name</p>
@@ -267,7 +264,7 @@
 						placeholder=" Enter Discount Name"
 					/>
 
-					<ErrorMsg height={'6'} width={'6'}></ErrorMsg>
+					<ErrorMsg></ErrorMsg>
 				</div>
 				<div class="mt-2">
 					<p class="text-3 font-bold text-red-900">Description</p>
@@ -277,7 +274,7 @@
 						bind:value={discount_description_Input}
 						placeholder=" Enter Discount Description"
 					/>
-					<ErrorMsg height={'6'} width={'6'}></ErrorMsg>
+					<ErrorMsg></ErrorMsg>
 				</div>
 			</div>
 			<div class="mt-5 flex items-center justify-between gap-5 text-center">

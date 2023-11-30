@@ -2,9 +2,9 @@
 	import { onMount } from 'svelte';
 
 	let inputValue = '';
-	export let width: string = 'null';
-	export let min_width: string = 'null';
-	export let max_Width: string = 'null';
+	export let width: string = '0';
+	export let min_width: string = '0';
+	export let max_Width: string = '0';
 	export let id: string = 'null';
 	export let text_size: string = '14';
 
@@ -49,18 +49,7 @@
 <input
 	bind:value={inputValue}
 	on:input={handleInput}
-	class={`min-w-${min_width} w-${width} overflow-hidden`}
+	class="min-w-${min_width} w-${width} overflow-hidden border-b-[1px] border-solid border-gray-400 bg-transparent outline-none"
 	placeholder="Enter label"
 	{id}
 />
-
-<style>
-	input {
-		padding: 0;
-		background: transparent;
-		border: none;
-		border-bottom: 1px solid gray;
-		outline: none;
-		overflow: hidden;
-	}
-</style>

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import triangle_sub from '$lib/assets/triangle_sub.png';
-	import triangle_add from '$lib/assets/triangle_add.png';
+	import triangle_sub from '$lib/assets/triangle_sub.svg';
+	import triangle_add from '$lib/assets/triangle_add.svg';
 	let count = 0;
 	export let allowNegative: boolean = false;
 	function add() {
@@ -14,7 +14,7 @@
 		count -= 1;
 		return null;
 	}
-	//要修
+	//TODO;
 </script>
 
 <div class="flex items-center justify-center">

@@ -1,9 +1,6 @@
 <script lang="ts">
 	import watermelon from '$lib/assets/watermelon.png';
 	import { Counter } from '$lib';
-
-	// import OkButton from '$lib/components/PUA/OkButton.svelte';
-
 	import { DiscountArea, Checkcontainer, OkButton, NeedChooseLabel } from '$lib/index';
 
 	let product: {
@@ -18,7 +15,7 @@
 			subcategories: string[];
 		}[];
 		discount: {
-			id: number;
+			id: string;
 			label: string;
 		}[];
 	} = {
@@ -37,12 +34,12 @@
 			{ id: 1, need_choose: 2, category: '加牛奶', subcategories: ['是', '否'] }
 		],
 		discount: [
-			{ id: 1, label: '買二送一' },
-			{ id: 2, label: '買二送一' },
-			{ id: 3, label: '買二送一' },
-			{ id: 4, label: '買二送一' },
-			{ id: 5, label: '買二送一' },
-			{ id: 6, label: '買二送一' }
+			{ id: '1', label: '買二送一' },
+			{ id: '2', label: '買二送一' },
+			{ id: '3', label: '買二送一' },
+			{ id: '4', label: '買二送一' },
+			{ id: '5', label: '買二送一' },
+			{ id: '6', label: '買二送一' }
 		]
 	};
 </script>
@@ -60,11 +57,8 @@
 					alt=""
 					class="mt-100 flex h-[250px] w-[250px] rounded-[10px] object-cover"
 				/>
-				<div class="flex items-baseline py-[20px] font-bold text-red-950">
+				<div class="flex items-baseline gap-3 py-[20px] font-bold text-red-950">
 					<p class="text-[28px]">NT$</p>
-					<p>&nbsp</p>
-					<p>&nbsp</p>
-					<p>&nbsp</p>
 					<p class="text-[40px]">{product.price}</p>
 				</div>
 				<div class="w-[250px] overflow-hidden text-justify text-[15px] text-gray-600">
@@ -101,7 +95,7 @@
 					type={true}
 				></DiscountArea>
 
-				<div class="ml-[40px] flex h-full items-center space-x-4">
+				<div class=" mt-4 flex h-full items-center justify-around">
 					<Counter />
 
 					<OkButton

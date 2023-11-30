@@ -1,19 +1,14 @@
 <script lang="ts">
 	let inputValue = '';
 
-	export let width: string = 'null';
+	export let width: string = '10';
 
 	function handleInput(event: Event) {
 		const target = event.target as HTMLTextAreaElement;
 		inputValue = target.value;
-		adjustTextareaHeight();
-	}
-
-	function adjustTextareaHeight() {
-		const textarea = document.getElementById('svelteTextarea') as HTMLTextAreaElement;
-		if (textarea) {
-			textarea.style.height = '0px';
-			textarea.style.height = `${textarea.scrollHeight}px`;
+		if (target) {
+			target.style.height = '0px';
+			target.style.height = `${target.scrollHeight}px`;
 		}
 	}
 </script>
@@ -21,20 +16,7 @@
 <textarea
 	bind:value={inputValue}
 	on:input={handleInput}
-	style={`width: ${width}px`}
+	class="w-{width}  h-7 overflow-hidden border-b-[1px] border-solid border-b-gray-400 bg-transparent text-xl outline-none"
 	placeholder="Enter text"
 	id="svelteTextarea"
 ></textarea>
-
-<style>
-	textarea {
-		height: 35px;
-		font-size: 20px;
-		padding: 0;
-		background: transparent;
-		border: none;
-		border-bottom: 1px solid gray; /* Add a solid gray border at the bottom */
-		outline: none; /* Remove default textarea outline */
-		overflow: hidden;
-	}
-</style>

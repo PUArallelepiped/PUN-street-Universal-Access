@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Input } from '$lib/components/ui/input';
 	import transhcan from '$lib/assets/transhcan.svg';
-	import close from '$lib/assets/close.png';
+	import close from '$lib/assets/close.svg';
 
 	import {
 		Redradiobox,
@@ -81,7 +81,7 @@
 				class="max-wxs w-full rounded-[0] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-3xl"
 			/>
 
-			<ErrorMsg height={'10'} width={'10'}></ErrorMsg>
+			<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
 		</div>
 		<div class="flex h-full w-full">
 			<div class="relative h-full w-[500px]">
@@ -93,7 +93,7 @@
 					>
 				</div>
 
-				<ErrorMsg height={'10'} width={'10'}></ErrorMsg>
+				<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
 
 				<div class="flex items-center">
 					<div class="gap-3 py-[20px] text-3xl font-bold">NT$</div>
@@ -104,13 +104,12 @@
 					/>
 				</div>
 
-				<ErrorMsg height={'10'} width={'10'}></ErrorMsg>
-
+				<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
 				<div class="w-[250px] text-base text-gray-600">
 					<Textarea width="64" />
 				</div>
 
-				<ErrorMsg height={'10'} width={'10'}></ErrorMsg>
+				<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
 			</div>
 			<div class="relative h-full w-full">
 				<div class="relative mb-[10px] w-full">
@@ -253,7 +252,7 @@
 						placeholder=" Enter Max Quantity"
 					/>
 
-					<ErrorMsg></ErrorMsg>
+					<ErrorMsg width={'24'} height={'24'}></ErrorMsg>
 				</div>
 				<div class="mt-2">
 					<p class="text-3 font-bold text-red-900">Discount Name</p>
@@ -264,7 +263,7 @@
 						placeholder=" Enter Discount Name"
 					/>
 
-					<ErrorMsg></ErrorMsg>
+					<ErrorMsg width={'24'} height={'24'}></ErrorMsg>
 				</div>
 				<div class="mt-2">
 					<p class="text-3 font-bold text-red-900">Description</p>
@@ -274,7 +273,7 @@
 						bind:value={discount_description_Input}
 						placeholder=" Enter Discount Description"
 					/>
-					<ErrorMsg></ErrorMsg>
+					<ErrorMsg width={'24'} height={'24'}></ErrorMsg>
 				</div>
 			</div>
 			<div class="mt-5 flex items-center justify-between gap-5 text-center">

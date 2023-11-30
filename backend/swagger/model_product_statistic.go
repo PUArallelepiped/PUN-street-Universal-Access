@@ -14,6 +14,4 @@ type ProductStatistic struct {
 	ProductName string `json:"product_name"`
 
 	ProductQuantity int64 `json:"product_quantity"`
-
-	TotalPrice int64 `json:"total_price"`
 }

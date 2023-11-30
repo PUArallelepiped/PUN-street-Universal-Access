@@ -5,17 +5,18 @@ import (
 	"time"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
+	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
 	"github.com/golang-jwt/jwt"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
-type userUsecase struct {
+type UserUsecase struct {
 	userRepo domain.UserRepo
 }
 
 func NewUserUsecase(userRepo domain.UserRepo) domain.UserUsecase {
-	return &userUsecase{
+	return &UserUsecase{
 		userRepo: userRepo,
 	}
 }
@@ -53,7 +54,7 @@ func CreateToken(email string, authority int) (string, error) {
 	return tokenString, nil
 }
 
-func (uu *userUsecase) Login(ctx context.Context, email string, password string) (string, error) {
+func (uu *UserUsecase) Login(ctx context.Context, email string, password string) (string, error) {
 	authority, err := uu.userRepo.Login(ctx, email, password)
 	if err != nil {
 		return "", err
@@ -66,7 +67,7 @@ func (uu *userUsecase) Login(ctx context.Context, email string, password string)
 	return token, nil
 }
 
-func (uu *userUsecase) ValidateToken(ctx context.Context, token string) error {
+func (uu *UserUsecase) ValidateToken(ctx context.Context, token string) error {
 	jwtSecret := []byte(viper.GetString("JWT_SECRET"))
 	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		return jwtSecret, nil
@@ -91,4 +92,22 @@ func (uu *userUsecase) ValidateToken(ctx context.Context, token string) error {
 		}
 	}
 	return nil
+}
+
+func (su *UserUsecase) GetByID(ctx context.Context, id int64) (*swagger.UserData, error) {
+	s, err := su.userRepo.GetByID(ctx, id)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+	return s, nil
+}
+
+func (su *UserUsecase) GetAllUser(ctx context.Context) ([]swagger.UserData, error) {
+	s, err := su.userRepo.GetAllUser(ctx)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+	return s, nil
 }

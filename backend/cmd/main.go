@@ -7,6 +7,10 @@ import (
 	_storeDelivery "github.com/PUArallelepiped/PUN-street-Universal-Access/store/delivery"
 	_storeRepo "github.com/PUArallelepiped/PUN-street-Universal-Access/store/repository"
 	_storeUsecase "github.com/PUArallelepiped/PUN-street-Universal-Access/store/usecase"
+
+	_userDelivery "github.com/PUArallelepiped/PUN-street-Universal-Access/user/delivery"
+	_userRepo "github.com/PUArallelepiped/PUN-street-Universal-Access/user/repository"
+	_userUsecase "github.com/PUArallelepiped/PUN-street-Universal-Access/user/usecase"
 	"github.com/gin-contrib/cors"
 
 	_productDelivery "github.com/PUArallelepiped/PUN-street-Universal-Access/product/delivery"
@@ -21,9 +25,9 @@ import (
 	_discountRepo "github.com/PUArallelepiped/PUN-street-Universal-Access/discount/repository"
 	_discountUsecase "github.com/PUArallelepiped/PUN-street-Universal-Access/discount/usecase"
 
-	_userDelivery "github.com/PUArallelepiped/PUN-street-Universal-Access/user/delivery"
-	_userRepo "github.com/PUArallelepiped/PUN-street-Universal-Access/user/repository"
-	_userUsecase "github.com/PUArallelepiped/PUN-street-Universal-Access/user/usecase"
+	_categoryDelivery "github.com/PUArallelepiped/PUN-street-Universal-Access/category/delivery"
+	_categoryRepo "github.com/PUArallelepiped/PUN-street-Universal-Access/category/repository"
+	_categotyUsecase "github.com/PUArallelepiped/PUN-street-Universal-Access/category/usecase"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -49,6 +53,8 @@ func HandlHeaders() gin.HandlerFunc {
 }
 
 func main() {
+	logrus.SetReportCaller(true)
+
 	logrus.Info("HTTP server started!!!")
 
 	restfulHost := viper.GetString("RESTFUL_HOST")
@@ -83,13 +89,17 @@ func main() {
 	cartUsecase := _cartUsecase.NewCartUsecase(cartRepo)
 	_cartDelivery.NewCartHandler(r, cartUsecase)
 
+	UserRepo := _userRepo.NewPostgressqlUserRepo(db)
+	UserUsecase := _userUsecase.NewUserUsecase(UserRepo)
+	_userDelivery.NewUserHandler(r, UserUsecase)
+
 	discountRepo := _discountRepo.NewPostgressqlDiscountRepo(db)
 	discountUsecase := _discountUsecase.NewDiscountUsecase(discountRepo)
 	_discountDelivery.NewDiscountHandler(r, discountUsecase)
 
-	userRepo := _userRepo.NewPostgressqlUserRepo(db)
-	userUsecase := _userUsecase.NewUserUsecase(userRepo)
-	_userDelivery.NewUserHandler(r, userUsecase)
+	categoryRepo := _categoryRepo.NewPostgressqlCategoryRepo(db)
+	categoryUsecase := _categotyUsecase.NewCategoryUsecase(categoryRepo)
+	_categoryDelivery.NewCategoryHandler(r, categoryUsecase)
 
 	logrus.Fatal(r.Run(restfulHost + ":" + restfulPort))
 }

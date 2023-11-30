@@ -47,13 +47,13 @@ paths:
                 $ref: '#/components/schemas/StoreArray'
         "500":
           description: Unexpected error
-  /store/{storeID}/get-statictics:
-    post:
+  /store/{storeID}/get-statistics/{year}:
+    get:
       tags:
       - seller
       - store
       - statistics
-      summary: get store statistics in period
+      summary: get store statistics each month by year
       parameters:
       - name: storeID
         in: path
@@ -65,12 +65,16 @@ paths:
               type: string
               example: "1"
               x-content-type: application/json
-      requestBody:
-        description: time period
+      - name: year
+        in: path
+        description: The year store want to know .
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TimePeriod'
+              type: string
+              example: "2020"
+              x-content-type: application/json
       responses:
         "200":
           description: return store statistics
@@ -82,7 +86,7 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /store/{storeID}/get-best-selling:
+  /store/{storeID}/get-selling/{year}/{month}:
     get:
       tags:
       - seller
@@ -100,13 +104,71 @@ paths:
               type: string
               example: "1"
               x-content-type: application/json
+      - name: year
+        in: path
+        description: The year of products quantity.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "2020"
+              x-content-type: application/json
+      - name: month
+        in: path
+        description: The month of products quantity.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
       responses:
         "200":
           description: return best selling product
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductStatistic'
+                $ref: '#/components/schemas/ProductStatisticArray'
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /customer/{userID}/cart/{cartID}/carts:
+    get:
+      tags:
+      - customer
+      - cart
+      summary: get carts by userID and cartID
+      parameters:
+      - name: userID
+        in: path
+        description: The ID of the user.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: cartID
+        in: path
+        description: The ID of the cart.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      responses:
+        "200":
+          description: return carts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartArray'
         "400":
           description: bad request
         "500":
@@ -272,7 +334,7 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /categorys:
+  /categories:
     get:
       tags:
       - seller
@@ -1679,7 +1741,6 @@ components:
       - product_id
       - product_name
       - product_quantity
-      - total_price
       type: object
       properties:
         product_id:
@@ -1693,19 +1754,19 @@ components:
           type: integer
           format: int64
           example: 10
-        total_price:
-          type: integer
-          format: int64
-          example: 9999
       example:
-        total_price: 9999
         product_id: 1
         product_name: pasta
         product_quantity: 10
-    StoreStatistic:
+    ProductStatisticArray:
       type: array
       items:
         $ref: '#/components/schemas/ProductStatistic'
+      x-schema-name: ProductStatisticArray
+    StoreStatistic:
+      type: array
+      items:
+        $ref: '#/components/schemas/inline_response_200'
       x-schema-name: StoreStatistic
     TimePeriod:
       required:
@@ -1780,6 +1841,8 @@ components:
           format: int64
           example: 1
     inline_response_200:
+      required:
+      - price
       type: object
       properties:
         price:

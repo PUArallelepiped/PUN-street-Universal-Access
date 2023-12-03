@@ -1,6 +1,8 @@
 CREATE TABLE
     IF NOT EXISTS label_item (
-        label_name VARCHAR(255) NOT NULL REFERENCES product_label(label_name),
+        product_id SERIAL NOT NULL,
+        label_name VARCHAR(255) NOT NULL,
         item_name VARCHAR(255) NOT NULL,
-        PRIMARY KEY (label_name, item_name)
+        FOREIGN KEY (product_id, label_name) REFERENCES product_label(product_id, label_name),
+        PRIMARY KEY (product_id, label_name, item_name)
     );

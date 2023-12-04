@@ -9,7 +9,7 @@
 	};
 </script>
 
-<div class="flex flex-col text-xl font-semibold text-stone-600">
+<div class="flex flex-col ">
 	<PUALabel labelName={orderInfo.name} value="0912345678"></PUALabel>
 	<PUALabel labelName={orderInfo.phone} value="0912345678"></PUALabel>
 	<PUALabel labelName={orderInfo.method} value="0912345678"></PUALabel>

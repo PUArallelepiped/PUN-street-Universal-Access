@@ -66,6 +66,32 @@
 
 \begin{document}
 
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{pink}{rgb}{1,0.41,0.7}
+
+\lstset{
+  frame=trbl,
+  frameround = tttt,
+  language=sql,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{pink},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3,
+  morekeywords={REFERENCES, SERIAL, IF},
+}
+
+
 %titlepage
 \thispagestyle{empty}
 \begin{center}
@@ -83,6 +109,7 @@
       陸艿寰 & 110590007 & t110590007@ntut.org.tw \\
       陳姿安 & 110590017 & t1105900017@ntut.org.tw \\
       劉承翰 & 110590018 & t110590018@ntut.org.tw \\
+      歐佳昀 & 110590450 & t110590450@ntut.org.tw \\
     \end{tabular}
     \par}
     \vspace{2cm}
@@ -460,8 +487,7 @@ WOS-B-007 & 資料庫初始狀態要有所有員工和系統管理員的資訊 \
 \subsection{Entity Relationship ER Model}
 
 \begin{figure*}[h]
-    \centering
-    \includegraphics[width=40em]{ER-diagram.png}
+    \centerline{\includegraphics[width=40em]{ER-diagram.png}}
     \caption{ER diagram}
     \label{fig:enter-label}
 \end{figure*}
@@ -472,8 +498,7 @@ WOS-B-007 & 資料庫初始狀態要有所有員工和系統管理員的資訊 \
 \subsection{Schema of the Database}
 
 \begin{figure*}[h]
-    \centering
-    \includegraphics[width=40em]{schema-diagram.jpg}
+    \centerline{\includegraphics[width=40em]{schema-diagram.jpg}}    
     \caption{database schema}
     \label{fig:enter-label}
 \end{figure*}
@@ -507,14 +532,13 @@ WOS-B-007 & 資料庫初始狀態要有所有員工和系統管理員的資訊 \
   \hline
   status & INTEGER & & Not Null & \makecell[l]{使用者狀態\\(0=停用, 1=啟用)}\\
   \hline
-  birthday & DATE & &&使用者生日\\
+  birthday & DATE & & Not Null &使用者生日\\
   \hline
 \end{tabular}
 \vspace{1em}
 
 %Cart
-
-\noindent\centering\begin{tabular}{ | p{7em} | p{5.5em} |p{5.5em} | p{4.5em} | p{11em} |}
+\noindent\begin{tabular}{ | p{7em} | p{5.5em} |p{5.5em} | p{4.5em} | p{11em} |}
   \hline
   \multicolumn{5}{|c|}{CARTS} \tabularnewline
   \hline 
@@ -526,18 +550,18 @@ WOS-B-007 & 資料庫初始狀態要有所有員工和系統管理員的資訊 \
   \hline
   product_id & SERIAL &\makecell[l]{Primary \\ Foreign} &Not Null &商品ID\\
   \hline
-  cart_id & SERIAL & &Not Null &購物車ID\\
+  cart_id & INTEGER &\makecell[l]{Primary}  &Not Null &購物車ID\\
   \hline
   product_quantity & INTEGER & &Not Null &商品數量\\
   \hline
-  event_discount_id & SERIAL & Foreign &Not Null &折價眷ID\\
+  event_discount_id & SERIAL & Foreign &Not Null &折價券ID\\
   \hline
-  store_id & SERIAL & Foreign & Not Null & 購買商店ID\\
+  store_id & SERIAL & \makecell[l]{Primary\\ Foreign} & Not Null & 購買商店ID\\
   \hline
 \end{tabular}
 \vspace{1em}
 
-%Product
+% %Product
 \noindent\begin{tabular}{ | p{7em} | p{5.5em} | p{5.5em} | p{4.5em} | p{11em} |}
   \hline
   \multicolumn{5}{|c|}{PRODUCTS} \tabularnewline
@@ -548,7 +572,7 @@ WOS-B-007 & 資料庫初始狀態要有所有員工和系統管理員的資訊 \
   \hline
   product_id& SERIAL & \makecell[l]{Primary \\ Foreign}  & Not Null & 商品ID \\
   \hline
-  product_name & VARCHAR & &Not Null &商品名字\\
+  name & VARCHAR & &Not Null &商品名字\\
   \hline
   description & TEXT & &Not Null &商品資訊\\
   \hline
@@ -558,13 +582,14 @@ WOS-B-007 & 資料庫初始狀態要有所有員工和系統管理員的資訊 \
   \hline
   price & INTEGER & &Not Null &商品價錢\\
   \hline
-  stock & INTEGER & Foreign &Not Null &商品庫存\\
+  stock & INTEGER &  &Not Null &商品庫存\\
   \hline
-  status & INTEGER & Foreign &Not Null &\makecell[l]{商品狀態\\(0=停用, 1=啟用)}\\
+  status & INTEGER &  &Not Null &\makecell[l]{商品狀態\\(0=停用,\\ 1=啟用,\\ 2=已售完)}\\
   \hline
 \end{tabular}
+\vspace{1em}
 
-%Store
+% %Store
 \noindent\begin{tabular}{ | p{7em} | p{5.5em} | p{5.5em} | p{4.5em} | p{11em} |}
   \hline
   \multicolumn{5}{|c|}{STORES} \tabularnewline
@@ -621,7 +646,7 @@ WOS-B-007 & 資料庫初始狀態要有所有員工和系統管理員的資訊 \
   \hline
   category_id& SERIAL & Primary & Not Null & 類別ID \\
   \hline
-  name & SERIAL & &Not Null &類別名稱\\
+  name & VARCHAR & &Not Null &類別名稱\\
   \hline
 \end{tabular}
 
@@ -673,7 +698,7 @@ WOS-B-007 & 資料庫初始狀態要有所有員工和系統管理員的資訊 \
   \hline
   discount_id & SERIAL & Primary & Not Null & \makecell[l]{折扣ID\\1=無折扣} \\
   \hline
-  discount_type & INTEGER &  & Not Null & \makecell[l]{折扣種類\\1=無折扣\\2=運費折扣\\3=季節性折扣\\4=事件折扣} \\
+  discount_type & INTEGER &  & Not Null & \makecell[l]{折扣種類\\0=無折扣\\1=運費折扣\\2=季節性折扣\\3=事件折扣} \\
   \hline
   status & INTEGER & &Not Null &狀態\\
   \hline
@@ -709,7 +734,7 @@ WOS-B-007 & 資料庫初始狀態要有所有員工和系統管理員的資訊 \
   \hline
   taking_address & VARCHAR &  & Not Null & 運送地址 \\
   \hline
-  status & INTEGER &  & Not Null & 訂單狀態 \\
+  status & INTEGER &  & Not Null & \makecell[l]{訂單狀態\\0=未結帳\\1=已結帳\\2=接受訂單\\3=製作訂單\\4=運送中\\5=已送達\\6＝確認訂單} \\
   \hline
   
   name & VARCHAR &  &Not Null &折扣名稱\\
@@ -737,9 +762,544 @@ WOS-B-007 & 資料庫初始狀態要有所有員工和系統管理員的資訊 \
   discount_percentage & INTEGER &  &Not Null &\makecell[l]{折扣比例\\(70=30\%off)}\\
   \hline
 \end{tabular}
+
+%product_label
+\noindent\begin{tabular}{ | p{7em} | p{5.5em} | p{5.5em} | p{4.5em} | p{11em} |}
+  \hline
+  \multicolumn{5}{|c|}{PRODUCT_LABEL} \tabularnewline
+  \hline 
+  \multicolumn{5}{|c|}{Description: 商品標籤} \tabularnewline
+  \hline 
+  Attribute & Type & Key & Nullable & Description \\
+  \hline
+  product_id & SERIAL & \makecell[l]{Primary \\ Foreign} & Not Null & 商品ID \\
+  \hline
+  label_name & VARCHAR & \makecell[l]{Primary \\ Foreign} & Not Null & 類別名稱 \\
+  \hline
+  required & BOOLEAN & & Not Null & 是否為必填\\
+  \hline
+\end{tabular}
+
+%product_label_item
+\noindent\begin{tabular}{ | p{7em} | p{5.5em} | p{5.5em} | p{4.5em} | p{11em} |}
+  \hline
+  \multicolumn{5}{|c|}{PRODUCT_LABEL_ITEM} \tabularnewline
+  \hline 
+  \multicolumn{5}{|c|}{Description: 商品標籤選項} \tabularnewline
+  \hline 
+  Attribute & Type & Key & Nullable & Description \\
+  \hline
+  product_id & SERIAL & \makecell[l]{Primary \\ Foreign} & Not Null & 商品ID \\
+  \hline
+  label_name & VARCHAR & \makecell[l]{Primary \\ Foreign} & Not Null & 類別名稱 \\
+  \hline
+  name & VARCHAR & Primary & Not Null & 選項名稱\\
+  \hline
+\end{tabular}
+
 \newpage
+
+\subsection{Snapshot of Tables}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=\linewidth]{snapshot/user_data.png}}
+    \caption{user_data}
+\end{figure}
+
+
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=\linewidth]{snapshot/stores.png}}
+    \caption{stores}
+\end{figure}
+
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=\linewidth]{snapshot/carts.png}}
+    \caption{carts}
+\end{figure}
+
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=\linewidth]{snapshot/categories.png}}
+    \caption{categories}
+\end{figure}
+
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=\linewidth]{snapshot/products.png}}
+    \caption{products}
+\end{figure}
+
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=\linewidth]{snapshot/discounts.png}}
+    \caption{discounts}
+\end{figure}
+
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=\linewidth]{snapshot/shipping_discount.png}}
+    \caption{shipping_discount}
+\end{figure}
+
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=\linewidth]{snapshot/event_discount.png}}
+    \caption{event_discount}
+\end{figure}
+
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=\linewidth]{snapshot/seasoning_discount.png}}
+    \caption{seasoning_discount}
+\end{figure}
+
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=\linewidth]{snapshot/orders.png}}
+    \caption{orders}
+\end{figure}
+
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=\linewidth]{snapshot/product_label.png}}
+    \caption{product_label}
+\end{figure}
+
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=\linewidth]{snapshot/label_item.png}}
+    \caption{label_item}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[h!]
+    \centerline{\includegraphics[width=\linewidth]{snapshot/labels.png}}
+    \caption{labels}
+\end{figure}
+
+\clearpage
+
+\subsection{SQL Statements for Database Construction}
+\subsubsection{Create Table}
+\begin{lstlisting}
+-- user_data
+CREATE TABLE
+    IF NOT EXISTS user_data(
+        user_id SERIAL PRIMARY KEY,
+        name VARCHAR(32) NOT NULL,
+        password VARCHAR(32) NOT NULL,
+        email VARCHAR(64) UNIQUE NOT NULL,
+        address VARCHAR(64) NOT NULL,
+        phone_number VARCHAR(16) NOT NULL,
+        birthday DATE NOT NULL,
+        authority INTEGER NOT NULL,
+        current_cart_id INTEGER NOT NULL,
+        status INTEGER NOT NULL
+    );
+\end{lstlisting}
+
+\begin{lstlisting}
+-- stores
+CREATE TABLE
+    IF NOT EXISTS stores (
+        store_id SERIAL PRIMARY KEY REFERENCES user_data(user_id),
+        name VARCHAR(255) NOT NULL,
+        rate FLOAT NOT NULL,
+        rate_count INTEGER NOT NULL,
+        address VARCHAR(255) NOT NULL,
+        picture VARCHAR(255) NOT NULL,
+        description TEXT NOT NULL,
+        shipping_fee INTEGER NOT NULL,
+        status INTEGER NOT NULL
+    );
+\end{lstlisting}
+
+\begin{lstlisting}
+-- products
+CREATE TABLE
+    IF NOT EXISTS products (
+        product_id SERIAL PRIMARY KEY,
+        store_id SERIAL REFERENCES stores(store_id),
+        name VARCHAR(255) NOT NULL,
+        description TEXT NOT NULL,
+        picture VARCHAR(255) NOT NULL,
+        price INTEGER NOT NULL,
+        stock INTEGER NOT NULL,
+        status INTEGER NOT NULL
+    );
+\end{lstlisting}
+
+\begin{lstlisting}
+-- discounts
+CREATE TABLE
+    IF NOT EXISTS discounts (
+        discount_id SERIAL PRIMARY KEY UNIQUE,
+        discount_type INT NOT NULL,
+        status INT NOT NULL,
+        description TEXT,
+        name VARCHAR(255) NOT NULL
+    );
+\end{lstlisting}
+
+\begin{lstlisting}
+-- seasoning_discount
+CREATE TABLE
+    IF NOT EXISTS seasoning_discount (
+        discount_id SERIAL UNIQUE REFERENCES discounts(discount_id),
+        discount_percentage INT NOT NULL,
+        start_date DATE NOT NULL,
+        end_date DATE NOT NULL
+    );
+\end{lstlisting}
+
+\begin{lstlisting}
+-- shopping_discount
+CREATE TABLE
+    IF NOT EXISTS shipping_discount (
+        discount_id SERIAL UNIQUE REFERENCES discounts(discount_id),
+        max_price INT NOT NULL,
+        store_id SERIAL REFERENCES stores(store_id)
+    );
+\end{lstlisting}
+
+\begin{lstlisting}
+-- event_discount
+CREATE TABLE
+    IF NOT EXISTS event_discount (
+        discount_id SERIAL UNIQUE REFERENCES discounts(discount_id),
+        max_quantity INT NOT NULL,
+        product_id SERIAL REFERENCES products(product_id)
+    );
+\end{lstlisting}
+
+\begin{lstlisting}
+-- carts
+CREATE TABLE
+    IF NOT EXISTS carts (
+        customer_id SERIAL REFERENCES user_data(user_id),
+        product_id SERIAL REFERENCES products(product_id),
+        store_id SERIAL REFERENCES stores(store_id),
+        cart_id INTEGER NOT NULL,
+        product_quantity INT NOT NULL,
+        event_discount_id SERIAL REFERENCES discounts(discount_id),
+        PRIMARY KEY (
+            customer_id,
+            product_id,
+            store_id,
+            cart_id
+        )
+    );
+\end{lstlisting}
+
+\begin{lstlisting}
+-- orders
+CREATE TABLE
+    orders (
+        cart_id INTEGER,
+        store_id INTEGER REFERENCES stores(store_id),
+        user_id INTEGER REFERENCES user_data(user_id),
+        seasoning_discount_id INTEGER REFERENCES discounts(discount_id),
+        shipping_discount_id INTEGER REFERENCES discounts(discount_id),
+        status INTEGER,
+        total_price INTEGER,
+        Order_date TIMESTAMP,
+        taking_address VARCHAR(255),
+        taking_method INTEGER,
+        PRIMARY KEY (cart_id, store_id, user_id)
+    );
+\end{lstlisting}
+
+\begin{lstlisting}
+-- categories
+CREATE TABLE
+    IF NOT EXISTS categories (
+        category_id SERIAL PRIMARY KEY,
+        name VARCHAR(255) UNIQUE NOT NULL
+    );
+\end{lstlisting}
+
+\begin{lstlisting}
+-- product_label
+CREATE TABLE
+    IF NOT EXISTS product_label (
+        product_id SERIAL REFERENCES products(product_id),
+        label_name VARCHAR(255) NOT NULL,
+        required BOOLEAN NOT NULL,
+        PRIMARY KEY (product_id, label_name)
+    );
+\end{lstlisting}
+
+\begin{lstlisting}
+-- label_item
+CREATE TABLE
+    IF NOT EXISTS label_item (
+        product_id SERIAL NOT NULL,
+        label_name VARCHAR(255) NOT NULL,
+        item_name VARCHAR(255) NOT NULL,
+        FOREIGN KEY (product_id, label_name) REFERENCES product_label(product_id, label_name),
+        PRIMARY KEY (product_id, label_name, item_name)
+    );
+\end{lstlisting}
+
+\subsubsection{Insert Data}
+
+\begin{lstlisting}
+-- user_data
+INSERT INTO user_data (name, password, email, address, phone_number, birthday, authority, current_cart_id, status) VALUES
+    ('admin', 'admin', 'admin@gmail.com', 'address_admin', '0900-0000', '2021-10-10 11:30:30', 111, 1, 1),
+    ('alice', 'pwd1', 'a@gmail.com', 'address_1', '0900-1111', '2021-10-10 11:30:30', 001, 1, 1),
+    ('bob', 'pwd2', 'b@gmail.com', 'address_2', '0900-2222', '2022-11-11 11:30:30', 010, 2, 1),
+    ('tcp', 'pwd3', 'c@gmail.com', 'address_3', '0900-3333', '2023-12-12 11:30:30', 001, 1, 1),
+    ('udp', 'pwd4', 'd@gmail.com', 'address_4', '0900-4444', '2024-01-01 11:30:30', 011, 1, 1),
+    ('icmp', 'pwd5', 'e@gmail.com', 'address_5', '0900-5555', '2025-02-02 11:30:30', 001, 1, 1),
+    ('dns', 'pwd6', 'f@gmail.com', 'address_6', '0900-6666', '2026-03-03 11:30:30', 001, 1, 1),
+    ('dhcp', 'pwd7', 'g@gmail.com', 'address_7', '0900-7777', '2027-04-04 11:30:30', 001, 1, 1);
+\end{lstlisting}
+
+\begin{lstlisting}
+-- stores
+INSERT INTO stores (store_id, name, rate, rate_count, address, picture, description, shipping_fee, status) VALUES 
+    (1, 'im pasta', 4, 100, 'pun street', 'https://i.imgur.com/3i3tyXJ.gif', 'you are not pasta', 35, 1),
+    (3, 'number five',3.5, 5, 'pun street', 'https://i.imgur.com/3i3tyXJ.gif', 'special meal', 15, 1),
+    (2, 'mos burger',4, 123, 'NTUT', 'https://i.imgur.com/3i3tyXJ.gif', 'moooooooooooooos', 55, 1),
+    (7, 'trash noodle',4.9, 9876, 'pun street', 'https://i.imgur.com/3i3tyXJ.gif', 'trash', 192, 1);
+\end{lstlisting}
+
+\begin{lstlisting}
+-- products
+INSERT INTO products (store_id, name, description, picture, price, stock, status) VALUES
+    (1, 'pasta', 'tasty pasta', 'https://i.imgur.com/3i3tyXJ.gif', 150, 100, 1),
+    (1, 'black tea', 'student card get free', 'https://i.imgur.com/3i3tyXJ.gif', 0, 100, 1),
+    (2, 'special1', 'special', 'https://i.imgur.com/3i3tyXJ.gif', 250, 2, 1),
+    (2, 'special2', 'special', 'https://i.imgur.com/3i3tyXJ.gif', 350, 2, 0),
+    (2, 'special3', 'special', 'https://i.imgur.com/3i3tyXJ.gif', 450, 2, 1),
+    (3, 'black tea', 'most famous', 'https://i.imgur.com/3i3tyXJ.gif', 300, 3, 1),
+    (3, 'rice burger', 'we have rice', 'https://i.imgur.com/3i3tyXJ.gif', 500, 3, 2),
+    (7, 'big trash', 'can add kimchi for free', 'https://i.imgur.com/3i3tyXJ.gif', 80, 3, 1),
+    (7, 'small trash', 'can add kimchi for free', 'https://i.imgur.com/3i3tyXJ.gif', 60, 3, 1);
+\end{lstlisting}
+
+\begin{lstlisting}
+-- discounts
+INSERT INTO discounts (discount_type, description, name, status) VALUES
+(0, 'no discount', 'default', 1),
+(1, 'all products 90% off', 'spring discount', 1),
+(1, 'all products 80% off', 'spring discount', 1),
+(1, 'all products 70% off', 'spring discount', 1),
+(2, 'free shipping when price over 1000', 'spring discount', 1),
+(2, 'free shipping when price over 500', 'spring discount', 1),
+(2, 'free shipping when price over 300', 'spring discount', 1),
+(3, 'buy 3 get 1 free', 'halloween', 1),
+(3, 'buy 2 get 1 free', 'halloween', 1),
+(3, 'buy 1 get 1 free', 'halloween', 1);
+\end{lstlisting}
+
+\begin{lstlisting}
+-- seasoning_discount
+INSERT INTO seasoning_discount (discount_id, discount_percentage, start_date, end_date) VALUES
+    (2,90,'2021-01-01 00:00:00','2021-01-02 00:00:00'),
+    (3,80,'2021-01-03 00:00:00','2021-01-04 00:00:00'),
+    (4,70,'2021-01-05 00:00:00','2021-01-05 00:00:00');
+\end{lstlisting}
+
+\begin{lstlisting}
+-- shipping_discount
+INSERT INTO shipping_discount (discount_id, max_price, store_id) VALUES
+  (5,1000,1),
+  (6,500,1),
+  (7,300,1);
+\end{lstlisting}
+
+\begin{lstlisting}
+-- event_discount
+INSERT INTO event_discount (discount_id, max_quantity, product_id) VALUES
+    (8,3,1),
+    (9,3,2),
+    (10,3,3);
+\end{lstlisting}
+
+\begin{lstlisting}
+-- carts
+INSERT INTO carts (customer_id, cart_id, store_id, product_id, product_quantity, event_discount_id) VALUES
+    (1, 1, 1, 2, 100, 8),
+    (1, 1, 1, 1, 100, 9),
+    (1, 2, 1, 2, 33, 10),
+    (3, 1, 2, 3, 100, 1),
+    (1, 3, 1, 1, 7, 1);
+\end{lstlisting}
+
+\begin{lstlisting}
+-- orders
+INSERT INTO orders (user_id, cart_id, store_id, seasoning_discount_id, shipping_discount_id, status, total_price, Order_date, taking_address, taking_method) VALUES 
+    (1, 1, 1, 1, 1, 1, 100, '2020-01-01 00:00:00', '台北市', 1),
+    (1, 2, 1, 2, 5, 1, 100, '2020-02-01 00:00:00', '台北市', 1),
+    (3, 1, 2, 3, 6, 1, 100, '2020-03-01 00:00:00', '台北市', 1),
+    (1, 3, 1, 4, 7, 1, 100, '2020-04-01 00:00:00', '台北市', 1);
+\end{lstlisting}
+
+\begin{lstlisting}
+-- categories
+INSERT INTO categories (name) VALUES
+    ('Spices'),
+    ('Sustainable'),
+    ('Fresh'),
+    ('Bakery'),
+    ('Local'),
+    ('sus thing');
+\end{lstlisting}
+
+\begin{lstlisting}
+-- labels
+INSERT INTO labels (category_id, store_id) VALUES
+    (1, 1),
+    (2, 1),
+    (3, 1),
+    (2, 2),
+    (5, 7),
+    (6, 7);
+\end{lstlisting}
+
+\begin{lstlisting}
+-- product_label
+INSERT INTO product_label (product_id, label_name, required) VALUES
+    (2,'sugar', true),
+    (7,'rice', true),
+    (8, 'kimchi', false),
+    (9, 'kimchi', false);
+\end{lstlisting}
+
+\begin{lstlisting}
+-- label_item
+INSERT INTO label_item (product_id, label_name, item_name) VALUES
+    (2, 'sugar', 'more'),
+    (2, 'sugar', 'less'),
+    (2, 'sugar', 'no'),
+    (7, 'rice', 'yes'),
+    (7, 'rice', 'no'),
+    (8, 'kimchi', 'yes'),
+    (8, 'kimchi', 'no'),
+    (9, 'kimchi', 'yes'),
+    (9, 'kimchi', 'no');
+\end{lstlisting}
+
+\newpage
+
+\subsection{Size of Each table}
+
+\noindent\begin{tabular}{ | p{8em} | p{6.5em} | p{6.5em} | p{8em} |}
+  \hline 
+  Table & Tuple Size (bytes) & Average Tuple Count & Estimate Size (kb) \\
+  \hline
+  user_data & 92 & 300 & 27.6 \\
+  \hline
+  stores & 120 & 30 & 3.6 \\
+  \hline
+  products & 110 & 600 & 66 \\
+  \hline
+  carts & 50 & 4000 & 200 \\
+  \hline
+  discounts & 70 & 250 & 17.5 \\
+  \hline
+  seasoning_discount & 40 & 20 & 0.8 \\
+  \hline
+  shipping_discount & 40 & 30 & 1.2 \\
+  \hline
+  event_discount & 40 & 200 & 8 \\
+  \hline
+  orders & 80 & 1500 & 120 \\
+  \hline
+  categories & 40 & 10 & 0.4 \\
+  \hline
+  labels & 35 & 120 & 42 \\
+  \hline
+  product_label & 35 & 400 & 14 \\
+  \hline
+  label_item & 40 & 1200 & 48 \\
+  \hline
+\end{tabular}
+
+\subsection{Expected Database Operation}
+
+\noindent\begin{tabular}{ | p{12em} | p{9em} | p{9em} |}
+  \hline 
+  Table & 可能操作 & 頻率（次數/天)  \\
+  \hline
+  user_data 
+        & 登入 & 150 \\
+        & 註冊 & 5 \\
+  \hline
+  stores
+        & 新增商店 & 2 \\
+        & 查看商店資料 & 200 \\
+        & 為商店評分 & 20 \\
+        & 編輯商店 & 2 \\
+  \hline
+  products
+        & 新增商品 & 2 \\
+        & 查看商品資料 & 60 \\
+        & 編輯商品 & 10 \\
+  \hline
+  carts
+        & 加入購物車 & 250 \\
+        & 結帳 & 90 \\
+        & 查看購物車 & 100 \\
+  \hline
+  discounts 
+        & 新增折扣 & 9 \\
+        & 編輯折扣 & 3 \\
+        & 查看折扣 & 100 \\
+  \hline
+  seasoning_discounts
+        & 新增折扣 & 3 \\
+        & 編輯折扣 & 1 \\
+  \hline
+  shipping_discount
+        & 新增折扣 & 3 \\
+        & 編輯折扣 & 1 \\
+  \hline
+  event_discount
+        & 新增折扣 & 3 \\
+        & 編輯折扣 & 1 \\
+  \hline
+  orders 
+        & 查看訂單 & 100 \\
+        & 更新訂單 & 400 \\
+  \hline
+  categories 
+        & 查看類別 & 50 \\
+  \hline
+  labels 
+        & 編輯店家類別 & 2 \\
+  \hline
+  product_label 
+        & 新增商品類別 & 10 \\
+        & 編輯商品類別 & 2 \\
+  \hline
+  label_item
+        & 新增商品類別品項 & 30 \\
+        & 編輯商品類別品項 & 10 \\
+  \hline
+\end{tabular}
+
+\newpage
+
+\section{Implementation and Demonstration of the Database System }
+
+\subsection{Snapshots of GUI}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{pic/login.png}}
+    \caption{login page}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{pic/shop.png}}
+    \caption{shop page}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{pic/cart.png}}    
+    \caption{cart page}
+    \label{fig:enter-label}
+\end{figure}
+
+\newpage
+
 \section{Glossary}
 \newpage
+
 
 \section{References}
 \printbibliography[heading=none]

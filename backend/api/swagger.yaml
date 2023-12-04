@@ -29,7 +29,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/StoreInfo"
+                $ref: "#/components/schemas/StoreInfoWithCategory"
         "500":
           description: Unexpected error
   /stores:
@@ -224,10 +224,15 @@ paths:
   /store/{storeID}/add-product:
     post:
       tags:
-        - seller
-        - store
-        - product
-      summary: add a product in store.
+      - seller
+      - store
+      - product
+      summary: check product exist then 
+       (add) or
+       (just change status) or 
+       (change status to deactive and add product) then
+       add event discount array then
+       delete all label then add new label array
       parameters:
         - name: storeID
           in: path
@@ -244,7 +249,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ProductInfo"
+              $ref: "#/components/schemas/ProductInfoWithLabelAndDiscount"
       responses:
         "200":
           description: ok
@@ -508,6 +513,7 @@ paths:
       tags:
         - customer
         - product
+        - seller
       summary: return a product by ID
       parameters:
         - name: productID
@@ -526,19 +532,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProductInfo"
+                $ref: "#/components/schemas/ProductInfoWithLabelAndDiscount"
         "500":
           description: Unexpected error
-  /product/{productID}/update-status:
+  /product/{productID}/delete-product:
     put:
       tags:
-        - seller
         - product
-      summary: update product status by productID
+        - seller
+      summary: change status to deactive
       parameters:
         - name: productID
           in: path
-          description: The ID of the product should be deleted.
+          description: The ID of the product to return.
           required: true
           content:
             application/json:
@@ -546,12 +552,6 @@ paths:
                 type: string
                 example: "1"
                 x-content-type: application/json
-      requestBody:
-        description: 0 = deactive, 1 = active, 2 = no rice
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/status"
       responses:
         "200":
           description: ok
@@ -612,44 +612,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProductArray"
+                $ref: "#/components/schemas/ProductInfoWithLabelAndDiscountArray"
         "400":
           description: bad request
         "500":
           description: Unexpected error
-  /product/{productID}/add-product-label:
-    post:
-      tags:
-        - product
-        - product_label
-      summary: delete all label then add new product label by productID
-      parameters:
-        - name: product_id
-          in: path
-          description: The ID of the product.
-          required: true
-          content:
-            application/json:
-              schema:
-                type: string
-                example: "1"
-                x-content-type: application/json
-      requestBody:
-        description: add a new product_label and many product_label_item.
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ProductLabelInfoArray"
-        required: true
-      responses:
-        "200":
-          description: ok
-        "400":
-          description: bad request
-        "500":
-          description: Unexpected error
-
-
   /customer/{userID}/cart:
     post:
       tags:
@@ -848,6 +815,36 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
+  /seller/store/{storeID}/orders:
+    get:
+      tags:
+        - seller
+        - store
+        - order
+      summary: get all orders by storeID status not 0/6
+      parameters:
+        - name: storeID
+          in: path
+          required: true
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "1"
+                x-content-type: application/json
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StoreOrderStatusInfoArray"
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+
+
   /store/{storeID}/shipping-discount:
     get:
       tags:
@@ -879,7 +876,7 @@ paths:
       tags:
         - seller
         - discount
-      summary: create a shipping discount
+      summary: check exist then create a shipping discount
       parameters:
         - name: storeID
           in: path
@@ -1128,7 +1125,7 @@ paths:
           description: add success
         "500":
           description: Unexpected error
-  /customer/{userID}/check-order-status:
+  /customer/{userID}/order-status:
     get:
       tags:
         - customer
@@ -1151,7 +1148,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HistoryArray"
+                $ref: "#/components/schemas/RunOrderInfoArray"
         "400":
           description: bad request
         "500":
@@ -1410,6 +1407,61 @@ components:
       items:
         $ref: "#/components/schemas/ProductInfo"
       x-schema-name: ProductArray
+    ProductInfoWithLabelAndDiscount:
+      required:
+      - description
+      - name
+      - picture
+      - price
+      - product_id
+      - status
+      - stock
+      - store_id
+      - product_label_array
+      - event_discount_array
+      type: object
+      properties:
+        product_id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: pasta
+        store_id:
+          type: integer
+          format: int64
+          example: 1
+        description:
+          type: string
+          example: tasty pasta
+        picture:
+          type: string
+          example: https://i.imgur.com/1.jpg
+        price:
+          type: integer
+          format: int64
+          example: 9999
+        stock:
+          type: integer
+          format: int64
+          example: 100
+        status:
+          type: integer
+          format: int64
+          example: 1
+        product_label_array:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductLabelInfo"
+        event_discount_array:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventDiscount"
+    ProductInfoWithLabelAndDiscountArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/ProductInfoWithLabelAndDiscount"
     CartInfo:
       required:
         - cart_id
@@ -2066,6 +2118,131 @@ components:
         type: array
         items:
           $ref: "#/components/schemas/ProductLabelInfo"
-    
-
-
+    RunOrderInfo:
+      required:
+        - status
+        - store_name
+        - store_picture
+        - user_id
+        - cart_id
+        - store_id
+      type: object
+      properties:
+        user_id:
+          type: integer
+          format: int64
+          example: 1
+        cart_id:
+          type: integer
+          format: int64
+          example: 1
+        store_id:
+          type: integer
+          format: int64
+          example: 1
+        status:
+          type: integer
+          format: int64
+          example: 1
+        store_name:
+          type: string
+          example: IM pasta
+        store_picture:
+          type: string
+          example: https://i.imgur.com/1.jpg
+    RunOrderInfoArray:
+        type: array
+        items:
+          $ref: "#/components/schemas/RunOrderInfo"
+    StoreOrderStatusInfo:
+      required:
+        - user_id
+        - cart_id
+        - store_id
+        - order_date
+        - total_price
+        - status
+        - product_order_info_array
+      type: object
+      properties:
+        user_id:
+          type: integer
+          format: int64
+          example: 1
+        cart_id:
+          type: integer
+          format: int64
+          example: 1
+        store_id:
+          type: integer
+          format: int64
+          example: 1
+        order_date:
+          type: string
+          example: 2021-01-01 00:00:00
+        total_price:
+          type: integer
+          format: int64
+          example: 9999
+        status:
+          type: integer
+          format: int64
+          example: 1
+        product_order_info_array:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductOrderInfo"
+    StoreOrderStatusInfoArray:
+        type: array
+        items:
+          $ref: "#/components/schemas/StoreOrderStatusInfo"
+    StoreInfoWithCategory:
+      required:
+        - address
+        - description
+        - name
+        - picture
+        - rate
+        - rate_count
+        - shipping_fee
+        - status
+        - store_id
+        - category_array
+      type: object
+      properties:
+        store_id:
+          type: integer
+          format: int64
+          example: 1
+        description:
+          type: string
+          example: good pasta
+        name:
+          type: string
+          example: i'm pasta
+        address:
+          type: string
+          example: pun street
+        rate:
+          type: number
+          format: float
+          example: 5
+        rate_count:
+          type: integer
+          format: int64
+          example: 10
+        picture:
+          type: string
+          example: https://i.imgur.com/1.jpg
+        status:
+          type: integer
+          format: int64
+          example: 1
+        shipping_fee:
+          type: integer
+          format: int64
+          example: 100
+        category_array:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"

@@ -1,4 +1,4 @@
-INSERT INTO categorys (name) VALUES
+INSERT INTO categories (name) VALUES
     ('Spices'),
     ('Sustainable'),
     ('Fresh'),

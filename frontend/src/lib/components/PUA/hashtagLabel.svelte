@@ -6,19 +6,19 @@
 
 {#if type === 'text'}
 	<div
-		class="bg-PUA-dark-red justify-center rounded-[20px] px-5 py-1 text-center text-xl font-bold text-white"
+		class="justify-center rounded-[20px] bg-PUA-dark-red px-5 py-1 text-center text-xl font-bold text-white"
 	>
 		{text}
 	</div>
 {:else if type === 'add'}
 	<button
-		class="bg-PUA-dark-red h-9 w-9 items-center justify-center rounded-[18px] text-center text-3xl font-bold text-white"
+		class="h-9 w-9 items-center justify-center rounded-[18px] bg-PUA-dark-red text-center text-3xl font-bold text-white"
 	>
 		+
 	</button>
 {:else if type == 'start'}
 	<div
-		class="bg-PUA-dark-red flex items-baseline justify-center gap-1 rounded-[10px] border-4 border-amber-700/75 px-3 text-center text-xl font-bold text-white"
+		class="flex items-baseline justify-center gap-1 rounded-[10px] border-4 border-amber-700/75 bg-PUA-dark-red px-3 text-center text-xl font-bold text-white"
 	>
 		<img src={start} alt="" />
 		{text}

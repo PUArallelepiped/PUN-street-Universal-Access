@@ -3,7 +3,7 @@
 	export let text = 'null';
 </script>
 
-<div class="boder-b-1 border-b-PUA-stone mb-4 mt-4 flex justify-between border-b-[1px]">
-	<div class="text-PUA-stone font-bold">{text}</div>
+<div class="boder-b-1 mb-4 mt-4 flex justify-between border-b-[1px] border-b-PUA-stone">
+	<div class="font-bold text-PUA-stone">{text}</div>
 	<img src={Dropdown} alt="" />
 </div>

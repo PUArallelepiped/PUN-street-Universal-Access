@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS stores (
-    store_id SERIAL PRIMARY KEY,
+    store_id SERIAL PRIMARY KEY REFERENCES user_data(user_id),
     name VARCHAR(255) NOT NULL,
     rate FLOAT NOT NULL,
     rate_count INTEGER NOT NULL,

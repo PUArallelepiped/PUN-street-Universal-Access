@@ -59,7 +59,7 @@
 					<div class="text-right text-3xl font-semibold text-orange-950">9999</div>
 				</div>
 			</div>
-			<OkButton onclick={() => null}><div class="px-16 text-xl font-bold">Check out</div></OkButton>
+			<OkButton onclick={() => null} text="Check Out"></OkButton>
 		</div>
 	</div>
 </div>

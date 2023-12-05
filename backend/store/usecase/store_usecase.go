@@ -36,3 +36,27 @@ func (su *storeUsecase) GetAllStore(ctx context.Context) ([]swagger.StoreInfo, e
 	}
 	return s, nil
 }
+
+func (su *storeUsecase) GetStatisticsById(ctx context.Context, id int64, year int64) (*[]swagger.InlineResponse200, error) {
+	var priceArray []swagger.InlineResponse200
+	for month := 1; month < 13; month++ {
+		price, err := su.storeRepo.GetMonthTotalPriceById(ctx, id, year, int64(month))
+		if err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+		priceArray = append(priceArray, *price)
+	}
+
+	return &priceArray, nil
+}
+
+func (su *storeUsecase) GetAllProductSellingById(ctx context.Context, id int64, year int64, month int64) (*[]swagger.ProductStatistic, error) {
+	productStatistics, err := su.storeRepo.GetAllProductSellingById(ctx, id, year, month)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	return productStatistics, nil
+}

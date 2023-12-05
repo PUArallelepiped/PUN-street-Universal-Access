@@ -1,10 +1,11 @@
 <script lang="ts">
 	import watermelon from '$lib/assets/watermelon.png';
 	import Transhcan from '$lib/assets/transhcan.svg';
-	import { ProductCard } from '$lib';
+	// import { ProductCard } from '$lib';
 	import HashtagLabel from '$lib/components/PUA/hashtagLabel.svelte';
 	import CategoryLabel from '$lib/components/PUA/categoryLabel.svelte';
 	import DiscountCard from '$lib/components/PUA/discountCard.svelte';
+	import ProductCard from '$lib/components/PUA/storeProductCard.svelte';
 	// export let data: PageData;
 	let shopName = 'hi';
 
@@ -53,8 +54,8 @@
 
 <div class="mt-10 lg:px-40">
 	<div class="mx-5 space-y-2">
-		<div class="font-bold text-PUA-dark-red">100台灣台北市中正區八德路一段82巷9弄17號</div>
-		<div class="text-5xl font-bold text-PUA-stone">銀記手稈刀切牛肉麵</div>
+		<div class="text-PUA-dark-red font-bold">100台灣台北市中正區八德路一段82巷9弄17號</div>
+		<div class="text-PUA-stone text-5xl font-bold">銀記手稈刀切牛肉麵</div>
 		<div class="flex w-full gap-3">
 			<HashtagLabel type={'start'} text={'4.7'}></HashtagLabel>
 			<HashtagLabel type={'text'} text={'free delivery'}></HashtagLabel>
@@ -64,7 +65,7 @@
 
 	<CategoryLabel text={'Product List'}></CategoryLabel>
 
-	<div class="flex-row space-y-2 p-2">
+	<div class="mx-5 flex-row space-y-2 p-2">
 		{#each prodctListResponse as product}
 			<ProductCard
 				name={product.name}
@@ -79,7 +80,7 @@
 	</div>
 	<CategoryLabel text={'Shipping Discount List'}></CategoryLabel>
 
-	<div class="relative space-y-4">
+	<div class="relative mx-5 space-y-4">
 		{#each discountcard as { label }}
 			<div class="flex items-center gap-4">
 				<DiscountCard type="in" text={label}></DiscountCard>

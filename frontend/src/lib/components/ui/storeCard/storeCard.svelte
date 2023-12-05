@@ -13,7 +13,7 @@
   <Card.Root class="relative w-[399px] h-[385px]">
     <Card.Content>
       <img src={picture} alt="" class="rounded w-[399px] h-[170px] mt-[10px]">
-      <div class="w-[72px] h-[29px] bg-red-900 rounded-full border-white border-2 border-opacity-50 absolute top-5 right-8">
+      <div class="w-[72px] h-[29px] bg-PUA-red rounded-full border-white border-2 border-opacity-50 absolute top-5 right-8">
         <div class="text-white text-base text-center font-semibold font-['Inter'] leading-tight my-1">{rate}</div>
       </div>
     </Card.Content>

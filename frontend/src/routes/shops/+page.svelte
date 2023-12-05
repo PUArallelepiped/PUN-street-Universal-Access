@@ -93,7 +93,7 @@
 	<div class="w-30 float-left mt-[15px]">
 		<Input type="text" placeholder="QQㄋㄟㄋㄟ好喝到咩噗茶" class="my-3 ml-3 max-w-xs bg-white" />
 		<div
-			class="my-3 inline-flex h-[25px] items-center justify-center gap-2.5 rounded-full bg-red-900 px-[23px] py-1"
+			class="my-3 inline-flex h-[25px] items-center justify-center gap-2.5 rounded-full bg-PUA-red px-[23px] py-1"
 		>
 			<div
 				class="mt-2 h-[43px] w-[300px] text-center font-['Inter'] text-xl font-bold leading-relaxed text-white"
@@ -111,7 +111,7 @@
 		</div>
 
 		<div
-			class="my-3 inline-flex h-[25px] items-center justify-center gap-2.5 rounded-full bg-red-900 px-[23px] py-1"
+			class="my-3 inline-flex h-[25px] items-center justify-center gap-2.5 rounded-full bg-PUA-red px-[23px] py-1"
 		>
 			<div
 				class="mt-2 h-[43px] w-[300px] text-center font-['Inter'] text-xl font-bold leading-relaxed text-white"
@@ -128,7 +128,7 @@
 		</div>
 
 		<div
-			class="my-3 inline-flex h-[25px] items-center justify-center gap-2.5 rounded-full bg-red-900 px-[23px] py-1"
+			class="my-3 inline-flex h-[25px] items-center justify-center gap-2.5 rounded-full bg-PUA-red px-[23px] py-1"
 		>
 			<div
 				class="mt-2 h-[43px] w-[300px] text-center font-['Inter'] text-xl font-bold leading-relaxed text-white"

@@ -83,12 +83,16 @@
 		{#each discountcard as { label }}
 			<div class="flex items-center gap-4">
 				<DiscountCard type="in"></DiscountCard>
-				<img src={Transhcan} alt="" class="h-6 w-6" />
+				<button>
+					<img src={Transhcan} alt="" class="h-6 w-6" />
+				</button>
 			</div>
 		{/each}
 		<div class="flex items-center gap-4">
 			<DiscountCard></DiscountCard>
-			<img src={Transhcan} alt="" class="h-6 w-6" />
+			<button>
+				<img src={Transhcan} alt="" class="h-6 w-6" />
+			</button>
 		</div>
 	</div>
 </div>

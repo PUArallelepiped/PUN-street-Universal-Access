@@ -5,9 +5,7 @@
 </script>
 
 <div class="flex w-full items-center space-x-2">
-	<div
-		class="focus: flex h-[30px] w-full items-center justify-center rounded-full px-5 hover:bg-gray-300"
-	>
+	<div class="flex h-[31px] w-full items-center justify-center rounded-full px-5 hover:bg-gray-300">
 		<Redradiobox name={category} id={category + subcategory} />
 		<label
 			for={category + subcategory}

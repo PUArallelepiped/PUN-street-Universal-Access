@@ -3,6 +3,7 @@ version: '3.8'
 
 services:
   go-server:
+      image: go-server
       build:
         context: ./backend
         dockerfile: Dockerfile

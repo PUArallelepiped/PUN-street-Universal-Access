@@ -20,11 +20,6 @@
 				<div class="mr-1 font-semibold text-PUA-dark-orange">{name}</div>
 				<div class="md:flew-row flex flex-col sm:flex-row lg:flex-row">
 					<BuyNforOneFree></BuyNforOneFree>
-					<div
-						class="mx-2 rounded-lg border-2 border-PUA-red px-1 text-base font-semibold text-PUA-red"
-					>
-						no storange
-					</div>
 				</div>
 			</div>
 			<div class="whitespace-pre-line text-base font-normal text-PUA-dark-gray">

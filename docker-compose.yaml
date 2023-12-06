@@ -2,6 +2,21 @@
 version: '3.8'
 
 services:
+  server:
+      build:
+        context: ./backend
+        dockerfile: Dockerfile
+      env_file:
+        - .env
+      working_dir: /app
+      volumes:
+        - .:/server
+      ports:
+        - "5000:5000"
+      depends_on:
+        - postgres_db
+      entrypoint: go run cmd/main.go
+      restart: always
   postgres_db:
     image: postgres:latest
     restart: always

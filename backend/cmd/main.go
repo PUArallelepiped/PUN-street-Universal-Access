@@ -36,7 +36,7 @@ import (
 )
 
 func init() {
-	viper.SetConfigFile("../.env")
+	viper.SetConfigFile(".env")
 	viper.SetConfigType("dotenv")
 	if err := viper.ReadInConfig(); err != nil {
 		logrus.Fatal(err)
@@ -56,7 +56,8 @@ func main() {
 
 	db, err := sql.Open(
 		"postgres",
-		fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", dbUser, dbPassword, dbDatabase),
+		// fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", dbUser, dbPassword, dbDatabase),
+		fmt.Sprintf("postgres://%s:%s@postgres_db:5432/%s?sslmode=disable", dbUser, dbPassword, dbDatabase),
 	)
 
 	if err != nil {

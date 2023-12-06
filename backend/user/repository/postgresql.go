@@ -132,8 +132,14 @@ func RegisterData(data swagger.UserData) {
 	connStr := "user=orange dbname=user_data sslmode=disable"
 	if db, err := sql.Open("postgres", connStr); err == nil {
 
-		db.QueryRow("SELECT is_valid_password($1, $2, $3)", data.Password, 6, 3).Scan(&result)
-		fmt.Println(result)
+		db.QueryRow("SELECT Valid_data($1, $2, $3)", data.Password, 6, 3).Scan(&result)
+		if result != "OK" {
+			fmt.Println(result)
+
+		} else {
+			writeInDB(db, data)
+		}
+
 		defer db.Close()
 
 	}
@@ -141,26 +147,7 @@ func RegisterData(data swagger.UserData) {
 }
 
 func UpdateData(data swagger.UserData) {
-	// var tempData = []swagger.UserData{
-	// 	{UserId: 1,
-	// 		UserName:  "orange",
-	// 		UserEmail: "orange@gmail.com",
-	// 		Authority: 1,
-	// 		Password:  "Temp123Password123",
-	// 		Address:   "Taipei",
-	// 		Phone:     "0912345678",
-	// 		Status:    1,
-	// 		CartId:    1},
-	// 	{UserId: 2,
-	// 		UserName:  "apple",
-	// 		UserEmail: "apple@gmail.com",
-	// 		Authority: 0,
-	// 		Password:  "orangeOAO123",
-	// 		Address:   "Taipei",
-	// 		Phone:     "0912345628",
-	// 		Status:    1,
-	// 		CartId:    1},
-	// }
+
 	updateInDB("orange@gmail.com", data)
 
 }

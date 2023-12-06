@@ -77,11 +77,11 @@ BEGIN
 END;
 $valid_email$ LANGUAGE plpgsql;
 ----------------------------------------------------------------------------------------------------------------------
-DROP FUNCTION IF EXISTS Search_data(VARCHAR, VARCHAR);
+DROP FUNCTION IF EXISTS Valid_data(VARCHAR, VARCHAR);
 
-CREATE OR REPLACE FUNCTION Search_data(phone_number VARCHAR(20), email VARCHAR(20), password VARCHAR)
+CREATE OR REPLACE FUNCTION Valid_data(phone_number VARCHAR(20), email VARCHAR(20), password VARCHAR)
 RETURNS VARCHAR AS
-$search_data$
+$valid_data$
 BEGIN
 
     IF Valid_email(email) AND Valid_phone(phone_number) AND Valid_password(password,6,3) THEN
@@ -97,6 +97,6 @@ BEGIN
     END IF;
     RETURN 'InValid Data';
 END;
-$search_data$ LANGUAGE plpgsql;
+$valid_data$ LANGUAGE plpgsql;
 
-SELECT Search_data('091234567','a@gmail.com','orangeOAO123');
+-- SELECT Search_data('091234567','a@gmail.com','orangeOAO123');

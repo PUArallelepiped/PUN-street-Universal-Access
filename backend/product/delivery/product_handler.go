@@ -19,11 +19,10 @@ func NewProductHandler(e *gin.Engine, productUsecase domain.ProductUsecase) {
 		ProductUsecase: productUsecase,
 	}
 
-	store := e.Group("/api/v1/store/:storeID")
+	v1 := e.Group("/api/v1")
 	{
-		store.GET("/products", handler.GetProductById)
-		store.POST("/add-product", handler.AddProduct)
-		store.PUT("/update-product/:productID", handler.UpdateProduct)
+		v1.GET("/store/:storeID/products", handler.GetProductById)
+		v1.POST("/store/:storeID/add-product", handler.AddProduct)
 	}
 }
 
@@ -58,37 +57,6 @@ func (s *ProductHandler) AddProduct(c *gin.Context) {
 	}
 
 	err = s.ProductUsecase.AddByStoreId(c, storeID, &product)
-	if err != nil {
-		logrus.Error(err)
-		c.Status(500)
-		return
-	}
-
-	c.Status(200)
-}
-
-func (s *ProductHandler) UpdateProduct(c *gin.Context) {
-	storeID, err := strconv.ParseInt(c.Param("storeID"), 10, 64)
-	if err != nil {
-		logrus.Error(err)
-		c.Status(400)
-		return
-	}
-	productID, err := strconv.ParseInt(c.Param("productID"), 10, 64)
-	if err != nil {
-		logrus.Error(err)
-		c.Status(400)
-		return
-	}
-
-	var product swagger.ProductInfo
-	if err := c.BindJSON(&product); err != nil {
-		logrus.Error(err)
-		c.Status(400)
-		return
-	}
-
-	err = s.ProductUsecase.UpdateById(c, storeID, productID, &product)
 	if err != nil {
 		logrus.Error(err)
 		c.Status(500)

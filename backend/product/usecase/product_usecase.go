@@ -35,12 +35,3 @@ func (pu *productUsecase) AddByStoreId(ctx context.Context, id int64, product *s
 	}
 	return nil
 }
-
-func (pu *productUsecase) UpdateById(ctx context.Context, StoreId int64, productId int64, product *swagger.ProductInfo) error {
-	err := pu.productRepo.UpdateById(ctx, StoreId, productId, product)
-	if err != nil {
-		logrus.Error(err)
-		return err
-	}
-	return nil
-}

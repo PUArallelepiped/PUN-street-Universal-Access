@@ -4,19 +4,21 @@
 	import Casher from '$lib/assets/casher.svg';
 	import InputBox from '$lib/components/PUA/InputBox.svelte';
 	import OkButton from '$lib/components/PUA/OkButton.svelte';
+	import CheckBox from '$lib/components/PUA/CheckBox.svelte';
 	let context: { text: string; status: boolean }[] = [
 		{ text: 'Choose User Type', status: false },
 		{ text: 'Compelete basic information', status: false },
 		{ text: 'Check email', status: false },
 		{ text: 'Compelete!', status: false }
 	];
-	function NextStep() {
+	function NextStep(): null {
 		for (let index = 0; index < context.length; index++) {
 			if (!context[index].status) {
 				context[index].status = !context[index].status;
-				return;
+				return null;
 			}
 		}
+		return null;
 	}
 	function ClickWallet() {
 		NextStep();
@@ -50,7 +52,7 @@
 				<div class="text-center text-4xl font-bold leading-8 text-red-900">Store</div>
 			</button>
 		</div>
-	{:else if context[0].status}
+	{:else if !context[1].status}
 		<div class="flex justify-center">
 			<div class="flex flex-col items-center gap-10 rounded-lg bg-white p-12">
 				<InputBox value="" type="" label="Name" />
@@ -60,7 +62,26 @@
 				<InputBox value="" type="" label="Phone Number" />
 				<InputBox value="" type="" label="Birthday" />
 				<InputBox value="" type="" label="Address" />
-				<OkButton onclick={() => null} text="Next Step"></OkButton>
+				<CheckBox value="si" id="id" text="Do you be a good PUA user?"></CheckBox>
+				<OkButton onclick={NextStep} text="Next Step"></OkButton>
+			</div>
+		</div>
+	{:else if !context[2].status && context[2].text === 'Compelete Store Info'}
+		<div class="flex justify-center">
+			<div class="flex flex-col items-center gap-10 rounded-lg bg-white p-12">
+				<InputBox value="" type="" label="Store Name" />
+				<InputBox value="" type="" label="Store Description" />
+				<InputBox value="" type="" label="Address" />
+				<InputBox value="" type="" label="Shipping Fee" />
+				<CheckBox value="si" id="id" text="Do you be a good PUA user?"></CheckBox>
+				<OkButton onclick={NextStep} text="Next Step"></OkButton>
+			</div>
+		</div>
+	{:else if !context[2].status}
+		<div class="flex flex-col items-center">
+			<div class="text-center text-4xl font-bold leading-8 text-PUA-dark-red">Compelete!</div>
+			<div class="text-center text-xl font-bold leading-8 text-PUA-dark-red">
+				you r a PUA member now
 			</div>
 		</div>
 	{/if}

@@ -49,3 +49,5 @@ import Checkcontainer from '$lib/components/PUA/checkcontainer.svelte';
 export { Checkcontainer };
 import InputBox from './components/PUA/InputBox.svelte';
 export { InputBox };
+import CheckBox from './components/PUA/CheckBox.svelte';
+export { CheckBox };

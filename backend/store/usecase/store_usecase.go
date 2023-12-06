@@ -28,7 +28,7 @@ func (su *storeUsecase) GetByID(ctx context.Context, id int64) (*swagger.StoreIn
 	return s, nil
 }
 
-func (su *storeUsecase) GetAllStore(ctx context.Context) ([]swagger.StoreInfo, error) {
+func (su *storeUsecase) GetAllStore(ctx context.Context) ([]swagger.StoreInfoWithCategory, error) {
 	s, err := su.storeRepo.GetAllStore(ctx)
 	if err != nil {
 		logrus.Error(err)

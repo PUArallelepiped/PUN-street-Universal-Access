@@ -26,6 +26,7 @@ func NewDiscountHandler(e *gin.Engine, discountUsecase domain.DiscountUsecase) {
 		v1.GET("/store/:storeID/shipping-discount", handler.GetAllShippingByStoreId)
 		v1.GET("/seasoning-discounts", handler.GetAllSeasoningDiscount)
 		v1.GET("/product/:productID/event-discounts", handler.GetAllEventDiscount)
+		v1.PUT("/discount/:discountID/delete-discount", handler.DeleteDiscount)
 	}
 }
 
@@ -142,5 +143,20 @@ func (s *DiscountHandler) GetAllEventDiscount(c *gin.Context) {
 		return
 	}
 	c.JSON(200, discounts)
+}
 
+func (s *DiscountHandler) DeleteDiscount(c *gin.Context) {
+	discountID, err := strconv.ParseInt(c.Param("discountID"), 10, 64)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+	err = s.DiscountUsecase.DisableDiscountByDiscountID(c, discountID)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+	c.Status(200)
 }

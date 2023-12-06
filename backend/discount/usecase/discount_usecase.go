@@ -97,3 +97,13 @@ func (du *discountUsecase) GetAllEventByProductID(ctx context.Context, id int64)
 
 	return discounts, nil
 }
+
+func (du *discountUsecase) DisableDiscountByDiscountID(ctx context.Context, id int64) error {
+	err := du.discountRepo.DisableDiscountByDiscountID(ctx, id)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}

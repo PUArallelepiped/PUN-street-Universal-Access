@@ -21,10 +21,10 @@ func NewPostgressqlStoreRepo(db *sql.DB) domain.StoreRepo {
 
 func (p *postgresqlStoreRepo) GetByID(ctx context.Context, id int64) (*swagger.StoreInfoWithCategory, error) {
 	sqlStatement := `
-	 SELECT store_id, name, rate, rate_count, address, picture, description, shipping_fee, status, 
+	SELECT store_id, name, rate, rate_count, address, picture, description, shipping_fee, status, 
     (SELECT 
-        jsonb_agg(jsonb_build_object('category_id', categories.category_id,'category_name', categories.name))
-        as categories_item FROM categories NATURAL JOIN 
+        jsonb_agg(jsonb_build_object('category_id', categories.category_id,'category_name', categories.name)) AS categories_item 
+		FROM categories NATURAL JOIN 
         (SELECT labels.category_id FROM labels WHERE labels.store_id = $1)
     ) AS category_array
 	FROM stores

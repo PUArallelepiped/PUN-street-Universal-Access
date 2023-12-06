@@ -29,9 +29,9 @@
 			<div class="text-2xl font-semibold leading-normal text-PUA-dark-red">Rate store</div>
 			{#each getRateList() as r}
 				{#if r}
-					<img src={Star} alt="" />
+					<img src={Star} alt="" class="h-7 w-7" />
 				{:else}
-					<img src={noStar} alt="" />
+					<img src={noStar} alt="" class="h-7 w-7" />
 				{/if}
 			{/each}
 		</div>

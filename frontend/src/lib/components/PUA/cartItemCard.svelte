@@ -1,8 +1,7 @@
 <script lang="ts">
 	import watermelon from '$lib/assets/watermelon.png';
 	import BuyNforMFree from '$lib/components/PUA/buyNforMFree.svelte';
-	import { onMount } from 'svelte';
-	export let product_id: number = 1;
+	// export let product_id: number = 1;
 	export let product_price: number = 160;
 	export let product_name: string = '茶碗蒸';
 	export let description: string =

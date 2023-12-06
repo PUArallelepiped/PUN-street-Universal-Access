@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let context: { text: string; status: Boolean }[] = [
+	export let context: { text: string; status: boolean }[] = [
 		{ text: 'Accept order', status: true },
 		{ text: 'Making order', status: true },
 		{ text: 'Deliver Order', status: false },

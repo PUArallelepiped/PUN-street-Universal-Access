@@ -36,11 +36,11 @@
 	onMount(async () => {
 		const resp = await fetch(backendPath + '/customer/1/cart/1/carts');
 		cartInfos = await resp.json();
-		processedInfo = test(cartInfos);
+		processedInfo = cartInfoProcess(cartInfos);
 		console.log(processedIndex);
 		console.log(processedInfo);
 	});
-	function test(cartInfos: cartInfo[]) {
+	function cartInfoProcess(cartInfos: cartInfo[]) {
 		let processedInfo: cartInfo[][] = [];
 		cartInfos.forEach((element) => {
 			let index = processedIndex.findIndex((v) => v == element.store_id);
@@ -54,19 +54,20 @@
 		return processedInfo;
 	}
 	function checkout() {
+		console.log('checkout');
 		//TODO customer id need to change
-		async () => {
+		let r = async () => {
 			const resp = await fetch(backendPath + '/customer/1/cart/1/store/1/checkout', {
 				method: 'POST',
 				body: JSON.stringify({
-					seasoning_discount_id: null,
-					shipping_discount_id: null,
-					taking_method: null
+					seasoning_discount_id: 1,
+					shipping_discount_id: 1,
+					taking_method: 1
 				})
 			});
-			let response: Promise<any> = await resp.json();
-			console.log(response);
+			console.log(resp.status);
 		};
+		r();
 		return null;
 	}
 </script>

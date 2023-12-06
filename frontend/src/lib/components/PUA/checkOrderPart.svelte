@@ -3,7 +3,7 @@
 	import drone from '$lib/assets/drone.png';
 	import ProgressBar from './progressBar.svelte';
 
-	let context: { text: string; status: Boolean }[] = [
+	let context: { text: string; status: boolean }[] = [
 		{ text: 'Accept order', status: true },
 		{ text: 'Making order', status: true },
 		{ text: 'Deliver Order', status: false },

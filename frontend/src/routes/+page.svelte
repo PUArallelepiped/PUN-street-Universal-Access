@@ -33,3 +33,10 @@
 >
 	add item
 </a>
+<a href="/login" class="m-4 rounded-lg border-2 border-blue-600 p-1 text-lg text-blue-600">
+	login
+</a>
+
+<a href="/login/register" class="m-4 rounded-lg border-2 border-blue-600 p-1 text-lg text-blue-600">
+	register
+</a>

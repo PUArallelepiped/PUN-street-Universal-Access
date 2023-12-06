@@ -47,3 +47,5 @@ import DiscountArea from './components/PUA/discountArea.svelte';
 export { DiscountArea };
 import Checkcontainer from '$lib/components/PUA/checkcontainer.svelte';
 export { Checkcontainer };
+import InputBox from './components/PUA/InputBox.svelte';
+export { InputBox };

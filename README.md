@@ -77,10 +77,10 @@ gofmt -l -d .
 docker-compose up --detach
 ```
 #### only run go-server
+> if go.mod/go.sum have changed, u should rebuild go-server image
 ```bash
 docker-compose up go-server
 ```
-> if go.mod/go.sum have changed, u should rebuild go-server image
 #### only run postgres 
 ```bash
 docker-compose up postgres_db

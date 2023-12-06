@@ -17,28 +17,22 @@ func NewPostgressqlDiscountRepo(db *sql.DB) domain.DiscountRepo {
 	return &postgresqlDiscountRepo{db}
 }
 
-func (p *postgresqlDiscountRepo) GetShippingByStoreID(ctx context.Context, id int64) ([]swagger.ShippingDiscount, error) {
+func (p *postgresqlDiscountRepo) GetShippingByStoreID(ctx context.Context, id int64) (*swagger.ShippingDiscount, error) {
 	sqlStatement := `
 	SELECT discounts.discount_id, status, description, name, max_price 
 	FROM discounts NATURAL JOIN shipping_discount
 	WHERE shipping_discount.store_id = $1 AND discounts.status = 1;
 	`
-	rows, err := p.db.Query(sqlStatement, id)
+	row := p.db.QueryRow(sqlStatement, id)
+
+	shipping_discount := &swagger.ShippingDiscount{}
+	err := row.Scan(&shipping_discount.DiscountId, &shipping_discount.Status, &shipping_discount.DiscountDescription, &shipping_discount.DiscountName, &shipping_discount.DiscountMaxPrice)
 	if err != nil {
 		logrus.Error(err)
 		return nil, err
 	}
-	shipping_discounts := []swagger.ShippingDiscount{}
-	for rows.Next() {
-		shipping_discount := swagger.ShippingDiscount{}
-		err := rows.Scan(&shipping_discount.DiscountId, &shipping_discount.Status, &shipping_discount.DiscountDescription, &shipping_discount.DiscountName, &shipping_discount.DiscountMaxPrice)
-		if err != nil {
-			logrus.Error(err)
-			return nil, err
-		}
-		shipping_discounts = append(shipping_discounts, shipping_discount)
-	}
-	return shipping_discounts, nil
+
+	return shipping_discount, nil
 }
 
 func (p *postgresqlDiscountRepo) AddSeasoning(ctx context.Context, seasoning *swagger.SeasoningDiscount) error {

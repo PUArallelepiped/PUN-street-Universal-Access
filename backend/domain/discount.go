@@ -7,7 +7,7 @@ import (
 )
 
 type DiscountRepo interface {
-	GetShippingByStoreID(ctx context.Context, id int64) ([]swagger.ShippingDiscount, error)
+	GetShippingByStoreID(ctx context.Context, id int64) (*swagger.ShippingDiscount, error)
 	GetAllSeasoning(ctx context.Context) ([]swagger.SeasoningDiscount, error)
 	GetAllEventByProductID(ctx context.Context, id int64) ([]swagger.EventDiscount, error)
 	AddSeasoning(ctx context.Context, seasoning *swagger.SeasoningDiscount) error
@@ -18,7 +18,7 @@ type DiscountRepo interface {
 }
 
 type DiscountUsecase interface {
-	GetShippingByStoreID(ctx context.Context, id int64) ([]swagger.ShippingDiscount, error)
+	GetShippingByStoreID(ctx context.Context, id int64) (*swagger.ShippingDiscount, error)
 	GetAllSeasoning(ctx context.Context) ([]swagger.SeasoningDiscount, error)
 	GetAllEventByProductID(ctx context.Context, id int64) ([]swagger.EventDiscount, error)
 	AddSeasoning(ctx context.Context, seasoning *swagger.SeasoningDiscount) error

@@ -23,28 +23,27 @@ func NewDiscountHandler(e *gin.Engine, discountUsecase domain.DiscountUsecase) {
 		v1.POST("/seasoning-discount", handler.AddSeasoningDiscount)
 		v1.POST("/product/:productID/event-discount", handler.AddEventDiscount)
 		v1.POST("/store/:storeID/shipping-discount", handler.AddShippingDiscount)
-		v1.GET("/store/:storeID/shipping-discount", handler.GetAllShippingByStoreId)
+		v1.GET("/store/:storeID/shipping-discount", handler.GetShippingByStoreId)
 		v1.GET("/seasoning-discounts", handler.GetAllSeasoningDiscount)
 		v1.GET("/product/:productID/event-discounts", handler.GetAllEventDiscount)
 		v1.PUT("/discount/:discountID/delete-discount", handler.DeleteDiscount)
 	}
 }
 
-func (s *DiscountHandler) GetAllShippingByStoreId(c *gin.Context) {
+func (s *DiscountHandler) GetShippingByStoreId(c *gin.Context) {
 	storeID, err := strconv.ParseInt(c.Param("storeID"), 10, 64)
 	if err != nil {
 		logrus.Error(err)
 		c.Status(400)
 		return
 	}
-	discounts, err := s.DiscountUsecase.GetShippingByStoreID(c, storeID)
+	discount, err := s.DiscountUsecase.GetShippingByStoreID(c, storeID)
 	if err != nil {
 		logrus.Error(err)
 		c.Status(500)
 		return
 	}
-	c.JSON(200, discounts)
-
+	c.JSON(200, discount)
 }
 
 func (s *DiscountHandler) AddSeasoningDiscount(c *gin.Context) {

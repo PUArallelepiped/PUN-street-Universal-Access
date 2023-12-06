@@ -63,31 +63,15 @@ func (p *postgresqlDiscountRepo) AddSeasoning(ctx context.Context, seasoning *sw
 
 func (p *postgresqlDiscountRepo) AddShipping(ctx context.Context, shipping *swagger.ShippingDiscount, id int64) error {
 	sqlStatement := `
-		DO $$ 
-		BEGIN
-			IF (SELECT COUNT(*) > 0 FROM shipping_discount WHERE store_id = $1) THEN
-				UPDATE discounts
-				SET status = 0
-				FROM shipping_discount
-				WHERE shipping_discount.discount_id = discounts.discount_id AND store_id = $1;
-			END IF;
-
-			WITH ins1 AS (
-				INSERT INTO discounts(discount_type, status, description, name)
-				VALUES (2, 1, $2, $3)
-				RETURNING discount_id
-			)
-			INSERT INTO shipping_discount (discount_id, max_price, store_id)
-			SELECT discount_id, $4, $1 FROM ins1;
-		END $$;
+	WITH ins1 AS (
+	INSERT INTO discounts(discount_type, status, description, name)
+	VALUES (2, 1, $1, $2)
+	RETURNING discount_id)
+	INSERT INTO shipping_discount (discount_id, max_price, store_id)
+	select discount_id, $3, $4 FROM ins1;
 	`
-
-	_, err := p.db.Exec(sqlStatement,
-		id,
-		shipping.DiscountDescription,
-		shipping.DiscountName,
-		shipping.DiscountMaxPrice)
-	// _, err := p.db.Exec(sqlStatement)
+	_, err := p.db.Exec(sqlStatement, shipping.DiscountDescription, shipping.DiscountName,
+		shipping.DiscountMaxPrice, id)
 
 	if err != nil {
 		logrus.Error(err)
@@ -95,6 +79,38 @@ func (p *postgresqlDiscountRepo) AddShipping(ctx context.Context, shipping *swag
 	}
 
 	return nil
+}
+
+func (p *postgresqlDiscountRepo) DisableDiscountByDiscountID(ctx context.Context, id int64) error {
+	sqlStatement := `
+	UPDATE discounts
+	SET status = 0
+	WHERE discount_id = $1;
+	`
+	_, err := p.db.Exec(sqlStatement, id)
+
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}
+
+func (p *postgresqlDiscountRepo) IsExistShippingDiscountByStoreID(ctx context.Context, id int64) (bool, error) {
+	sqlStatement := `
+	SELECT COUNT(*) > 0 FROM shipping_discount WHERE store_id = $1
+	`
+	row := p.db.QueryRow(sqlStatement, id)
+
+	exist := false
+	err := row.Scan(&exist)
+	if err != nil {
+		logrus.Error(err)
+		return false, err
+	}
+
+	return exist, nil
 }
 
 func (p *postgresqlDiscountRepo) AddEvent(ctx context.Context, event *swagger.EventDiscount, id int64) error {

@@ -38,7 +38,30 @@ func (du *discountUsecase) AddSeasoning(ctx context.Context, seasoning *swagger.
 }
 
 func (du *discountUsecase) AddShipping(ctx context.Context, shipping *swagger.ShippingDiscount, id int64) error {
-	err := du.discountRepo.AddShipping(ctx, shipping, id)
+	exist, err := du.discountRepo.IsExistShippingDiscountByStoreID(ctx, id)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	// check exist then for each shipping discount change status = 0
+	if exist {
+		discounts, err := du.discountRepo.GetShippingByStoreID(ctx, id)
+		if err != nil {
+			logrus.Error(err)
+			return err
+		}
+		for _, discount := range discounts {
+			err := du.discountRepo.DisableDiscountByDiscountID(ctx, discount.DiscountId)
+			if err != nil {
+				logrus.Error(err)
+				return err
+			}
+		}
+	}
+
+	// insert new discounts and shipping_discount table
+	err = du.discountRepo.AddShipping(ctx, shipping, id)
 	if err != nil {
 		logrus.Error(err)
 		return err

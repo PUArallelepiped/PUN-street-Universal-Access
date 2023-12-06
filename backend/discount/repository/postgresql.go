@@ -104,7 +104,8 @@ func (p *postgresqlDiscountRepo) AddEvent(ctx context.Context, event *swagger.Ev
 func (p *postgresqlDiscountRepo) GetAllSeasoning(ctx context.Context) ([]swagger.SeasoningDiscount, error) {
 	sqlStatement := `
 	SELECT discounts.discount_id, name, description, start_date, end_date, discount_percentage, status 
-	FROM discounts JOIN seasoning_discount ON discounts.discount_id = seasoning_discount.discount_id;
+	FROM discounts NATURAL JOIN seasoning_discount
+	WHERE discounts.status = 1;
 	`
 	rows, err := p.db.Query(sqlStatement)
 	if err != nil {
@@ -127,8 +128,8 @@ func (p *postgresqlDiscountRepo) GetAllSeasoning(ctx context.Context) ([]swagger
 func (p *postgresqlDiscountRepo) GetAllEventByProductID(ctx context.Context, id int64) ([]swagger.EventDiscount, error) {
 	sqlStatement := `
 	SELECT discounts.discount_id, name, description, max_quantity, product_id,  status 
-	FROM discounts JOIN event_discount ON discounts.discount_id = event_discount.discount_id
-	WHERE product_id = $1;
+	FROM discounts NATURAL JOIN event_discount
+	WHERE product_id = $1 AND discounts.status = 1;
 	`
 	rows, err := p.db.Query(sqlStatement, id)
 	if err != nil {

@@ -870,7 +870,7 @@ paths:
       tags:
       - seller
       - discount
-      summary: check exist then create a shipping discount
+      summary: check exist by storeID then create a shipping discount if exist change status = 0 then create a new
       parameters:
       - name: storeID
         in: path

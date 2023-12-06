@@ -1,11 +1,7 @@
 <script lang="ts">
 	import watermelon from '$lib/assets/watermelon.png';
 	import Transhcan from '$lib/assets/transhcan.svg';
-	// import { ProductCard } from '$lib';
-	import HashtagLabel from '$lib/components/PUA/hashtagLabel.svelte';
-	import CategoryLabel from '$lib/components/PUA/categoryLabel.svelte';
-	import DiscountCard from '$lib/components/PUA/discountCard.svelte';
-	import ProductCard from '$lib/components/PUA/storeProductCard.svelte';
+	import { HashtagLabel, CategoryLabel, DiscountCard, StoreProductCard } from '$lib';
 	// export let data: PageData;
 
 	let prodctListResponse: {
@@ -62,7 +58,7 @@
 
 	<div class="mx-5 flex-row space-y-2 p-2">
 		{#each prodctListResponse as product}
-			<ProductCard
+			<StoreProductCard
 				name={product.name}
 				description={product.description}
 				price={product.price}

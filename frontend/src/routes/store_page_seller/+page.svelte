@@ -7,13 +7,11 @@
 	import DiscountCard from '$lib/components/PUA/discountCard.svelte';
 	import ProductCard from '$lib/components/PUA/storeProductCard.svelte';
 	// export let data: PageData;
-	let shopName = 'hi';
 
 	let prodctListResponse: {
 		name: string;
 		description: string;
 		price: number;
-		href: string;
 		picture: string;
 		product_id: number;
 		status: number;
@@ -24,13 +22,11 @@
 			status: 1,
 			name: 'TEA EGG',
 			description:
-				'EGG of tea\n expensive\n also call putting, egg,egg,egg,egg, egg, egg,limit, limit, limit, limit, limit, limit, limit, limit, limit, ',
+				'EGG of tea\n expensive\n also call putting, egg,egg,egg,egg, egg, egg,limit, limit, limit, limit, ',
 			price: 180,
-			href: './' + shopName + '/product1',
 			picture: 'https://i.imgur.com/3i3tyXJ.gif',
 			product_id: 1,
 			store_id: 1,
-
 			stock: 100
 		},
 		{
@@ -40,7 +36,6 @@
 			name: 'watermelon',
 			description: 'a game',
 			price: 0,
-			href: './' + shopName + '/product2',
 			picture: 'https://i.imgur.com/3i3tyXJ.gif',
 			product_id: 2
 		}
@@ -91,13 +86,6 @@
 		{/each}
 		<div class="flex items-center gap-4">
 			<DiscountCard></DiscountCard>
-			<button>
-				<img src={Transhcan} alt="" class="h-6 w-6" />
-			</button>
 		</div>
 	</div>
 </div>
-
-<br />
-<br />
-<br />

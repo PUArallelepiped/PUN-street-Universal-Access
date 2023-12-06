@@ -27,3 +27,9 @@
 <a href="/shops/1/1" class="m-4 rounded-lg border-2 border-blue-600 p-1 text-lg text-blue-600">
 	item
 </a>
+<a
+	href="/shops/1/addItem"
+	class="m-4 rounded-lg border-2 border-blue-600 p-1 text-lg text-blue-600"
+>
+	add item
+</a>

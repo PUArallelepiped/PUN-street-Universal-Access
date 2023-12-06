@@ -3,5 +3,3 @@ WORKDIR /app
 
 COPY . .
 RUN go mod download
-
-EXPOSE 5000

@@ -50,18 +50,14 @@
 			{product.title}
 		</div>
 
-		<div class="flex">
-			<div class="  w-[500px]">
-				<img
-					src={product.picture}
-					alt=""
-					class="mt-100 flex h-[250px] w-[250px] rounded-[10px] object-cover"
-				/>
-				<div class="flex items-baseline gap-3 py-[20px] font-bold text-PUA-dark-red">
-					<p class="text-[28px]">NT$</p>
-					<p class="text-[40px]">{product.price}</p>
+		<div class="flex gap-16">
+			<div class="">
+				<img src={product.picture} alt="" class="mt-100 flex h-60 w-60 rounded-lg object-cover" />
+				<div class="flex items-baseline gap-3 py-5 font-bold text-PUA-dark-red">
+					<p class="text-2xl">NT$</p>
+					<p class="text-4xl">{product.price}</p>
 				</div>
-				<div class="w-[250px] overflow-hidden text-justify text-[15px] text-gray-600">
+				<div class="w-[250px] text-justify text-base text-gray-600">
 					{product.content}
 				</div>
 			</div>

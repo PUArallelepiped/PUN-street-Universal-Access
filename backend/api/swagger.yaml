@@ -44,7 +44,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StoreArray'
+                $ref: '#/components/schemas/StoreInfoWithCategoryArray'
         "500":
           description: Unexpected error
   /store/{storeID}/get-statistics/{year}:
@@ -2374,3 +2374,7 @@ components:
         description: good pasta
         picture: https://i.imgur.com/1.jpg
         status: 1
+    StoreInfoWithCategoryArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/StoreInfoWithCategory'

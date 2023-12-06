@@ -65,17 +65,18 @@
 					{product.content}
 				</div>
 			</div>
-			<div class="  w-full">
-				<div class=" mb-[10px] w-full">
+			<div class=" flex w-full flex-col gap-4">
+				<div class=" flex w-full flex-col gap-4">
 					{#each product.choose as { need_choose, category, subcategories }}
-						<div class=" mb-[15px]">
-							<div class="flex h-[30px] items-center border-b-[1px] border-solid border-red-950">
+						<div class="">
+							<div class="flex items-center">
 								<div class="font-bold text-PUA-stone">{category}</div>
 								{#if need_choose}
 									<NeedChooseLabel></NeedChooseLabel>
 								{/if}
 							</div>
-							<div class=" ml-[25px] mt-[10px] w-[90%] flex-col items-start">
+							<div class="h-[1px] bg-PUA-dark-red"></div>
+							<div class="flex flex-col">
 								{#each subcategories as subcategory}
 									<Checkcontainer {category} {subcategory}></Checkcontainer>
 								{/each}
@@ -97,7 +98,7 @@
 					></DiscountArea>
 				</div>
 
-				<div class=" mt-4 flex items-center justify-around">
+				<div class="  flex flex-wrap items-center justify-around gap-4">
 					<Counter />
 
 					<OkButton

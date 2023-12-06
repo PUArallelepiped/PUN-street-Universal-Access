@@ -555,13 +555,13 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /product/{productID}/discounts:
+  /product/{productID}/event-discounts:
     get:
       tags:
       - customer
       - discount
       - product
-      summary: get event discounts by product ID
+      summary: get event discounts by product ID status =1
       parameters:
       - name: productID
         in: path
@@ -947,7 +947,7 @@ paths:
       tags:
       - customer
       - discount
-      summary: get all seasoning discounts
+      summary: get all seasoning discounts status = 1
       responses:
         "200":
           description: return seasoning discount array

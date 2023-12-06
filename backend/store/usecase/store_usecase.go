@@ -19,7 +19,7 @@ func NewStoreUsecase(storeRepo domain.StoreRepo) domain.StoreUsecase {
 	}
 }
 
-func (su *storeUsecase) GetByID(ctx context.Context, id string) (*swagger.StoreInfo, error) {
+func (su *storeUsecase) GetByID(ctx context.Context, id int64) (*swagger.StoreInfoWithCategory, error) {
 	s, err := su.storeRepo.GetByID(ctx, id)
 	if err != nil {
 		logrus.Error(err)

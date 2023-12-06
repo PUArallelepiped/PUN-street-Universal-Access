@@ -10,7 +10,6 @@ import (
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
-	"github.com/PUArallelepiped/PUN-street-Universal-Access/user/usecase"
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 )
@@ -129,24 +128,12 @@ func updateInDB(emailChanged string, data swagger.UserData) error {
 }
 
 func RegisterData(data swagger.UserData) {
+	var result string
 	connStr := "user=orange dbname=user_data sslmode=disable"
-	var _allErr [3]error
 	if db, err := sql.Open("postgres", connStr); err == nil {
-		_flag := true
-		_allErr[0] = usecase.PasswordCheck(data.Password)
-		_allErr[1] = usecase.ValidPhoneNumber(data.Phone)
-		_allErr[2] = searchRepeat(db, data.UserEmail, data.Phone)
-		for i := 0; i < 3; i++ {
-			if _allErr[i] != nil {
-				fmt.Println(_allErr[i])
-				_flag = false
-				break
-			}
-		}
-		if _flag {
-			writeInDB(db, data)
-			fmt.Println("OAO")
-		}
+
+		db.QueryRow("SELECT is_valid_password($1, $2, $3)", data.Password, 6, 3).Scan(&result)
+		fmt.Println(result)
 		defer db.Close()
 
 	}

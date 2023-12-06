@@ -870,7 +870,8 @@ paths:
       tags:
       - seller
       - discount
-      summary: check exist by storeID then create a shipping discount if exist change status = 0 then create a new
+      summary: check exist by storeID then create a shipping discount if exist change
+        status = 0 then create a new
       parameters:
       - name: storeID
         in: path
@@ -1976,8 +1977,19 @@ components:
     StoreStatistic:
       type: array
       items:
-        $ref: '#/components/schemas/inline_response_200'
+        $ref: '#/components/schemas/price'
       x-schema-name: StoreStatistic
+    price:
+      required:
+      - price
+      type: object
+      properties:
+        price:
+          type: integer
+          format: int64
+          example: 10000
+      example:
+        price: 10000
     TimePeriod:
       required:
       - end_date
@@ -2378,3 +2390,4 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/StoreInfoWithCategory'
+      x-schema-name: StoreInfoWithCategoryArray

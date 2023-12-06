@@ -13,12 +13,16 @@
 </script>
 
 <div class="flex gap-5 rounded-xl bg-white p-2">
-	<div>
-		<img
-			class="h-32 w-64 rounded-xl shadow-inner"
-			src="https://via.placeholder.com/256x128"
-			alt="no pic"
-		/>
+	<div class="relative h-32 w-64">
+		<img class=" rounded-xl shadow-inner" src="https://via.placeholder.com/256x128" alt="no pic" />
+		<div
+			class="absolute right-3 top-3 flex items-center gap-1 rounded-lg border-2
+			 border-white border-opacity-50 bg-PUA-dark-red
+			 p-1 text-base font-semibold leading-tight text-white"
+		>
+			<img src={Star} alt="" class=" h-4 w-4" />
+			4.87
+		</div>
 	</div>
 	<div class="flex w-96 flex-col">
 		<div class=" text-2xl font-bold leading-relaxed text-PUA-dark-orange">Shop name</div>

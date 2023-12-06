@@ -20,8 +20,8 @@ func NewPostgressqlDiscountRepo(db *sql.DB) domain.DiscountRepo {
 func (p *postgresqlDiscountRepo) GetShippingByStoreID(ctx context.Context, id int64) ([]swagger.ShippingDiscount, error) {
 	sqlStatement := `
 	SELECT discounts.discount_id, status, description, name, max_price 
-	FROM discounts JOIN shipping_discount ON discounts.discount_id = shipping_discount.discount_id
-	WHERE store_id = $1;
+	FROM discounts NATURAL JOIN shipping_discount
+	WHERE shipping_discount.store_id = $1 AND discounts.status = 1;
 	`
 	rows, err := p.db.Query(sqlStatement, id)
 	if err != nil {

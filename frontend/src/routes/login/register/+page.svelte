@@ -32,7 +32,7 @@
 	}
 </script>
 
-<div class="flex flex-col gap-9">
+<div class="flex flex-col gap-9 py-20">
 	<ProgressBar {context}></ProgressBar>
 
 	{#if !context[0].status}

@@ -37,7 +37,7 @@ import (
 )
 
 func init() {
-	viper.SetConfigFile(".env")
+	viper.SetConfigFile("../.env")
 	viper.SetConfigType("dotenv")
 	if err := viper.ReadInConfig(); err != nil {
 		logrus.Fatal(err)

@@ -1,4 +1,3 @@
-# # Use postgres/example user/password credentials
 version: '3.8'
 
 services:
@@ -8,13 +7,14 @@ services:
         context: ./backend
         dockerfile: Dockerfile
       container_name: go-server
-      working_dir: /app
+      working_dir: /app/server
       environment:
         - DB_HOST=postgres_db
       ports:
         - "5000:5000"
       volumes:
-        - ./backend:/app
+        - ./backend:/app/server
+        - .env:/app/.env
       depends_on:
         - postgres_db
       entrypoint: go run cmd/main.go

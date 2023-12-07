@@ -37,7 +37,7 @@
 		}
 	];
 
-	let hashtag_input_id: { id: number; idText: string; inputText: string }[] = [];
+	let hashtag_input_id: { id: number; inputText: string }[] = [];
 	let hashtag_input_nextId = hashtag_input_id.length + 1;
 	let hashtag_text: { label: string }[] = [
 		{ label: 'free delivery' },
@@ -54,10 +54,7 @@
 	}
 
 	function handleClick() {
-		hashtag_input_id = [
-			...hashtag_input_id,
-			{ id: hashtag_input_nextId, idText: `input + ${hashtag_input_nextId}`, inputText: '' }
-		];
+		hashtag_input_id = [...hashtag_input_id, { id: hashtag_input_nextId, inputText: '' }];
 		hashtag_input_nextId++;
 	}
 
@@ -74,7 +71,7 @@
 
 <div class="mt-10 lg:px-40">
 	<div class="mx-5 space-y-2">
-		<div class="text-5xl font-bold text-PUA-stone">銀記手稈刀切牛肉麵</div>
+		<div class="text-PUA-stone text-5xl font-bold">銀記手稈刀切牛肉麵</div>
 		<div class="font-bold text-red-950">100台灣台北市中正區八德路一段82巷9弄17號</div>
 		<div class="flex w-full justify-start gap-3">
 			<div class="flex justify-start">
@@ -84,11 +81,11 @@
 				{#each hashtag_text as { label }}
 					<HashtagLabel type={'text'} text={label}></HashtagLabel>
 				{/each}
-				{#each hashtag_input_id as { id, idText, inputText }}
+				{#each hashtag_input_id as { id, inputText }}
 					<HashtagLabel
 						on:keydown={(e) => handleKeyPress(e, id)}
 						type={'input'}
-						id={idText}
+						id={`input${id}`}
 						bind:text={inputText}
 					></HashtagLabel>
 				{/each}

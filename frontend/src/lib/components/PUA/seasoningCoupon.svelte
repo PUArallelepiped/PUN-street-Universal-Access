@@ -25,7 +25,7 @@
 
 {#await changeseDate()}
 	loading
-{:then color}
+{:then}
 	<div class="flex h-32 w-96 flex-col">
 		<div
 			class:text-PUA-gray={used}

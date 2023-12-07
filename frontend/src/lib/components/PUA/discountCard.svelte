@@ -3,6 +3,9 @@
 	import Adddiscount from '$lib/assets/adddiscount.svg';
 	export let text = 'null';
 	export let type = 'null';
+	export let kind = 'null';
+	export let how = 'null';
+	export let way = 'null';
 </script>
 
 {#if type === 'null'}
@@ -40,12 +43,14 @@
 				</div>
 			</div>
 			<div class="flex p-2">
-				<div class="w-2/5 p-3 text-center font-bold">Shipping Discount</div>
+				<div class="w-2/5 p-3 text-center text-base font-bold">{kind}</div>
 				<div class="ml-1 mr-1 border-r-[2px] border-PUA-stone p-3"></div>
-				<div class="flex w-3/5 flex-wrap items-center justify-center p-3 text-center font-bold">
-					<p>NT$</p>
+				<div
+					class="flex w-3/5 flex-wrap items-center justify-center p-3 text-center text-base font-bold"
+				>
+					<p>{how}</p>
 					<p class="ml-1 mr-1 text-xl">{text}</p>
-					<p>free shipping</p>
+					<p>{way}</p>
 				</div>
 			</div>
 		</div>

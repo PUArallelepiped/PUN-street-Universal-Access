@@ -71,7 +71,7 @@
 
 <div class="mt-10 lg:px-40">
 	<div class="mx-5 space-y-2">
-		<div class="text-PUA-stone text-5xl font-bold">銀記手稈刀切牛肉麵</div>
+		<div class="text-5xl font-bold text-PUA-stone">銀記手稈刀切牛肉麵</div>
 		<div class="font-bold text-red-950">100台灣台北市中正區八德路一段82巷9弄17號</div>
 		<div class="flex w-full justify-start gap-3">
 			<div class="flex justify-start">
@@ -94,7 +94,7 @@
 		</div>
 	</div>
 
-	<CategoryLabel text={'Product List'} img_nedd={true}></CategoryLabel>
+	<CategoryLabel text={'Product List'} img_need={true}></CategoryLabel>
 
 	<div class="mx-5 flex-row space-y-2 p-2">
 		{#each prodctListResponse as product}
@@ -113,7 +113,13 @@
 
 	<div class="relative mx-5 space-y-4">
 		<div class="flex items-center gap-4">
-			<DiscountCard type="in" text={'1000'}></DiscountCard>
+			<DiscountCard
+				type="in"
+				kind={'Shipping Discount'}
+				how={'NT$'}
+				text={'1000'}
+				way={'free shipping'}
+			></DiscountCard>
 			<button>
 				<img src={Transhcan} alt="" class="h-6 w-6" />
 			</button>

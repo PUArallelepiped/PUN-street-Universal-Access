@@ -79,6 +79,15 @@ gofmt -l -d .
 ```bash
 docker-compose up --detach
 ```
+#### only run go-server
+> if go.mod/go.sum have changed, u should rebuild go-server image
+```bash
+docker-compose up go-server
+```
+#### only run postgres 
+```bash
+docker-compose up postgres-db
+```
 
 ### init data
 
@@ -98,7 +107,7 @@ psql -h localhost -p 5432 -U postgres
 docker exec -it <containerName> psql -U postgres
 ```
 
-### close sql
+### close docker
 
 ```bash
 docker-compose down

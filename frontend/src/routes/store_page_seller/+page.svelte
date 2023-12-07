@@ -1,7 +1,9 @@
 <script lang="ts">
 	import watermelon from '$lib/assets/watermelon.png';
-	import { HashtagLabel, CategoryLabel, DiscountCard, StoreProductCard } from '$lib';
+	import { CategoryLabel, DiscountCard } from '$lib';
 	import ChangeDiscountPage from '$lib/components/PUA/changeDiscountPage.svelte';
+	import StoreProducrCardArea from '$lib/components/PUA/store_page_seller/storeProducrCardArea.svelte';
+	import HashtagLabelArea from '$lib/components/PUA/store_page_seller/hashtagLabelArea.svelte';
 
 	let prodctListResponse: {
 		name: string;
@@ -27,7 +29,7 @@
 		{
 			status: 1,
 			stock: 100,
-			store_id: 1,
+			store_id: 2,
 			name: 'watermelon',
 			description: 'a game',
 			price: 0,
@@ -37,7 +39,17 @@
 		{
 			status: 1,
 			stock: 100,
-			store_id: 1,
+			store_id: 2,
+			name: 'watermelon',
+			description: 'a game',
+			price: 0,
+			picture: 'https://i.imgur.com/3i3tyXJ.gif',
+			product_id: 2
+		},
+		{
+			status: 1,
+			stock: 100,
+			store_id: 2,
 			name: 'watermelon',
 			description: 'a game',
 			price: 0,
@@ -46,7 +58,6 @@
 		}
 	];
 
-	let hashtag_input_id: { id: number; inputText: string }[] = [];
 	let hashtag_text: { label: string }[] = [{ label: 'free delivery' }, { label: 'free delivery' }];
 
 	let changePageData: {
@@ -70,22 +81,6 @@
 	let showProductCard = true;
 	let showModel = false;
 
-	function removeInput_addHashtag(id: number) {
-		let result = hashtag_input_id.find((item) => item.id === id);
-		if (result !== undefined) {
-			hashtag_text = [...hashtag_text, { label: `${result.inputText}` }];
-			hashtag_input_id = hashtag_input_id.filter((cat) => cat.id !== id);
-		}
-	}
-	function addHashtagInput() {
-		let hashtag_input_nextId = hashtag_input_id.length + 1;
-		hashtag_input_id = [...hashtag_input_id, { id: hashtag_input_nextId, inputText: '' }];
-	}
-	function setHashtag(event: KeyboardEvent, id: number) {
-		if (event.key === 'Enter') {
-			removeInput_addHashtag(id);
-		}
-	}
 	function toggleModel(model: boolean) {
 		return (model = !model);
 	}
@@ -108,24 +103,8 @@
 	<div class="mx-5 space-y-2">
 		<div class="text-5xl font-bold text-PUA-stone">銀記手稈刀切牛肉麵</div>
 		<div class="font-bold text-red-950">100台灣台北市中正區八德路一段82巷9弄17號</div>
-		<div class="flex w-full justify-start gap-3">
-			<div class="flex justify-start">
-				<HashtagLabel type={'star'} text={'4.7'}></HashtagLabel>
-			</div>
-			<div class="flex w-full flex-wrap gap-2">
-				{#each hashtag_text as { label }}
-					<HashtagLabel type={'text'} text={label}></HashtagLabel>
-				{/each}
-				{#each hashtag_input_id as { id, inputText }}
-					<HashtagLabel
-						on:keydown={(e) => setHashtag(e, id)}
-						type={'input'}
-						id={`input${id}`}
-						bind:text={inputText}
-					></HashtagLabel>
-				{/each}
-				<HashtagLabel on:click={addHashtagInput} type={'add'}></HashtagLabel>
-			</div>
+		<div class="flex w-full justify-start gap-6">
+			<HashtagLabelArea bind:hashtag_text></HashtagLabelArea>
 		</div>
 	</div>
 
@@ -133,23 +112,22 @@
 		on:click={() => (showProductCard = toggleModel(showProductCard))}
 		text={'Product List'}
 		img_need={true}
+		bind:dropdown={showProductCard}
 	></CategoryLabel>
 
-	{#if showProductCard}
-		<div class="mx-5 flex-row space-y-2 p-2">
-			{#each prodctListResponse as product}
-				<StoreProductCard
-					name={product.name}
-					description={product.description}
-					price={product.price}
-					imgUrl={product.picture}
-				/>
-			{/each}
-			<div class="flex h-20 items-center justify-center">
-				<HashtagLabel type={'add'}></HashtagLabel>
-			</div>
+	<div
+		class={` ${
+			showProductCard ? 'max-h-full ' : 'max-h-0'
+		}    transition-delay-[2000ms] overflow-hidden duration-1000`}
+	>
+		<div
+			class={` ${
+				showProductCard ? ' translate-y-0 ' : 'translate-y-[-100%]'
+			}   transition-all duration-[1500ms] ease-in-out `}
+		>
+			<StoreProducrCardArea bind:prodctListResponse></StoreProducrCardArea>
 		</div>
-	{/if}
+	</div>
 
 	<CategoryLabel text={'Shipping Discount List'}></CategoryLabel>
 	<div class="relative mx-5 space-y-4">
@@ -161,6 +139,7 @@
 			></DiscountCard>
 		</div>
 	</div>
+	<div class="relative mx-5 h-6 space-y-4"></div>
 </div>
 
 <ChangeDiscountPage bind:changePageData bind:showModel></ChangeDiscountPage>

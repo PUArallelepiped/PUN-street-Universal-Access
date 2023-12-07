@@ -68,8 +68,15 @@
 				</div>
 			</div>
 		</button>
-		<button on:click={deleteDiscountCard}>
+		<!-- <button on:click={deleteDiscountCard}>
+			<img src={Transhcan} alt="" class="h-6 w-6" />
+		</button> -->
+		<button
+			on:click={deleteDiscountCard}
+			class="rounded-lg bg-gray-200 px-6 py-3 text-black transition-transform duration-200 ease-in-out hover:scale-125 active:scale-90"
+		>
 			<img src={Transhcan} alt="" class="h-6 w-6" />
 		</button>
+		<!-- 現在這是個有動畫的版本 -->
 	</div>
 {/if}

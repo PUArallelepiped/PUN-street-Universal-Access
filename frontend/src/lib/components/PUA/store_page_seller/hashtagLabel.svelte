@@ -2,11 +2,11 @@
 	import start from '$lib/assets/start.svg';
 	export let text = 'null';
 	export let type = 'text';
+	export let id: string = 'null';
 
 	let width: string = '50';
 	let min_width: string = '0';
 	let max_Width: string = '150';
-	export let id: string = 'null';
 	let text_size: string = '14';
 
 	let max = Number(max_Width);

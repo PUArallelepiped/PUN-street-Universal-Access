@@ -40,15 +40,43 @@
 	}
 
 	function initPage() {
+		dataError = { maxquantity_err: false, name_err: false, description_err: false };
 		currentData = { ...changePageData };
 	}
 
 	function toggleModel() {
 		showModel = !showModel;
 	}
+	let dataError: { maxquantity_err: boolean; name_err: boolean; description_err: boolean } = {
+		maxquantity_err: false,
+		name_err: false,
+		description_err: false
+	};
 	function saveCurrentData() {
-		changePageData = { ...currentData };
-		changePageData.haved = true;
+		if (
+			currentData.maxquantity !== '' &&
+			currentData.name !== '' &&
+			currentData.description !== ''
+		) {
+			changePageData = { ...currentData };
+			changePageData.haved = true;
+			dataError = { maxquantity_err: false, name_err: false, description_err: false };
+		}
+		if (currentData.maxquantity === '') {
+			dataError.maxquantity_err = true;
+		} else if (currentData.maxquantity !== '') {
+			dataError.maxquantity_err = false;
+		}
+		if (currentData.name === '') {
+			dataError.name_err = true;
+		} else if (currentData.name !== '') {
+			dataError.name_err = false;
+		}
+		if (currentData.description === '') {
+			dataError.description_err = true;
+		} else if (currentData.description !== '') {
+			dataError.description_err = false;
+		}
 	}
 	function closePage() {
 		initPage();
@@ -93,17 +121,20 @@
 					<ChangeDiscountInput
 						title={'Max Quantity'}
 						bind:value={currentData.maxquantity}
+						bind:error={dataError.maxquantity_err}
 						text={' Enter Max Quantity'}
 					></ChangeDiscountInput>
 
 					<ChangeDiscountInput
 						title={'Discount Name'}
 						bind:value={currentData.name}
+						bind:error={dataError.name_err}
 						text={' Enter Discount Name'}
 					></ChangeDiscountInput>
 					<ChangeDiscountInput
 						title={'Description'}
 						bind:value={currentData.description}
+						bind:error={dataError.description_err}
 						text={' Enter Discount Description'}
 					></ChangeDiscountInput>
 				</div>

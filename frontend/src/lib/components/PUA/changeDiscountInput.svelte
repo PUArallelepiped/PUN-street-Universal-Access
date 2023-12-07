@@ -3,6 +3,7 @@
 	export let title: string;
 	export let value: string;
 	export let text: string;
+	export let error = true;
 </script>
 
 <div class="mt-2">
@@ -13,5 +14,7 @@
 		bind:value
 		placeholder={text}
 	/>
-	<ErrorMsg width={'24'} height={'24'}></ErrorMsg>
+	{#if error}
+		<ErrorMsg width={'24'} height={'24'}></ErrorMsg>
+	{/if}
 </div>

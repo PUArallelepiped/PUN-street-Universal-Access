@@ -36,7 +36,36 @@
 			product_id: 2
 		}
 	];
-	let discountcard = [{ label: '1000' }, { label: '2000' }, { label: '3000' }];
+
+	let hashtag_input_id: { id: number; idText: string; inputText: string }[] = [];
+	let hashtag_input_nextId = hashtag_input_id.length + 1;
+	let hashtag_text: { label: string }[] = [
+		{ label: 'free delivery' },
+		{ label: 'free delivery' },
+		{ label: 'free delivery' },
+		{ label: 'free delivery' }
+	];
+	function removeInput_addHashtag(id: number) {
+		let result = hashtag_input_id.find((item) => item.id === id);
+		if (result !== undefined) {
+			hashtag_text = [...hashtag_text, { label: `${result.inputText}` }];
+			hashtag_input_id = hashtag_input_id.filter((cat) => cat.id !== id);
+		}
+	}
+
+	function handleClick() {
+		hashtag_input_id = [
+			...hashtag_input_id,
+			{ id: hashtag_input_nextId, idText: `input + ${hashtag_input_nextId}`, inputText: '' }
+		];
+		hashtag_input_nextId++;
+	}
+
+	function handleKeyPress(event: KeyboardEvent, id: number) {
+		if (event.key === 'Enter') {
+			removeInput_addHashtag(id);
+		}
+	}
 </script>
 
 <div class="h-48 w-full overflow-hidden">
@@ -45,12 +74,26 @@
 
 <div class="mt-10 lg:px-40">
 	<div class="mx-5 space-y-2">
-		<div class="font-bold text-PUA-dark-red">100台灣台北市中正區八德路一段82巷9弄17號</div>
 		<div class="text-5xl font-bold text-PUA-stone">銀記手稈刀切牛肉麵</div>
-		<div class="flex w-full gap-3">
-			<HashtagLabel type={'start'} text={'4.7'}></HashtagLabel>
-			<HashtagLabel type={'text'} text={'free delivery'}></HashtagLabel>
-			<HashtagLabel type={'add'}></HashtagLabel>
+		<div class="font-bold text-red-950">100台灣台北市中正區八德路一段82巷9弄17號</div>
+		<div class="flex w-full justify-start gap-3">
+			<div class="flex justify-start">
+				<HashtagLabel type={'star'} text={'4.7'}></HashtagLabel>
+			</div>
+			<div class="flex w-full flex-wrap gap-2">
+				{#each hashtag_text as { label }}
+					<HashtagLabel type={'text'} text={label}></HashtagLabel>
+				{/each}
+				{#each hashtag_input_id as { id, idText, inputText }}
+					<HashtagLabel
+						on:keydown={(e) => handleKeyPress(e, id)}
+						type={'input'}
+						id={idText}
+						bind:text={inputText}
+					></HashtagLabel>
+				{/each}
+				<HashtagLabel on:click={handleClick} type={'add'}></HashtagLabel>
+			</div>
 		</div>
 	</div>
 
@@ -72,14 +115,12 @@
 	<CategoryLabel text={'Shipping Discount List'}></CategoryLabel>
 
 	<div class="relative mx-5 space-y-4">
-		{#each discountcard as { label }}
-			<div class="flex items-center gap-4">
-				<DiscountCard type="in" text={label}></DiscountCard>
-				<button>
-					<img src={Transhcan} alt="" class="h-6 w-6" />
-				</button>
-			</div>
-		{/each}
+		<div class="flex items-center gap-4">
+			<DiscountCard type="in" text={'1000'}></DiscountCard>
+			<button>
+				<img src={Transhcan} alt="" class="h-6 w-6" />
+			</button>
+		</div>
 		<div class="flex items-center gap-4">
 			<DiscountCard></DiscountCard>
 		</div>

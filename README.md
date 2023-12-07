@@ -83,7 +83,7 @@ docker-compose up go-server
 ```
 #### only run postgres 
 ```bash
-docker-compose up postgres_db
+docker-compose up postgres-db
 ```
 
 ### init data

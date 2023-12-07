@@ -32,7 +32,6 @@
 		name: string;
 		description: string;
 		price: number;
-		href: string;
 		picture: string;
 		product_id: number;
 		status: number;
@@ -45,7 +44,6 @@
 			description:
 				'EGG of tea\n expensive\n also call putting, egg,egg,egg,egg, egg, egg,limit, limit, limit, limit, limit, limit, limit, limit, limit, ',
 			price: 180,
-			href: './' + shopName + '/product1',
 			picture: 'https://i.imgur.com/3i3tyXJ.gif',
 			product_id: 1,
 			store_id: 1,
@@ -59,7 +57,6 @@
 			name: 'watermelon',
 			description: 'a game',
 			price: 0,
-			href: './' + shopName + '/product2',
 			picture: 'https://i.imgur.com/3i3tyXJ.gif',
 			product_id: 2
 		},
@@ -71,8 +68,7 @@
 			picture: 'https://i.imgur.com/3i3tyXJ.gif',
 			name: 'swwika',
 			description: 'praying',
-			price: 102,
-			href: './' + shopName + '/product3'
+			price: 102
 		}
 	];
 	onMount(async () => {
@@ -102,7 +98,7 @@
 		{#each prodctListResponse as product}
 			<ProductCard
 				name={product.name}
-				href={product.href}
+				href={'./' + shopName + '/' + product.product_id}
 				description={product.description}
 				price={product.price}
 				imgUrl={product.picture}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { backendPath } from '$lib/components/PUA/env';
 	import {
 		OkButton,
 		SeasoningCoupon,
@@ -8,6 +9,7 @@
 		CartLabelBox,
 		ShippingCoupon
 	} from '$lib/index';
+	import { onMount } from 'svelte';
 	// let orderInfo = {
 	// 	name: 'Order Name',
 	// 	phone: 'Phone Number',
@@ -15,6 +17,31 @@
 	// 	totalShippingFee: 'Total Shipping Fee',
 	// 	address: 'Taking Address'
 	// };
+	let seasoningDiscountList: {
+		discount_start_date: '2021-01-01T00:00:00.000Z';
+		discount_name: 'spring discount';
+		discount_end_date: '2021-01-01T00:00:00.000Z';
+		discount_description: 'all products get 30% off';
+		discount_percentage: 70;
+		discount_id: 1;
+		status: 1;
+	}[] = [
+		{
+			discount_start_date: '2021-01-01T00:00:00.000Z',
+			discount_name: 'spring discount',
+			discount_end_date: '2021-01-01T00:00:00.000Z',
+			discount_description: 'all products get 30% off',
+			discount_percentage: 70,
+			discount_id: 1,
+			status: 1
+		}
+	];
+	onMount(async () => {
+		const resp = await fetch(backendPath + `/store/1/products`);
+		if (resp.status == 200) {
+			seasoningDiscountList = await resp.json();
+		}
+	});
 </script>
 
 <div class="flex flex-col items-center justify-center gap-5 p-8">
@@ -46,7 +73,15 @@
 				<ShippingCoupon />
 				<ShippingCoupon />
 				<ShippingCoupon />
-				<SeasoningCoupon></SeasoningCoupon>
+				{#each seasoningDiscountList as SeasoningDiscount}
+					<SeasoningCoupon
+						name={SeasoningDiscount.discount_name}
+						percentage={SeasoningDiscount.discount_percentage}
+						sTime={SeasoningDiscount.discount_start_date}
+						eTime={SeasoningDiscount.discount_end_date}
+						used={SeasoningDiscount.status === 1}
+					/>
+				{/each}
 			</div>
 		</div>
 		<CartLabelBox></CartLabelBox>

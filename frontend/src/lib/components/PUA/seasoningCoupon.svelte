@@ -1,27 +1,44 @@
 <script lang="ts">
-	async function changeColor(reverse: boolean) {
-		let bgColor = 'PUA-gray';
-		let textColor = 'PUA-stone';
-		if (reverse) {
-			bgColor = [textColor, (textColor = bgColor)][0];
-		}
-		console.log(textColor);
-		return { textColor, bgColor };
+	async function changeseDate() {
+		sTime = await changeDate(discount_start_date);
+		eTime = await changeDate(discount_end_date);
+	}
+	async function changeDate(time: string) {
+		let d = new Date(time);
+		let month = '' + (d.getMonth() + 1),
+			day = '' + d.getDate(),
+			year = d.getFullYear();
+
+		if (month.length < 2) month = '0' + month;
+		if (day.length < 2) day = '0' + day;
+
+		return [year, month, day].join('-');
 	}
 	export let used: boolean = true;
+	export let name: string;
+	export let percentage: number;
+	export let discount_end_date: string;
+	export let discount_start_date: string;
+	let eTime: string;
+	let sTime: string;
 </script>
 
-{#await changeColor(used)}
+{#await changeseDate()}
 	loading
 	<p class="w-0 border-PUA-stone bg-PUA-gray text-PUA-stone"></p>
 	<p class="w-0 border-PUA-gray bg-PUA-stone text-PUA-gray"></p>
 {:then color}
 	<div class="flex h-32 w-96 flex-col">
 		<div
-			class="text-{color?.textColor} bg-{color?.bgColor} border-{color?.textColor} flex h-full items-center rounded-xl border-2 text-center font-semibold"
+			class:text-PUA-gray={used}
+			class:text-PUA-stone={!used}
+			class:bg-PUA-stone={used}
+			class:bg-PUA-gray={!used}
+			class="
+			 flex h-full items-center rounded-xl border-2 border-PUA-stone text-center font-semibold"
 		>
-			<div class=" px-6 py-5 text-base">Seasoning Discount</div>
-			<div class="bg-{color?.textColor} h-12 w-1"></div>
+			<div class=" px-6 py-5 text-base">{name}</div>
+			<div class:bg-PUA-stone={!used} class:bg-PUA-gray={used} class=" h-12 w-1"></div>
 			<div class="w-full">
 				<div class="text-3xl">80%</div>
 				<div>2023/01/01~2023/12/12</div>

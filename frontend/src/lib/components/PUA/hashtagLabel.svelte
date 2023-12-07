@@ -45,27 +45,27 @@
 
 {#if type === 'text'}
 	<div
-		class="flex h-7 items-center justify-center rounded-[20px] bg-PUA-dark-red px-4 py-0 text-center text-base font-bold text-white"
+		class="bg-PUA-dark-red flex h-7 items-center justify-center rounded-[20px] px-4 py-0 text-center text-base font-bold text-white"
 	>
 		{text}
 	</div>
 {:else if type === 'add'}
 	<button
 		on:click
-		class="flex h-7 w-7 items-center justify-center rounded-[18px] bg-PUA-dark-red text-center text-3xl font-bold text-white"
+		class="bg-PUA-dark-red flex h-7 w-7 items-center justify-center rounded-full text-center text-xl font-bold text-white"
 	>
 		+
 	</button>
 {:else if type == 'star'}
 	<div
-		class=" flex h-7 w-16 items-center justify-center gap-1 rounded-[10px] border-4 border-red-200/25 bg-PUA-dark-red px-3 text-center text-base font-bold text-white"
+		class=" bg-PUA-dark-red flex h-7 w-16 items-center justify-center gap-1 rounded-full border-4 border-red-200/25 px-3 text-center text-base font-bold text-white"
 	>
 		<img src={start} alt="" />
 		{text}
 	</div>
 {:else if type == 'input'}
 	<div
-		class="flex h-fit w-fit items-center justify-center rounded-full bg-PUA-dark-red px-4 text-white"
+		class="bg-PUA-dark-red flex h-fit w-fit items-center justify-center rounded-full px-4 text-white"
 	>
 		<input
 			bind:value={text}

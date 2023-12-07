@@ -18,22 +18,22 @@
 	// 	address: 'Taking Address'
 	// };
 	let seasoningDiscountList: {
-		discount_start_date: '2021-01-01T00:00:00.000Z';
-		discount_name: 'spring discount';
-		discount_end_date: '2021-01-01T00:00:00.000Z';
-		discount_description: 'all products get 30% off';
-		discount_percentage: 70;
-		discount_id: 1;
-		status: 1;
+		discount_start_date: string;
+		discount_name: string;
+		discount_end_date: string;
+		discount_description: string;
+		discount_percentage: number;
+		discount_id: number;
+		status: number;
 	}[] = [
 		{
 			discount_start_date: '2021-01-01T00:00:00.000Z',
 			discount_name: 'spring discount',
-			discount_end_date: '2021-01-01T00:00:00.000Z',
+			discount_end_date: '2021-11-01T00:00:00.000Z',
 			discount_description: 'all products get 30% off',
-			discount_percentage: 70,
+			discount_percentage: NaN,
 			discount_id: 1,
-			status: 1
+			status: 0
 		}
 	];
 	onMount(async () => {
@@ -77,8 +77,8 @@
 					<SeasoningCoupon
 						name={SeasoningDiscount.discount_name}
 						percentage={SeasoningDiscount.discount_percentage}
-						sTime={SeasoningDiscount.discount_start_date}
-						eTime={SeasoningDiscount.discount_end_date}
+						discount_start_date={SeasoningDiscount.discount_start_date}
+						discount_end_date={SeasoningDiscount.discount_end_date}
 						used={SeasoningDiscount.status === 1}
 					/>
 				{/each}

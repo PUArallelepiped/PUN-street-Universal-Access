@@ -25,8 +25,6 @@
 
 {#await changeseDate()}
 	loading
-	<p class="w-0 border-PUA-stone bg-PUA-gray text-PUA-stone"></p>
-	<p class="w-0 border-PUA-gray bg-PUA-stone text-PUA-gray"></p>
 {:then color}
 	<div class="flex h-32 w-96 flex-col">
 		<div
@@ -40,8 +38,8 @@
 			<div class=" px-6 py-5 text-base">{name}</div>
 			<div class:bg-PUA-stone={!used} class:bg-PUA-gray={used} class=" h-12 w-1"></div>
 			<div class="w-full">
-				<div class="text-3xl">80%</div>
-				<div>2023/01/01~2023/12/12</div>
+				<div class="text-3xl">{percentage}%</div>
+				<div>{sTime}~{eTime}</div>
 			</div>
 		</div>
 	</div>

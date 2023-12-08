@@ -134,3 +134,12 @@ func (pu *productUsecase) AddProductDiscountLabel(ctx context.Context, id int64,
 
 	return nil
 }
+
+func (pu *productUsecase) DeleteProduct(ctx context.Context, id int64) error {
+	err := pu.productRepo.ChangeProductStatusByProductID(ctx, id, 0)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

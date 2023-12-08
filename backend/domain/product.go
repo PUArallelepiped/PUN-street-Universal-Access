@@ -21,4 +21,5 @@ type ProductUsecase interface {
 	GetProductsByStoreID(ctx context.Context, id int64) (*[]swagger.ProductInfoWithLabelAndDiscount, error)
 	AddByStoreId(ctx context.Context, id int64, product *swagger.ProductInfoWithLabelAndDiscount) error
 	AddProductDiscountLabel(ctx context.Context, id int64, product *swagger.ProductInfoWithLabelAndDiscount) error
+	DeleteProduct(ctx context.Context, id int64) error
 }

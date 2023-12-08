@@ -111,7 +111,7 @@
 		</div>
 	</div>
 
-	<div class={` ${showProductCard ? 'h-full ' : 'h-screen'} transition-all ease-in-out `}>
+	<div class={` ${showProductCard ? 'h-full ' : 'h-screen'}  transition-all ease-in-out `}>
 		<CategoryLabel
 			on:click={() => (showProductCard = toggleModel(showProductCard))}
 			text={'Product List'}
@@ -122,7 +122,7 @@
 		<div
 			class={` ${
 				showProductCard ? 'max-h-full ' : 'max-h-0'
-			}   overflow-hidden  duration-[1000ms] ease-in-out`}
+			}   overflow-hidden  duration-[1300ms] ease-in-out`}
 		>
 			<div
 				class={` ${

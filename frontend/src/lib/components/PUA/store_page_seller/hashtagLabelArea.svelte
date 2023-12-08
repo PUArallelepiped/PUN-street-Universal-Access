@@ -1,5 +1,8 @@
 <script lang="ts">
-	import { HashtagLabel } from '$lib';
+	import HashtagStar from '../hashtag/hashtagStar.svelte';
+	import HashtagAdd from '../hashtag/hashtagAdd.svelte';
+	import HashtagLabel from '../hashtag/hashtagLabel.svelte';
+	import HashtagInput from '../hashtag/hashtagInput.svelte';
 	export let hashtag_text: { id: number; label: string }[];
 
 	let hashtag_input_id: { id: number; inputText: string }[] = [];
@@ -33,19 +36,15 @@
 </script>
 
 <div class="flex justify-start">
-	<HashtagLabel type={'star'} text={'4.7'}></HashtagLabel>
+	<HashtagStar text={'4.7'}></HashtagStar>
 </div>
 <div class="flex w-full flex-wrap gap-2">
 	{#each hashtag_text as { id, label }}
-		<HashtagLabel type={'text'} text={label} on:click={() => removedHashtag(id)}></HashtagLabel>
+		<HashtagLabel canRemove={true} text={label} on:click={() => removedHashtag(id)}></HashtagLabel>
 	{/each}
 	{#each hashtag_input_id as { id, inputText }}
-		<HashtagLabel
-			on:keydown={(e) => setHashtag(e, id)}
-			type={'input'}
-			id={`input${id}`}
-			bind:text={inputText}
-		></HashtagLabel>
+		<HashtagInput on:keydown={(e) => setHashtag(e, id)} id={`input${id}`} bind:text={inputText}
+		></HashtagInput>
 	{/each}
-	<HashtagLabel on:click={addHashtagInput} type={'add'}></HashtagLabel>
+	<HashtagAdd on:click={addHashtagInput}></HashtagAdd>
 </div>

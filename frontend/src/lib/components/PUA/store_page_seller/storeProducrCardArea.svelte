@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { HashtagLabel, StoreProductCard } from '$lib';
-
+	import { StoreProductCard } from '$lib';
+	import HashtagAdd from '../hashtag/hashtagAdd.svelte';
 	export let prodctListResponse: {
 		name: string;
 		description: string;
@@ -49,6 +49,6 @@
 		/>
 	{/each}
 	<div class="flex h-20 items-center justify-center">
-		<HashtagLabel on:click={addStoreProductCard} type={'add'}></HashtagLabel>
+		<HashtagAdd on:click={addStoreProductCard}></HashtagAdd>
 	</div>
 </div>

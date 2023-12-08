@@ -56,26 +56,29 @@
 		if (
 			currentData.maxquantity !== '' &&
 			currentData.name !== '' &&
-			currentData.description !== ''
+			currentData.description !== '' &&
+			/^\d+$/.test(currentData.maxquantity)
 		) {
 			changePageData = { ...currentData };
 			changePageData.haved = true;
 			dataError = { maxquantity_err: false, name_err: false, description_err: false };
-		}
-		if (currentData.maxquantity === '') {
-			dataError.maxquantity_err = true;
-		} else if (currentData.maxquantity !== '') {
-			dataError.maxquantity_err = false;
-		}
-		if (currentData.name === '') {
-			dataError.name_err = true;
-		} else if (currentData.name !== '') {
-			dataError.name_err = false;
-		}
-		if (currentData.description === '') {
-			dataError.description_err = true;
-		} else if (currentData.description !== '') {
-			dataError.description_err = false;
+			toggleModel();
+		} else {
+			if (currentData.maxquantity === '') {
+				dataError.maxquantity_err = true;
+			} else if (currentData.maxquantity !== '') {
+				dataError.maxquantity_err = !/^\d+$/.test(currentData.maxquantity);
+			}
+			if (currentData.name === '') {
+				dataError.name_err = true;
+			} else if (currentData.name !== '') {
+				dataError.name_err = false;
+			}
+			if (currentData.description === '') {
+				dataError.description_err = true;
+			} else if (currentData.description !== '') {
+				dataError.description_err = false;
+			}
 		}
 	}
 	function closePage() {

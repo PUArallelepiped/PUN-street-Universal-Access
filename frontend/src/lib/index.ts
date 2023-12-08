@@ -41,8 +41,6 @@ import DiscountArea from './components/PUA/discountArea.svelte';
 export { DiscountArea };
 import Checkcontainer from '$lib/components/PUA/checkcontainer.svelte';
 export { Checkcontainer };
-import HashtagLabel from '$lib/components/PUA/store_page_seller/hashtagLabel.svelte';
-export { HashtagLabel };
 import CategoryLabel from '$lib/components/PUA/store_page_seller/categoryLabel.svelte';
 export { CategoryLabel };
 import DiscountCard from '$lib/components/PUA/store_page_seller/discountCard.svelte';

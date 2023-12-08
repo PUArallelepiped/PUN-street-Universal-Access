@@ -8,10 +8,6 @@
  */
 package swagger
 
-type InlineResponse200 struct {
+type Price struct {
 	Price int64 `json:"price"`
-
-	ShippingDiscountBool bool `json:"shipping_discount_bool"`
-
-	SeasoningDiscountBool bool `json:"seasoning_discount_bool"`
 }

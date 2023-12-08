@@ -73,7 +73,7 @@
 		</button> -->
 		<button
 			on:click={deleteDiscountCard}
-			class="rounded-lg bg-gray-200 px-6 py-3 text-black transition-transform duration-200 ease-in-out hover:scale-125 active:scale-90"
+			class=" rounded-lg bg-gray-200 px-6 py-3 text-black transition-transform duration-200 ease-in-out hover:scale-125 focus:animate-ping active:scale-90"
 		>
 			<img src={Transhcan} alt="" class="h-6 w-6" />
 		</button>

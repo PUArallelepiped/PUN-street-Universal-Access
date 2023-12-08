@@ -39,26 +39,29 @@
 		{
 			status: 1,
 			stock: 100,
-			store_id: 2,
+			store_id: 3,
 			name: 'watermelon',
 			description: 'a game',
 			price: 0,
 			picture: 'https://i.imgur.com/3i3tyXJ.gif',
-			product_id: 2
+			product_id: 3
 		},
 		{
 			status: 1,
 			stock: 100,
-			store_id: 2,
+			store_id: 0,
 			name: 'watermelon',
 			description: 'a game',
 			price: 0,
 			picture: 'https://i.imgur.com/3i3tyXJ.gif',
-			product_id: 2
+			product_id: 4
 		}
 	];
 
-	let hashtag_text: { label: string }[] = [{ label: 'free delivery' }, { label: 'free delivery' }];
+	let hashtag_text: { id: number; label: string }[] = [
+		{ id: 0, label: 'free delivery' },
+		{ id: 1, label: 'free delivery' }
+	];
 
 	let changePageData: {
 		haved: boolean;
@@ -108,38 +111,39 @@
 		</div>
 	</div>
 
-	<CategoryLabel
-		on:click={() => (showProductCard = toggleModel(showProductCard))}
-		text={'Product List'}
-		img_need={true}
-		bind:dropdown={showProductCard}
-	></CategoryLabel>
+	<div class={` ${showProductCard ? 'h-full ' : 'h-screen'} transition-all ease-in-out `}>
+		<CategoryLabel
+			on:click={() => (showProductCard = toggleModel(showProductCard))}
+			text={'Product List'}
+			img_need={true}
+			bind:dropdown={showProductCard}
+		></CategoryLabel>
 
-	<div
-		class={` ${
-			showProductCard ? 'max-h-full ' : 'max-h-0'
-		}    transition-delay-[2000ms] overflow-hidden duration-1000`}
-	>
 		<div
 			class={` ${
-				showProductCard ? ' translate-y-0 ' : 'translate-y-[-100%]'
-			}   transition-all duration-[1500ms] ease-in-out `}
+				showProductCard ? 'max-h-full ' : 'max-h-0'
+			}   overflow-hidden  duration-[1000ms] ease-in-out`}
 		>
-			<StoreProducrCardArea bind:prodctListResponse></StoreProducrCardArea>
+			<div
+				class={` ${
+					showProductCard ? ' translate-y-0 ' : 'translate-y-[-100%]'
+				}   transition-all duration-[1500ms] ease-in-out `}
+			>
+				<StoreProducrCardArea bind:prodctListResponse></StoreProducrCardArea>
+			</div>
 		</div>
-	</div>
 
-	<CategoryLabel text={'Shipping Discount List'}></CategoryLabel>
-	<div class="relative mx-5 space-y-4">
-		<div class="flex items-center gap-4">
-			<DiscountCard
-				discountCardData={changePageData}
-				on:click={() => (showModel = toggleModel(showModel))}
-				{deleteDiscountCard}
-			></DiscountCard>
+		<CategoryLabel text={'Shipping Discount List'}></CategoryLabel>
+		<div class="relative mx-5 space-y-4">
+			<div class="flex items-center gap-4">
+				<DiscountCard
+					discountCardData={changePageData}
+					on:click={() => (showModel = toggleModel(showModel))}
+					{deleteDiscountCard}
+				></DiscountCard>
+			</div>
 		</div>
+		<div class="relative mx-5 h-6 space-y-4"></div>
 	</div>
-	<div class="relative mx-5 h-6 space-y-4"></div>
 </div>
-
 <ChangeDiscountPage bind:changePageData bind:showModel></ChangeDiscountPage>

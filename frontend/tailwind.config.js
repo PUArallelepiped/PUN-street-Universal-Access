@@ -48,6 +48,7 @@ const config = {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				'PUA-red': '#DD0808',
+				'PUA-pink': '#CF8A8A',
 				'PUA-dark-red': '#822E2E',
 				'PUA-orange': '#C65633',
 				'PUA-dark-orange': '#461616',

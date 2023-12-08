@@ -10,7 +10,7 @@
 		content: string;
 		choose: {
 			id: number;
-			need_choose: number;
+			need_choose: boolean;
 			category: string;
 			subcategories: string[];
 		}[];
@@ -27,11 +27,11 @@
 		choose: [
 			{
 				id: 0,
-				need_choose: 1,
+				need_choose: true,
 				category: '調整甜度',
 				subcategories: ['正常糖', '半糖', '微糖', '少糖', '無糖']
 			},
-			{ id: 1, need_choose: 2, category: '加牛奶', subcategories: ['是', '否'] }
+			{ id: 1, need_choose: false, category: '加牛奶', subcategories: ['是', '否'] }
 		],
 		discount: [
 			{ id: '1', label: '買二送一' },
@@ -44,38 +44,35 @@
 	};
 </script>
 
-<div class="flex justify-start">
-	<div class="relative left-1/2 top-6 h-full w-4/5 -translate-x-1/2 transform">
-		<div class="h-100 mb-8 flex w-full items-center text-4xl text-red-950">
+<div class="flex justify-center">
+	<div class="my-6 flex h-full w-4/5 flex-col gap-8">
+		<div class=" flex w-full items-center text-4xl text-PUA-dark-red">
 			{product.title}
 		</div>
 
-		<div class="flex h-full w-full">
-			<div class="relative h-full w-[500px]">
-				<img
-					src={product.picture}
-					alt=""
-					class="mt-100 flex h-[250px] w-[250px] rounded-[10px] object-cover"
-				/>
-				<div class="flex items-baseline gap-3 py-[20px] font-bold text-red-950">
-					<p class="text-[28px]">NT$</p>
-					<p class="text-[40px]">{product.price}</p>
+		<div class="flex gap-16">
+			<div class="">
+				<img src={product.picture} alt="" class="mt-100 flex h-60 w-60 rounded-lg object-cover" />
+				<div class="flex items-baseline gap-3 py-5 font-bold text-PUA-dark-red">
+					<p class="text-2xl">NT$</p>
+					<p class="text-4xl">{product.price}</p>
 				</div>
-				<div class="w-[250px] overflow-hidden text-justify text-[15px] text-gray-600">
+				<div class="w-[250px] text-justify text-base text-gray-600">
 					{product.content}
 				</div>
 			</div>
-			<div class="relative h-full w-full">
-				<div class="relative mb-[10px] w-full">
+			<div class=" flex w-full flex-col gap-4">
+				<div class=" flex w-full flex-col gap-4">
 					{#each product.choose as { need_choose, category, subcategories }}
-						<div class=" mb-[15px]">
-							<div class="flex h-[30px] items-center border-b-[1px] border-solid border-red-950">
+						<div class="">
+							<div class="flex items-center">
 								<div class="font-bold text-PUA-stone">{category}</div>
-								{#if need_choose === 1}
+								{#if need_choose}
 									<NeedChooseLabel></NeedChooseLabel>
 								{/if}
 							</div>
-							<div class="relative ml-[25px] mt-[10px] w-[90%] flex-col items-start">
+							<div class="h-[1px] bg-PUA-dark-red"></div>
+							<div class="flex flex-col">
 								{#each subcategories as subcategory}
 									<Checkcontainer {category} {subcategory}></Checkcontainer>
 								{/each}
@@ -83,19 +80,21 @@
 						</div>
 					{/each}
 				</div>
-				<DiscountArea
-					discount={product.discount}
-					toggleModel={() => {
-						return null;
-					}}
-					addDiscountButton={() => {
-						return null;
-					}}
-					addSign={false}
-					type={true}
-				></DiscountArea>
+				<div>
+					<DiscountArea
+						discount={product.discount}
+						toggleModel={() => {
+							return null;
+						}}
+						addDiscountButton={() => {
+							return null;
+						}}
+						addSign={false}
+						type={true}
+					></DiscountArea>
+				</div>
 
-				<div class=" mt-4 flex h-full items-center justify-around">
+				<div class="  flex flex-wrap items-center justify-around gap-4">
 					<Counter />
 
 					<OkButton

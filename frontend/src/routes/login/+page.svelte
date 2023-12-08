@@ -1,4 +1,5 @@
 <script lang="ts">
+	import InputBox from '$lib/components/PUA/InputBox.svelte';
 </script>
 
 <div>
@@ -8,21 +9,8 @@
 	<div class="absolute right-1">
 		<div class=" mx-20 rounded-2xl bg-white px-8 py-5 shadow">
 			<div class="flex flex-col items-center gap-11">
-				<div class="">
-					<div class="text-left text-xl font-bold leading-relaxed text-orange-950">
-						Email address
-					</div>
-					<input
-						class="h-10 w-96 rounded-lg border-2 bg-gray-200 px-2 text-xl font-medium leading-relaxed text-orange-950 shadow-inner"
-					/>
-				</div>
-				<div class="">
-					<div class="text-left text-xl font-bold leading-relaxed text-orange-950">Password</div>
-					<input
-						type="password"
-						class="h-10 w-96 rounded-lg border-2 bg-gray-200 px-2 text-xl font-medium leading-relaxed text-orange-950 shadow-inner"
-					/>
-				</div>
+				<InputBox label="Email address" value="" type=""></InputBox>
+				<InputBox label="Password" value="" type="password"></InputBox>
 			</div>
 			<div class="flex flex-row justify-center gap-2 p-4">
 				<div class="flex items-center">

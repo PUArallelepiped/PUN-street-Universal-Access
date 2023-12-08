@@ -110,8 +110,11 @@
 			<HashtagLabelArea bind:hashtag_text></HashtagLabelArea>
 		</div>
 	</div>
-
-	<div class={` ${showProductCard ? 'h-full ' : 'h-screen'}  transition-all ease-in-out `}>
+	<div
+		class={` ${
+			showProductCard ? 'h-auto min-h-screen' : ' h-screen max-h-screen '
+		}   transition-all ease-in-out`}
+	>
 		<CategoryLabel
 			on:click={() => (showProductCard = toggleModel(showProductCard))}
 			text={'Product List'}

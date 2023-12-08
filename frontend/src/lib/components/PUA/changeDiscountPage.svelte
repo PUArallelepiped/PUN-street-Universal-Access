@@ -104,7 +104,7 @@
 					</div>
 					<div class="flex w-1/2 justify-end">
 						<button on:click={closePage}>
-							<img src={close} alt="" class="h-[25px] object-cover" />
+							<img src={close} alt="" class="h-[25px] object-cover hover:scale-125" />
 						</button>
 					</div>
 				</div>

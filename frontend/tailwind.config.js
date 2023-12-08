@@ -55,8 +55,7 @@ const config = {
 				'PUA-dark-gray': '#9B9B9B',
 				'PUA-stone': '#755555',
 				'PUA-green': '#577246'
-
-			},				  
+			},
 
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -67,9 +66,8 @@ const config = {
 				sans: [...fontFamily.sans]
 			},
 			transitionProperty: {
-				'height': 'height'
+				height: 'height'
 			}
-			
 		}
 	}
 };

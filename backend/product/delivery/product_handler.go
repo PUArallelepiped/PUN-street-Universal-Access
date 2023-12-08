@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
+	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
 	"github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
@@ -61,25 +62,25 @@ func (s *ProductHandler) GetProductsByStoreId(c *gin.Context) {
 }
 
 func (s *ProductHandler) AddProduct(c *gin.Context) {
-	// storeID, err := strconv.ParseInt(c.Param("storeID"), 10, 64)
-	// if err != nil {
-	// 	logrus.Error(err)
-	// 	c.Status(400)
-	// 	return
-	// }
-	// var product swagger.ProductInfo
-	// if err := c.BindJSON(&product); err != nil {
-	// 	logrus.Error(err)
-	// 	c.Status(400)
-	// 	return
-	// }
+	storeID, err := strconv.ParseInt(c.Param("storeID"), 10, 64)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+	var product swagger.ProductInfoWithLabelAndDiscount
+	if err := c.BindJSON(&product); err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
 
-	// err = s.ProductUsecase.AddByStoreId(c, storeID, &product)
-	// if err != nil {
-	// 	logrus.Error(err)
-	// 	c.Status(500)
-	// 	return
-	// }
+	err = s.ProductUsecase.AddByStoreId(c, storeID, &product)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
 
-	// c.Status(200)
+	c.Status(200)
 }

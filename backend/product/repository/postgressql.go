@@ -42,7 +42,7 @@ func (p *postgresqlProductRepo) GetProductByID(ctx context.Context, id int64) (*
 			(SELECT (jsonb_agg(jsonb_build_object(
 					'name', label_item.item_name))) AS item_array
 			FROM label_item
-			WHERE label_item.label_name = product_label.label_name)
+			WHERE label_item.label_name = product_label.label_name AND label_item.product_id = product_label.product_id)
 		))) AS product_label_array
 		FROM product_label WHERE product_label.product_id = products.product_id)
 	FROM products WHERE product_id = $1;
@@ -108,7 +108,7 @@ func (p *postgresqlProductRepo) GetProductsByStoreID(ctx context.Context, id int
 			(SELECT (jsonb_agg(jsonb_build_object(
 					'name', label_item.item_name))) AS item_array
 			FROM label_item
-			WHERE label_item.label_name = product_label.label_name)
+        	WHERE label_item.label_name = product_label.label_name AND label_item.product_id = product_label.product_id)
 		))) AS product_label_array
 		FROM product_label WHERE product_label.product_id = products.product_id)
 	FROM products WHERE store_id = $1;
@@ -156,4 +156,88 @@ func (p *postgresqlProductRepo) GetProductsByStoreID(ctx context.Context, id int
 	}
 
 	return products, nil
+}
+
+func (p *postgresqlProductRepo) ChangeProductStatusByProductID(ctx context.Context, id int64, status int64) error {
+	sqlStatement := `
+	UPDATE products SET status = $2 WHERE product_id = $1
+	`
+
+	_, err := p.db.Exec(sqlStatement, id, status)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}
+
+func (p *postgresqlProductRepo) AddProductByStoreID(ctx context.Context, id int64, product *swagger.ProductInfoWithLabelAndDiscount) (int64, error) {
+	sqlStatement := `
+	INSERT INTO products (store_id, name, description, picture, price, stock, status) VALUES
+    ($1, $2, $3, $4, $5, $6, $7)
+    RETURNING product_id;
+	`
+
+	row := p.db.QueryRow(sqlStatement, product.StoreId, product.Name,
+		product.Description, product.Picture, product.Price,
+		product.Stock, product.Status)
+
+	var productID int64
+	if err := row.Scan(&productID); err != nil {
+		logrus.Error(err)
+		return 0, err
+	}
+
+	return productID, nil
+}
+
+func (p *postgresqlProductRepo) AddDiscountByProductID(ctx context.Context, event *swagger.EventDiscount) error {
+	sqlStatement := `
+	WITH ins1 AS (
+	INSERT INTO discounts(discount_type, status, description, name)
+	VALUES (3, 1, $1, $2)
+	RETURNING discount_id)
+	INSERT INTO event_discount (discount_id, max_quantity, product_id)
+	select discount_id, $3, $4 FROM ins1;
+	`
+	_, err := p.db.Exec(sqlStatement, event.DiscountDescription, event.DiscountName,
+		event.DiscountMaxQuantity, event.ProductId)
+
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}
+
+func (p *postgresqlProductRepo) AddProductLabel(ctx context.Context, productId int64, label_name string, required bool) error {
+	sqlStatement := `
+	INSERT INTO product_label (product_id, label_name, required) VALUES
+    ($1, $2, $3)
+	`
+	_, err := p.db.Exec(sqlStatement, productId, label_name, required)
+
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}
+
+func (p *postgresqlProductRepo) AddProductLabelItem(ctx context.Context, productId int64, labelName string, name string) error {
+	sqlStatement := `
+	INSERT INTO label_item (product_id, label_name, item_name) VALUES
+    ($1, $2, $3)
+	`
+	_, err := p.db.Exec(sqlStatement, productId, labelName, name)
+
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
 }

@@ -27,6 +27,11 @@ func (p *postgresqlDiscountRepo) GetShippingByStoreID(ctx context.Context, id in
 
 	shipping_discount := &swagger.ShippingDiscount{}
 	err := row.Scan(&shipping_discount.DiscountId, &shipping_discount.Status, &shipping_discount.DiscountDescription, &shipping_discount.DiscountName, &shipping_discount.DiscountMaxPrice)
+
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+
 	if err != nil {
 		logrus.Error(err)
 		return nil, err
@@ -93,7 +98,7 @@ func (p *postgresqlDiscountRepo) DisableDiscountByDiscountID(ctx context.Context
 
 func (p *postgresqlDiscountRepo) IsExistShippingDiscountByStoreID(ctx context.Context, id int64) (bool, error) {
 	sqlStatement := `
-	SELECT COUNT(*) > 0 FROM shipping_discount WHERE store_id = $1
+	SELECT COUNT(*) > 0 FROM shipping_discount NATURAL JOIN discounts WHERE shipping_discount.store_id = $1 AND discounts.status = 1
 	`
 	row := p.db.QueryRow(sqlStatement, id)
 

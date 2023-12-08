@@ -44,7 +44,7 @@ func (du *discountUsecase) AddShipping(ctx context.Context, shipping *swagger.Sh
 		return err
 	}
 
-	// check exist then for each shipping discount change status = 0
+	// check exist then shipping discount change status = 0
 	if exist {
 		discount, err := du.discountRepo.GetShippingByStoreID(ctx, id)
 		if err != nil {

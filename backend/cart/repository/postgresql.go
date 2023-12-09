@@ -45,3 +45,33 @@ func (p *postgresqlCartRepo) GetAllHistoryById(ctx context.Context, id int64) (*
 
 	return historyArray, nil
 }
+
+func (p *postgresqlCartRepo) GetRunOrderByID(ctx context.Context, id int64) (*[]swagger.RunOrderInfo, error) {
+	sqlStatement := `
+	SELECT orders.store_id, orders.cart_id, orders.user_id, orders.status, 
+	stores.name AS store_name, stores.picture AS store_picture
+	FROM orders LEFT JOIN stores ON orders.store_id = stores.store_id 
+	WHERE orders.user_id = $1 AND 
+	orders.status != 0 AND orders.status != 1 AND orders.status != 6;
+	`
+
+	rows, err := p.db.Query(sqlStatement, id)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	runOrderArray := &[]swagger.RunOrderInfo{}
+	for rows.Next() {
+		runOrder := &swagger.RunOrderInfo{}
+		err := rows.Scan(&runOrder.StoreId, &runOrder.CartId, &runOrder.UserId, &runOrder.Status,
+			&runOrder.StoreName, &runOrder.StorePicture)
+		if err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+		*runOrderArray = append(*runOrderArray, *runOrder)
+	}
+
+	return runOrderArray, nil
+}

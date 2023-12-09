@@ -25,3 +25,12 @@ func (cu *cartUsecase) GetAllHistoryById(ctx context.Context, id int64) (*[]swag
 
 	return historyArray, nil
 }
+
+func (cu *cartUsecase) GetRunOrderByID(ctx context.Context, id int64) (*[]swagger.RunOrderInfo, error) {
+	runOrderArray, err := cu.cartRepo.GetRunOrderByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return runOrderArray, nil
+}

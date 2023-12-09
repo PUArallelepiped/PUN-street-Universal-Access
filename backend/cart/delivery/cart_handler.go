@@ -22,7 +22,7 @@ func NewCartHandler(e *gin.Engine, cartUsecase domain.CartUsecase) {
 		v1.GET("/customer/:userID/cart/:cartID/store/:storeID/carts")
 		v1.GET("/customer/:userID/cart/:cartID/store/:storeID/get-total-price")
 		v1.GET("/customer/:userID/get-history", handler.GetAllHistory)
-		v1.GET("/customer/:userID/order-status")
+		v1.GET("/customer/:userID/order-status", handler.GetRunOrder)
 
 		v1.POST("/customer/:userID/cart")
 		v1.POST("/customer/:userID/store/:storeID/checkout")
@@ -42,4 +42,18 @@ func (ch *CartHandler) GetAllHistory(c *gin.Context) {
 	}
 
 	c.JSON(200, historyArray)
+}
+
+func (ch *CartHandler) GetRunOrder(c *gin.Context) {
+	userID, err := strconv.ParseInt(c.Param("userID"), 10, 64)
+	if err != nil {
+		c.Status(400)
+	}
+
+	runOrderArray, err := ch.CartUsecase.GetRunOrderByID(c, userID)
+	if err != nil {
+		c.Status(500)
+	}
+
+	c.JSON(200, runOrderArray)
 }

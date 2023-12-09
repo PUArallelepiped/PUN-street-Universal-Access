@@ -1,23 +1,11 @@
 <script lang="ts">
-	import Deliver from '$lib/assets/deliver.svg';
-	import Accept from '$lib/assets/accept.svg';
-	import Arrival from '$lib/assets/arrival.svg';
-	import Making from '$lib/assets/making.svg';
+    export statusCardContent: { src: string; text: string; user: string } = {src:'',text:'',user:''};
 
-	let statusCardContent: { src: string; text: string; user: string }[] = [
-		{ src: Making, text: 'Making', user: 'user01' },
-		{ src: Deliver, text: 'Deliver', user: 'user01' },
-		{ src: Accept, text: 'Accept', user: 'user01' },
-		{ src: Arrival, text: 'Arrival', user: 'user01' },
-		{ src: Accept, text: 'Accept', user: 'user01' },
-		{ src: Making, text: 'Making', user: 'user01' },
-		{ src: Deliver, text: 'Deliver', user: 'user01' },
-		{ src: Arrival, text: 'Arrival', user: 'user01' }
-	];
 </script>
 
+{statusCardContent}
 <div class="flex flex-wrap items-center justify-center gap-8 p-10">
-	{#each statusCardContent as { src, text, user }}
+	{#each statusCardTent as { src, text, user }}
 		<div class=" w-3/7 flex items-center gap-5 rounded-xl bg-white p-4 shadow-xl">
 			<img {src} alt="" />
 			<div class="w-64 font-bold">

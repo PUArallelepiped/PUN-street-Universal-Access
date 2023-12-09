@@ -20,7 +20,7 @@ func NewCartHandler(e *gin.Engine, cartUsecase domain.CartUsecase) {
 	}
 	v1 := e.Group("/api/v1")
 	{
-		v1.GET("/customer/:userID/cart/:cartID/carts")
+		v1.GET("/customer/:userID/carts")
 		v1.GET("/customer/:userID/cart/:cartID/store/:storeID/carts")
 		v1.GET("/customer/:userID/cart/:cartID/store/:storeID/get-total-price")
 		v1.GET("/customer/:userID/get-history", handler.GetAllHistory)

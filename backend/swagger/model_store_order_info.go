@@ -16,4 +16,14 @@ type StoreOrderInfo struct {
 	StoreShippingFee int64 `json:"store_shipping_fee,omitempty"`
 
 	ProductOrder []ProductOrderInfo `json:"product_order,omitempty"`
+
+	ShippingDiscount *ShippingDiscount `json:"shipping_discount,omitempty"`
+
+	ShippingDiscountBool bool `json:"shipping_discount_bool,omitempty"`
+
+	SeasoningDiscount *SeasoningDiscount `json:"seasoning_discount,omitempty"`
+
+	SeasoningDiscountBool bool `json:"seasoning_discount_bool,omitempty"`
+
+	TotalPrice int64 `json:"total_price,omitempty"`
 }

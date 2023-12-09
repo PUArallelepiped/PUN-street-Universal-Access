@@ -1,13 +1,18 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	export let text = 'null';
 	export let id: string = 'null';
 
 	let width: string = '50';
-	let min_width: string = '0';
-	let max_Width: string = '150';
+	let min_width: string = '110';
+	let max_Width: string = '300';
 	let text_size: string = '14';
 
 	let max = Number(max_Width);
+
+	onMount(() => {
+		adjustInputWidth();
+	});
 
 	function handleInput(event: Event) {
 		text = (event.target as HTMLInputElement).value;
@@ -42,14 +47,14 @@
 </script>
 
 <div
-	class="flex h-fit w-fit items-center justify-center rounded-full bg-PUA-dark-red px-4 text-white"
+	class="bg-PUA-dark-red flex h-fit w-fit items-center justify-center rounded-full px-4 text-white"
 >
 	<input
 		bind:value={text}
 		on:input={handleInput}
 		on:keydown
-		maxlength="20"
-		class=" w-${width} h-7 overflow-hidden bg-transparent text-white underline outline-none placeholder:text-white"
+		maxlength="31"
+		class=" w-${width} h-7 overflow-hidden bg-transparent text-center text-white underline outline-none placeholder:text-white"
 		placeholder="Enter Hashtag"
 		{id}
 	/>

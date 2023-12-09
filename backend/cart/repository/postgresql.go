@@ -75,3 +75,77 @@ func (p *postgresqlCartRepo) GetRunOrderByID(ctx context.Context, id int64) (*[]
 
 	return runOrderArray, nil
 }
+
+func (p *postgresqlCartRepo) DeleteOrder(ctx context.Context, customerId int64, storeId int64) error {
+	sqlStatement := `
+	DELETE FROM orders
+	WHERE user_id = $1 AND 
+	cart_id = ( SELECT current_cart_id FROM user_data WHERE user_id = $1) AND 
+	store_id = $2;
+	`
+	_, err := p.db.Exec(sqlStatement, customerId, storeId)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}
+
+func (p *postgresqlCartRepo) IsExitsOrderByStoreCartId(ctx context.Context, customerId int64, storeId int64) (bool, error) {
+	sqlStatement := `
+	SELECT COUNT(*) > 0 FROM orders 
+	WHERE user_id = $1 AND 
+	cart_id = ( SELECT current_cart_id FROM user_data WHERE user_id = $1) AND 
+	store_id = $2;
+	`
+	row := p.db.QueryRow(sqlStatement, customerId, storeId)
+
+	exist := false
+	err := row.Scan(&exist)
+	if err != nil {
+		logrus.Error(err)
+		return false, err
+	}
+
+	return exist, nil
+}
+
+func (p *postgresqlCartRepo) IsExitsCartByStoreCartId(ctx context.Context, customerId int64, storeId int64) (bool, error) {
+	sqlStatement := `
+	SELECT COUNT(*) > 0 FROM carts 
+	WHERE customer_id = $1 AND 
+	cart_id = ( SELECT current_cart_id FROM user_data WHERE user_id = $1) AND 
+	store_id = $2;
+	`
+	row := p.db.QueryRow(sqlStatement, customerId, storeId)
+
+	exist := false
+	err := row.Scan(&exist)
+	if err != nil {
+		logrus.Error(err)
+		return false, err
+	}
+
+	return exist, nil
+}
+
+func (p *postgresqlCartRepo) DeleteProduct(ctx context.Context, customerId int64, productId int64) (int64, error) {
+	sqlStatement := `
+	DELETE FROM carts
+	WHERE customer_id = $1 AND 
+	cart_id = ( SELECT current_cart_id FROM user_data WHERE user_id = $1) AND 
+	product_id = $2
+	RETURNING store_id
+	`
+	row := p.db.QueryRow(sqlStatement, customerId, productId)
+
+	var storeId int64
+	err := row.Scan(&storeId)
+	if err != nil {
+		logrus.Error(err)
+		return 0, err
+	}
+
+	return storeId, nil
+}

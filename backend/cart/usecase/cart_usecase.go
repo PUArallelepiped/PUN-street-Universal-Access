@@ -5,6 +5,7 @@ import (
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
+	"github.com/sirupsen/logrus"
 )
 
 type cartUsecase struct {
@@ -33,4 +34,28 @@ func (cu *cartUsecase) GetRunOrderByID(ctx context.Context, id int64) (*[]swagge
 	}
 
 	return runOrderArray, nil
+}
+
+func (cu *cartUsecase) DeleteProduct(ctx context.Context, customerId int64, productId int64) error {
+	storeId, err := cu.cartRepo.DeleteProduct(ctx, customerId, productId)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	exits, err := cu.cartRepo.IsExitsCartByStoreCartId(ctx, customerId, storeId)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	if !exits {
+		err = cu.cartRepo.DeleteOrder(ctx, customerId, storeId)
+		if err != nil {
+			logrus.Error(err)
+			return err
+		}
+	}
+
+	return nil
 }

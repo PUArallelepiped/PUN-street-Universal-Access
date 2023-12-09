@@ -618,7 +618,7 @@ paths:
       tags:
       - customer
       - cart
-      summary: add product to cart / update product quantity
+      summary: add product to cart / update product quantity and check order exits by store if not exits add a new order status = 0
       parameters:
       - name: userID
         in: path

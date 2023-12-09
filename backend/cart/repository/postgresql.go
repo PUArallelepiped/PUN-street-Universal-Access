@@ -81,7 +81,8 @@ func (p *postgresqlCartRepo) DeleteOrder(ctx context.Context, customerId int64, 
 	DELETE FROM orders
 	WHERE user_id = $1 AND 
 	cart_id = ( SELECT current_cart_id FROM user_data WHERE user_id = $1) AND 
-	store_id = $2;
+	store_id = $2 AND 
+	status = 0;
 	`
 	_, err := p.db.Exec(sqlStatement, customerId, storeId)
 	if err != nil {
@@ -148,4 +149,37 @@ func (p *postgresqlCartRepo) DeleteProduct(ctx context.Context, customerId int64
 	}
 
 	return storeId, nil
+}
+
+func (p *postgresqlCartRepo) AddProductToCart(ctx context.Context, customerId int64, cartInfo *swagger.CartInfo) error {
+	sqlStatement := `
+	INSERT INTO carts (customer_id, cart_id, store_id, product_id, product_quantity, event_discount_id) VALUES
+	($1, $2, $3, $4, $5, $6)
+	ON CONFLICT (customer_id, product_id, store_id, cart_id) DO UPDATE 
+	SET product_quantity = EXCLUDED.product_quantity;
+	`
+	_, err := p.db.Exec(sqlStatement, customerId, cartInfo.CartId, cartInfo.StoreId, cartInfo.ProductId, cartInfo.ProductQuantity, cartInfo.DiscountId)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}
+
+func (p *postgresqlCartRepo) AddOrderByCartInfo(ctx context.Context, customerId int64, storeId int64) error {
+	sqlStatement := `
+	INSERT INTO orders (user_id, cart_id, store_id, seasoning_discount_id, 
+		shipping_discount_id, status, total_price, Order_date, taking_address, taking_method) VALUES 
+    ($1, 
+	(SELECT current_cart_id FROM user_data WHERE user_id = $1),
+	$2, 1, 1, 0, 0, '2020-01-01 00:00:00', '台北市', 1)
+	`
+	_, err := p.db.Exec(sqlStatement, customerId, storeId)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
 }

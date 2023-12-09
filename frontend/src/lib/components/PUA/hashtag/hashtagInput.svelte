@@ -47,7 +47,7 @@
 </script>
 
 <div
-	class="bg-PUA-dark-red flex h-fit w-fit items-center justify-center rounded-full px-4 text-white"
+	class="flex h-fit w-fit items-center justify-center rounded-full bg-PUA-dark-red px-4 text-white"
 >
 	<input
 		bind:value={text}

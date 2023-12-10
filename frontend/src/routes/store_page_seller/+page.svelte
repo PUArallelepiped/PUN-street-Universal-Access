@@ -133,7 +133,7 @@
 
 		<div
 			class={` ${
-				showProductCard ? '  max-h-full ' : 'max-h-0'
+				showProductCard ? 'max-h-full' : 'max-h-0'
 			}   overflow-hidden transition-all duration-[1300ms] ease-in-out`}
 		>
 			<div

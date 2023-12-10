@@ -87,22 +87,27 @@
 		};
 	}
 
+	let myElement: HTMLDivElement | null = null;
+	let k = 0;
+
+	$: {
+		k = 20 * prodctListResponse.length + 35;
+		showProductCard;
+		toggleHeight();
+	}
+
+	const toggleHeight = () => {
+		if (myElement) {
+			if (showProductCard) {
+				myElement.style.height = `${k}vh`;
+			} else {
+				myElement.style.height = `100vh`;
+			}
+		}
+	};
 	onMount(() => {
 		toggleHeight();
 	});
-
-	let myElement: HTMLDivElement | null = null;
-
-	let k = 0;
-	$: {
-		k = 20 * prodctListResponse.length + 35;
-		toggleHeight();
-	}
-	const toggleHeight = () => {
-		if (myElement) {
-			myElement.style.height = `${k}vh`;
-		}
-	};
 </script>
 
 <div class="h-48 w-full overflow-hidden">
@@ -111,7 +116,7 @@
 
 <div class="mt-10 lg:px-40">
 	<div class="mx-5 space-y-2">
-		<div class="text-PUA-stone text-5xl font-bold">銀記手稈刀切牛肉麵</div>
+		<div class="text-5xl font-bold text-PUA-stone">銀記手稈刀切牛肉麵</div>
 		<div class="font-bold text-red-950">100台灣台北市中正區八德路一段82巷9弄17號</div>
 		<div class="flex w-full justify-start gap-6">
 			<HashtagLabelArea bind:hashtag_text></HashtagLabelArea>

@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
@@ -87,4 +88,43 @@ func (cu *cartUsecase) AddProductToCart(ctx context.Context, customerId int64, c
 	}
 
 	return nil
+}
+
+func (cu *cartUsecase) GetHistoryCart(ctx context.Context, customerId int64, cartId int64, storeId int64) (*swagger.StoreOrderInfo, error) {
+	storeOrder, err := cu.cartRepo.GetHistoryCart(ctx, customerId, cartId, storeId)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	var total_price int64
+	// cal event discount
+	for _, product := range storeOrder.ProductOrder {
+		quantity := product.ProductQuantity - int64(product.ProductQuantity/int64(product.EventDiscountMaxQuantity+1))
+		fmt.Println(quantity)
+		total_price += quantity * product.ProductPrice
+		fmt.Println(total_price)
+	}
+
+	// cal shipping discount
+	if total_price > storeOrder.ShippingDiscount.DiscountMaxPrice && storeOrder.ShippingDiscount.DiscountMaxPrice > 0 {
+		storeOrder.ShippingDiscountBool = true
+	} else {
+		total_price += storeOrder.StoreShippingFee
+		storeOrder.ShippingDiscountBool = false
+	}
+	fmt.Println(total_price)
+
+	// cal shipping discount
+	if storeOrder.SeasoningDiscount.DiscountPercentage != 0 {
+		total_price = int64(float32(total_price) * float32(storeOrder.SeasoningDiscount.DiscountPercentage) / 100)
+		storeOrder.SeasoningDiscountBool = true
+	} else {
+		storeOrder.SeasoningDiscountBool = false
+	}
+	fmt.Println(total_price)
+
+	storeOrder.TotalPrice = total_price
+
+	return storeOrder, nil
 }

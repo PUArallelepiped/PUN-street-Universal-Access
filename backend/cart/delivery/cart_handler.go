@@ -21,8 +21,7 @@ func NewCartHandler(e *gin.Engine, cartUsecase domain.CartUsecase) {
 	v1 := e.Group("/api/v1")
 	{
 		v1.GET("/customer/:userID/carts")
-		v1.GET("/customer/:userID/cart/:cartID/store/:storeID/carts")
-		v1.GET("/customer/:userID/cart/:cartID/store/:storeID/get-total-price")
+		v1.GET("/customer/:userID/cart/:cartID/store/:storeID/carts", handler.GetHistoryCart)
 		v1.GET("/customer/:userID/get-history", handler.GetAllHistory)
 		v1.GET("/customer/:userID/order-status", handler.GetRunOrder)
 
@@ -120,4 +119,27 @@ func (ch *CartHandler) AddProductToCart(c *gin.Context) {
 	}
 
 	c.Status(200)
+}
+
+func (ch *CartHandler) GetHistoryCart(c *gin.Context) {
+	customerID, customerErr := strconv.ParseInt(c.Param("userID"), 10, 64)
+	cartID, cartErr := strconv.ParseInt(c.Param("cartID"), 10, 64)
+	storeID, storeErr := strconv.ParseInt(c.Param("storeID"), 10, 64)
+	errArr := []error{customerErr, cartErr, storeErr}
+	for _, err := range errArr {
+		if err != nil {
+			logrus.Error(err)
+			c.Status(400)
+			return
+		}
+	}
+
+	storeOrder, err := ch.CartUsecase.GetHistoryCart(c, customerID, cartID, storeID)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, storeOrder)
 }

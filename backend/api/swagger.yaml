@@ -950,54 +950,6 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /customer/{userID}/cart/{cartID}/store/{storeID}/get-total-price:
-    get:
-      tags:
-      - customer
-      - discount
-      summary: get total price of cart
-      parameters:
-      - name: userID
-        in: path
-        description: The ID of the user .
-        required: true
-        content:
-          application/json:
-            schema:
-              type: string
-              example: "1"
-              x-content-type: application/json
-      - name: cartID
-        in: path
-        description: The ID of the cart.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: string
-              example: "1"
-              x-content-type: application/json
-      - name: storeID
-        in: path
-        description: The ID of the store .
-        required: true
-        content:
-          application/json:
-            schema:
-              type: string
-              example: "1"
-              x-content-type: application/json
-      responses:
-        "200":
-          description: ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200'
-        "400":
-          description: bad request
-        "500":
-          description: Unexpected error
   /customer/{userID}/cart/{cartID}/store/{storeID}/add-discount/{discountID}:
     post:
       tags:
@@ -2016,12 +1968,14 @@ components:
             product_price: 9999
             product_name: pasta
             product_quantity: 10
+            product_picture: https://i.imgur.com/1.jpg
           - event_discount_max_quantity: 10
             event_discount_id: 1
             product_id: 1
             product_price: 9999
             product_name: pasta
             product_quantity: 10
+            product_picture: https://i.imgur.com/1.jpg
           shipping_discount:
             discount_name: free shipping
             discount_description: free shipping when total price over 1000
@@ -2114,6 +2068,9 @@ components:
             $ref: '#/components/schemas/ProductOrderInfo'
           x-schema-name: ProductOrderInfo
     StoreOrderInfo:
+      required:
+      - shipping_discount_bool
+      - seasoning_discount_bool
       type: object
       properties:
         store_id:
@@ -2157,12 +2114,14 @@ components:
           product_price: 9999
           product_name: pasta
           product_quantity: 10
+          product_picture: https://i.imgur.com/1.jpg
         - event_discount_max_quantity: 10
           event_discount_id: 1
           product_id: 1
           product_price: 9999
           product_name: pasta
           product_quantity: 10
+          product_picture: https://i.imgur.com/1.jpg
         shipping_discount:
           discount_name: free shipping
           discount_description: free shipping when total price over 1000
@@ -2186,6 +2145,7 @@ components:
       - product_name
       - product_price
       - product_quantity
+      - product_picture
       type: object
       properties:
         product_id:
@@ -2203,6 +2163,9 @@ components:
           type: integer
           format: int64
           example: 10
+        product_picture:
+          type: string
+          example: https://i.imgur.com/1.jpg
         event_discount_id:
           type: integer
           format: int64
@@ -2217,6 +2180,7 @@ components:
         product_price: 9999
         product_name: pasta
         product_quantity: 10
+        product_picture: https://i.imgur.com/1.jpg
     OrderInfoShort:
       required:
       - cart_id

@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
@@ -182,4 +183,92 @@ func (p *postgresqlCartRepo) AddOrderByCartInfo(ctx context.Context, customerId 
 	}
 
 	return nil
+}
+
+func (p *postgresqlCartRepo) GetHistoryCart(ctx context.Context, customerId int64, cartId int64, storeId int64) (*swagger.StoreOrderInfo, error) {
+	sqlStatement := `
+	SELECT store_id, name AS store_name, shipping_fee AS store_shipping_fee,
+		(SELECT jsonb_build_object(
+			'discount_id',discounts.discount_id,
+			'discount_name', discounts.name, 
+			'discount_description', discounts.description,
+			'status', discounts.status, 
+			'discount_max_price', shipping_discount.max_price) 
+			AS shipping_discount 
+			FROM orders LEFT JOIN (discounts LEFT JOIN shipping_discount ON discounts.discount_id = shipping_discount.discount_id) ON orders.shipping_discount_id = discounts.discount_id
+		WHERE orders.user_id = $1 AND orders.cart_id = $2 AND orders.store_id = $3),
+		(SELECT jsonb_build_object(
+			'discount_id',discounts.discount_id,
+			'discount_name', discounts.name,
+			'discount_description', discounts.description,
+			'status', discounts.status, 
+			'discount_start_date', seasoning_discount.start_date,
+			'discount_end_date', seasoning_discount.end_date,
+			'discount_percentage', seasoning_discount.discount_percentage)
+			AS seasoning_discount 
+			FROM orders LEFT JOIN 
+				(discounts LEFT JOIN seasoning_discount 
+					ON discounts.discount_id = seasoning_discount.discount_id) 
+				ON orders.seasoning_discount_id = discounts.discount_id
+			WHERE orders.user_id = $3 AND orders.cart_id = $2 AND orders.store_id = $3),
+		(SELECT jsonb_agg(jsonb_build_object(
+			'event_discount_max_quantity', event_discount.max_quantity, 
+			'event_discount_id', event_discount.discount_id, 
+			'product_id', carts.product_id, 
+			'product_price', products.price, 
+			'product_name', products.name, 
+			'product_quantity', carts.product_quantity, 
+			'product_picture', products.picture))
+			AS product_order
+			FROM carts 
+			LEFT JOIN event_discount ON carts.event_discount_id = event_discount.discount_id 
+			LEFT JOIN products ON carts.product_id = products.product_id
+			WHERE carts.customer_id = $1 AND carts.cart_id = $2 AND carts.store_id = $3)
+	FROM stores WHERE store_id = $3;
+	`
+	row := p.db.QueryRow(sqlStatement, customerId, cartId, storeId)
+
+	storeOrder := &swagger.StoreOrderInfo{}
+	var shippingDiscountString sql.NullString
+	var seasoningDiscountString sql.NullString
+	var productOrderString sql.NullString
+	err := row.Scan(&storeOrder.StoreId, &storeOrder.StoreName, &storeOrder.StoreShippingFee,
+		&shippingDiscountString, &seasoningDiscountString, &productOrderString)
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	// change string to json
+	if shippingDiscountString.Valid {
+		var shippingDiscount *swagger.ShippingDiscount
+		err := json.Unmarshal([]byte(shippingDiscountString.String), &shippingDiscount)
+		if err != nil {
+			logrus.Error(err)
+		}
+		storeOrder.ShippingDiscount = shippingDiscount
+	}
+	// change string to json
+	if seasoningDiscountString.Valid {
+		var seasoningDiscount *swagger.SeasoningDiscount
+		err := json.Unmarshal([]byte(seasoningDiscountString.String), &seasoningDiscount)
+		if err != nil {
+			logrus.Error(err)
+		}
+		storeOrder.SeasoningDiscount = seasoningDiscount
+	}
+	// change string to json
+	if productOrderString.Valid {
+		var productOrderArray []swagger.ProductOrderInfo
+		err := json.Unmarshal([]byte(productOrderString.String), &productOrderArray)
+		if err != nil {
+			logrus.Error(err)
+		}
+		storeOrder.ProductOrder = productOrderArray
+	}
+
+	return storeOrder, nil
 }

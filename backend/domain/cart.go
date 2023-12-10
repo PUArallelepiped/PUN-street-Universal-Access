@@ -16,6 +16,7 @@ type CartRepo interface {
 	GetAllHistoryById(ctx context.Context, id int64) (*[]swagger.HistoryInfo, error)
 	GetRunOrderByID(ctx context.Context, id int64) (*[]swagger.RunOrderInfo, error)
 	GetHistoryCart(ctx context.Context, customerId int64, cartId int64, storeId int64) (*swagger.StoreOrderInfo, error)
+	GetCurrentCartID(ctx context.Context, id int64) ([]IDs, error)
 	AddProductToCart(ctx context.Context, customerId int64, cartInfo *swagger.CartInfo) error
 	AddOrderByCartInfo(ctx context.Context, customerId int64, productId int64) error
 }
@@ -26,4 +27,13 @@ type CartUsecase interface {
 	DeleteProduct(ctx context.Context, customerId int64, productId int64) error
 	AddProductToCart(ctx context.Context, customerId int64, cartInfo *swagger.CartInfo) error
 	GetHistoryCart(ctx context.Context, customerId int64, cartId int64, storeId int64) (*swagger.StoreOrderInfo, error)
+	GetCurrentCartsByUserID(ctx context.Context, id int64) (*swagger.CartOrderInfo, error)
+}
+
+type IDs struct {
+	UserID int64
+
+	CartID int64
+
+	StoreID int64
 }

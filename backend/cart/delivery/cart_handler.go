@@ -20,7 +20,7 @@ func NewCartHandler(e *gin.Engine, cartUsecase domain.CartUsecase) {
 	}
 	v1 := e.Group("/api/v1")
 	{
-		v1.GET("/customer/:userID/carts")
+		v1.GET("/customer/:userID/carts", handler.GetCurrentCarts)
 		v1.GET("/customer/:userID/cart/:cartID/store/:storeID/carts", handler.GetHistoryCart)
 		v1.GET("/customer/:userID/get-history", handler.GetAllHistory)
 		v1.GET("/customer/:userID/order-status", handler.GetRunOrder)
@@ -142,4 +142,22 @@ func (ch *CartHandler) GetHistoryCart(c *gin.Context) {
 	}
 
 	c.JSON(200, storeOrder)
+}
+
+func (ch *CartHandler) GetCurrentCarts(c *gin.Context) {
+	customerID, err := strconv.ParseInt(c.Param("userID"), 10, 64)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
+	cartOrder, err := ch.CartUsecase.GetCurrentCartsByUserID(c, customerID)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, cartOrder)
 }

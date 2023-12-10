@@ -195,8 +195,11 @@ func (p *postgresqlCartRepo) GetHistoryCart(ctx context.Context, customerId int6
 			'status', discounts.status, 
 			'discount_max_price', shipping_discount.max_price) 
 			AS shipping_discount 
-			FROM orders LEFT JOIN (discounts LEFT JOIN shipping_discount ON discounts.discount_id = shipping_discount.discount_id) ON orders.shipping_discount_id = discounts.discount_id
-		WHERE orders.user_id = $1 AND orders.cart_id = $2 AND orders.store_id = $3),
+			FROM orders LEFT JOIN 
+				(discounts LEFT JOIN shipping_discount 
+					ON discounts.discount_id = shipping_discount.discount_id) 
+				ON orders.shipping_discount_id = discounts.discount_id
+			WHERE orders.user_id = $1 AND orders.cart_id = $2 AND orders.store_id = $3),
 		(SELECT jsonb_build_object(
 			'discount_id',discounts.discount_id,
 			'discount_name', discounts.name,
@@ -210,7 +213,7 @@ func (p *postgresqlCartRepo) GetHistoryCart(ctx context.Context, customerId int6
 				(discounts LEFT JOIN seasoning_discount 
 					ON discounts.discount_id = seasoning_discount.discount_id) 
 				ON orders.seasoning_discount_id = discounts.discount_id
-			WHERE orders.user_id = $3 AND orders.cart_id = $2 AND orders.store_id = $3),
+			WHERE orders.user_id = $1 AND orders.cart_id = $2 AND orders.store_id = $3),
 		(SELECT jsonb_agg(jsonb_build_object(
 			'event_discount_max_quantity', event_discount.max_quantity, 
 			'event_discount_id', event_discount.discount_id, 
@@ -271,4 +274,31 @@ func (p *postgresqlCartRepo) GetHistoryCart(ctx context.Context, customerId int6
 	}
 
 	return storeOrder, nil
+}
+
+func (p *postgresqlCartRepo) GetCurrentCartID(ctx context.Context, id int64) ([]domain.IDs, error) {
+	sqlStatement := `
+	SELECT customer_id, cart_id, store_id FROM carts WHERE customer_id = $1
+	AND cart_id = (SELECT current_cart_id FROM user_data WHERE user_id = $1)
+	GROUP BY carts.store_id, carts.customer_id, carts.cart_id
+	`
+
+	rows, err := p.db.Query(sqlStatement, id)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	ids := []domain.IDs{}
+	for rows.Next() {
+		idInfo := domain.IDs{}
+		if err := rows.Scan(&idInfo.UserID, &idInfo.CartID, &idInfo.StoreID); err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+
+		ids = append(ids, idInfo)
+	}
+
+	return ids, nil
 }

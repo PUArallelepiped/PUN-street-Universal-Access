@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
@@ -101,30 +100,57 @@ func (cu *cartUsecase) GetHistoryCart(ctx context.Context, customerId int64, car
 	// cal event discount
 	for _, product := range storeOrder.ProductOrder {
 		quantity := product.ProductQuantity - int64(product.ProductQuantity/int64(product.EventDiscountMaxQuantity+1))
-		fmt.Println(quantity)
 		total_price += quantity * product.ProductPrice
-		fmt.Println(total_price)
 	}
 
 	// cal shipping discount
-	if total_price > storeOrder.ShippingDiscount.DiscountMaxPrice && storeOrder.ShippingDiscount.DiscountMaxPrice > 0 {
-		storeOrder.ShippingDiscountBool = true
-	} else {
-		total_price += storeOrder.StoreShippingFee
-		storeOrder.ShippingDiscountBool = false
+	if storeOrder.ShippingDiscount != nil {
+		if total_price > storeOrder.ShippingDiscount.DiscountMaxPrice && storeOrder.ShippingDiscount.DiscountMaxPrice > 0 {
+			storeOrder.ShippingDiscountBool = true
+		} else {
+			total_price += storeOrder.StoreShippingFee
+			storeOrder.ShippingDiscountBool = false
+		}
 	}
-	fmt.Println(total_price)
 
 	// cal shipping discount
-	if storeOrder.SeasoningDiscount.DiscountPercentage != 0 {
-		total_price = int64(float32(total_price) * float32(storeOrder.SeasoningDiscount.DiscountPercentage) / 100)
-		storeOrder.SeasoningDiscountBool = true
-	} else {
-		storeOrder.SeasoningDiscountBool = false
+	if storeOrder.SeasoningDiscount != nil {
+		if storeOrder.SeasoningDiscount.DiscountPercentage != 0 {
+			total_price = int64(float32(total_price) * float32(storeOrder.SeasoningDiscount.DiscountPercentage) / 100)
+			storeOrder.SeasoningDiscountBool = true
+		} else {
+			storeOrder.SeasoningDiscountBool = false
+		}
 	}
-	fmt.Println(total_price)
 
 	storeOrder.TotalPrice = total_price
 
 	return storeOrder, nil
+}
+
+func (cu *cartUsecase) GetCurrentCartsByUserID(ctx context.Context, id int64) (*swagger.CartOrderInfo, error) {
+	ids, err := cu.cartRepo.GetCurrentCartID(ctx, id)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	var cartOrder swagger.CartOrderInfo
+	for _, id := range ids {
+		storeOrder, err := cu.GetHistoryCart(ctx, id.UserID, id.CartID, id.StoreID)
+		if err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+
+		cartOrder.StoreOrderInfoArray = append(cartOrder.StoreOrderInfoArray, *storeOrder)
+	}
+
+	var realTotalPrice int64
+	for _, storeOrder := range cartOrder.StoreOrderInfoArray {
+		realTotalPrice += storeOrder.TotalPrice
+	}
+	cartOrder.RealTotalPrice = realTotalPrice
+
+	return &cartOrder, nil
 }

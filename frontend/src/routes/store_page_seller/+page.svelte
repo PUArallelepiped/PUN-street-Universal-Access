@@ -4,6 +4,7 @@
 	import ChangeDiscountPage from '$lib/components/PUA/changeDiscountPage.svelte';
 	import StoreProducrCardArea from '$lib/components/PUA/store_page_seller/storeProducrCardArea.svelte';
 	import HashtagLabelArea from '$lib/components/PUA/store_page_seller/hashtagLabelArea.svelte';
+	import { onMount } from 'svelte';
 	let prodctListResponse: {
 		name: string;
 		description: string;
@@ -85,6 +86,23 @@
 			description: ''
 		};
 	}
+
+	onMount(() => {
+		toggleHeight();
+	});
+
+	let myElement: HTMLDivElement | null = null;
+
+	let k = 0;
+	$: {
+		k = 20 * prodctListResponse.length + 35;
+		toggleHeight();
+	}
+	const toggleHeight = () => {
+		if (myElement) {
+			myElement.style.height = `${k}vh`;
+		}
+	};
 </script>
 
 <div class="h-48 w-full overflow-hidden">
@@ -93,13 +111,14 @@
 
 <div class="mt-10 lg:px-40">
 	<div class="mx-5 space-y-2">
-		<div class="text-5xl font-bold text-PUA-stone">銀記手稈刀切牛肉麵</div>
+		<div class="text-PUA-stone text-5xl font-bold">銀記手稈刀切牛肉麵</div>
 		<div class="font-bold text-red-950">100台灣台北市中正區八德路一段82巷9弄17號</div>
 		<div class="flex w-full justify-start gap-6">
 			<HashtagLabelArea bind:hashtag_text></HashtagLabelArea>
 		</div>
 	</div>
-	<div class="h-full min-h-screen">
+
+	<div bind:this={myElement} class="min-h-screen">
 		<CategoryLabel
 			on:click={() => (showProductCard = toggleModel(showProductCard))}
 			text={'Product List'}
@@ -107,10 +126,19 @@
 			bind:dropdown={showProductCard}
 		></CategoryLabel>
 
-		<div class={` ${showProductCard ? 'visible h-full' : 'invisible h-0'}`}>
-			<StoreProducrCardArea bind:prodctListResponse></StoreProducrCardArea>
+		<div
+			class={` ${
+				showProductCard ? '  max-h-full ' : 'max-h-0'
+			}   overflow-hidden transition-all duration-[1300ms] ease-in-out`}
+		>
+			<div
+				class={` ${
+					showProductCard ? ' translate-y-0 ' : 'translate-y-[-100%]'
+				}   transition-all duration-[1500ms] ease-in-out `}
+			>
+				<StoreProducrCardArea bind:prodctListResponse></StoreProducrCardArea>
+			</div>
 		</div>
-
 		<CategoryLabel text={'Shipping Discount List'}></CategoryLabel>
 		<div class="relative mx-5 space-y-4">
 			<div class="flex items-center gap-4">

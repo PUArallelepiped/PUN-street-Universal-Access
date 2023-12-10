@@ -91,7 +91,7 @@
 	let k = 0;
 
 	$: {
-		k = 20 * prodctListResponse.length + 35;
+		k = 20 * prodctListResponse.length + 50;
 		showProductCard;
 		toggleHeight();
 	}

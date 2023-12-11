@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { StoreProductCard } from '$lib';
-	import HashtagAdd from '../hashtag/hashtagAdd.svelte';
-	export let prodctListResponse: {
+	import TagAdd from '../tag/tagAdd.svelte';
+	export let productListResponse: {
 		name: string;
 		description: string;
 		price: number;
@@ -12,11 +12,11 @@
 		store_id: number;
 	}[];
 
-	let prodctListResponse_nextId = prodctListResponse.length + 1;
+	let prodctListResponse_nextId = productListResponse.length + 1;
 
 	function addStoreProductCard() {
-		prodctListResponse = [
-			...prodctListResponse,
+		productListResponse = [
+			...productListResponse,
 			{
 				status: 1,
 				stock: 100,
@@ -31,15 +31,15 @@
 		prodctListResponse_nextId = prodctListResponse_nextId + 1;
 	}
 	function removeStoreProductCard(id: number) {
-		let result = prodctListResponse.find((item) => item.product_id === id);
+		let result = productListResponse.find((item) => item.product_id === id);
 		if (result !== undefined) {
-			prodctListResponse = prodctListResponse.filter((cat) => cat.product_id !== id);
+			productListResponse = productListResponse.filter((cat) => cat.product_id !== id);
 		}
 	}
 </script>
 
 <div class="mx-5 flex-row space-y-2 p-2">
-	{#each prodctListResponse as product}
+	{#each productListResponse as product}
 		<StoreProductCard
 			name={product.name}
 			description={product.description}
@@ -49,6 +49,6 @@
 		/>
 	{/each}
 	<div class="flex h-20 items-center justify-center">
-		<HashtagAdd on:click={addStoreProductCard}></HashtagAdd>
+		<TagAdd on:click={addStoreProductCard}></TagAdd>
 	</div>
 </div>

@@ -47,7 +47,7 @@
 </script>
 
 <div
-	class="flex h-fit w-fit items-center justify-center rounded-full bg-PUA-dark-red px-4 text-white"
+	class="bg-PUA-dark-red flex h-fit w-fit items-center justify-center rounded-full px-4 text-white"
 >
 	<input
 		bind:value={text}
@@ -55,7 +55,7 @@
 		on:keydown
 		maxlength="31"
 		class=" w-${width} h-7 overflow-hidden bg-transparent text-center text-white underline outline-none placeholder:text-white"
-		placeholder="Enter Hashtag"
+		placeholder="Enter Tag"
 		{id}
 	/>
 </div>

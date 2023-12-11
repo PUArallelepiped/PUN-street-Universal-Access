@@ -1977,8 +1977,19 @@ components:
     StoreStatistic:
       type: array
       items:
-        $ref: '#/components/schemas/inline_response_200'
+        $ref: '#/components/schemas/price'
       x-schema-name: StoreStatistic
+    price:
+      required:
+      - price
+      type: object
+      properties:
+        price:
+          type: integer
+          format: int64
+          example: 10000
+      example:
+        price: 10000
     TimePeriod:
       required:
       - end_date
@@ -2054,6 +2065,47 @@ components:
       items:
         $ref: '#/components/schemas/StoreOrderInfo'
       x-schema-name: CartOrderInfo
+    HistoryDetailStoreOrderInfo:
+      type: object
+      properties:
+        store_id:
+          type: integer
+          format: int64
+          example: 1
+        store_name:
+          type: string
+          example: i'm pasta
+        store_shipping_fee:
+          type: integer
+          format: int64
+          example: 100
+        shipping_discount_id:
+          type: integer
+          format: int64
+          example: 1
+        shipping_discount_max_price:
+          type: integer
+          format: int64
+          example: 100
+        seasoning_discount_id:
+          type: integer
+          format: int64
+          example: 1
+        seasoning_discount_start_date:
+          type: string
+          example: 2021-01-01 00:00:00
+        seasoning_discount_end_date:
+          type: string
+          example: 2021-01-01 00:00:00
+        seasoning_discount_percentage:
+          type: integer
+          format: int64
+          example: 80
+        product_order:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductOrderInfo'
+          x-schema-name: ProductOrderInfo
     StoreOrderInfo:
       type: object
       properties:

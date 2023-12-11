@@ -20,7 +20,7 @@ func NewPostgressqlCategoryRepo(db *sql.DB) domain.CategoryRepo {
 func (p *postgresqlCategoty) GetAllCategory(ctx context.Context) (*[]swagger.Category, error) {
 	sqlStatement := `SELECT 
 	category_id, name
-	FROM categorys;
+	FROM categories;
 	`
 
 	rows, err := p.db.Query(sqlStatement)

@@ -156,8 +156,6 @@ func (cu *cartUsecase) GetCurrentCartsByUserID(ctx context.Context, id int64) (*
 }
 
 func (cu *cartUsecase) Checkout(ctx context.Context, customerId int64, storeId int64) error {
-	// maybe change to checkout many store need change many order
-	//fix me
 	cartOrder, err := cu.GetCurrentCartsByUserID(ctx, customerId)
 	if err != nil {
 		logrus.Error(err)
@@ -170,6 +168,8 @@ func (cu *cartUsecase) Checkout(ctx context.Context, customerId int64, storeId i
 		return err
 	}
 
+	//cartID not work
+	//fix me
 	err = cu.cartRepo.AddUserCurrentCart(ctx, customerId)
 	if err != nil {
 		logrus.Error(err)

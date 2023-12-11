@@ -26,7 +26,7 @@ func NewCartHandler(e *gin.Engine, cartUsecase domain.CartUsecase) {
 		v1.GET("/customer/:userID/order-status", handler.GetRunOrder)
 
 		v1.POST("/customer/:userID/cart", handler.AddProductToCart)
-		v1.POST("/customer/:userID/store/:storeID/checkout")
+		v1.POST("/customer/:userID/store/:storeID/checkout", handler.Checkout)
 		v1.DELETE("/customer/:userID/delete/product/:productID", handler.DeleteProduct)
 	}
 }

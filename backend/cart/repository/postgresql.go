@@ -345,7 +345,7 @@ func (p *postgresqlCartRepo) UpdateOrderInfo(ctx context.Context, customerId int
 	order_date = $2,
 	taking_address = (SELECT address FROM user_data WHERE user_id = $3)
 	WHERE user_id = $3 AND 
-	cart_id = (SELECT current_user_id FROM user_data WHERE user_id = $3) AND
+	cart_id = (SELECT current_cart_id FROM user_data WHERE user_id = $3) AND
 	store_id = $4
 	`
 	dt := time.Now().Format("01-02-2006 15:04:05")

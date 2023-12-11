@@ -22,19 +22,20 @@ func (p *postgresqlProductRepo) GetProductByID(ctx context.Context, id int64) (*
 	sqlStatement := `
 	SELECT product_id, store_id, name, description, picture, stock, price, status,
 		(SELECT 
-			jsonb_agg(jsonb_build_object(
+			coalesce(jsonb_agg(jsonb_build_object(
 			'discount_max_quantity', max_quantity,
 			'product_id', product_id,
 			'discount_name', name,
 			'discount_description', description,
 			'discount_id', discount_id,
 			'status', status
-			)) 
+			)) , '[]')
 			AS event_discount
 			FROM discounts NATURAL JOIN 
 			(SELECT event_discount.discount_id, event_discount.max_quantity, event_discount.product_id FROM event_discount WHERE event_discount.product_id = products.product_id)
 		) AS event_discount_array,
-		(SELECT (jsonb_agg(jsonb_build_object(
+		(SELECT 
+			coalesce(jsonb_agg(jsonb_build_object(
 			'product_id', product_id, 
 			'label_name', label_name, 
 			'required', required, 
@@ -43,7 +44,7 @@ func (p *postgresqlProductRepo) GetProductByID(ctx context.Context, id int64) (*
 					'name', label_item.item_name))) AS item_array
 			FROM label_item
 			WHERE label_item.label_name = product_label.label_name AND label_item.product_id = product_label.product_id)
-		))) AS product_label_array
+		)), '[]') AS product_label_array
 		FROM product_label WHERE product_label.product_id = products.product_id)
 	FROM products WHERE product_id = $1;
 	`
@@ -88,19 +89,20 @@ func (p *postgresqlProductRepo) GetProductsByStoreID(ctx context.Context, id int
 	sqlStatement := `
 	SELECT product_id, store_id, name, description, picture, stock, price, status,
 		(SELECT 
-			jsonb_agg(jsonb_build_object(
+			coalesce(jsonb_agg(jsonb_build_object(
 			'discount_max_quantity', max_quantity,
 			'product_id', product_id,
 			'discount_name', name,
 			'discount_description', description,
 			'discount_id', discount_id,
 			'status', status
-			)) 
+			)) , '[]')
 			AS event_discount
 			FROM discounts NATURAL JOIN 
 			(SELECT event_discount.discount_id, event_discount.max_quantity, event_discount.product_id FROM event_discount WHERE event_discount.product_id = products.product_id)
 		) AS event_discount_array,
-		(SELECT (jsonb_agg(jsonb_build_object(
+		(SELECT 
+			coalesce(jsonb_agg(jsonb_build_object(
 			'product_id', product_id, 
 			'label_name', label_name, 
 			'required', required, 
@@ -108,8 +110,8 @@ func (p *postgresqlProductRepo) GetProductsByStoreID(ctx context.Context, id int
 			(SELECT (jsonb_agg(jsonb_build_object(
 					'name', label_item.item_name))) AS item_array
 			FROM label_item
-        	WHERE label_item.label_name = product_label.label_name AND label_item.product_id = product_label.product_id)
-		))) AS product_label_array
+			WHERE label_item.label_name = product_label.label_name AND label_item.product_id = product_label.product_id)
+		)), '[]') AS product_label_array
 		FROM product_label WHERE product_label.product_id = products.product_id)
 	FROM products WHERE store_id = $1 AND status != 0;
 	`

@@ -99,7 +99,10 @@ func (cu *cartUsecase) GetHistoryCart(ctx context.Context, customerId int64, car
 	var total_price int64
 	// cal event discount
 	for _, product := range storeOrder.ProductOrder {
-		quantity := product.ProductQuantity - int64(product.ProductQuantity/int64(product.EventDiscountMaxQuantity+1))
+		quantity := product.ProductQuantity
+		if product.EventDiscountMaxQuantity != 0 {
+			quantity = product.ProductQuantity - int64(product.ProductQuantity/int64(product.EventDiscountMaxQuantity+1))
+		}
 		total_price += quantity * product.ProductPrice
 	}
 

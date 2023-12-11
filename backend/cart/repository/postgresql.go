@@ -196,11 +196,9 @@ func (p *postgresqlCartRepo) GetHistoryCart(ctx context.Context, customerId int6
 			'status', discounts.status, 
 			'discount_max_price', shipping_discount.max_price) 
 			AS shipping_discount 
-			FROM orders LEFT JOIN 
-				(discounts LEFT JOIN shipping_discount 
-					ON discounts.discount_id = shipping_discount.discount_id) 
-				ON orders.shipping_discount_id = discounts.discount_id
-			WHERE orders.user_id = $1 AND orders.cart_id = $2 AND orders.store_id = $3),
+			FROM (discounts LEFT JOIN shipping_discount 
+				ON discounts.discount_id = shipping_discount.discount_id)
+			WHERE discounts.status = 1 AND shipping_discount.store_id = 1),
 		(SELECT jsonb_build_object(
 			'discount_id',discounts.discount_id,
 			'discount_name', discounts.name,

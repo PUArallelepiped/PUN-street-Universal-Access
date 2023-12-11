@@ -1,5 +1,5 @@
 <script lang="ts">
-	import hashtagTranshcan from '$lib/assets/hashtagTrashcan.svg';
+	import hashtagTranshcan from '$lib/assets/tagTrashcan.svg';
 	export let text = 'null';
 	export let canRemove = false;
 </script>

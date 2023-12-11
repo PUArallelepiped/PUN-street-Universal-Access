@@ -1,7 +1,7 @@
 <script lang="ts">
 	// import{store} from "$app/stores"
 	const routes = [
-		{ path: '/', title: 'My profile' }, // TODO
+		{ path: '/profile', title: 'My profile' }, // TODO
 		{ path: '/shops', title: 'ShopList' },
 		{ path: '/', title: 'Check Order' }, // TODO
 		{ path: '/', title: 'History' } // TODO

@@ -158,6 +158,7 @@
 					description={shop.description}
 					picture={shop.picture}
 					address={shop.address}
+					rate={shop.rate}
 				/>
 			</div>
 		{/each}

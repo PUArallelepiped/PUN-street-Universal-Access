@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"time"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
@@ -154,11 +155,13 @@ func (p *postgresqlCartRepo) DeleteProduct(ctx context.Context, customerId int64
 func (p *postgresqlCartRepo) AddProductToCart(ctx context.Context, customerId int64, cartInfo *swagger.CartInfo) error {
 	sqlStatement := `
 	INSERT INTO carts (customer_id, cart_id, store_id, product_id, product_quantity, event_discount_id) VALUES
-	($1, $2, $3, $4, $5, $6)
+	($1, 
+	(SELECT current_cart_id FROM user_data WHERE user_id = $1),
+	$2, $3, $4, $5)
 	ON CONFLICT (customer_id, product_id, store_id, cart_id) DO UPDATE 
 	SET product_quantity = EXCLUDED.product_quantity;
 	`
-	_, err := p.db.Exec(sqlStatement, customerId, cartInfo.CartId, cartInfo.StoreId, cartInfo.ProductId, cartInfo.ProductQuantity, cartInfo.DiscountId)
+	_, err := p.db.Exec(sqlStatement, customerId, cartInfo.StoreId, cartInfo.ProductId, cartInfo.ProductQuantity, cartInfo.DiscountId)
 	if err != nil {
 		logrus.Error(err)
 		return err
@@ -173,9 +176,25 @@ func (p *postgresqlCartRepo) AddOrderByCartInfo(ctx context.Context, customerId 
 		shipping_discount_id, status, total_price, Order_date, taking_address, taking_method) VALUES 
     ($1, 
 	(SELECT current_cart_id FROM user_data WHERE user_id = $1),
-	$2, 1, 1, 0, 0, '2020-01-01 00:00:00', '台北市', 1)
+	$2, 
+	(SELECT COALESCE(
+		(SELECT discount_id
+		FROM seasoning_discount
+		WHERE start_date <= $3 AND end_date >= $3),
+		1
+	) AS discount_id),
+	(SELECT COALESCE(shipping_discount.discount_id, 1) FROM shipping_discount LEFT JOIN
+	discounts ON shipping_discount.discount_id = discounts.discount_id
+	WHERE shipping_discount.store_id = $2 AND discounts.status = 1),
+	0, 
+	0, 
+	'2020-01-01 00:00:00', 
+	(SELECT address FROM user_data WHERE user_id = $1), 
+	1)
 	`
-	_, err := p.db.Exec(sqlStatement, customerId, storeId)
+	dt := time.Now().Format("01-02-2006 15:04:05")
+
+	_, err := p.db.Exec(sqlStatement, customerId, storeId, dt)
 	if err != nil {
 		logrus.Error(err)
 		return err

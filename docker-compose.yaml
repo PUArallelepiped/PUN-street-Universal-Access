@@ -1,9 +1,27 @@
-# # Use postgres/example user/password credentials
 version: '3.8'
 
 services:
-  postgres_db:
-    image: postgres:latest
+  go-server:
+      image: go-server
+      build:
+        context: ./backend
+        dockerfile: Dockerfile
+      container_name: go-server
+      working_dir: /app/server
+      environment:
+        - DB_HOST=postgres-db
+      ports:
+        - "5000:5000"
+      volumes:
+        - ./backend:/app/server
+        - .env:/app/.env
+      depends_on:
+        - postgres-db
+      entrypoint: go run cmd/main.go
+      restart: always
+  postgres-db:
+    image: postgres:15.5-alpine3.18
+    container_name: postgres-db
     restart: always
     ports: 
       - "5432:5432"

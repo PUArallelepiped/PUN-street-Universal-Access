@@ -17,7 +17,7 @@
 	// 	totalShippingFee: 'Total Shipping Fee',
 	// 	address: 'Taking Address'
 	// };
-	let seasoningDiscountList: {
+	type seasonindDiscount = {
 		discount_start_date: string;
 		discount_name: string;
 		discount_end_date: string;
@@ -25,19 +25,15 @@
 		discount_percentage: number;
 		discount_id: number;
 		status: number;
-	}[] = [
-		{
-			discount_start_date: '2021-01-01T00:00:00.000Z',
-			discount_name: 'spring discount',
-			discount_end_date: '2021-11-01T00:00:00.000Z',
-			discount_description: 'all products get 30% off',
-			discount_percentage: NaN,
-			discount_id: 1,
-			status: 0
-		}
-	];
+	};
+	let seasoningDiscountList: seasonindDiscount[] = [];
 	onMount(async () => {
-		const resp = await fetch(backendPath + `/store/1/products`);
+		const init = await fetch(`/seasoningDiscount.json`);
+		console.log(init);
+		if (init.status == 200) {
+			seasoningDiscountList = await init.json();
+		}
+		const resp = await fetch(backendPath + `/seasoning-discounts`);
 		if (resp.status == 200) {
 			seasoningDiscountList = await resp.json();
 		}

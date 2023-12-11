@@ -3,24 +3,7 @@
 		sTime = await changeDate(discount_start_date);
 		eTime = await changeDate(discount_end_date);
 	}
-	async function changeDate(time: string) {
-		let d = new Date(time);
-		let month = '' + (d.getMonth() + 1),
-			day = '' + d.getDate(),
-			year = d.getFullYear();
 
-		if (month.length < 2) month = '0' + month;
-		if (day.length < 2) day = '0' + day;
-
-		return [year, month, day].join('-');
-	}
-
-	async function changesDate() {
-		sTime = await changeDate(discount_start_date);
-	}
-	async function changeeDate() {
-		eTime = await changeDate(discount_end_date);
-	}
 	async function changeDate(time: string) {
 		let d = new Date(time);
 		let month = '' + (d.getMonth() + 1),
@@ -41,7 +24,7 @@
 	let sTime: string;
 </script>
 
-{#await (changeColor(used), changeeDate(), changesDate())}
+{#await changeseDate()}
 	loading
 {:then}
 	<div class="flex h-32 w-96 flex-col">

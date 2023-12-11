@@ -198,7 +198,7 @@ func (p *postgresqlCartRepo) GetHistoryCart(ctx context.Context, customerId int6
 			AS shipping_discount 
 			FROM (discounts LEFT JOIN shipping_discount 
 				ON discounts.discount_id = shipping_discount.discount_id)
-			WHERE discounts.status = 1 AND shipping_discount.store_id = 1),
+			WHERE discounts.status = 1 AND shipping_discount.store_id = $3),
 		(SELECT jsonb_build_object(
 			'discount_id',discounts.discount_id,
 			'discount_name', discounts.name,
@@ -208,11 +208,8 @@ func (p *postgresqlCartRepo) GetHistoryCart(ctx context.Context, customerId int6
 			'discount_end_date', seasoning_discount.end_date,
 			'discount_percentage', seasoning_discount.discount_percentage)
 			AS seasoning_discount 
-			FROM orders LEFT JOIN 
-				(discounts LEFT JOIN seasoning_discount 
-					ON discounts.discount_id = seasoning_discount.discount_id) 
-				ON orders.seasoning_discount_id = discounts.discount_id
-			WHERE orders.user_id = $1 AND orders.cart_id = $2 AND orders.store_id = $3),
+			FROM discounts LEFT JOIN seasoning_discount ON discounts.discount_id = seasoning_discount.discount_id
+			WHERE start_date <= $4 AND end_date >= $4),
 		(SELECT jsonb_agg(jsonb_build_object(
 			'event_discount_max_quantity', event_discount.max_quantity, 
 			'event_discount_id', event_discount.discount_id, 
@@ -228,7 +225,10 @@ func (p *postgresqlCartRepo) GetHistoryCart(ctx context.Context, customerId int6
 			WHERE carts.customer_id = $1 AND carts.cart_id = $2 AND carts.store_id = $3)
 	FROM stores WHERE store_id = $3;
 	`
-	row := p.db.QueryRow(sqlStatement, customerId, cartId, storeId)
+
+	dt := time.Now().Format("01-02-2006 15:04:05")
+
+	row := p.db.QueryRow(sqlStatement, customerId, cartId, storeId, dt)
 
 	storeOrder := &swagger.StoreOrderInfo{}
 	var shippingDiscountString sql.NullString

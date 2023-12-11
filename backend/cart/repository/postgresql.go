@@ -188,47 +188,50 @@ func (p *postgresqlCartRepo) AddOrderByCartInfo(ctx context.Context, customerId 
 
 func (p *postgresqlCartRepo) GetHistoryCart(ctx context.Context, customerId int64, cartId int64, storeId int64) (*swagger.StoreOrderInfo, error) {
 	sqlStatement := `
-	SELECT store_id, name AS store_name, shipping_fee AS store_shipping_fee,
-		(SELECT jsonb_build_object(
-			'discount_id',discounts.discount_id,
-			'discount_name', discounts.name, 
-			'discount_description', discounts.description,
-			'status', discounts.status, 
-			'discount_max_price', shipping_discount.max_price) 
-			AS shipping_discount 
-			FROM (discounts LEFT JOIN shipping_discount 
-				ON discounts.discount_id = shipping_discount.discount_id)
-			WHERE discounts.status = 1 AND shipping_discount.store_id = $3),
-		(SELECT jsonb_build_object(
-			'discount_id',discounts.discount_id,
-			'discount_name', discounts.name,
-			'discount_description', discounts.description,
-			'status', discounts.status, 
-			'discount_start_date', seasoning_discount.start_date,
-			'discount_end_date', seasoning_discount.end_date,
-			'discount_percentage', seasoning_discount.discount_percentage)
-			AS seasoning_discount 
-			FROM discounts LEFT JOIN seasoning_discount ON discounts.discount_id = seasoning_discount.discount_id
-			WHERE start_date <= $4 AND end_date >= $4),
-		(SELECT jsonb_agg(jsonb_build_object(
-			'event_discount_max_quantity', event_discount.max_quantity, 
-			'event_discount_id', event_discount.discount_id, 
-			'product_id', carts.product_id, 
-			'product_price', products.price, 
-			'product_name', products.name, 
-			'product_quantity', carts.product_quantity, 
-			'product_picture', products.picture))
-			AS product_order
-			FROM carts 
-			LEFT JOIN event_discount ON carts.event_discount_id = event_discount.discount_id 
-			LEFT JOIN products ON carts.product_id = products.product_id
-			WHERE carts.customer_id = $1 AND carts.cart_id = $2 AND carts.store_id = $3)
+		SELECT store_id, name AS store_name, shipping_fee AS store_shipping_fee,
+			(SELECT jsonb_build_object(
+				'discount_id', COALESCE(discounts.discount_id, 1),
+				'discount_name', COALESCE(discounts.name, 'default'), 
+				'discount_description', COALESCE(discounts.description, 'no discount'),
+				'status', COALESCE(discounts.status, 1), 
+				'discount_max_price', shipping_discount.max_price)
+				AS shipping_discount 
+					FROM orders LEFT JOIN 
+						(discounts LEFT JOIN 
+							shipping_discount ON discounts.discount_id = shipping_discount.discount_id) 
+						ON orders.shipping_discount_id = discounts.discount_id
+				WHERE orders.user_id = $1 AND orders.cart_id = $2 AND orders.store_id = stores.store_id),
+			(SELECT jsonb_build_object(
+				'discount_id', COALESCE(discounts.discount_id, 1),
+				'discount_name', COALESCE(discounts.name, 'default'), 
+				'discount_description', COALESCE(discounts.description, 'no discount'),
+				'status', COALESCE(discounts.status, 1), 
+				'discount_start_date', seasoning_discount.start_date,
+				'discount_end_date', seasoning_discount.end_date,
+				'discount_percentage', seasoning_discount.discount_percentage)
+				AS seasoning_discount
+					FROM orders LEFT JOIN 
+						(discounts LEFT JOIN 
+							seasoning_discount ON discounts.discount_id = seasoning_discount.discount_id) 
+						ON orders.seasoning_discount_id = seasoning_discount.discount_id
+				WHERE orders.user_id = $1 AND orders.cart_id = $2 AND orders.store_id = stores.store_id),
+			(SELECT COALESCE(jsonb_agg(jsonb_build_object(
+				'event_discount_max_quantity', event_discount.max_quantity, 
+				'event_discount_id', event_discount.discount_id, 
+				'product_id', carts.product_id, 
+				'product_price', products.price, 
+				'product_name', products.name, 
+				'product_quantity', carts.product_quantity, 
+				'product_picture', products.picture)), '[]')
+				AS product_order
+					FROM carts 
+					LEFT JOIN event_discount ON carts.event_discount_id = event_discount.discount_id 
+					LEFT JOIN products ON carts.product_id = products.product_id
+				WHERE carts.customer_id = $1 AND carts.cart_id = $2 AND carts.store_id = stores.store_id)
 	FROM stores WHERE store_id = $3;
 	`
 
-	dt := time.Now().Format("01-02-2006 15:04:05")
-
-	row := p.db.QueryRow(sqlStatement, customerId, cartId, storeId, dt)
+	row := p.db.QueryRow(sqlStatement, customerId, cartId, storeId)
 
 	storeOrder := &swagger.StoreOrderInfo{}
 	var shippingDiscountString sql.NullString

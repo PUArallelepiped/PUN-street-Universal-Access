@@ -921,7 +921,8 @@ paths:
       - customer
       - cart
       - order
-      summary: checkout cart (optional-> email to customer) change order status/total-price and change user_data current_cart_id +1
+      summary: checkout cart (optional-> email to customer) change order status/total-price
+        and change user_data current_cart_id +1
       parameters:
       - name: userID
         in: path
@@ -2069,8 +2070,14 @@ components:
           x-schema-name: ProductOrderInfo
     StoreOrderInfo:
       required:
-      - shipping_discount_bool
+      - product_order
+      - seasoning_discount
       - seasoning_discount_bool
+      - shipping_discount
+      - shipping_discount_bool
+      - store_id
+      - store_name
+      - store_shipping_fee
       type: object
       properties:
         store_id:
@@ -2143,9 +2150,9 @@ components:
       required:
       - product_id
       - product_name
+      - product_picture
       - product_price
       - product_quantity
-      - product_picture
       type: object
       properties:
         product_id:

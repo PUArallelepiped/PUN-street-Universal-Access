@@ -104,6 +104,7 @@ func (cu *cartUsecase) GetHistoryCart(ctx context.Context, customerId int64, car
 	}
 
 	// cal shipping discount
+	storeOrder.ShippingDiscountBool = false
 	if storeOrder.ShippingDiscount != nil {
 		if total_price > storeOrder.ShippingDiscount.DiscountMaxPrice && storeOrder.ShippingDiscount.DiscountMaxPrice > 0 {
 			storeOrder.ShippingDiscountBool = true
@@ -114,6 +115,7 @@ func (cu *cartUsecase) GetHistoryCart(ctx context.Context, customerId int64, car
 	}
 
 	// cal shipping discount
+	storeOrder.SeasoningDiscountBool = false
 	if storeOrder.SeasoningDiscount != nil {
 		if storeOrder.SeasoningDiscount.DiscountPercentage != 0 {
 			total_price = int64(float32(total_price) * float32(storeOrder.SeasoningDiscount.DiscountPercentage) / 100)

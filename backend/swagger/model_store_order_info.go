@@ -9,21 +9,21 @@
 package swagger
 
 type StoreOrderInfo struct {
-	StoreId int64 `json:"store_id,omitempty"`
+	StoreId int64 `json:"store_id"`
 
-	StoreName string `json:"store_name,omitempty"`
+	StoreName string `json:"store_name"`
 
-	StoreShippingFee int64 `json:"store_shipping_fee,omitempty"`
+	StoreShippingFee int64 `json:"store_shipping_fee"`
 
-	ProductOrder []ProductOrderInfo `json:"product_order,omitempty"`
+	ProductOrder []ProductOrderInfo `json:"product_order"`
 
-	ShippingDiscount *ShippingDiscount `json:"shipping_discount,omitempty"`
+	ShippingDiscount *ShippingDiscount `json:"shipping_discount"`
 
-	ShippingDiscountBool bool `json:"shipping_discount_bool,omitempty"`
+	ShippingDiscountBool bool `json:"shipping_discount_bool"`
 
-	SeasoningDiscount *SeasoningDiscount `json:"seasoning_discount,omitempty"`
+	SeasoningDiscount *SeasoningDiscount `json:"seasoning_discount"`
 
-	SeasoningDiscountBool bool `json:"seasoning_discount_bool,omitempty"`
+	SeasoningDiscountBool bool `json:"seasoning_discount_bool"`
 
 	TotalPrice int64 `json:"total_price,omitempty"`
 }

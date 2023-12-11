@@ -17,6 +17,8 @@ type ProductOrderInfo struct {
 
 	ProductQuantity int64 `json:"product_quantity"`
 
+	ProductPicture string `json:"product_picture"`
+
 	EventDiscountId int64 `json:"event_discount_id,omitempty"`
 
 	EventDiscountMaxQuantity int32 `json:"event_discount_max_quantity,omitempty"`

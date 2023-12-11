@@ -2148,6 +2148,8 @@ components:
         total_price: 1000
     ProductOrderInfo:
       required:
+      - event_discount_id
+      - event_discount_max_quantity
       - product_id
       - product_name
       - product_picture

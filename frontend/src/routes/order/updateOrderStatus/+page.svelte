@@ -23,7 +23,7 @@
 	];
 </script>
 
-<div class=" flex flex-wrap items-center justify-center gap-10 bg-gray-200 py-12">
+<div class=" flex h-full flex-wrap items-center justify-center gap-10 py-12">
 	{#each statusCardContent as sub}
 		<OrderStatusCard statusCardContent={sub}></OrderStatusCard>
 	{/each}

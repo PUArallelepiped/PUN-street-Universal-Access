@@ -28,7 +28,7 @@
 		picture: 'https://i.imgur.com/1.jpg',
 		status: 1
 	};
-	let prodctListResponse: {
+	type ProductResponse = {
 		name: string;
 		description: string;
 		price: number;
@@ -37,44 +37,16 @@
 		status: number;
 		stock: number;
 		store_id: number;
-	}[] = [
-		{
-			status: 1,
-			name: 'TEA EGG',
-			description:
-				'EGG of tea\n expensive\n also call putting, egg,egg,egg,egg, egg, egg,limit, limit, limit, limit, limit, limit, limit, limit, limit, ',
-			price: 180,
-			picture: 'https://i.imgur.com/3i3tyXJ.gif',
-			product_id: 1,
-			store_id: 1,
-
-			stock: 100
-		},
-		{
-			status: 1,
-			stock: 100,
-			store_id: 1,
-			name: 'watermelon',
-			description: 'a game',
-			price: 0,
-			picture: 'https://i.imgur.com/3i3tyXJ.gif',
-			product_id: 2
-		},
-		{
-			status: 1,
-			stock: 100,
-			store_id: 1,
-			product_id: 3,
-			picture: 'https://i.imgur.com/3i3tyXJ.gif',
-			name: 'swwika',
-			description: 'praying',
-			price: 102
-		}
-	];
+	};
+	let prodctListResponse: ProductResponse[] = [];
 	onMount(async () => {
-		const resp = await fetch(backendPath + `/store/1/products`);
+		const resp = await fetch('/shop.json');
 		prodctListResponse = await resp.json();
-		console.log(prodctListResponse);
+
+		const backResp = await fetch(backendPath + `/store/1/products`);
+		if (backResp.status == 200) {
+			prodctListResponse = await backResp.json();
+		}
 	});
 	onMount(async () => {
 		const resp = await fetch(backendPath + `/store/1`);

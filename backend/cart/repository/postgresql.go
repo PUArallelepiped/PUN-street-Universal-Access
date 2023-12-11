@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"time"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
@@ -301,4 +302,59 @@ func (p *postgresqlCartRepo) GetCurrentCartID(ctx context.Context, id int64) ([]
 	}
 
 	return ids, nil
+}
+
+func (p *postgresqlCartRepo) AddUserCurrentCart(ctx context.Context, id int64) error {
+	sqlStatement := `
+	UPDATE user_data SET 
+	current_cart_id = current_cart_id +1
+	WHERE user_id = $1;
+	`
+
+	_, err := p.db.Exec(sqlStatement, id)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}
+
+func (p *postgresqlCartRepo) UpdateOrderStatusByID(ctx context.Context, customerId int64, storeId int64, status int64) error {
+	sqlStatement := `
+	UPDATE orders SET status = $1	
+	WHERE user_id = $2 AND 
+	cart_id = (SELECT current_user_id FROM user_data WHERE user_id = $2) AND
+	store_id = $3
+	`
+
+	_, err := p.db.Exec(sqlStatement, status, customerId, storeId)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}
+
+func (p *postgresqlCartRepo) UpdateOrderInfo(ctx context.Context, customerId int64, storeId int64, totalPrice int64) error {
+	sqlStatement := `
+	UPDATE orders SET
+	status = 1,
+	total_price = $1,
+	order_date = $2,
+	taking_address = (SELECT address FROM user_data WHERE user_id = $3)
+	WHERE user_id = $3 AND 
+	cart_id = (SELECT current_user_id FROM user_data WHERE user_id = $3) AND
+	store_id = $4
+	`
+	dt := time.Now().Format("01-02-2006 15:04:05")
+
+	_, err := p.db.Exec(sqlStatement, totalPrice, dt, customerId, storeId)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
 }

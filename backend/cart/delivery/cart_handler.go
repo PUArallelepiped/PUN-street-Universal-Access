@@ -161,3 +161,24 @@ func (ch *CartHandler) GetCurrentCarts(c *gin.Context) {
 
 	c.JSON(200, cartOrder)
 }
+
+func (ch *CartHandler) Checkout(c *gin.Context) {
+	customerID, customerErr := strconv.ParseInt(c.Param("userID"), 10, 64)
+	storeID, storeErr := strconv.ParseInt(c.Param("storeID"), 10, 64)
+	for _, err := range []error{customerErr, storeErr} {
+		if err != nil {
+			logrus.Error(err)
+			c.Status(400)
+			return
+		}
+	}
+
+	err := ch.CartUsecase.Checkout(c, customerID, storeID)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.Status(200)
+}

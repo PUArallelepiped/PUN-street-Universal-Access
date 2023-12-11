@@ -921,7 +921,7 @@ paths:
       - customer
       - cart
       - order
-      summary: checkout cart (optional-> email to customer)
+      summary: checkout cart (optional-> email to customer) change order status/total-price and change user_data current_cart_id +1
       parameters:
       - name: userID
         in: path

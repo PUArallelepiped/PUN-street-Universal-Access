@@ -154,3 +154,27 @@ func (cu *cartUsecase) GetCurrentCartsByUserID(ctx context.Context, id int64) (*
 
 	return &cartOrder, nil
 }
+
+func (cu *cartUsecase) Checkout(ctx context.Context, customerId int64, storeId int64) error {
+	// maybe change to checkout many store need change many order
+	//fix me
+	cartOrder, err := cu.GetCurrentCartsByUserID(ctx, customerId)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	err = cu.cartRepo.UpdateOrderInfo(ctx, customerId, storeId, cartOrder.RealTotalPrice)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	err = cu.cartRepo.AddUserCurrentCart(ctx, customerId)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}

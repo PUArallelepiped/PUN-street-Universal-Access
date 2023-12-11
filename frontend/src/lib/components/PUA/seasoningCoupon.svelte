@@ -44,4 +44,4 @@
 			</div>
 		</div>
 	</div>
-{/await}
+</div>

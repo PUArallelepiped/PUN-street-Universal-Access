@@ -23,7 +23,7 @@
 					<div
 						class="mx-2 rounded-lg border-2 border-PUA-red px-1 text-base font-semibold text-PUA-red"
 					>
-						no storange
+						no storage
 					</div>
 				</div>
 			</div>

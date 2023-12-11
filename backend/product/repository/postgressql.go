@@ -111,7 +111,7 @@ func (p *postgresqlProductRepo) GetProductsByStoreID(ctx context.Context, id int
         	WHERE label_item.label_name = product_label.label_name AND label_item.product_id = product_label.product_id)
 		))) AS product_label_array
 		FROM product_label WHERE product_label.product_id = products.product_id)
-	FROM products WHERE store_id = $1;
+	FROM products WHERE store_id = $1 AND status != 0;
 	`
 	rows, err := p.db.Query(sqlStatement, id)
 	if err != nil {

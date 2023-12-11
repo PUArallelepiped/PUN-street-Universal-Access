@@ -183,3 +183,19 @@ func (p *postgresqlCartRepo) AddOrderByCartInfo(ctx context.Context, customerId 
 
 	return nil
 }
+
+func (p *postgresqlCartRepo) IsProductCanAdd(ctx context.Context, id int64) (bool, error) {
+	sqlStatement := `
+	SELECT (status != 2) FROM products WHERE product_id = $1
+	`
+	row := p.db.QueryRow(sqlStatement, id)
+
+	canAdd := false
+	err := row.Scan(&canAdd)
+	if err != nil {
+		logrus.Error(err)
+		return false, err
+	}
+
+	return canAdd, nil
+}

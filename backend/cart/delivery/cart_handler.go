@@ -67,14 +67,6 @@ func (ch *CartHandler) GetRunOrder(c *gin.Context) {
 	c.JSON(200, runOrderArray)
 }
 
-func (ch *CartHandler) GetCartsByUserCartID() {
-
-}
-
-func (ch *CartHandler) PostProductToCart(c *gin.Context) {
-
-}
-
 func (ch *CartHandler) DeleteProduct(c *gin.Context) {
 	customerID, customerErr := strconv.ParseInt(c.Param("userID"), 10, 64)
 	productID, productErr := strconv.ParseInt(c.Param("productID"), 10, 64)
@@ -115,6 +107,10 @@ func (ch *CartHandler) AddProductToCart(c *gin.Context) {
 	err = ch.CartUsecase.AddProductToCart(c, customerID, cartInfo)
 	if err != nil {
 		logrus.Error(err)
+		if err.Error() == "The inventory is not enough for the supply" {
+			c.Status(418)
+			return
+		}
 		c.Status(500)
 		return
 	}

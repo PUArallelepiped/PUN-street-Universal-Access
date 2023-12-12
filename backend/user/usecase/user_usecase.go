@@ -103,7 +103,7 @@ func (su *UserUsecase) GetByID(ctx context.Context, id int64) (*swagger.UserData
 	return s, nil
 }
 
-func (su *UserUsecase) GetAllUser(ctx context.Context) ([]swagger.UserData, error) {
+func (su *UserUsecase) GetAllUser(ctx context.Context) ([]swagger.UserDataShort, error) {
 	s, err := su.userRepo.GetAllUser(ctx)
 	if err != nil {
 		logrus.Error(err)

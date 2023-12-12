@@ -34,6 +34,7 @@
 	function handleInput() {
 		errorMsgVisible = false;
 	}
+	import InputBox from '$lib/components/PUA/InputBox.svelte';
 </script>
 
 <div>
@@ -62,6 +63,8 @@
 						on:input={handleInput}
 					/>
 				</div>
+				<InputBox label="Email address" bind:value={user_email} type=""></InputBox>
+				<InputBox label="Password" bind:value={password} type="password"></InputBox>
 			</div>
 			<div
 				class="flex flex-row justify-center gap-2 p-4"

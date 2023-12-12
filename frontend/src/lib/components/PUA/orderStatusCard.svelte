@@ -11,7 +11,13 @@
 <div class=" w-3/7">
 	<div class="flex flex-wrap items-center justify-center gap-8">
 		<button class="flex items-center gap-5 rounded-xl bg-white p-4 shadow-xl">
-			<img src={statusCardContent.src} alt="" />
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				height="80"
+				width="100"
+				viewBox="0 0 640 512"
+				class="fill-PUA-stone"><path d={statusCardContent.src} /></svg
+			>
 			<div class="w-64 text-start font-bold">
 				<div class=" text-PUA-dark-orange text-xl font-bold leading-relaxed">
 					{statusCardContent.time}

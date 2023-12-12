@@ -160,21 +160,21 @@ func (cu *cartUsecase) GetCurrentCartsByUserID(ctx context.Context, id int64) (*
 	return &cartOrder, nil
 }
 
-func (cu *cartUsecase) Checkout(ctx context.Context, customerId int64, storeId int64) error {
+func (cu *cartUsecase) Checkout(ctx context.Context, customerId int64) error {
 	cartOrder, err := cu.GetCurrentCartsByUserID(ctx, customerId)
 	if err != nil {
 		logrus.Error(err)
 		return err
 	}
 
-	err = cu.cartRepo.UpdateOrderInfo(ctx, customerId, storeId, cartOrder.RealTotalPrice)
-	if err != nil {
-		logrus.Error(err)
-		return err
+	for _, productOrder := range cartOrder.StoreOrderInfoArray {
+		err = cu.cartRepo.CheckoutOrderInfo(ctx, customerId, productOrder.StoreId, productOrder.TotalPrice)
+		if err != nil {
+			logrus.Error(err)
+			return err
+		}
 	}
 
-	//cartID not work
-	//fix me
 	err = cu.cartRepo.AddUserCurrentCart(ctx, customerId)
 	if err != nil {
 		logrus.Error(err)

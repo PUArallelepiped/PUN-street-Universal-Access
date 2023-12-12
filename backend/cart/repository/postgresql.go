@@ -338,7 +338,7 @@ func (p *postgresqlCartRepo) UpdateOrderStatusByID(ctx context.Context, customer
 	return nil
 }
 
-func (p *postgresqlCartRepo) UpdateOrderInfo(ctx context.Context, customerId int64, storeId int64, totalPrice int64) error {
+func (p *postgresqlCartRepo) CheckoutOrderInfo(ctx context.Context, customerId int64, storeId int64, totalPrice int64) error {
 	sqlStatement := `
 	UPDATE orders SET
 	status = 1,

@@ -26,7 +26,7 @@ func NewCartHandler(e *gin.Engine, cartUsecase domain.CartUsecase) {
 		v1.GET("/customer/:userID/order-status", handler.GetRunOrder)
 
 		v1.POST("/customer/:userID/cart", handler.AddProductToCart)
-		v1.POST("/customer/:userID/store/:storeID/checkout", handler.Checkout)
+		v1.POST("/customer/:userID/checkout", handler.Checkout)
 		v1.DELETE("/customer/:userID/delete/product/:productID", handler.DeleteProduct)
 	}
 }
@@ -163,17 +163,14 @@ func (ch *CartHandler) GetCurrentCarts(c *gin.Context) {
 }
 
 func (ch *CartHandler) Checkout(c *gin.Context) {
-	customerID, customerErr := strconv.ParseInt(c.Param("userID"), 10, 64)
-	storeID, storeErr := strconv.ParseInt(c.Param("storeID"), 10, 64)
-	for _, err := range []error{customerErr, storeErr} {
-		if err != nil {
-			logrus.Error(err)
-			c.Status(400)
-			return
-		}
+	customerID, err := strconv.ParseInt(c.Param("userID"), 10, 64)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
 	}
 
-	err := ch.CartUsecase.Checkout(c, customerID, storeID)
+	err = ch.CartUsecase.Checkout(c, customerID)
 	if err != nil {
 		logrus.Error(err)
 		c.Status(500)

@@ -1,11 +1,6 @@
 <script lang="ts">
 	// import{store} from "$app/stores"
-	const routes = [
-		{ path: '/profile', title: 'My profile' }, // TODO
-		{ path: '/shops', title: 'ShopList' },
-		{ path: '/', title: 'Check Order' }, // TODO
-		{ path: '/', title: 'History' } // TODO
-	];
+	export let routes: { path: string; title: string }[];
 </script>
 
 <div class="flex h-20 place-content-between bg-white shadow-md">

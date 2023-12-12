@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { backendPath } from '$lib/components/PUA/env';
 	import {
 		OkButton,
 		SeasoningCoupon,
@@ -8,13 +9,67 @@
 		CartLabelBox,
 		ShippingCoupon
 	} from '$lib/index';
-	// let orderInfo = {
-	// 	name: 'Order Name',
-	// 	phone: 'Phone Number',
-	// 	method: 'Taking Method',
-	// 	totalShippingFee: 'Total Shipping Fee',
-	// 	address: 'Taking Address'
-	// };
+	import { onMount } from 'svelte';
+
+	let showDetail = true;
+
+	type cartInfo = {
+		cart_id: number;
+		customer_id: number;
+		discount_id: number;
+		product_id: number;
+		product_quantity: number;
+		store_id: number;
+	};
+	let cartInfos: cartInfo[] = [
+		{
+			cart_id: 1,
+			customer_id: 1,
+			discount_id: 9,
+			product_id: 1,
+			product_quantity: 100,
+			store_id: 1
+		}
+	];
+	let processedInfo: cartInfo[][];
+	let processedIndex: number[] = [];
+	onMount(async () => {
+		const resp = await fetch(backendPath + '/customer/1/cart/1/carts');
+		cartInfos = await resp.json();
+		processedInfo = cartInfoProcess(cartInfos);
+		console.log(processedIndex);
+		console.log(processedInfo);
+	});
+	function cartInfoProcess(cartInfos: cartInfo[]) {
+		let processedInfo: cartInfo[][] = [];
+		cartInfos.forEach((element) => {
+			let index = processedIndex.findIndex((v) => v == element.store_id);
+			if (index == -1) {
+				processedInfo.push([element]);
+				processedIndex.push(element.store_id);
+			} else {
+				processedInfo[index].push(element);
+			}
+		});
+		return processedInfo;
+	}
+	function checkout() {
+		console.log('checkout');
+		//TODO customer id need to change
+		let r = async () => {
+			const resp = await fetch(backendPath + '/customer/1/cart/1/store/1/checkout', {
+				method: 'POST',
+				body: JSON.stringify({
+					seasoning_discount_id: 1,
+					shipping_discount_id: 1,
+					taking_method: 1
+				})
+			});
+			console.log(resp.status);
+		};
+		r();
+		return null;
+	}
 </script>
 
 <div class="flex flex-col items-center justify-center gap-5 p-8">
@@ -29,16 +84,42 @@
 				</div>
 			</div>
 			<hr class="my-3 border-orange-950" />
-			<div class="grid grid-cols-3 gap-3">
+			<div class="flex flex-wrap gap-3">
 				<CartItemCard></CartItemCard>
 				<CartItemCard></CartItemCard>
 				<CartMoreItemCard></CartMoreItemCard>
 			</div>
 		</div>
+		{#if processedInfo}
+			{#each processedInfo as info}
+				<div class="flex flex-col">
+					<div class="flex justify-between">
+						<div class="px-3 text-xl font-semibold leading-normal text-PUA-stone">
+							{info[0].store_id}
+						</div>
+						<div class="flex items-baseline gap-2 px-7">
+							<span class="text-xl font-semibold leading-normal text-PUA-stone">Shipping Fee </span>
+							<span class="text-base font-semibold leading-tight text-PUA-stone">NT$</span>
+							<span class="text-xl font-semibold leading-normal text-PUA-stone">null</span>
+						</div>
+					</div>
+					<hr class="my-3 border-orange-950" />
+					<div class="flex flex-wrap gap-3">
+						{#each info as item}
+							<CartItemCard {...item}></CartItemCard>
+						{/each}
+						<CartItemCard></CartItemCard>
+						<CartItemCard></CartItemCard>
+						<CartMoreItemCard></CartMoreItemCard>
+					</div>
+				</div>
+			{/each}
+		{/if}
+
 		<div>
 			<div class="px-3 text-xl font-semibold leading-normal text-PUA-stone">Discount</div>
 			<hr class="my-3 border-orange-950" />
-			<div class="grid grid-cols-3 gap-3">
+			<div class="flex flex-wrap gap-3">
 				<ShippingCoupon used={false} />
 				<ShippingCoupon used={false} />
 				<ShippingCoupon used={true} />
@@ -49,7 +130,13 @@
 				<SeasoningCoupon></SeasoningCoupon>
 			</div>
 		</div>
-		<CartLabelBox></CartLabelBox>
+		{#if showDetail}
+			<div class="flex justify-end">
+				<div class="w-1/2">
+					<CartLabelBox></CartLabelBox>
+				</div>
+			</div>
+		{/if}
 		<div class="flex justify-between">
 			<DenyButton onclick={() => null}><div class="px-4">Delete All</div></DenyButton>
 			<div class="flex place-items-baseline justify-between gap-7">
@@ -59,7 +146,7 @@
 					<div class="text-right text-3xl font-semibold text-orange-950">9999</div>
 				</div>
 			</div>
-			<OkButton onclick={() => null} text="Check Out"></OkButton>
+			<OkButton onclick={checkout} text="Check Out"></OkButton>
 		</div>
 	</div>
 </div>

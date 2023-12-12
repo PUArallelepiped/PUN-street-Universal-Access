@@ -1,5 +1,5 @@
 <script lang="ts">
-	import wallet from '$lib/assets/wallet.svg';
+	import wallet from '$lib/assets/profile_wallet.svg';
 
 	let currentTab = 0;
 	function switchProfile() {

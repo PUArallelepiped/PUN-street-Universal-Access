@@ -32,7 +32,7 @@ func (p *postgresqlProductRepo) GetProductByID(ctx context.Context, id int64) (*
 			)) , '[]')
 			AS event_discount
 			FROM discounts NATURAL JOIN 
-			(SELECT event_discount.discount_id, event_discount.max_quantity, event_discount.product_id FROM event_discount WHERE event_discount.product_id = products.product_id)
+			(SELECT event_discount.discount_id, event_discount.max_quantity, event_discount.product_id FROM event_discount WHERE event_discount.product_id = products.product_id) AS discountInfo
 		) AS event_discount_array,
 		(SELECT 
 			coalesce(jsonb_agg(jsonb_build_object(
@@ -99,7 +99,7 @@ func (p *postgresqlProductRepo) GetProductsByStoreID(ctx context.Context, id int
 			)) , '[]')
 			AS event_discount
 			FROM discounts NATURAL JOIN 
-			(SELECT event_discount.discount_id, event_discount.max_quantity, event_discount.product_id FROM event_discount WHERE event_discount.product_id = products.product_id)
+			(SELECT event_discount.discount_id, event_discount.max_quantity, event_discount.product_id FROM event_discount WHERE event_discount.product_id = products.product_id) AS discountInfo
 		) AS event_discount_array,
 		(SELECT 
 			coalesce(jsonb_agg(jsonb_build_object(

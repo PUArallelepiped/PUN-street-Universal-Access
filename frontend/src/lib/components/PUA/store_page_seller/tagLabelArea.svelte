@@ -3,7 +3,7 @@
 	import TagAdd from '../tag/tagAdd.svelte';
 	import TagLabel from '../tag/tagLabel.svelte';
 	import TagInput from '../tag/tagInput.svelte';
-	export let tagText: { id: number; label: string }[];
+	export let tagText: { category_id: number; category_name: string }[];
 
 	let tag_input_id: { id: number; inputText: string }[] = [];
 	let tag_text_nextId = tagText.length + 1;
@@ -12,16 +12,19 @@
 	function removeInput_addTag(id: number) {
 		let result = tag_input_id.find((item) => item.id === id);
 		if (result !== undefined) {
-			tagText = [...tagText, { id: tag_text_nextId, label: `${result.inputText}` }];
+			tagText = [
+				...tagText,
+				{ category_id: tag_text_nextId, category_name: `${result.inputText}` }
+			];
 			tag_input_id = tag_input_id.filter((cat) => cat.id !== id);
 			tag_text_nextId = tag_text_nextId + 1;
 		}
 	}
 
 	function removedTag(id: number) {
-		let result = tagText.find((item) => item.id === id);
+		let result = tagText.find((item) => item.category_id === id);
 		if (result !== undefined) {
-			tagText = tagText.filter((cat) => cat.id !== id);
+			tagText = tagText.filter((cat) => cat.category_id !== id);
 		}
 	}
 	function addTagInput() {
@@ -39,8 +42,9 @@
 	<TagStar text={'4.7'}></TagStar>
 </div>
 <div class="flex w-full flex-wrap gap-2">
-	{#each tagText as { id, label }}
-		<TagLabel canRemove={true} text={label} on:click={() => removedTag(id)}></TagLabel>
+	{#each tagText as { category_id, category_name }}
+		<TagLabel canRemove={true} text={category_name} on:click={() => removedTag(category_id)}
+		></TagLabel>
 	{/each}
 	{#each tag_input_id as { id, inputText }}
 		<TagInput on:keydown={(e) => setTag(e, id)} id={`input${id}`} bind:text={inputText}></TagInput>

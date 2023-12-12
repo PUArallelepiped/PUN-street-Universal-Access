@@ -1,0 +1,32 @@
+[
+	{
+		"product_id": 1,
+		"name": "TEA EGG",
+		"store_id": 1,
+		"description": "EGG of tea\n expensive\n also call putting, egg,egg,egg,egg, egg, egg,limit, limit, limit, limit, ",
+		"picture": "https://i.imgur.com/3i3tyXJ.gif",
+		"price": 180,
+		"stock": 100,
+		"status": 1
+	},
+	{
+		"status": 1,
+		"stock": 100,
+		"store_id": 2,
+		"name": "watermelon",
+		"description": "a game",
+		"price": 0,
+		"picture": "https://i.imgur.com/3i3tyXJ.gif",
+		"product_id": 2
+	},
+	{
+		"status": 1,
+		"stock": 100,
+		"store_id": 3,
+		"name": "watermelon",
+		"description": "a game",
+		"price": 0,
+		"picture": "https://i.imgur.com/3i3tyXJ.gif",
+		"product_id": 3
+	}
+]

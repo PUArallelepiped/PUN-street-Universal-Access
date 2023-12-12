@@ -2314,13 +2314,16 @@ components:
       required:
       - cart_id
       - order_date
-      - product_order_info_array
       - status
       - store_id
       - total_price
       - user_id
+      - user_name
       type: object
       properties:
+        user_name:
+          type: string
+          example: user1
         user_id:
           type: integer
           format: int64
@@ -2344,30 +2347,14 @@ components:
           type: integer
           format: int64
           example: 1
-        product_order_info_array:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductOrderInfo'
       example:
         store_id: 1
         cart_id: 1
         order_date: 2021-01-01 00:00:00
         total_price: 9999
-        product_order_info_array:
-        - event_discount_max_quantity: 10
-          event_discount_id: 1
-          product_id: 1
-          product_price: 9999
-          product_name: pasta
-          product_quantity: 10
-        - event_discount_max_quantity: 10
-          event_discount_id: 1
-          product_id: 1
-          product_price: 9999
-          product_name: pasta
-          product_quantity: 10
         user_id: 1
         status: 1
+        example: user1
     StoreOrderStatusInfoArray:
       type: array
       items:

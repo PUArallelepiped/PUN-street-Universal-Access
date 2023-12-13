@@ -1,0 +1,11 @@
+[
+		{
+			"discount_start_date": "2021-01-01T00:00:00.000Z",
+			"discount_name": "spring discount",
+			"discount_end_date": "2021-11-01T00:00:00.000Z",
+			"discount_description": "all products get 30% off",
+			"discount_percentage": "NaN",
+			"discount_id": 1,
+			"status": 0
+		}
+	]

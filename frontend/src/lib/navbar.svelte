@@ -21,8 +21,8 @@
 				<a href={r.path} class="block p-2">{r.title}</a>
 			{/each}
 		</div>
-		<a href="/cart" class="m-3 flex items-center rounded-xl bg-red-800 p-3 text-white"
-			>0 Cart
+		<a href="/cart" class="m-3 flex items-center rounded-xl bg-red-800 p-3 text-white">
+			Cart
 			<svg
 				width="25"
 				height="20"

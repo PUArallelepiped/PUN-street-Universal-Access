@@ -43,7 +43,7 @@
 			<div class="flex">
 				<button
 					id="profileButton"
-					class="w-1/2 bg-gray-300 py-3 text-center font-['Inter'] text-2xl font-bold text-PUA-red"
+					class="w-1/2 bg-white py-3 text-center font-['Inter'] text-2xl font-bold text-PUA-red"
 					on:click={switchProfile}>Profile</button
 				>
 				<button
@@ -99,7 +99,7 @@
 						>Cancel</button
 					>
 					<button
-						class="rounded-full bg-PUA-orange px-10 font-['Inter'] text-xl font-bold text-PUA-gray"
+						class="rounded-full bg-PUA-orange px-10 font-['Inter'] text-xl font-bold text-white"
 						>Save change</button
 					>
 				</div>
@@ -136,7 +136,7 @@
 						>Cancel</button
 					>
 					<button
-						class="rounded-full bg-PUA-orange px-10 font-['Inter'] text-xl font-bold text-PUA-gray"
+						class="rounded-full bg-PUA-orange px-10 font-['Inter'] text-xl font-bold text-white"
 						>Save change</button
 					>
 				</div>

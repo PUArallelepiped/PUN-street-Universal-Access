@@ -59,7 +59,7 @@
 					<div class="h-12 w-1 bg-PUA-stone"></div>
 					<div class="w-full px-4">
 						<div class="flex items-baseline justify-center">
-							<span class="text-base">NT$</span><span class="text-2xl"
+							<span class="ml-1 mr-1 text-base">NT$</span><span class="text-2xl"
 								>{discountCardData.discount_max_price}</span
 							>
 						</div>

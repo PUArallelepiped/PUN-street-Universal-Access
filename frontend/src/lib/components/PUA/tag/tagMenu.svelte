@@ -12,7 +12,7 @@
 	];
 
 	function isDisabled(category_id: number): boolean {
-		return [-1].includes(category_id);
+		return [1].includes(category_id);
 	}
 </script>
 

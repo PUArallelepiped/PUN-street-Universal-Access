@@ -104,15 +104,20 @@
 						</button>
 					</div>
 				</div>
-				<div class="relative ml-16 mr-16">
+				<div class="relative mx-16 my-8">
 					<div class="flex w-full items-center justify-center pb-2 pt-2">
-						<div class="flex w-64 rounded-[10px] border-[3px] border-red-900 p-3 text-red-900">
-							<div class="w-2/5 text-center font-bold">{discountData.kind}</div>
-							<div class="ml-1 mr-1 border-r-[2px] border-red-900"></div>
-							<div class="flex w-3/5 flex-wrap items-center justify-center text-center font-bold">
-								<p>{discountData.how}</p>
-								<p class="ml-1 mr-1 text-xl">{currentData.discount_max_price}</p>
-								<p>{discountData.way}</p>
+						<div class="flex w-64 rounded-xl border-4 border-PUA-stone p-2 text-PUA-stone">
+							<div class="  px-2 py-2 text-center text-base font-semibold">
+								{discountData.kind}
+							</div>
+							<div class="mt-2 h-12 w-1 bg-PUA-stone"></div>
+							<div class="w-full px-2 font-semibold">
+								<div class="flex items-baseline justify-center">
+									<span class="ml-1 mr-1 text-base">{discountData.how}</span><span
+										class=" text-center text-2xl">{currentData.discount_max_price}</span
+									>
+								</div>
+								<div class="text-center text-lg">{discountData.way}</div>
 							</div>
 						</div>
 					</div>

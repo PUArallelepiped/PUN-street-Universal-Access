@@ -7,10 +7,10 @@
 </script>
 
 <div class="mt-2">
-	<p class="text-3 font-bold text-red-900">{title}</p>
+	<p class="text-3 font-bold text-PUA-stone">{title}</p>
 	<input
 		type="text"
-		class="w-full border-b-[2px] border-red-900 font-bold"
+		class="w-full border-b-[2px] border-PUA-stone font-bold"
 		bind:value
 		placeholder={text}
 	/>

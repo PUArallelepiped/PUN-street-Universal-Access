@@ -28,6 +28,8 @@ func NewCartHandler(e *gin.Engine, cartUsecase domain.CartUsecase) {
 		v1.POST("/customer/:userID/cart", handler.AddProductToCart)
 		v1.POST("/customer/:userID/checkout", handler.Checkout)
 		v1.DELETE("/customer/:userID/delete/product/:productID", handler.DeleteProduct)
+
+		v1.PUT("/seller/update-order-status/customer/:userID/cart/:cartID/store/:storeID", handler.UpdateOrderStatus)
 	}
 }
 func (ch *CartHandler) GetAllHistory(c *gin.Context) {
@@ -171,6 +173,36 @@ func (ch *CartHandler) Checkout(c *gin.Context) {
 	}
 
 	err = ch.CartUsecase.Checkout(c, customerID)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.Status(200)
+}
+
+func (ch *CartHandler) UpdateOrderStatus(c *gin.Context) {
+	customerID, customerErr := strconv.ParseInt(c.Param("userID"), 10, 64)
+	cartID, cartErr := strconv.ParseInt(c.Param("cartID"), 10, 64)
+	storeID, storeErr := strconv.ParseInt(c.Param("storeID"), 10, 64)
+	errArr := []error{customerErr, cartErr, storeErr}
+	for _, err := range errArr {
+		if err != nil {
+			logrus.Error(err)
+			c.Status(400)
+			return
+		}
+	}
+
+	var status *swagger.Status
+	if err := c.BindJSON(&status); err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
+	err := ch.CartUsecase.UpdateOrderStatusByID(c, customerID, cartID, storeID, status.Status)
 	if err != nil {
 		logrus.Error(err)
 		c.Status(500)

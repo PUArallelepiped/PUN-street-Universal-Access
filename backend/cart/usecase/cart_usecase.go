@@ -183,3 +183,13 @@ func (cu *cartUsecase) Checkout(ctx context.Context, customerId int64) error {
 
 	return nil
 }
+
+func (cu *cartUsecase) UpdateOrderStatusByID(ctx context.Context, customerId int64, cartId int64, storeId int64, status int64) error {
+	err := cu.cartRepo.UpdateOrderStatusByID(ctx, customerId, cartId, storeId, status)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}

@@ -321,15 +321,15 @@ func (p *postgresqlCartRepo) AddUserCurrentCart(ctx context.Context, id int64) e
 	return nil
 }
 
-func (p *postgresqlCartRepo) UpdateOrderStatusByID(ctx context.Context, customerId int64, storeId int64, status int64) error {
+func (p *postgresqlCartRepo) UpdateOrderStatusByID(ctx context.Context, customerId int64, cartId int64, storeId int64, status int64) error {
 	sqlStatement := `
 	UPDATE orders SET status = $1	
 	WHERE user_id = $2 AND 
-	cart_id = (SELECT current_user_id FROM user_data WHERE user_id = $2) AND
-	store_id = $3
+	cart_id = $3 AND
+	store_id = $4
 	`
 
-	_, err := p.db.Exec(sqlStatement, status, customerId, storeId)
+	_, err := p.db.Exec(sqlStatement, status, customerId, cartId, storeId)
 	if err != nil {
 		logrus.Error(err)
 		return err

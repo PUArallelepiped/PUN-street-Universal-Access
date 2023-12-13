@@ -28,16 +28,21 @@ func (p *postgresqlUserRepo) GetByID(ctx context.Context, id int64) (*swagger.Us
 	return s, nil
 }
 
-func (p *postgresqlUserRepo) GetAllUser(ctx context.Context) ([]swagger.UserData, error) {
-	rows, err := p.db.Query("SELECT * FROM user_data")
+func (p *postgresqlUserRepo) GetAllUser(ctx context.Context) ([]swagger.UserDataShort, error) {
+	sqlStatement := `
+		SELECT 	email, user_id, name, authority, status
+		FROM user_data;
+	`
+
+	rows, err := p.db.Query(sqlStatement)
 	if err != nil {
 		logrus.Error(err)
 		return nil, err
 	}
-	l := []swagger.UserData{}
+	l := []swagger.UserDataShort{}
 	for rows.Next() {
-		s := swagger.UserData{}
-		err := rows.Scan(&s.UserId, &s.UserName, &s.Password, &s.UserEmail, &s.Address, &s.Phone, &s.Birthday, &s.Authority, &s.CartId, &s.Status)
+		s := swagger.UserDataShort{}
+		err := rows.Scan(&s.UserEmail, &s.UserId, &s.UserName, &s.Authority, &s.Status)
 		if err != nil {
 			logrus.Error(err)
 			return nil, err

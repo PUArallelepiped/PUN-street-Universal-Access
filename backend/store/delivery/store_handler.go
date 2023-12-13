@@ -27,7 +27,12 @@ func NewStoreHandler(e *gin.Engine, storeUsecase domain.StoreUsecase) {
 }
 
 func (s *StoreHandler) GetStoreById(c *gin.Context) {
-	storeID := c.Param("storeID")
+	storeID, err := strconv.ParseInt(c.Param("storeID"), 10, 64)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
 
 	store, err := s.StoreUsecase.GetByID(c, storeID)
 	if err != nil {

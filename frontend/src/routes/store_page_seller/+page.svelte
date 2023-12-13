@@ -5,8 +5,6 @@
 	import StoreProductCardArea from '$lib/components/PUA/store_page_seller/storeProductCardArea.svelte';
 	import TagLabelArea from '$lib/components/PUA/store_page_seller/tagLabelArea.svelte';
 	import { onMount } from 'svelte';
-	import data from './data.json';
-	// import { Radio } from '@svelteuidev/core';
 
 	interface productsType {
 		product_id: number;
@@ -49,25 +47,27 @@
 	];
 
 	let shippingList: shippingDiscountType = {
-		discount_name: '',
-		discount_description: '',
-		discount_max_price: 0,
+		discount_name: 'free shipping',
+		discount_description: 'free shipping when total price over 1000',
+		discount_max_price: 1000,
 		discount_id: 1,
-		status: 0
+		status: 1
 	};
 
 	let showProductCard = true;
 	let showModel = false;
-	// let tagText = tagList;
-	let changePageData = data.changePageData;
+	let dis_haved: boolean;
+
 	function deleteDiscountCard() {
-		changePageData = {
-			...changePageData,
-			haved: false,
-			name: '',
-			maxquantity: '',
-			description: ''
+		shippingList = {
+			...shippingList,
+			discount_name: '',
+			discount_description: '',
+			discount_max_price: 0,
+			discount_id: 0,
+			status: 0
 		};
+		dis_haved = !dis_haved;
 	}
 
 	let myElement: HTMLDivElement | null = null;
@@ -99,8 +99,7 @@
 		tagList = await tag_category.json();
 		const init_shipping_discount = await fetch(`/shipping-discount.json`);
 		shippingList = await init_shipping_discount.json();
-		// productListResponse = productsList;
-		// tagText = tagList;
+		dis_haved = shippingList ? true : false;
 	});
 </script>
 
@@ -110,7 +109,7 @@
 
 <div class="mt-10 lg:px-40">
 	<div class="mx-5 space-y-2">
-		<div class="text-PUA-stone text-5xl font-bold">銀記手稈刀切牛肉麵</div>
+		<div class="text-5xl font-bold text-PUA-stone">銀記手稈刀切牛肉麵</div>
 		<div class="font-bold text-red-950">100台灣台北市中正區八德路一段82巷9弄17號</div>
 		<div class="flex w-full justify-start gap-6">
 			<TagLabelArea bind:tagText={tagList}></TagLabelArea>
@@ -143,6 +142,7 @@
 			<div class="flex items-center gap-4">
 				<DiscountCard
 					bind:discountCardData={shippingList}
+					bind:dis_haved
 					on:click={() => (showModel = !showModel)}
 					{deleteDiscountCard}
 				></DiscountCard>
@@ -150,4 +150,5 @@
 		</div>
 	</div>
 </div>
-<ChangeDiscountPage bind:changePageData bind:showModel></ChangeDiscountPage>
+<ChangeDiscountPage bind:changePageData={shippingList} bind:showModel bind:dis_haved
+></ChangeDiscountPage>

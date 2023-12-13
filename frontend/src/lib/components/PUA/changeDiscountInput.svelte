@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ErrorMsg } from '$lib/index';
 	export let title: string;
-	export let value: string;
+	export let value: string | number;
 	export let text: string;
 	export let error = true;
 </script>

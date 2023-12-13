@@ -3,30 +3,41 @@
 	import ChangeDiscountInput from './changeDiscountInput.svelte';
 	export let showModel = false;
 	export let changePageData: {
-		haved: boolean;
-		name: string;
-		maxquantity: string;
-		description: string;
-		kind: string;
-		how: string;
-		way: string;
-	} = {
-		haved: false,
-		name: 'null',
-		maxquantity: 'null',
-		description: 'null',
+		discount_name: string;
+		discount_description: string;
+		discount_max_price: number;
+		discount_id: number;
+		status: number;
+	};
+
+	export let discountData = {
 		kind: 'Shiiping Discount',
 		how: 'NT$',
 		way: 'dree shipping'
 	};
+
+	export let dis_haved: boolean;
+
+	let currentData: {
+		discount_name: string;
+		discount_description: string;
+		discount_max_price: number;
+		discount_id: number;
+		status: number;
+	};
+	currentData = { ...changePageData };
+
 	$: {
-		if (!changePageData.haved) {
+		if (!showModel) {
+			initPage();
+		}
+		if (!dis_haved) {
 			initPage();
 		}
 	}
 	function initPage() {
 		dataError = { maxquantity_err: false, name_err: false, description_err: false };
-		changePageData = { ...changePageData };
+		currentData = { ...changePageData };
 	}
 	function toggleModel() {
 		showModel = !showModel;
@@ -36,31 +47,32 @@
 		name_err: false,
 		description_err: false
 	};
+
 	function saveCurrentData() {
 		if (
-			changePageData.maxquantity !== '' &&
-			changePageData.name !== '' &&
-			changePageData.description !== '' &&
-			/^\d+$/.test(changePageData.maxquantity)
+			currentData.discount_max_price.toString() !== '' &&
+			currentData.discount_name !== '' &&
+			currentData.discount_description !== '' &&
+			/^\d+$/.test(currentData.discount_max_price.toString())
 		) {
-			changePageData = { ...changePageData };
-			changePageData.haved = true;
+			changePageData = { ...currentData };
+			dis_haved = true;
 			dataError = { maxquantity_err: false, name_err: false, description_err: false };
 			toggleModel();
 		} else {
-			if (changePageData.maxquantity === '') {
+			if (currentData.discount_max_price.toString() === '') {
 				dataError.maxquantity_err = true;
-			} else if (changePageData.maxquantity !== '') {
-				dataError.maxquantity_err = !/^\d+$/.test(changePageData.maxquantity);
+			} else if (currentData.discount_max_price.toString() !== '') {
+				dataError.maxquantity_err = !/^\d+$/.test(currentData.discount_max_price.toString());
 			}
-			if (changePageData.name === '') {
+			if (currentData.discount_name === '') {
 				dataError.name_err = true;
-			} else if (changePageData.name !== '') {
+			} else if (currentData.discount_name !== '') {
 				dataError.name_err = false;
 			}
-			if (changePageData.description === '') {
+			if (currentData.discount_description === '') {
 				dataError.description_err = true;
-			} else if (changePageData.description !== '') {
+			} else if (currentData.discount_description !== '') {
 				dataError.description_err = false;
 			}
 		}
@@ -70,9 +82,9 @@
 		toggleModel();
 	}
 	function deletePage() {
-		changePageData.name = '';
-		changePageData.maxquantity = '';
-		changePageData.description = '';
+		currentData.discount_name = '';
+		currentData.discount_max_price = 0;
+		currentData.discount_description = '';
 	}
 </script>
 
@@ -83,7 +95,7 @@
 		>
 			<div class="rounded bg-white p-5">
 				<div class="flex">
-					<div class="text-PUA-stone w-1/2 text-left text-xl font-bold">
+					<div class="w-1/2 text-left text-xl font-bold text-PUA-stone">
 						<h2>Add A Discount</h2>
 					</div>
 					<div class="flex w-1/2 justify-end">
@@ -95,32 +107,32 @@
 				<div class="relative ml-16 mr-16">
 					<div class="flex w-full items-center justify-center pb-2 pt-2">
 						<div class="flex w-64 rounded-[10px] border-[3px] border-red-900 p-3 text-red-900">
-							<div class="w-2/5 text-center font-bold">{changePageData.kind}</div>
+							<div class="w-2/5 text-center font-bold">{discountData.kind}</div>
 							<div class="ml-1 mr-1 border-r-[2px] border-red-900"></div>
 							<div class="flex w-3/5 flex-wrap items-center justify-center text-center font-bold">
-								<p>{changePageData.how}</p>
-								<p class="ml-1 mr-1 text-xl">{changePageData.maxquantity}</p>
-								<p>{changePageData.way}</p>
+								<p>{discountData.how}</p>
+								<p class="ml-1 mr-1 text-xl">{currentData.discount_max_price}</p>
+								<p>{discountData.way}</p>
 							</div>
 						</div>
 					</div>
 
 					<ChangeDiscountInput
 						title={'Max Quantity'}
-						bind:value={changePageData.maxquantity}
+						bind:value={currentData.discount_max_price}
 						bind:error={dataError.maxquantity_err}
 						text={' Enter Max Quantity'}
 					></ChangeDiscountInput>
 
 					<ChangeDiscountInput
 						title={'Discount Name'}
-						bind:value={changePageData.name}
+						bind:value={currentData.discount_name}
 						bind:error={dataError.name_err}
 						text={' Enter Discount Name'}
 					></ChangeDiscountInput>
 					<ChangeDiscountInput
 						title={'Description'}
-						bind:value={changePageData.description}
+						bind:value={currentData.discount_description}
 						bind:error={dataError.description_err}
 						text={' Enter Discount Description'}
 					></ChangeDiscountInput>

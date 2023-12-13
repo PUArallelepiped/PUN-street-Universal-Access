@@ -12,7 +12,10 @@
 		store_id: number;
 	}[];
 
-	let prodctListResponse_nextId = productListResponse.length + 1;
+	let prodctListResponse_nextId = 0;
+	if (prodctListResponse_nextId) {
+		prodctListResponse_nextId = productListResponse.length + 1;
+	}
 
 	function addStoreProductCard() {
 		productListResponse = [

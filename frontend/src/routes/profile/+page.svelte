@@ -6,12 +6,9 @@
 		if (currentTab == 1) {
 			document.getElementById('account-tab')?.classList.add('hidden');
 			document.getElementById('profile-tab')?.classList.remove('hidden');
-			document.getElementById('tab-underline')?.classList.add('left-0');
-			document.getElementById('tab-underline')?.classList.remove('right-0');
-			document.getElementById('accountButton')?.classList.add('bg-PUA-dark-gray');
-			document.getElementById('accountButton')?.classList.remove('bg-PUA-gray');
-			document.getElementById('profileButton')?.classList.add('bg-PUA-gray');
-			document.getElementById('profileButton')?.classList.add('bg-PUA-dark-gray');
+			document.getElementById('tab-underline')?.classList.replace('right-0', 'left-0');
+			document.getElementById('profileButton')?.classList.replace('bg-gray-300', 'bg-white');
+			document.getElementById('accountButton')?.classList.replace('bg-white', 'bg-gray-300');
 		}
 		currentTab = 0;
 	}
@@ -19,12 +16,9 @@
 		if (currentTab == 0) {
 			document.getElementById('profile-tab')?.classList.add('hidden');
 			document.getElementById('account-tab')?.classList.remove('hidden');
-			document.getElementById('tab-underline')?.classList.add('right-0');
-			document.getElementById('tab-underline')?.classList.remove('left-0');
-			document.getElementById('profileButton')?.classList.add('bg-PUA-dark-gray');
-			document.getElementById('profileButton')?.classList.remove('bg-PUA-gray');
-			document.getElementById('accountButton')?.classList.add('bg-PUA-gray');
-			document.getElementById('accountButton')?.classList.add('bg-PUA-dark-gray');
+			document.getElementById('tab-underline')?.classList.replace('left-0', 'right-0');
+			document.getElementById('accountButton')?.classList.replace('bg-gray-300', 'bg-white');
+			document.getElementById('profileButton')?.classList.replace('bg-white', 'bg-gray-300');
 		}
 		currentTab = 1;
 	}
@@ -45,27 +39,27 @@
 			</div>
 		</div>
 
-		<div class=" relative bg-PUA-dark-gray">
+		<div class="relative bg-PUA-dark-gray">
 			<div class="flex">
 				<button
 					id="profileButton"
-					class="w-1/2 bg-PUA-dark-gray py-3 text-center font-['Inter'] text-2xl font-bold text-PUA-red"
+					class="w-1/2 bg-gray-300 py-3 text-center font-['Inter'] text-2xl font-bold text-PUA-red"
 					on:click={switchProfile}>Profile</button
 				>
 				<button
 					id="accountButton"
-					class="w-1/2 bg-PUA-dark-gray py-3 text-center font-['Inter'] text-2xl font-bold text-PUA-red"
+					class="w-1/2 bg-gray-300 py-3 text-center font-['Inter'] text-2xl font-bold text-PUA-red"
 					on:click={switchAccount}>Account</button
 				>
 			</div>
 			<div class="absolute bottom-0 left-0 h-1 w-1/2 bg-PUA-red" id="tab-underline"></div>
 		</div>
 
-		<div class="bg-PUA-gray">
+		<div class="bg-white min-h-screen">
 			<div class="flex-col pl-28 pt-10" id="profile-tab">
 				<div class="py-5">
 					<div
-						class="inline-flex items-center justify-center gap-5 rounded-full bg-PUA-dark-gray px-5"
+						class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5"
 					>
 						<div class=" font-['Inter'] text-base font-bold leading-tight text-PUA-dark-orange">
 							User Name
@@ -79,7 +73,7 @@
 				</div>
 				<div class="py-5">
 					<div
-						class="inline-flex items-center justify-center gap-5 rounded-full bg-PUA-dark-gray px-5"
+						class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5"
 					>
 						<div class=" font-['Inter'] text-base font-bold leading-tight text-PUA-dark-orange">
 							Phone
@@ -93,7 +87,7 @@
 				</div>
 				<div class="py-5">
 					<div
-						class="inline-flex items-center justify-center gap-5 rounded-full bg-PUA-dark-gray px-5"
+						class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5"
 					>
 						<div class=" font-['Inter'] text-base font-bold leading-tight text-PUA-dark-orange">
 							Birthday
@@ -107,7 +101,7 @@
 				</div>
 				<div class="flex gap-32 px-28 pt-5">
 					<button
-						class="rounded-full bg-PUA-dark-gray px-14 font-['Inter'] text-xl font-bold text-PUA-dark-orange"
+						class="rounded-full bg-gray-300 px-14 font-['Inter'] text-xl font-bold text-PUA-dark-orange"
 						>Cancel</button
 					>
 					<button
@@ -120,7 +114,7 @@
 			<div class="hidden flex-col pl-28 pt-10" id="account-tab">
 				<div class="py-5">
 					<div
-						class="inline-flex items-center justify-center gap-5 rounded-full bg-PUA-dark-gray px-5"
+						class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5"
 					>
 						<div class=" font-['Inter'] text-base font-bold leading-tight text-PUA-dark-orange">
 							Email
@@ -134,7 +128,7 @@
 				</div>
 				<div class="py-5">
 					<div
-						class="inline-flex items-center justify-center gap-5 rounded-full bg-PUA-dark-gray px-5"
+						class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5"
 					>
 						<div class=" font-['Inter'] text-base font-bold leading-tight text-PUA-dark-orange">
 							Password
@@ -148,7 +142,7 @@
 				</div>
 				<div class="flex gap-32 px-28 pt-5">
 					<button
-						class="rounded-full bg-PUA-dark-gray px-14 font-['Inter'] text-xl font-bold text-PUA-dark-orange"
+						class="rounded-full bg-gray-300 px-14 font-['Inter'] text-xl font-bold text-PUA-dark-orange"
 						>Cancel</button
 					>
 					<button

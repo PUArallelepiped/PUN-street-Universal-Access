@@ -181,7 +181,7 @@ func (p *postgresqlProductRepo) AddProductByStoreID(ctx context.Context, id int6
     RETURNING product_id;
 	`
 
-	row := p.db.QueryRow(sqlStatement, product.StoreId, product.Name,
+	row := p.db.QueryRow(sqlStatement, id, product.Name,
 		product.Description, product.Picture, product.Price,
 		product.Stock, product.Status)
 

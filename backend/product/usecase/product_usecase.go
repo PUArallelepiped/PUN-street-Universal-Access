@@ -48,6 +48,7 @@ func (pu *productUsecase) AddByStoreId(ctx context.Context, id int64, product *s
 			return err
 		}
 		productById.Status = product.Status
+		product.StoreId = id
 
 		if cmp.Equal(productById, product) {
 			//just change status to post body status

@@ -5,18 +5,41 @@
 	import InputBox from '$lib/components/PUA/InputBox.svelte';
 	import OkButton from '$lib/components/PUA/OkButton.svelte';
 	import CheckBox from '$lib/components/PUA/CheckBox.svelte';
+	import { StoreIcon, UserSquare } from 'lucide-svelte';
+	import { backendPath } from '$lib/components/PUA/env';
 	let context: { text: string; status: boolean }[] = [
 		{ text: 'Choose User Type', status: false },
 		{ text: 'Compelete basic information', status: false },
 		// { text: 'Check email', status: false }, // dlc
 		{ text: 'Compelete!', status: false }
 	];
+	let storeInfo = {
+		name: '',
+		description: '',
+		address: '',
+		shipping_fee: '',
+		picture: 'https://i.imgur.com/3i3tyXJ.gif'
+	};
+	let userInfo = {
+		user_name: '',
+		user_email: '',
+		password: '',
+		phone: '',
+		address: '',
+		birthday: '2002-01-01',
+		storeInfo: null
+	};
+	let checkPassword = ''; 
 	function NextStep(): null {
 		for (let index = 0; index < context.length; index++) {
 			if (!context[index].status) {
 				context[index].status = !context[index].status;
-				return null;
+				break;
 			}
+		}
+		console.log(context);
+		if (context[context.length - 2].status) {
+			Register();
 		}
 		return null;
 	}
@@ -29,6 +52,21 @@
 			.concat({ text: 'Compelete Store Info', status: false })
 			.concat(context.slice(2, 4));
 		NextStep();
+	}
+	function HandleInput() {
+		console.log(userInfo);
+	}
+	async function Register() {
+		const res = await fetch(backendPath + '/register', {
+			method: 'POST',
+			body: JSON.stringify(userInfo)
+		});
+		if (res.status == 200) {
+			const data = await res.json();
+			console.log(data);
+		} else {
+			console.log('error');
+		}
 	}
 </script>
 
@@ -55,13 +93,13 @@
 	{:else if !context[1].status}
 		<div class="flex justify-center">
 			<div class="flex flex-col items-center gap-10 rounded-lg bg-white p-12">
-				<InputBox value="" type="" label="Name" />
-				<InputBox value="" type="" label="Email" />
-				<InputBox value="" type="" label="Password" />
-				<InputBox value="" type="" label="Password Check" />
-				<InputBox value="" type="" label="Phone Number" />
-				<InputBox value="" type="" label="Birthday" />
-				<InputBox value="" type="" label="Address" />
+				<InputBox bind:value={userInfo.user_name} type="" label="Name" />
+				<InputBox bind:value={userInfo.user_email} type="" label="Email" />
+				<InputBox bind:value={userInfo.password} type="" label="Password" />
+				<InputBox bind:value={checkPassword} type="" label="Password Check" />
+				<InputBox bind:value={userInfo.phone} type="" label="Phone Number" />
+				<!-- <InputBox bind:value={userInfo.birthday} type="" label="Birthday" /> -->
+				<InputBox bind:value={userInfo.address} type="" label="Address" />
 				<CheckBox value="si" id="id" text="Do you be a good PUA user?"></CheckBox>
 				<OkButton onclick={NextStep} text="Next Step"></OkButton>
 			</div>
@@ -77,7 +115,7 @@
 				<OkButton onclick={NextStep} text="Next Step"></OkButton>
 			</div>
 		</div>
-	{:else if !context[2].status}
+	{:else if !context[context.length - 1].status}
 		<div class="flex flex-col items-center">
 			<div class="text-center text-4xl font-bold leading-8 text-PUA-dark-red">Compelete!</div>
 			<div class="text-center text-xl font-bold leading-8 text-PUA-dark-red">

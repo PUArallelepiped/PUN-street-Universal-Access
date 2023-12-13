@@ -2,7 +2,6 @@
 	import close from '$lib/assets/close.svg';
 	import ChangeDiscountInput from './changeDiscountInput.svelte';
 	export let showModel = false;
-
 	export let changePageData: {
 		haved: boolean;
 		name: string;
@@ -16,34 +15,19 @@
 		name: 'null',
 		maxquantity: 'null',
 		description: 'null',
-		kind: 'null',
-		how: 'null',
-		way: 'null'
+		kind: 'Shiiping Discount',
+		how: 'NT$',
+		way: 'dree shipping'
 	};
-
-	let currentData: {
-		haved: boolean;
-		name: string;
-		maxquantity: string;
-		description: string;
-		kind: string;
-		how: string;
-		way: string;
-	};
-
-	currentData = { ...changePageData };
-
 	$: {
 		if (!changePageData.haved) {
 			initPage();
 		}
 	}
-
 	function initPage() {
 		dataError = { maxquantity_err: false, name_err: false, description_err: false };
-		currentData = { ...changePageData };
+		changePageData = { ...changePageData };
 	}
-
 	function toggleModel() {
 		showModel = !showModel;
 	}
@@ -54,29 +38,29 @@
 	};
 	function saveCurrentData() {
 		if (
-			currentData.maxquantity !== '' &&
-			currentData.name !== '' &&
-			currentData.description !== '' &&
-			/^\d+$/.test(currentData.maxquantity)
+			changePageData.maxquantity !== '' &&
+			changePageData.name !== '' &&
+			changePageData.description !== '' &&
+			/^\d+$/.test(changePageData.maxquantity)
 		) {
-			changePageData = { ...currentData };
+			changePageData = { ...changePageData };
 			changePageData.haved = true;
 			dataError = { maxquantity_err: false, name_err: false, description_err: false };
 			toggleModel();
 		} else {
-			if (currentData.maxquantity === '') {
+			if (changePageData.maxquantity === '') {
 				dataError.maxquantity_err = true;
-			} else if (currentData.maxquantity !== '') {
-				dataError.maxquantity_err = !/^\d+$/.test(currentData.maxquantity);
+			} else if (changePageData.maxquantity !== '') {
+				dataError.maxquantity_err = !/^\d+$/.test(changePageData.maxquantity);
 			}
-			if (currentData.name === '') {
+			if (changePageData.name === '') {
 				dataError.name_err = true;
-			} else if (currentData.name !== '') {
+			} else if (changePageData.name !== '') {
 				dataError.name_err = false;
 			}
-			if (currentData.description === '') {
+			if (changePageData.description === '') {
 				dataError.description_err = true;
-			} else if (currentData.description !== '') {
+			} else if (changePageData.description !== '') {
 				dataError.description_err = false;
 			}
 		}
@@ -86,9 +70,9 @@
 		toggleModel();
 	}
 	function deletePage() {
-		currentData.name = '';
-		currentData.maxquantity = '';
-		currentData.description = '';
+		changePageData.name = '';
+		changePageData.maxquantity = '';
+		changePageData.description = '';
 	}
 </script>
 
@@ -99,7 +83,7 @@
 		>
 			<div class="rounded bg-white p-5">
 				<div class="flex">
-					<div class="w-1/2 text-left text-xl font-bold text-PUA-stone">
+					<div class="text-PUA-stone w-1/2 text-left text-xl font-bold">
 						<h2>Add A Discount</h2>
 					</div>
 					<div class="flex w-1/2 justify-end">
@@ -111,32 +95,32 @@
 				<div class="relative ml-16 mr-16">
 					<div class="flex w-full items-center justify-center pb-2 pt-2">
 						<div class="flex w-64 rounded-[10px] border-[3px] border-red-900 p-3 text-red-900">
-							<div class="w-2/5 text-center font-bold">{currentData.kind}</div>
+							<div class="w-2/5 text-center font-bold">{changePageData.kind}</div>
 							<div class="ml-1 mr-1 border-r-[2px] border-red-900"></div>
 							<div class="flex w-3/5 flex-wrap items-center justify-center text-center font-bold">
-								<p>{currentData.how}</p>
-								<p class="ml-1 mr-1 text-xl">{currentData.maxquantity}</p>
-								<p>{currentData.way}</p>
+								<p>{changePageData.how}</p>
+								<p class="ml-1 mr-1 text-xl">{changePageData.maxquantity}</p>
+								<p>{changePageData.way}</p>
 							</div>
 						</div>
 					</div>
 
 					<ChangeDiscountInput
 						title={'Max Quantity'}
-						bind:value={currentData.maxquantity}
+						bind:value={changePageData.maxquantity}
 						bind:error={dataError.maxquantity_err}
 						text={' Enter Max Quantity'}
 					></ChangeDiscountInput>
 
 					<ChangeDiscountInput
 						title={'Discount Name'}
-						bind:value={currentData.name}
+						bind:value={changePageData.name}
 						bind:error={dataError.name_err}
 						text={' Enter Discount Name'}
 					></ChangeDiscountInput>
 					<ChangeDiscountInput
 						title={'Description'}
-						bind:value={currentData.description}
+						bind:value={changePageData.description}
 						bind:error={dataError.description_err}
 						text={' Enter Discount Description'}
 					></ChangeDiscountInput>

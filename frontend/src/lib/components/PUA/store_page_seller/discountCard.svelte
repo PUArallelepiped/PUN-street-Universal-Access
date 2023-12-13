@@ -5,33 +5,22 @@
 
 	export let deleteDiscountCard: () => void;
 	export let discountCardData: {
-		haved: boolean;
-		maxquantity: string;
-		kind: string;
-		how: string;
-		way: string;
+		discount_name: string;
+		discount_description: string;
+		discount_max_price: number;
+		discount_id: number;
+		status: number;
 	} = {
-		haved: false,
-		maxquantity: 'null',
-		kind: 'null',
-		how: 'null',
-		way: 'null'
+		discount_name: 'free shipping',
+		discount_description: 'free shipping when total price over 1000',
+		discount_max_price: 1000,
+		discount_id: 1,
+		status: 1
 	};
-
-	// 	"haved": false, => status
-	// "name": "",  => di =>discount_name
-	// "maxquantity": "",  => discount_max_price
-	// "description": "", =>discount_description
-	// "kind": "Shipping Discount", =>not in,use p
-	// "how": "NT$", =>use p
-	// "way": "free shipping" => discount_name
 </script>
 
-{#if !discountCardData.haved}
-	<button
-		on:click
-		class="border-PUA-stone text-PUA-stone left-0 top-0 flex h-24 w-72 rounded-[10px] bg-gray-300"
-	>
+{#if !discountCardData.status}
+	<button on:click class=" text-PUA-stone left-0 top-0 flex h-24 w-72 rounded-xl bg-gray-300">
 		<div class="left-0 top-0 z-10 flex h-full w-[283px] items-center justify-center rounded-[8px]">
 			<img
 				src={Adddiscount}
@@ -44,12 +33,10 @@
 {:else}
 	<div class="flex items-center gap-4">
 		<button on:click>
-			<div
-				class="border-PUA-stone text-PUA-stone left-0 top-0 flex h-24 w-72 rounded-[10px] border-[3px]"
-			>
-				<div class="relative bg-red-700">
+			<div class="text-PUA-stone left-0 top-0 flex h-24 w-72 rounded-xl border-4">
+				<div class="relative">
 					<div
-						class=" group absolute left-0 top-0 z-10 flex h-full w-[283px] items-center justify-center rounded-[8px] hover:bg-neutral-400/75"
+						class=" border-PUA-stone group absolute left-0 top-0 z-10 flex h-full w-[282px] items-center justify-center rounded-xl border-4 hover:bg-neutral-400/75"
 					>
 						<img
 							src={Mouseon}
@@ -63,15 +50,19 @@
 						</p>
 					</div>
 				</div>
-				<div class="flex p-2">
-					<div class="w-2/5 p-3 text-center text-base font-bold">{discountCardData.kind}</div>
-					<div class="border-PUA-stone ml-1 mr-1 border-r-[2px] p-3"></div>
-					<div
-						class="flex w-3/5 flex-wrap items-center justify-center p-3 text-center text-base font-bold"
-					>
-						<p>{discountCardData.how}</p>
-						<p class="ml-1 mr-1 text-xl">{discountCardData.maxquantity}</p>
-						<p>{discountCardData.way}</p>
+
+				<div
+					class="bg-transport border-PUA-stone text-PUA-stone flex items-center rounded-xl border-4 text-center font-semibold"
+				>
+					<div class=" px-4 py-4 text-base font-semibold">Shipping Discount</div>
+					<div class="bg-PUA-stone h-12 w-1"></div>
+					<div class="w-full px-4">
+						<div class="flex items-baseline justify-center">
+							<span class="text-base">NT$</span><span class="text-2xl"
+								>{discountCardData.discount_max_price}</span
+							>
+						</div>
+						<div class="text-xl">free shipping</div>
 					</div>
 				</div>
 			</div>

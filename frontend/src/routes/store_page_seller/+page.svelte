@@ -60,7 +60,6 @@
 	let showModel = false;
 	// let tagText = tagList;
 	let changePageData = data.changePageData;
-
 	function deleteDiscountCard() {
 		changePageData = {
 			...changePageData,
@@ -143,7 +142,7 @@
 		<div class="relative mx-5 space-y-4">
 			<div class="flex items-center gap-4">
 				<DiscountCard
-					bind:discountCardData={changePageData}
+					bind:discountCardData={shippingList}
 					on:click={() => (showModel = !showModel)}
 					{deleteDiscountCard}
 				></DiscountCard>
@@ -152,5 +151,3 @@
 	</div>
 </div>
 <ChangeDiscountPage bind:changePageData bind:showModel></ChangeDiscountPage>
-
-<!-- <Radio color="red" label="I agree to sell my privacy" /> -->

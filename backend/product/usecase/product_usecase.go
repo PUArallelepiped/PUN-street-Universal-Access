@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
@@ -52,7 +51,6 @@ func (pu *productUsecase) AddByStoreId(ctx context.Context, id int64, product *s
 
 		if cmp.Equal(productById, product) {
 			//just change status to post body status
-			fmt.Println("same")
 			err := pu.productRepo.ChangeProductStatusByProductID(ctx, product.ProductId, product.Status)
 			if err != nil {
 				logrus.Error(err)
@@ -60,7 +58,6 @@ func (pu *productUsecase) AddByStoreId(ctx context.Context, id int64, product *s
 			}
 		} else {
 			//change status = 0 and add product
-			fmt.Println("not same")
 			err := pu.productRepo.ChangeProductStatusByProductID(ctx, product.ProductId, 0)
 			if err != nil {
 				logrus.Error(err)
@@ -87,7 +84,6 @@ func (pu *productUsecase) AddByStoreId(ctx context.Context, id int64, product *s
 
 func (pu *productUsecase) AddProductDiscountLabel(ctx context.Context, id int64, product *swagger.ProductInfoWithLabelAndDiscount) error {
 	// add product
-	fmt.Println("add product")
 	productID, err := pu.productRepo.AddProductByStoreID(ctx, id, product)
 	if err != nil {
 		logrus.Error(err)
@@ -95,7 +91,6 @@ func (pu *productUsecase) AddProductDiscountLabel(ctx context.Context, id int64,
 	}
 	// add event discount array
 	if product.EventDiscountArray != nil {
-		fmt.Println("add discount")
 		eventDiscountArray := product.EventDiscountArray
 		for _, eventDiscount := range eventDiscountArray {
 			eventDiscount.ProductId = productID
@@ -110,7 +105,6 @@ func (pu *productUsecase) AddProductDiscountLabel(ctx context.Context, id int64,
 	if product.ProductLabelArray != nil {
 		productLabelArray := product.ProductLabelArray
 		for _, productLabel := range productLabelArray {
-			fmt.Println("add label")
 			//add product label
 			productLabel.ProductId = productID
 			err = pu.productRepo.AddProductLabel(ctx, productLabel.ProductId, productLabel.LabelName, productLabel.Required)
@@ -118,12 +112,9 @@ func (pu *productUsecase) AddProductDiscountLabel(ctx context.Context, id int64,
 				logrus.Error(err)
 				return err
 			}
-			fmt.Println("add label item")
 			//add product label item
 			productLabelItemArray := productLabel.ItemArray
 			for _, productLabelItem := range productLabelItemArray {
-				fmt.Println(productLabelItemArray)
-				fmt.Println(productLabelItem)
 				err = pu.productRepo.AddProductLabelItem(ctx, productLabel.ProductId, productLabel.LabelName, productLabelItem.Name)
 				if err != nil {
 					logrus.Error(err)

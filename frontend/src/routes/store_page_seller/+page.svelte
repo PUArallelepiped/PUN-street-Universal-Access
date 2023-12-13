@@ -2,10 +2,11 @@
 	import watermelon from '$lib/assets/watermelon.png';
 	import { CategoryLabel, DiscountCard } from '$lib';
 	import ChangeDiscountPage from '$lib/components/PUA/changeDiscountPage.svelte';
-	import StoreProducrCardArea from '$lib/components/PUA/store_page_seller/storeProducrCardArea.svelte';
+	import StoreProductCardArea from '$lib/components/PUA/store_page_seller/storeProductCardArea.svelte';
 	import TagLabelArea from '$lib/components/PUA/store_page_seller/tagLabelArea.svelte';
 	import { onMount } from 'svelte';
 	import data from './data.json';
+	// import { Radio } from '@svelteuidev/core';
 
 	interface productsType {
 		product_id: number;
@@ -55,11 +56,10 @@
 		status: 0
 	};
 
-	let tagText = data.tagText;
-	let changePageData = data.changePageData;
-
 	let showProductCard = true;
 	let showModel = false;
+	// let tagText = tagList;
+	let changePageData = data.changePageData;
 
 	function deleteDiscountCard() {
 		changePageData = {
@@ -89,6 +89,7 @@
 			}
 		}
 	};
+
 	onMount(() => {
 		toggleHeight();
 	});
@@ -99,6 +100,8 @@
 		tagList = await tag_category.json();
 		const init_shipping_discount = await fetch(`/shipping-discount.json`);
 		shippingList = await init_shipping_discount.json();
+		// productListResponse = productsList;
+		// tagText = tagList;
 	});
 </script>
 
@@ -133,14 +136,14 @@
 					showProductCard ? ' translate-y-0 ' : 'translate-y-[-100%]'
 				}   transition-all duration-[1500ms] ease-in-out `}
 			>
-				<StoreProducrCardArea bind:productListResponse={productsList}></StoreProducrCardArea>
+				<StoreProductCardArea bind:productListResponse={productsList}></StoreProductCardArea>
 			</div>
 		</div>
 		<CategoryLabel text={'Shipping Discount List'}></CategoryLabel>
 		<div class="relative mx-5 space-y-4">
 			<div class="flex items-center gap-4">
 				<DiscountCard
-					discountCardData={changePageData}
+					bind:discountCardData={changePageData}
 					on:click={() => (showModel = !showModel)}
 					{deleteDiscountCard}
 				></DiscountCard>
@@ -150,12 +153,4 @@
 </div>
 <ChangeDiscountPage bind:changePageData bind:showModel></ChangeDiscountPage>
 
-<p>{productsList[0].description}</p>
-<p>{tagList[0].category_name}</p>
-<p>{shippingList.discount_description}</p>
-<i class="fa-solid fa-fire-burner"></i>
-<svg xmlns="https://fontawesome.com/icons/fire-burner?f=classic&s=solid"></svg>
-<i class="fa-solid fa-fire-burner"></i>
-<svg class="fa-solid fa-fire-burner">
-	<use xlink:href="https://fontawesome.com/icons/fire-burner?f=classic&s=solidr"></use>
-</svg>
+<!-- <Radio color="red" label="I agree to sell my privacy" /> -->

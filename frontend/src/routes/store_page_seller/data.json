@@ -32,8 +32,8 @@
 		}
 	],
 	"tagText": [
-		{ "id": 0, "label": "free delivery" },
-		{ "id": 1, "label": "free delivery" }
+		{ "category_id": 0, "category_name": "free delivery" },
+		{ "category_id": 1, "category_name": "free delivery" }
 	],
 	"changePageData": {
 		"haved": false,

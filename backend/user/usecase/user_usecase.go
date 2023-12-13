@@ -111,3 +111,27 @@ func (su *UserUsecase) GetAllUser(ctx context.Context) ([]swagger.UserDataShort,
 	}
 	return s, nil
 }
+
+func (su *UserUsecase) RegisterUser(ctx context.Context, user *swagger.RegisterInfo) error {
+	if user.StoreRegisterInfo != nil {
+		// register store
+		id, err := su.userRepo.RegisterUser(ctx, user, "011")
+		if err != nil {
+			logrus.Error(err)
+			return err
+		}
+		err = su.userRepo.RegisterStore(ctx, *user.StoreRegisterInfo, id)
+		if err != nil {
+			logrus.Error(err)
+			return err
+		}
+	} else {
+		// register user
+		_, err := su.userRepo.RegisterUser(ctx, user, "001")
+		if err != nil {
+			logrus.Error(err)
+			return err
+		}
+	}
+	return nil
+}

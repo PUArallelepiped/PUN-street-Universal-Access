@@ -26,6 +26,7 @@ func NewUserHandler(e *gin.Engine, userUsecase domain.UserUsecase) {
 		v1.GET("/admin/get-all-users", handler.GetUsers)
 		v1.POST("/login", handler.Login)
 		v1.GET("/validate", handler.ValidateToken)
+		v1.POST("/register", handler.RegisterUser)
 	}
 }
 
@@ -93,4 +94,23 @@ func (u *UserHandler) ValidateToken(c *gin.Context) {
 		return
 	}
 	c.JSON(200, "Validate Success")
+}
+
+func (u *UserHandler) RegisterUser(c *gin.Context) {
+	var user swagger.RegisterInfo
+
+	if err := c.BindJSON(&user); err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
+	err := u.UserUsecase.RegisterUser(c, &user)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, "Register Success")
 }

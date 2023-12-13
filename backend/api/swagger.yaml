@@ -2525,6 +2525,7 @@ components:
       - address
       - description
       - name
+      - picture
       - shipping_fee
       properties:
         name:
@@ -2539,3 +2540,6 @@ components:
         shipping_fee:
           type: integer
           example: 100
+        picture:
+          type: string
+          example: https://i.imgur.com/3i3tyXJ.gif

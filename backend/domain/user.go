@@ -10,6 +10,8 @@ type UserRepo interface {
 	GetByID(ctx context.Context, id int64) (*swagger.UserData, error)
 	GetAllUser(ctx context.Context) ([]swagger.UserDataShort, error)
 	Login(ctx context.Context, email string, password string) (int, error)
+	RegisterUser(ctx context.Context, user *swagger.RegisterInfo, authority string) (int, error)
+	RegisterStore(ctx context.Context, storeInfo swagger.StoreRegisterInfo, id int) error
 }
 
 type UserUsecase interface {
@@ -17,4 +19,5 @@ type UserUsecase interface {
 	GetAllUser(ctx context.Context) ([]swagger.UserDataShort, error)
 	Login(ctx context.Context, email string, password string) (string, error)
 	ValidateToken(ctx context.Context, token string) error
+	RegisterUser(ctx context.Context, user *swagger.RegisterInfo) error
 }

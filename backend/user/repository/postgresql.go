@@ -70,3 +70,32 @@ func (p *postgresqlUserRepo) GetAllUser(ctx context.Context) ([]swagger.UserData
 
 	return l, nil
 }
+
+func (p *postgresqlUserRepo) RegisterUser(ctx context.Context, user *swagger.RegisterInfo, authority string) (int, error) {
+	sqlStatement := `
+		INSERT INTO user_data (name, password, email, address, phone_number, birthday, authority, current_cart_id, status)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+		RETURNING user_id;
+	`
+	id := 0
+	err := p.db.QueryRow(sqlStatement, user.UserName, user.Password, user.UserEmail, user.Address, user.Phone, user.Birthday, authority, 1, 1).Scan(&id)
+	if err != nil {
+		logrus.Error(err)
+		return 0, err
+	}
+
+	return id, nil
+}
+
+func (p *postgresqlUserRepo) RegisterStore(ctx context.Context, storeInfo swagger.StoreRegisterInfo, id int) error {
+	sqlStatement := `
+		INSERT INTO stores (store_id, name, rate, rate_count, address, picture, description, shipping_fee, status)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);
+	`
+	_, err := p.db.Exec(sqlStatement, id, storeInfo.Name, 0, 0, storeInfo.Address, storeInfo.Picture, storeInfo.Description, storeInfo.ShippingFee, 1)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+	return nil
+}

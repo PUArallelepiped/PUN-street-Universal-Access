@@ -55,12 +55,10 @@
 			<div class="absolute bottom-0 left-0 h-1 w-1/2 bg-PUA-red" id="tab-underline"></div>
 		</div>
 
-		<div class="bg-white min-h-screen">
+		<div class="min-h-screen bg-white">
 			<div class="flex-col pl-28 pt-10" id="profile-tab">
 				<div class="py-5">
-					<div
-						class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5"
-					>
+					<div class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5">
 						<div class=" font-['Inter'] text-base font-bold leading-tight text-PUA-dark-orange">
 							User Name
 						</div>
@@ -72,9 +70,7 @@
 					/>
 				</div>
 				<div class="py-5">
-					<div
-						class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5"
-					>
+					<div class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5">
 						<div class=" font-['Inter'] text-base font-bold leading-tight text-PUA-dark-orange">
 							Phone
 						</div>
@@ -86,9 +82,7 @@
 					/>
 				</div>
 				<div class="py-5">
-					<div
-						class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5"
-					>
+					<div class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5">
 						<div class=" font-['Inter'] text-base font-bold leading-tight text-PUA-dark-orange">
 							Birthday
 						</div>
@@ -113,9 +107,7 @@
 
 			<div class="hidden flex-col pl-28 pt-10" id="account-tab">
 				<div class="py-5">
-					<div
-						class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5"
-					>
+					<div class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5">
 						<div class=" font-['Inter'] text-base font-bold leading-tight text-PUA-dark-orange">
 							Email
 						</div>
@@ -127,9 +119,7 @@
 					/>
 				</div>
 				<div class="py-5">
-					<div
-						class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5"
-					>
+					<div class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5">
 						<div class=" font-['Inter'] text-base font-bold leading-tight text-PUA-dark-orange">
 							Password
 						</div>

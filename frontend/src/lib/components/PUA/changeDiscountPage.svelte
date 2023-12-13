@@ -11,9 +11,9 @@
 	};
 
 	export let discountData = {
-		kind: 'Shiiping Discount',
+		kind: 'Shipping Discount',
 		how: 'NT$',
-		way: 'dree shipping'
+		way: 'free shipping'
 	};
 
 	export let dis_haved: boolean;

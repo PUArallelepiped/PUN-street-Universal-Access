@@ -3,6 +3,7 @@
 	import TagAdd from '../tag/tagAdd.svelte';
 	import TagLabel from '../tag/tagLabel.svelte';
 	import TagInput from '../tag/tagInput.svelte';
+	import TagMenu from '../tag/tagMenu.svelte';
 	export let tagText: { category_id: number; category_name: string }[];
 
 	let tag_input_id: { id: number; inputText: string }[] = [];
@@ -49,5 +50,6 @@
 	{#each tag_input_id as { id, inputText }}
 		<TagInput on:keydown={(e) => setTag(e, id)} id={`input${id}`} bind:text={inputText}></TagInput>
 	{/each}
+	<TagMenu></TagMenu>
 	<TagAdd on:click={addTagInput}></TagAdd>
 </div>

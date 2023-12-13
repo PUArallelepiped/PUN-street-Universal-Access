@@ -44,27 +44,8 @@
 	<div class="absolute right-1">
 		<form class=" mx-20 rounded-2xl bg-white px-8 py-5 shadow" on:submit|preventDefault={login}>
 			<div class="flex flex-col items-center gap-11">
-				<div class="">
-					<div class="text-left text-xl font-bold leading-relaxed text-orange-950">
-						Email address
-					</div>
-					<input
-						class="h-10 w-96 rounded-lg border-2 bg-gray-200 px-2 text-xl font-medium leading-relaxed text-orange-950 shadow-inner"
-						bind:value={user_email}
-						on:input={handleInput}
-					/>
-				</div>
-				<div class="">
-					<div class="text-left text-xl font-bold leading-relaxed text-orange-950">Password</div>
-					<input
-						type="password"
-						class="h-10 w-96 rounded-lg border-2 bg-gray-200 px-2 text-xl font-medium leading-relaxed text-orange-950 shadow-inner"
-						bind:value={password}
-						on:input={handleInput}
-					/>
-				</div>
-				<InputBox label="Email address" bind:value={user_email} type=""></InputBox>
-				<InputBox label="Password" bind:value={password} type="password"></InputBox>
+				<InputBox label="Email address" bind:value={user_email} onInput={handleInput} type=""></InputBox>
+				<InputBox label="Password" bind:value={password} onInput={handleInput} type="password"></InputBox>
 			</div>
 			<div
 				class="flex flex-row justify-center gap-2 p-4"

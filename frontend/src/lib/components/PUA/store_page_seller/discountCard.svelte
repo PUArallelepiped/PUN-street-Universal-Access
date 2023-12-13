@@ -37,7 +37,7 @@
 			<div class="left-0 top-0 flex h-24 w-72 rounded-xl border-4 text-PUA-stone">
 				<div class="relative">
 					<div
-						class=" group absolute left-0 top-0 z-10 flex h-full w-[282px] items-center justify-center rounded-xl border-4 border-PUA-stone hover:bg-neutral-400/75"
+						class=" group absolute left-0 top-0 z-10 flex h-full w-[280px] items-center justify-center rounded-xl border-4 border-PUA-stone hover:bg-neutral-400/75"
 					>
 						<img
 							src={Mouseon}

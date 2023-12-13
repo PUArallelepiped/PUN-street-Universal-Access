@@ -2,9 +2,13 @@
 	type clickFunction = () => null;
 	export let onclick: clickFunction;
 	export let text: string;
+	export let disabled: boolean;
 </script>
 
 <button
-	class=" w-52 rounded-3xl bg-PUA-orange px-2 text-center text-lg font-semibold text-white"
-	on:click={onclick}>{text}</button
+	class=" bg-PUA-orange w-52 rounded-3xl px-2 text-center text-lg font-semibold text-white disabled:opacity-50 disabled:cursor-not-allowed"
+	on:click={onclick}
+	disabled={disabled}
 >
+	{text}
+</button>

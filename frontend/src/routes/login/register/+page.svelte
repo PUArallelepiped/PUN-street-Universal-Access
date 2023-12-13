@@ -8,7 +8,7 @@
 	let context: { text: string; status: boolean }[] = [
 		{ text: 'Choose User Type', status: false },
 		{ text: 'Compelete basic information', status: false },
-		{ text: 'Check email', status: false },
+		// { text: 'Check email', status: false }, // dlc
 		{ text: 'Compelete!', status: false }
 	];
 	function NextStep(): null {
@@ -27,7 +27,7 @@
 		context = context
 			.slice(0, 2)
 			.concat({ text: 'Compelete Store Info', status: false })
-			.concat(context.slice(2, 5));
+			.concat(context.slice(2, 4));
 		NextStep();
 	}
 </script>
@@ -81,7 +81,7 @@
 		<div class="flex flex-col items-center">
 			<div class="text-center text-4xl font-bold leading-8 text-PUA-dark-red">Compelete!</div>
 			<div class="text-center text-xl font-bold leading-8 text-PUA-dark-red">
-				you r a PUA member now
+				you are a PUA member now
 			</div>
 		</div>
 	{/if}

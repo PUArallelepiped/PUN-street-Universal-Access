@@ -831,7 +831,7 @@ paths:
           description: Unexpected error
   /validate:
     get:
-      tags: 
+      tags:
       - user
       summary: validate jwt token
       responses:
@@ -839,6 +839,24 @@ paths:
           description: validate success
         "401":
           description: Unauthorized
+        "500":
+          description: Unexpected error
+  /register:
+    post:
+      tags:
+      - user
+      summary: register
+      requestBody:
+        description: register info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterInfo'
+      responses:
+        "200":
+          description: register success
+        "400":
+          description: bad request
         "500":
           description: Unexpected error
   /seller/store/{storeID}/orders:
@@ -2473,3 +2491,51 @@ components:
         password:
           type: string
           example: pwd1
+    RegisterInfo:
+      required:
+      - address
+      - birthday
+      - password
+      - phone
+      - user_email
+      - user_name
+      properties:
+        user_name:
+          type: string
+          example: artist
+        user_email:
+          type: string
+          example: artist@gmail.com
+        password:
+          type: string
+          example: pwd1
+        phone:
+          type: string
+          example: "0912345678"
+        address:
+          type: string
+          example: NTUT
+        birthday:
+          type: string
+          example: 2021-01-01
+        StoreRegisterInfo:
+          $ref: '#/components/schemas/StoreRegisterInfo'
+    StoreRegisterInfo:
+      required:
+      - address
+      - description
+      - name
+      - shipping_fee
+      properties:
+        name:
+          type: string
+          example: pick-up store
+        description:
+          type: string
+          example: good pick-up
+        address:
+          type: string
+          example: pun street
+        shipping_fee:
+          type: integer
+          example: 100

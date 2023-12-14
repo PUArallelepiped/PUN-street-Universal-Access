@@ -27,6 +27,28 @@
 		discount_id: number;
 		status: number;
 	}
+
+	interface storeDataType {
+		store_id: number;
+		shipping_fee: number;
+		address: string;
+		rate_count: number;
+		rate: number;
+		category_array: [
+			{
+				category_name: string;
+				category_id: number;
+			},
+			{
+				category_name: string;
+				category_id: number;
+			}
+		];
+		name: string;
+		description: string;
+		picture: string;
+		status: number;
+	}
 	let productsList: productsType[] = [
 		{
 			product_id: 0,
@@ -51,6 +73,28 @@
 		discount_description: 'free shipping when total price over 1000',
 		discount_max_price: 1000,
 		discount_id: 1,
+		status: 1
+	};
+
+	let shopDataList: storeDataType = {
+		store_id: 1,
+		shipping_fee: 100,
+		address: 'pun street',
+		rate_count: 10,
+		rate: 5,
+		category_array: [
+			{
+				category_name: 'drink',
+				category_id: 1
+			},
+			{
+				category_name: 'drink',
+				category_id: 2
+			}
+		],
+		name: "i'm pasta",
+		description: 'good pasta',
+		picture: 'https://i.imgur.com/1.jpg',
 		status: 1
 	};
 
@@ -100,6 +144,8 @@
 		const init_shipping_discount = await fetch(`/shipping-discount.json`);
 		shippingList = await init_shipping_discount.json();
 		dis_haved = shippingList ? true : false;
+		const init_store_data = await fetch(`/store.json`);
+		shopDataList = await init_store_data.json();
 	});
 </script>
 
@@ -109,10 +155,14 @@
 
 <div class="mt-10 lg:px-40">
 	<div class="mx-5 space-y-2">
-		<div class="text-5xl font-bold text-PUA-stone">銀記手稈刀切牛肉麵</div>
-		<div class="font-bold text-red-950">100台灣台北市中正區八德路一段82巷9弄17號</div>
+		<div class="text-5xl font-bold text-PUA-stone">{shopDataList.name}</div>
+		<div class="font-bold text-red-950">{shopDataList.address}</div>
 		<div class="flex w-full justify-start gap-6">
-			<TagLabelArea bind:tagText={tagList}></TagLabelArea>
+			<TagLabelArea
+				bind:tagText={shopDataList.category_array}
+				bind:tagText_all={tagList}
+				star_score={shopDataList.rate.toString()}
+			></TagLabelArea>
 		</div>
 	</div>
 

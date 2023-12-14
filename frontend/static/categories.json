@@ -1,4 +1,16 @@
 [
-	{ "category_id": 0, "category_name": "free delivery" },
-	{ "category_id": 1, "category_name": "free delivery" }
+	{ "category_id": 0, "category_name": "free delivery0" },
+	{ "category_id": 1, "category_name": "drink" },
+	{ "category_id": 2, "category_name": "drink" },
+	{ "category_id": 3, "category_name": "free delivery3" },
+	{ "category_id": 4, "category_name": "free delivery4" },
+	{ "category_id": 5, "category_name": "free delivery5" },
+	{ "category_id": 6, "category_name": "free delivery6" },
+	{ "category_id": 7, "category_name": "free delivery7" },
+	{ "category_id": 8, "category_name": "free delivery8" },
+	{ "category_id": 9, "category_name": "free delivery9" },
+	{ "category_id": 10, "category_name": "free delivery10" },
+	{ "category_id": 11, "category_name": "free delivery11" },
+	{ "category_id": 12, "category_name": "free delivery12" },
+	{ "category_id": 13, "category_name": "free delivery13" }
 ]

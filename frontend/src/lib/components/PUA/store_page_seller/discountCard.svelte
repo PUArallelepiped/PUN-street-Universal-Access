@@ -34,10 +34,10 @@
 {:else}
 	<div class="flex items-center gap-4">
 		<button on:click>
-			<div class="text-PUA-stone left-0 top-0 flex h-24 w-72 rounded-xl">
+			<div class="text-PUA-stone left-0 top-0 flex h-24 w-80 rounded-xl">
 				<div class="relative">
 					<div
-						class=" border-PUA-stone group absolute left-0 top-0 z-10 flex h-full w-72 items-center justify-center rounded-xl border-4 hover:bg-neutral-400/75"
+						class=" border-PUA-stone group absolute left-0 top-0 z-10 flex h-full w-80 items-center justify-center rounded-xl border-4 hover:bg-neutral-400/75"
 					>
 						<img
 							src={Mouseon}

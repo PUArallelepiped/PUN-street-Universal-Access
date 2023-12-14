@@ -8,6 +8,7 @@
 	import { Check, StoreIcon, User, UserSquare } from 'lucide-svelte';
 	import { backendPath } from '$lib/components/PUA/env';
 	import ErrorMessage from '$lib/components/PUA/ErrorMessage.svelte';
+	import { goto } from '$app/navigation';
 	let context: { text: string; status: boolean }[] = [
 		{ text: 'Choose User Type', status: true },
 		{ text: 'Complete basic information', status: false },
@@ -153,6 +154,9 @@
 	function HandleInput() {
 		errorMsgVisible = false;
 	}
+	function GotoLogin() {
+		goto('/login');
+	}
 	async function Register() {
 		storeInfo.shipping_fee = Number(storeInfo.shipping_fee);
 		const res = await fetch(backendPath + '/register', {
@@ -247,6 +251,7 @@
 			<div class="text-center text-xl font-bold leading-8 text-PUA-dark-red">
 				you are a PUA member now
 			</div>
+			<OkButton onclick={GotoLogin} text="Go to Login"></OkButton>
 		</div>
 	{/if}
 </div>

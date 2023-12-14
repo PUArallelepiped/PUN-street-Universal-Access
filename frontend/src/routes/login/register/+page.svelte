@@ -5,7 +5,7 @@
 	import InputBox from '$lib/components/PUA/InputBox.svelte';
 	import OkButton from '$lib/components/PUA/OkButton.svelte';
 	import CheckBox from '$lib/components/PUA/CheckBox.svelte';
-	import { StoreIcon, UserSquare } from 'lucide-svelte';
+	import { Check, StoreIcon, UserSquare } from 'lucide-svelte';
 	import { backendPath } from '$lib/components/PUA/env';
 	import ErrorMessage from '$lib/components/PUA/ErrorMessage.svelte';
 	let context: { text: string; status: boolean }[] = [
@@ -31,12 +31,17 @@
 		storeInfo: null
 	};
 	let checkPassword = ''; 
-	let checkPasswordErrorVisible: boolean = false;
+	let errorMsgVisible: boolean = false;
+	let errorMsg: string = '';
 	let goodPUA = false;
 	let goodPUAStore = false;
 	function NextStep(): null {
 		for (let index = 0; index < context.length; index++) {
 			if (!context[index].status) {
+				HandleError(context[index].text);
+				if (errorMsgVisible) {
+					return null;
+				}
 				context[index].status = !context[index].status;
 				break;
 			}
@@ -59,9 +64,9 @@
 	}
 	function CheckPassword() {
 		if (userInfo.password === checkPassword) {
-			checkPasswordErrorVisible = false;
+			return false;
 		} else {
-			checkPasswordErrorVisible = true;
+			return true;
 		}
 	}
 	function CheckGoodPUA() {
@@ -69,6 +74,42 @@
 	}
 	function CheckGoodPUAStore() {
 		goodPUAStore = !goodPUAStore;
+	}
+	function CheckUserInfoNull() {
+		if (userInfo.user_name === '' || userInfo.user_email === '' || userInfo.password === '' || userInfo.phone === '' || userInfo.address === '') {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	function CheckStoreInfoNull() {
+		if (storeInfo.name === '' || storeInfo.description === '' || storeInfo.address === '' || storeInfo.shipping_fee === '') {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	function HandleError(context: string) {
+		if (context === 'Compelete basic information') {
+			errorMsg = 'Please fill in all the blanks';
+			if (CheckUserInfoNull()) {
+				errorMsg = 'Please fill in all the blanks';
+				errorMsgVisible = true;
+			}
+			else if (CheckPassword()) {
+				errorMsg = 'Password not match';
+				errorMsgVisible = true;
+			}
+		} else if (context === 'Compelete Store Info') {
+			errorMsg = 'Please fill in all the blanks';
+			if (CheckStoreInfoNull()) {
+				errorMsg = 'Please fill in all the blanks';
+				errorMsgVisible = true;
+			}
+		}
+	}
+	function HandleInput() {
+		errorMsgVisible = false;
 	}
 	async function Register() {
 		const res = await fetch(backendPath + '/register', {
@@ -79,7 +120,7 @@
 			const data = await res.json();
 			console.log(data);
 		} else {
-			location.reload();
+			// location.reload();
 		}
 	}
 </script>
@@ -107,15 +148,15 @@
 	{:else if !context[1].status}
 		<div class="flex justify-center">
 			<div class="flex flex-col items-center gap-10 rounded-lg bg-white p-12">
-				<InputBox bind:value={userInfo.user_name} type="" label="Name" />
-				<InputBox bind:value={userInfo.user_email} type="" label="Email" />
-				<InputBox bind:value={userInfo.password} type="" label="Password" />
-				<InputBox bind:value={checkPassword} type="" label="Password Check" onInput={CheckPassword} />
-				<ErrorMessage errorMsgVisible={checkPasswordErrorVisible} errorMsg="Password not match"></ErrorMessage>
-				<InputBox bind:value={userInfo.phone} type="" label="Phone Number" />
+				<InputBox onInput={HandleInput} bind:value={userInfo.user_name} type="" label="Name" />
+				<InputBox onInput={HandleInput} bind:value={userInfo.user_email} type="" label="Email" />
+				<InputBox onInput={HandleInput} bind:value={userInfo.password} type="" label="Password" />
+				<InputBox onInput={HandleInput} bind:value={checkPassword} type="" label="Password Check"/>
+				<InputBox onInput={HandleInput} bind:value={userInfo.phone} type="" label="Phone Number" />
 				<!-- <InputBox bind:value={userInfo.birthday} type="" label="Birthday" /> -->
-				<InputBox bind:value={userInfo.address} type="" label="Address" />
+				<InputBox onInput={HandleInput} bind:value={userInfo.address} type="" label="Address" />
 				<CheckBox onclick={CheckGoodPUA} value="si" id="goodPUA" text="Do you be a good PUA user?"></CheckBox>
+				<ErrorMessage errorMsgVisible={errorMsgVisible} errorMsg={errorMsg}></ErrorMessage>
 				<OkButton onclick={NextStep} text="Next Step" disabled={!goodPUA}></OkButton>
 			</div>
 		</div>
@@ -127,6 +168,7 @@
 				<InputBox bind:value={storeInfo.address} type="" label="Address" />
 				<InputBox bind:value={storeInfo.shipping_fee} type="" label="Shipping Fee" />
 				<CheckBox onclick={CheckGoodPUAStore} value="si" id="id" text="Do you be a good PUA store?"></CheckBox>
+				<ErrorMessage errorMsgVisible={errorMsgVisible} errorMsg={errorMsg}></ErrorMessage>
 				<OkButton onclick={NextStep} text="Next Step" disabled={!goodPUAStore}></OkButton>
 			</div>
 		</div>

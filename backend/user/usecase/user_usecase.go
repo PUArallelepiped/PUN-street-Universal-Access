@@ -113,8 +113,10 @@ func (su *UserUsecase) GetAllUser(ctx context.Context) ([]swagger.UserDataShort,
 }
 
 func (su *UserUsecase) RegisterUser(ctx context.Context, user *swagger.RegisterInfo) error {
+	logrus.Info(user.StoreRegisterInfo)
 	if user.StoreRegisterInfo != nil {
 		// register store
+		logrus.Info("register store")
 		id, err := su.userRepo.RegisterUser(ctx, user, "011")
 		if err != nil {
 			logrus.Error(err)
@@ -127,6 +129,7 @@ func (su *UserUsecase) RegisterUser(ctx context.Context, user *swagger.RegisterI
 		}
 	} else {
 		// register user
+		logrus.Info("register user")
 		_, err := su.userRepo.RegisterUser(ctx, user, "001")
 		if err != nil {
 			logrus.Error(err)

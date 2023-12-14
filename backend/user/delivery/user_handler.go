@@ -124,11 +124,11 @@ func (u *UserHandler) CheckEmail(c *gin.Context) {
 		c.Status(400)
 		return
 	}
-	if email.Email == "" {
+	if email.UserEmail == "" {
 		c.JSON(200, false)
 		return
 	}
-	isExist, err := u.UserUsecase.CheckEmail(c, email.Email)
+	isExist, err := u.UserUsecase.CheckEmail(c, email.UserEmail)
 	if err != nil {
 		logrus.Error(err)
 		c.Status(500)

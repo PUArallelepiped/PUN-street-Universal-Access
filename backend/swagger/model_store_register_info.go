@@ -15,7 +15,7 @@ type StoreRegisterInfo struct {
 
 	Address string `json:"address"`
 
-	ShippingFee int32 `json:"shipping_fee"`
+	ShippingFee int64 `json:"shipping_fee"`
 
 	Picture string `json:"picture"`
 }

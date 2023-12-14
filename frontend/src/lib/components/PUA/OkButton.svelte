@@ -1,6 +1,7 @@
 <script lang="ts">
 	type clickFunction = () => null;
-	export let onclick: clickFunction;
+	type clickFunctionAsync = () => Promise<void>;
+	export let onclick: clickFunction | clickFunctionAsync;
 	export let text: string;
 	export let disabled: boolean;
 </script>

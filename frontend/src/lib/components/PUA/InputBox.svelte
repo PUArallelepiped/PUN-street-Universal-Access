@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let label: string;
-	export let value: string;
+	export let value: string | number | null = "";
 	export let type: "" | "input"| "password" = "input";
 	export let onInput: () => void = () => {};
 </script>
@@ -16,7 +16,6 @@
 		
 	/>
 	{:else if type == "password"}
-		
 	<input
 			class="h-10 w-96 rounded-lg border-2 bg-gray-200 px-2 text-xl font-medium leading-relaxed text-orange-950 shadow-inner"
 			type="password"

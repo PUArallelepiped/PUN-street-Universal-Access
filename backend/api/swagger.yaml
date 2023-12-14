@@ -2511,6 +2511,7 @@ components:
           example: pwd1
     RegisterInfo:
       required:
+      - StoreRegisterInfo
       - address
       - birthday
       - password
@@ -2557,14 +2558,15 @@ components:
           example: pun street
         shipping_fee:
           type: integer
+          format: int64
           example: 100
         picture:
           type: string
           example: https://i.imgur.com/3i3tyXJ.gif
     EmailInfo:
       required:
-      - email
+      - user_email
       properties:
-        email:
+        user_email:
           type: string
           example: a@gmail.com

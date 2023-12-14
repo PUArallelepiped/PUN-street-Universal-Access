@@ -21,5 +21,5 @@ type RegisterInfo struct {
 
 	Birthday string `json:"birthday"`
 
-	StoreRegisterInfo *StoreRegisterInfo `json:"StoreRegisterInfo,omitempty"`
+	StoreRegisterInfo *StoreRegisterInfo `json:"StoreRegisterInfo"`
 }

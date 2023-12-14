@@ -9,5 +9,5 @@
 package swagger
 
 type EmailInfo struct {
-	Email string `json:"email"`
+	UserEmail string `json:"user_email"`
 }

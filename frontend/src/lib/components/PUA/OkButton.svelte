@@ -7,9 +7,9 @@
 </script>
 
 <button
-	class=" bg-PUA-orange w-52 rounded-3xl px-2 text-center text-lg font-semibold text-white disabled:opacity-50 disabled:cursor-not-allowed"
+	class=" w-52 rounded-3xl bg-PUA-orange px-2 text-center text-lg font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
 	on:click={onclick}
-	disabled={disabled}
+	{disabled}
 >
 	{text}
 </button>

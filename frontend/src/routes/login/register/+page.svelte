@@ -46,27 +46,27 @@
 		birthday: '2002-01-01',
 		StoreRegisterInfo: null
 	};
-	let checkPassword = ''; 
+	let checkPassword = '';
 	let errorMsgVisible: boolean = false;
 	let errorMsg: string = '';
 	let goodPUA = false;
 	let goodPUAStore = false;
 	async function NextStep() {
 		for (let index = 0; index < context.length; index++) {
-			if (!context[index+1].status) {
-								// check null & pwd
+			if (!context[index + 1].status) {
+				// check null & pwd
 				HandleError(context[index].text);
 				if (errorMsgVisible) {
 					return;
 				}
 				// check email
 				if (context[index].text === 'Complete basic information') {
-					const exists = (await CheckEmailExist()).valueOf()
+					const exists = (await CheckEmailExist()).valueOf();
 					if (exists === true) {
 						errorMsg = 'Email already exists';
 						errorMsgVisible = true;
 						return;
-					} 
+					}
 				}
 				if (context[index].text === 'Complete Store Info') {
 					userInfo.StoreRegisterInfo = storeInfo;
@@ -75,7 +75,7 @@
 				if (context[index + 1].text === 'Complete!') {
 					Register();
 				}
-				context[index+1].status = !context[index+1].status;
+				context[index + 1].status = !context[index + 1].status;
 				break;
 			}
 		}
@@ -105,14 +105,25 @@
 		goodPUAStore = !goodPUAStore;
 	}
 	function CheckUserInfoNull() {
-		if (userInfo.user_name === '' || userInfo.user_email === '' || userInfo.password === '' || userInfo.phone === '' || userInfo.address === '') {
+		if (
+			userInfo.user_name === '' ||
+			userInfo.user_email === '' ||
+			userInfo.password === '' ||
+			userInfo.phone === '' ||
+			userInfo.address === ''
+		) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 	function CheckStoreInfoNull() {
-		if (storeInfo.name === '' || storeInfo.description === '' || storeInfo.address === '' || storeInfo.shipping_fee === null) {
+		if (
+			storeInfo.name === '' ||
+			storeInfo.description === '' ||
+			storeInfo.address === '' ||
+			storeInfo.shipping_fee === null
+		) {
 			return true;
 		} else {
 			return false;
@@ -124,8 +135,7 @@
 			if (CheckUserInfoNull()) {
 				errorMsg = 'Please fill in all the blanks';
 				errorMsgVisible = true;
-			}
-			else if (CheckPassword()) {
+			} else if (CheckPassword()) {
 				errorMsg = 'Password not match';
 				errorMsgVisible = true;
 			}
@@ -134,8 +144,7 @@
 			if (CheckStoreInfoNull()) {
 				errorMsg = 'Please fill in all the blanks';
 				errorMsgVisible = true;
-			}
-			else if (storeInfo.shipping_fee !== null && isNaN(storeInfo.shipping_fee) === true) {
+			} else if (storeInfo.shipping_fee !== null && isNaN(storeInfo.shipping_fee) === true) {
 				errorMsg = 'Shipping fee must be a number';
 				errorMsgVisible = true;
 			}
@@ -148,7 +157,7 @@
 		storeInfo.shipping_fee = Number(storeInfo.shipping_fee);
 		const res = await fetch(backendPath + '/register', {
 			method: 'POST',
-			body: JSON.stringify(userInfo),
+			body: JSON.stringify(userInfo)
 		});
 		if (res.status == 200) {
 			const data = await res.json();
@@ -161,7 +170,7 @@
 	async function CheckEmailExist() {
 		const res = await fetch(backendPath + '/check-email', {
 			method: 'POST',
-			body: JSON.stringify({"user_email": userInfo.user_email})
+			body: JSON.stringify({ user_email: userInfo.user_email })
 		});
 		const exists = await res.json();
 		// console.log(exists)
@@ -199,24 +208,36 @@
 				<InputBox onInput={HandleInput} bind:value={userInfo.user_name} type="" label="Name" />
 				<InputBox onInput={HandleInput} bind:value={userInfo.user_email} type="" label="Email" />
 				<InputBox onInput={HandleInput} bind:value={userInfo.password} type="" label="Password" />
-				<InputBox onInput={HandleInput} bind:value={checkPassword} type="" label="Password Check"/>
+				<InputBox onInput={HandleInput} bind:value={checkPassword} type="" label="Password Check" />
 				<InputBox onInput={HandleInput} bind:value={userInfo.phone} type="" label="Phone Number" />
 				<!-- <InputBox bind:value={userInfo.birthday} type="" label="Birthday" /> -->
 				<InputBox onInput={HandleInput} bind:value={userInfo.address} type="" label="Address" />
-				<CheckBox onclick={CheckGoodPUA} value="si" id="goodPUA" text="Do you be a good PUA user?"></CheckBox>
-				<ErrorMessage errorMsgVisible={errorMsgVisible} errorMsg={errorMsg}></ErrorMessage>
+				<CheckBox onclick={CheckGoodPUA} value="si" id="goodPUA" text="Do you be a good PUA user?"
+				></CheckBox>
+				<ErrorMessage {errorMsgVisible} {errorMsg}></ErrorMessage>
 				<OkButton onclick={NextStep} text="Next Step" disabled={!goodPUA}></OkButton>
 			</div>
 		</div>
-	{:else if context[2].text === 'Complete Store Info' && !context[3].status }
+	{:else if context[2].text === 'Complete Store Info' && !context[3].status}
 		<div class="flex justify-center">
 			<div class="flex flex-col items-center gap-10 rounded-lg bg-white p-12">
 				<InputBox onInput={HandleInput} bind:value={storeInfo.name} type="" label="Store Name" />
-				<InputBox onInput={HandleInput} bind:value={storeInfo.description} type="" label="Store Description" />
+				<InputBox
+					onInput={HandleInput}
+					bind:value={storeInfo.description}
+					type=""
+					label="Store Description"
+				/>
 				<InputBox onInput={HandleInput} bind:value={storeInfo.address} type="" label="Address" />
-				<InputBox onInput={HandleInput} bind:value={storeInfo.shipping_fee} type="" label="Shipping Fee" />
-				<CheckBox onclick={CheckGoodPUAStore} value="si" id="id" text="Do you be a good PUA store?"></CheckBox>
-				<ErrorMessage errorMsgVisible={errorMsgVisible} errorMsg={errorMsg}></ErrorMessage>
+				<InputBox
+					onInput={HandleInput}
+					bind:value={storeInfo.shipping_fee}
+					type=""
+					label="Shipping Fee"
+				/>
+				<CheckBox onclick={CheckGoodPUAStore} value="si" id="id" text="Do you be a good PUA store?"
+				></CheckBox>
+				<ErrorMessage {errorMsgVisible} {errorMsg}></ErrorMessage>
 				<OkButton onclick={NextStep} text="Next Step" disabled={!goodPUAStore}></OkButton>
 			</div>
 		</div>

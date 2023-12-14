@@ -45,8 +45,10 @@
 	<div class="absolute right-1">
 		<form class=" mx-20 rounded-2xl bg-white px-8 py-5 shadow" on:submit|preventDefault={login}>
 			<div class="flex flex-col items-center gap-11">
-				<InputBox label="Email address" bind:value={user_email} onInput={handleInput} type=""></InputBox>
-				<InputBox label="Password" bind:value={password} onInput={handleInput} type="password"></InputBox>
+				<InputBox label="Email address" bind:value={user_email} onInput={handleInput} type=""
+				></InputBox>
+				<InputBox label="Password" bind:value={password} onInput={handleInput} type="password"
+				></InputBox>
 			</div>
 			<ErrorMessage {errorMsgVisible} errorMsg="Email or Password ERROR"></ErrorMessage>
 			<div class="m-3 flex h-16 items-end justify-between gap-10 text-center">

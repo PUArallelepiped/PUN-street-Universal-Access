@@ -9,7 +9,7 @@
 	import { backendPath } from '$lib/components/PUA/env';
 	import ErrorMessage from '$lib/components/PUA/ErrorMessage.svelte';
 	let context: { text: string; status: boolean }[] = [
-		{ text: 'Choose User Type', status: false },
+		{ text: 'Choose User Type', status: true },
 		{ text: 'Complete basic information', status: false },
 		// { text: 'Check email', status: false }, // dlc
 		{ text: 'Complete!', status: false }
@@ -53,8 +53,8 @@
 	let goodPUAStore = false;
 	async function NextStep() {
 		for (let index = 0; index < context.length; index++) {
-			if (!context[index].status) {
-				// check null & pwd
+			if (!context[index+1].status) {
+								// check null & pwd
 				HandleError(context[index].text);
 				if (errorMsgVisible) {
 					return;
@@ -72,12 +72,12 @@
 					userInfo.StoreRegisterInfo = storeInfo;
 					console.log(userInfo);
 				}
-				context[index].status = !context[index].status;
+				if (context[index + 1].text === 'Complete!') {
+					Register();
+				}
+				context[index+1].status = !context[index+1].status;
 				break;
 			}
-		}
-		if (context[context.length - 2].status) {
-			Register();
 		}
 		return;
 	}
@@ -154,7 +154,8 @@
 			const data = await res.json();
 			// console.log(data);
 		} else {
-			// location.reload();
+			errorMsg = 'Register failed';
+			errorMsgVisible = true;
 		}
 	}
 	async function CheckEmailExist() {
@@ -175,7 +176,7 @@
 <div class="flex flex-col gap-9 py-10">
 	<ProgressBar {context}></ProgressBar>
 
-	{#if !context[0].status}
+	{#if !context[1].status}
 		<div class="flex justify-center gap-28">
 			<button
 				on:click={ClickWallet}
@@ -192,7 +193,7 @@
 				<div class="text-center text-4xl font-bold leading-8 text-red-900">Store</div>
 			</button>
 		</div>
-	{:else if !context[1].status}
+	{:else if !context[2].status}
 		<div class="flex justify-center">
 			<div class="flex flex-col items-center gap-10 rounded-lg bg-white p-12">
 				<InputBox onInput={HandleInput} bind:value={userInfo.user_name} type="" label="Name" />
@@ -207,7 +208,7 @@
 				<OkButton onclick={NextStep} text="Next Step" disabled={!goodPUA}></OkButton>
 			</div>
 		</div>
-	{:else if !context[2].status && context[2].text === 'Complete Store Info'}
+	{:else if context[2].text === 'Complete Store Info' && !context[3].status }
 		<div class="flex justify-center">
 			<div class="flex flex-col items-center gap-10 rounded-lg bg-white p-12">
 				<InputBox onInput={HandleInput} bind:value={storeInfo.name} type="" label="Store Name" />
@@ -219,7 +220,7 @@
 				<OkButton onclick={NextStep} text="Next Step" disabled={!goodPUAStore}></OkButton>
 			</div>
 		</div>
-	{:else if !context[context.length - 1].status}
+	{:else}
 		<div class="flex flex-col items-center">
 			<div class="text-center text-4xl font-bold leading-8 text-PUA-dark-red">Compelete!</div>
 			<div class="text-center text-xl font-bold leading-8 text-PUA-dark-red">

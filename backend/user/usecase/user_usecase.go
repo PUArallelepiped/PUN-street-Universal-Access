@@ -135,3 +135,7 @@ func (su *UserUsecase) RegisterUser(ctx context.Context, user *swagger.RegisterI
 	}
 	return nil
 }
+
+func (su *UserUsecase) CheckEmail(ctx context.Context, email string) (bool, error) {
+	return su.userRepo.CheckEmail(ctx, email)
+}

@@ -859,6 +859,24 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
+  /check-email:
+    post:
+      tags:
+      - user
+      summary: check email exist
+      requestBody:
+        description: email info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailInfo'
+      responses:
+        "200":
+          description: exist or not
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
   /seller/store/{storeID}/orders:
     get:
       tags:
@@ -2543,3 +2561,10 @@ components:
         picture:
           type: string
           example: https://i.imgur.com/3i3tyXJ.gif
+    EmailInfo:
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          example: a@gmail.com

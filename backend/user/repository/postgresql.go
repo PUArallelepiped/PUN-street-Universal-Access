@@ -99,3 +99,16 @@ func (p *postgresqlUserRepo) RegisterStore(ctx context.Context, storeInfo swagge
 	}
 	return nil
 }
+
+func (p *postgresqlUserRepo) CheckEmail(ctx context.Context, email string) (bool, error) {
+	sqlStatement := `
+		SELECT EXISTS(SELECT 1 FROM user_data WHERE email = $1);
+	`
+	var exists bool
+	err := p.db.QueryRow(sqlStatement, email).Scan(&exists)
+	if err != nil {
+		logrus.Error(err)
+		return false, err
+	}
+	return exists, nil
+}

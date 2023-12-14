@@ -12,6 +12,7 @@ type UserRepo interface {
 	Login(ctx context.Context, email string, password string) (int, error)
 	RegisterUser(ctx context.Context, user *swagger.RegisterInfo, authority string) (int, error)
 	RegisterStore(ctx context.Context, storeInfo swagger.StoreRegisterInfo, id int) error
+	CheckEmail(ctx context.Context, email string) (bool, error)
 }
 
 type UserUsecase interface {
@@ -20,4 +21,5 @@ type UserUsecase interface {
 	Login(ctx context.Context, email string, password string) (string, error)
 	ValidateToken(ctx context.Context, token string) error
 	RegisterUser(ctx context.Context, user *swagger.RegisterInfo) error
+	CheckEmail(ctx context.Context, email string) (bool, error)
 }

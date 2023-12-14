@@ -27,6 +27,7 @@ func NewUserHandler(e *gin.Engine, userUsecase domain.UserUsecase) {
 		v1.POST("/login", handler.Login)
 		v1.GET("/validate", handler.ValidateToken)
 		v1.POST("/register", handler.RegisterUser)
+		v1.POST("/check-email", handler.CheckEmail)
 	}
 }
 
@@ -113,4 +114,26 @@ func (u *UserHandler) RegisterUser(c *gin.Context) {
 	}
 
 	c.JSON(200, "Register Success")
+}
+
+func (u *UserHandler) CheckEmail(c *gin.Context) {
+	var email swagger.EmailInfo
+
+	if err := c.BindJSON(&email); err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+	if email.Email == "" {
+		c.JSON(200, false)
+		return
+	}
+	isExist, err := u.UserUsecase.CheckEmail(c, email.Email)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, isExist)
 }

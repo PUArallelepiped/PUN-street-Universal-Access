@@ -51,3 +51,8 @@ import InputBox from './components/PUA/InputBox.svelte';
 export { InputBox };
 import CheckBox from './components/PUA/CheckBox.svelte';
 export { CheckBox };
+import SortTag from './components/PUA/sortTag.svelte';
+export { SortTag };
+
+import TagCheckbox from './components/PUA/tagCheckbox.svelte';
+export { TagCheckbox };

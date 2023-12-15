@@ -17,22 +17,6 @@
 		prodctListResponse_nextId = productListResponse.length + 1;
 	}
 
-	function addStoreProductCard() {
-		productListResponse = [
-			...productListResponse,
-			{
-				status: 1,
-				stock: 100,
-				store_id: 2,
-				name: 'watermelon',
-				description: 'a game',
-				price: 0,
-				picture: 'https://i.imgur.com/3i3tyXJ.gif',
-				product_id: prodctListResponse_nextId
-			}
-		];
-		prodctListResponse_nextId = prodctListResponse_nextId + 1;
-	}
 	function removeStoreProductCard(id: number) {
 		let result = productListResponse.find((item) => item.product_id === id);
 		if (result !== undefined) {
@@ -52,6 +36,6 @@
 		/>
 	{/each}
 	<div class="flex h-20 items-center justify-center">
-		<TagAdd on:click={addStoreProductCard}></TagAdd>
+		<TagAdd></TagAdd>
 	</div>
 </div>

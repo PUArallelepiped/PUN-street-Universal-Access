@@ -10,6 +10,34 @@
 		ShippingCoupon
 	} from '$lib/index';
 	import { onMount } from 'svelte';
+	// let orderInfo = {
+	// 	name: 'Order Name',
+	// 	phone: 'Phone Number',
+	// 	method: 'Taking Method',
+	// 	totalShippingFee: 'Total Shipping Fee',
+	// 	address: 'Taking Address'
+	// };
+	type seasonindDiscount = {
+		discount_start_date: string;
+		discount_name: string;
+		discount_end_date: string;
+		discount_description: string;
+		discount_percentage: number;
+		discount_id: number;
+		status: number;
+	};
+	let seasoningDiscountList: seasonindDiscount[] = [];
+	onMount(async () => {
+		const init = await fetch(`/seasoningDiscount.json`);
+		console.log(init);
+		if (init.status == 200) {
+			seasoningDiscountList = await init.json();
+		}
+		const resp = await fetch(backendPath + `/seasoning-discounts`);
+		if (resp.status == 200) {
+			seasoningDiscountList = await resp.json();
+		}
+	});
 
 	let showDetail = true;
 
@@ -127,7 +155,15 @@
 				<ShippingCoupon />
 				<ShippingCoupon />
 				<ShippingCoupon />
-				<SeasoningCoupon></SeasoningCoupon>
+				{#each seasoningDiscountList as SeasoningDiscount}
+					<SeasoningCoupon
+						name={SeasoningDiscount.discount_name}
+						percentage={SeasoningDiscount.discount_percentage}
+						discount_start_date={SeasoningDiscount.discount_start_date}
+						discount_end_date={SeasoningDiscount.discount_end_date}
+						used={SeasoningDiscount.status === 1}
+					/>
+				{/each}
 			</div>
 		</div>
 		{#if showDetail}

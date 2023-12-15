@@ -1,5 +1,5 @@
 <script lang="ts">
-	let inputValue = '';
+	export let inputValue = '';
 
 	export let width: string = '10';
 

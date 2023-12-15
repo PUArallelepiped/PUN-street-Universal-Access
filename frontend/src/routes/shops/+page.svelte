@@ -1,22 +1,13 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
+	// import { page } from '$app/stores';
 
-	//import * as Menubar from "$lib/components/ui/menubar";
-	//import * as Select from "$lib/components/ui/select";
 	import { Input } from '$lib/components/ui/input';
-	import { Checkbox } from '$lib/components/ui/checkbox';
-	import { Label } from '$lib/components/ui/label';
-	//import { Slider } from '$lib/components/ui/slider';
-	//import { Button } from "$lib/components/ui/button";
-	//let checked = false;
 
 	import DoubleRangeSlider from '$lib/components/ui/doubleSlider/doubleRangeSlider.svelte';
 	import { backendPath } from '$lib/components/PUA/env';
 	import StoreCard from '$lib/components/PUA/storeCard.svelte';
 	import SortTag from '$lib/components/PUA/sortTag.svelte';
 	import TagCheckbox from '$lib/components/PUA/tagCheckbox.svelte';
-	import type { list } from 'postcss';
 	import type { category } from '$lib';
 	let start = 0;
 	let end = 1;

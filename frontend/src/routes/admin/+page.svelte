@@ -26,21 +26,56 @@
 
     let users: {
         name: string,
-        email: string
+        email: string,
+        type: string,
+        status: boolean
     }[] = [
         {
             name: "sakana",
-            email: "r1111111"
+            email: "r1111111",
+            type: '1',
+            status: false
         },
         {
             name: "sakana dewanai",
-            email: "t1111111"
+            email: "t1111111",
+            type: '2',
+            status: false
         },
         {
             name: "sakana desu",
-            email: "fsddsdss"
+            email: "fsddsdss",
+            type: '2',
+            status: true
         },
     ]
+
+    let userInfo = {
+        user_name:"sakana san",
+        user_email:"t111059001",
+        address:"dsdsadsadasdsadasd",
+        authority:100
+    }
+
+    
+    function changeDisplay(display_id_name: string, invisible_id_name: string){
+        if (display_id_name == "userData") {
+            document.getElementById("userButton")?.classList.add("bg-white");
+            document.getElementById("userButton")?.classList.add("border-b-4");
+            document.getElementById("orderButton")?.classList.remove("bg-white");
+            document.getElementById("orderButton")?.classList.remove("border-b-4");
+        }
+        else{
+            document.getElementById("orderButton")?.classList.add("bg-white");
+            document.getElementById("orderButton")?.classList.add("border-b-4");
+            document.getElementById("userButton")?.classList.remove("bg-white");
+            document.getElementById("userButton")?.classList.remove("border-b-4");
+        }
+
+        document.getElementById(display_id_name)?.classList.remove("hidden");
+        document.getElementById(invisible_id_name)?.classList.add("hidden");
+    }
+
 </script>
 
 <div class="flex justify-center font-bold">
@@ -49,24 +84,24 @@
             <img src={admin_icon} alt="" class="h-28 w-28 flex my-6 ml-10" />
             <div class="flex flex-col m-7 justify-between">
                 <div>
-                    <div class="text-PUA-gray text-2xl">sakana san</div>
-                    <div class="text-gray-300">t111105911</div>
+                    <div class="text-PUA-gray text-2xl">{userInfo.user_name}</div>
+                    <div class="text-gray-300">{userInfo.user_email}</div>
                 </div>
-                <div class="text-PUA-gray text-xl">address</div>
+                <div class="text-PUA-gray text-xl">{userInfo.address}</div>
             </div>
         </div>
         <div class="flex h-10">
-            <button class="w-full bg-slate-400">aa</button>
-            <button class="w-full bg-slate-100">aa</button>
+            <button id="userButton" on:click={ () => changeDisplay("userData", "orderData")} class="w-full bg-gray-200 border-b-4 border-PUA-dark-red bg-white text-PUA-dark-red text-xl">User List</button>
+            <button id="orderButton"on:click={ () => changeDisplay("orderData", "userData")} class="w-full bg-gray-200 border-PUA-dark-red text-PUA-dark-red text-xl">Order List</button>
         </div>
-        <div class="h-screen bg-white">
-            {#each orders as order}
-                <AdminOrderCart firstCol= {order.date} secondCol = {order.user}></AdminOrderCart>
+        <div id="userData" class="bg-white">
+            {#each users as user}
+                <AdminOrderCart firstCol= {user.name} secondCol = {user.email} type = {user.type} ben = {user.status}></AdminOrderCart>
             {/each}
         </div>
-        <div class="h-screen bg-white">
-            {#each users as user}
-                <AdminOrderCart firstCol= {user.name} secondCol = {user.email}></AdminOrderCart>
+        <div id="orderData" class="bg-white hidden">
+            {#each orders as order}
+                <AdminOrderCart firstCol= {order.date} secondCol = {order.user} type = '0'></AdminOrderCart>
             {/each}
         </div>
     </div>

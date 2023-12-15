@@ -52,3 +52,29 @@ func (p *postgresqlUserRepo) GetAllUser(ctx context.Context) ([]swagger.UserData
 
 	return l, nil
 }
+
+func (p *postgresqlUserRepo) GetAllOrder(ctx context.Context) ([]swagger.OrderInfoShort, error) {
+	sqlStatement := `
+		SELECT orders.cart_id, orders.store_id, orders.order_date, orders.user_id, user_data.name  
+		FROM orders LEFT JOIN user_data 
+		ON orders.user_id = user_data.user_id
+	`
+
+	rows, err := p.db.Query(sqlStatement)
+	if err != nil {
+		return nil, err
+	}
+
+	orders := []swagger.OrderInfoShort{}
+	for rows.Next() {
+		order := swagger.OrderInfoShort{}
+		err := rows.Scan(&order.CartId, &order.StoreId, &order.OrderDate, &order.UserId, &order.UserName)
+		if err != nil {
+			return nil, err
+		}
+
+		orders = append(orders, order)
+	}
+
+	return orders, nil
+}

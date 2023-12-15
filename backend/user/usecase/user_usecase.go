@@ -35,3 +35,13 @@ func (su *UserUsecase) GetAllUser(ctx context.Context) ([]swagger.UserDataShort,
 	}
 	return s, nil
 }
+
+func (su *UserUsecase) GetAllOrder(ctx context.Context) ([]swagger.OrderInfoShort, error) {
+	orders, err := su.userRepo.GetAllOrder(ctx)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	return orders, nil
+}

@@ -1280,7 +1280,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderInfoShort'
+                $ref: '#/components/schemas/OrderInfoShortArray'
         "400":
           description: bad request
         "500":
@@ -1458,13 +1458,13 @@ components:
         product_label_array:
         - item_array:
           - name: have
-          - name: no
+          - name: false
           product_id: 1
           label_name: milk
           required: true
         - item_array:
           - name: have
-          - name: no
+          - name: false
           product_id: 1
           label_name: milk22
           required: true
@@ -2179,6 +2179,11 @@ components:
         product_price: 9999
         product_name: pasta
         product_quantity: 10
+    OrderInfoShortArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/OrderInfoShort'
+      x-schema-name: OrderInfoShortArray
     OrderInfoShort:
       required:
       - cart_id

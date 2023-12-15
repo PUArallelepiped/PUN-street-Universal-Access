@@ -9,9 +9,11 @@ import (
 type UserRepo interface {
 	GetByID(ctx context.Context, id int64) (*swagger.UserData, error)
 	GetAllUser(ctx context.Context) ([]swagger.UserDataShort, error)
+	GetAllOrder(ctx context.Context) ([]swagger.OrderInfoShort, error)
 }
 
 type UserUsecase interface {
 	GetByID(ctx context.Context, id int64) (*swagger.UserData, error)
 	GetAllUser(ctx context.Context) ([]swagger.UserDataShort, error)
+	GetAllOrder(ctx context.Context) ([]swagger.OrderInfoShort, error)
 }

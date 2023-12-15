@@ -21,6 +21,7 @@ func NewUserHandler(e *gin.Engine, userUsecase domain.UserUsecase) {
 	{
 		v1.GET("/user/get-info/:userID", handler.GetUserById)
 		v1.GET("/admin/get-all-users", handler.GetUsers)
+		v1.GET("/admin/get-all-orders", handler.GetOrders)
 	}
 }
 
@@ -43,12 +44,23 @@ func (s *UserHandler) GetUserById(c *gin.Context) {
 }
 
 func (s *UserHandler) GetUsers(c *gin.Context) {
-	stores, err := s.UserUsecase.GetAllUser(c)
+	users, err := s.UserUsecase.GetAllUser(c)
 	if err != nil {
 		logrus.Error(err)
 		c.Status(500)
 		return
 	}
 
-	c.JSON(200, stores)
+	c.JSON(200, users)
+}
+
+func (s *UserHandler) GetOrders(c *gin.Context) {
+	orders, err := s.UserUsecase.GetAllOrder(c)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, orders)
 }

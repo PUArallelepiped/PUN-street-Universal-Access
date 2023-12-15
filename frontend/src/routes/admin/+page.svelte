@@ -1,6 +1,6 @@
 <script lang="ts">
 	import admin_icon from '$lib/assets/admin_icon.svg';
-    import AdminOrderCart from '$lib/components/PUA/adminOrder.svelte'
+    import AdminDataCard from '$lib/components/PUA/adminDataCard.svelte'
 
     let orders: {
         date: string,
@@ -96,12 +96,12 @@
         </div>
         <div id="userData" class="bg-white">
             {#each users as user}
-                <AdminOrderCart firstCol= {user.name} secondCol = {user.email} type = {user.type} ben = {user.status}></AdminOrderCart>
+                <AdminDataCard firstCol= {user.name} secondCol = {user.email} type = {user.type} ben = {user.status}></AdminDataCard>
             {/each}
         </div>
         <div id="orderData" class="bg-white hidden">
             {#each orders as order}
-                <AdminOrderCart firstCol= {order.date} secondCol = {order.user} type = '0'></AdminOrderCart>
+                <AdminDataCard firstCol= {order.date} secondCol = {order.user} type = '0'></AdminDataCard>
             {/each}
         </div>
     </div>

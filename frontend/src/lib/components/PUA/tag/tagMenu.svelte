@@ -16,7 +16,10 @@
 		category_name: string;
 	}[];
 	$: {
-		intersectionData = tagMenuData.filter((tagItem) => !disabled_tag.includes(tagItem));
+		intersectionData = tagMenuData.filter(
+			(tagItem) =>
+				!disabled_tag.some((disabledItem) => disabledItem.category_id === tagItem.category_id)
+		);
 	}
 </script>
 

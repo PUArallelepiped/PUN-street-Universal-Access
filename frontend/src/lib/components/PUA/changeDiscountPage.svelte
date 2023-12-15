@@ -36,47 +36,12 @@
 		}
 	}
 	function initPage() {
-		dataError = { maxquantity_err: false, name_err: false, description_err: false };
 		currentData = { ...changePageData };
 	}
 	function toggleModel() {
 		showModel = !showModel;
 	}
-	let dataError: { maxquantity_err: boolean; name_err: boolean; description_err: boolean } = {
-		maxquantity_err: false,
-		name_err: false,
-		description_err: false
-	};
 
-	function saveCurrentData() {
-		if (
-			currentData.discount_max_price.toString() !== '' &&
-			currentData.discount_name !== '' &&
-			currentData.discount_description !== '' &&
-			/^\d+$/.test(currentData.discount_max_price.toString())
-		) {
-			changePageData = { ...currentData };
-			dis_haved = true;
-			dataError = { maxquantity_err: false, name_err: false, description_err: false };
-			toggleModel();
-		} else {
-			if (currentData.discount_max_price.toString() === '') {
-				dataError.maxquantity_err = true;
-			} else if (currentData.discount_max_price.toString() !== '') {
-				dataError.maxquantity_err = !/^\d+$/.test(currentData.discount_max_price.toString());
-			}
-			if (currentData.discount_name === '') {
-				dataError.name_err = true;
-			} else if (currentData.discount_name !== '') {
-				dataError.name_err = false;
-			}
-			if (currentData.discount_description === '') {
-				dataError.description_err = true;
-			} else if (currentData.discount_description !== '') {
-				dataError.description_err = false;
-			}
-		}
-	}
 	function closePage() {
 		initPage();
 		toggleModel();
@@ -85,6 +50,12 @@
 		currentData.discount_name = '';
 		currentData.discount_max_price = 0;
 		currentData.discount_description = '';
+	}
+
+	async function handleSubmit() {
+		changePageData = { ...currentData };
+		dis_haved = true;
+		toggleModel();
 	}
 </script>
 
@@ -104,60 +75,59 @@
 						</button>
 					</div>
 				</div>
-				<div class="relative mx-16 my-8">
-					<div class="flex w-full items-center justify-center pb-2 pt-2">
-						<div class="flex w-80 rounded-xl border-4 border-PUA-stone p-2 text-PUA-stone">
-							<div class="  px-2 py-2 text-center text-base font-semibold">
-								{discountData.kind}
-							</div>
-							<div class="mt-2 h-12 w-1 bg-PUA-stone"></div>
-							<div class="w-full px-2 font-semibold">
-								<div class="flex items-baseline justify-center">
-									<span class="ml-1 mr-1 text-base">{discountData.how}</span><span
-										class=" text-center text-2xl">{currentData.discount_max_price}</span
-									>
+				<form on:submit={handleSubmit} method="post">
+					<div class="relative mx-16 my-8">
+						<div class="flex w-full items-center justify-center pb-2 pt-2">
+							<div class="flex w-80 rounded-xl border-4 border-PUA-stone p-2 text-PUA-stone">
+								<div class="  px-2 py-2 text-center text-base font-semibold">
+									{discountData.kind}
 								</div>
-								<div class="text-center text-lg">{discountData.way}</div>
+								<div class="mt-2 h-12 w-1 bg-PUA-stone"></div>
+								<div class="w-full px-2 font-semibold">
+									<div class="flex items-baseline justify-center">
+										<span class="ml-1 mr-1 text-base">{discountData.how}</span><span
+											class=" text-center text-2xl">{currentData.discount_max_price}</span
+										>
+									</div>
+									<div class="text-center text-lg">{discountData.way}</div>
+								</div>
 							</div>
 						</div>
+						<ChangeDiscountInput
+							title={'Max Quantity'}
+							bind:value={currentData.discount_max_price}
+							type={'number'}
+							text={' Enter Max Quantity'}
+							name={'MaxQuantity'}
+						></ChangeDiscountInput>
+
+						<ChangeDiscountInput
+							title={'Discount Name'}
+							bind:value={currentData.discount_name}
+							text={' Enter Discount Name'}
+							name={'DiscountName'}
+						></ChangeDiscountInput>
+						<ChangeDiscountInput
+							title={'Description'}
+							bind:value={currentData.discount_description}
+							text={' Enter Discount Description'}
+							name={'Description'}
+						></ChangeDiscountInput>
 					</div>
 
-					<ChangeDiscountInput
-						title={'Max Quantity'}
-						bind:value={currentData.discount_max_price}
-						bind:error={dataError.maxquantity_err}
-						text={' Enter Max Quantity'}
-					></ChangeDiscountInput>
+					<div class="mt-5 flex items-center justify-between gap-5 text-center">
+						<button
+							class="w-4/5 rounded-[20px] bg-gray-200 font-bold text-red-900"
+							on:click={deletePage}
+						>
+							Delete
+						</button>
 
-					<ChangeDiscountInput
-						title={'Discount Name'}
-						bind:value={currentData.discount_name}
-						bind:error={dataError.name_err}
-						text={' Enter Discount Name'}
-					></ChangeDiscountInput>
-					<ChangeDiscountInput
-						title={'Description'}
-						bind:value={currentData.discount_description}
-						bind:error={dataError.description_err}
-						text={' Enter Discount Description'}
-					></ChangeDiscountInput>
-				</div>
-
-				<div class="mt-5 flex items-center justify-between gap-5 text-center">
-					<button
-						on:click={deletePage}
-						class="w-4/5 rounded-[20px] bg-gray-200 font-bold text-red-900"
-					>
-						Delete
-					</button>
-
-					<button
-						on:click={saveCurrentData}
-						class="w-4/5 rounded-[20px] bg-orange-700 font-bold text-white"
-					>
-						Save
-					</button>
-				</div>
+						<button type="submit" class="w-4/5 rounded-[20px] bg-orange-700 font-bold text-white">
+							Save
+						</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>

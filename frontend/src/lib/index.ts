@@ -56,3 +56,5 @@ export { SortTag };
 
 import TagCheckbox from './components/PUA/tagCheckbox.svelte';
 export { TagCheckbox };
+
+export type category = { category_name: string; category_id: number };

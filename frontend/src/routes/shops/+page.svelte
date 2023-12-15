@@ -16,6 +16,8 @@
 	import StoreCard from '$lib/components/PUA/storeCard.svelte';
 	import SortTag from '$lib/components/PUA/sortTag.svelte';
 	import TagCheckbox from '$lib/components/PUA/tagCheckbox.svelte';
+	import type { list } from 'postcss';
+	import type { category } from '$lib';
 	let start = 0;
 	let end = 1;
 
@@ -48,47 +50,36 @@
 		shipping_fee: number;
 		status: number;
 		store_id: number;
+		category_array: category[];
 	}[] = [
 		{
 			store_id: 1,
-			description: 'you are not pasta',
-			name: 'im pasta',
+			shipping_fee: 100,
 			address: 'pun street',
-			rate: 4,
-			rate_count: 100,
-			picture: 'https://i.imgur.com/3i3tyXJ.gif',
-			status: 1,
-			shipping_fee: 35
-		},
-		{
-			store_id: 2,
-			description: 'special meal',
-			name: 'number five',
-			address: 'pun street',
-			rate: 3.5,
-			rate_count: 5,
-			picture: 'https://i.imgur.com/3i3tyXJ.gif',
-			status: 1,
-			shipping_fee: 15
-		},
-		{
-			store_id: 3,
-			description: 'moooooooooooooos',
-			name: 'mos burger',
-			address: 'NTUT',
-			rate: 4,
-			rate_count: 123,
-			picture: 'https://i.imgur.com/3i3tyXJ.gif',
-			status: 1,
-			shipping_fee: 55
+			rate_count: 10,
+			rate: 5,
+			category_array: [
+				{
+					category_name: 'drink',
+					category_id: 1
+				},
+				{
+					category_name: 'drink',
+					category_id: 1
+				}
+			],
+			name: "i'm pasta",
+			description: 'good pasta',
+			picture: 'https://i.imgur.com/1.jpg',
+			status: 1
 		}
 	];
 
-	onMount(async () => {
+	async function getShopList() {
 		const resp = await fetch(backendPath + '/stores');
 		shopListResponse = await resp.json();
-		console.log(shopListResponse);
-	});
+		return shopListResponse;
+	}
 </script>
 
 <div class="flex justify-start">
@@ -122,7 +113,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="flex flex-col items-center gap-5">
+			<div class="flex flex-col items-center justify-center gap-5">
 				<SortTag value="Tag"></SortTag>
 				<div class="flex w-full max-w-xs flex-col justify-start gap-1 px-4">
 					{#each tagCheckboxes as { id }}
@@ -134,14 +125,15 @@
 	</div>
 
 	<div class=" m-4 flex h-min flex-wrap gap-3">
-		{#each shopListResponse as shop}
-			<StoreCard
-				name={shop.name}
-				description={shop.description}
-				picture={shop.picture}
-				address={shop.address}
-				rate={shop.rate}
-			/>
-		{/each}
+		{#await getShopList() then shops}
+			{#each shops as shop}
+				<StoreCard
+					name={shop.name}
+					picture={shop.picture}
+					rate={shop.rate}
+					category_array={shop.category_array}
+				/>
+			{/each}
+		{/await}
 	</div>
 </div>

@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import * as Card from '$lib/components/ui/card';
-	import { Diff } from 'lucide-svelte';
+	import type { category } from '$lib';
 
+	export let category_array: category[];
 	export let name: string = 'im pasta';
-	export let description: string = 'you are not pasta';
 	export let picture: string = 'https://i.imgur.com/T5zyE63.png';
-	export let address: string = 'pun street';
 	export let rate: number = 0;
+	console.log(category_array);
 </script>
 
 <a href="{$page.route.id}/{name}" class="shrink">
@@ -26,6 +25,16 @@
 			</div>
 		</div>
 		<div class="w-full text-4xl font-semibold leading-relaxed text-PUA-dark-orange">{name}</div>
-		<div>tag</div>
+		<div class="flex flex-wrap gap-2">
+			{#if category_array != null}
+				{#each category_array as tag}
+					<div
+						class=" rounded-2xl bg-red-900 px-3 py-1 text-center text-base font-bold leading-tight text-white"
+					>
+						{tag.category_name}
+					</div>
+				{/each}
+			{/if}
+		</div>
 	</div>
 </a>

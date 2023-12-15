@@ -2,16 +2,10 @@ package usecase
 
 import (
 	"context"
-	"errors"
-	"regexp"
-	"strings"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
-	"github.com/go-playground/validator/v10"
 	"github.com/sirupsen/logrus"
-
-	_ "github.com/lib/pq"
 )
 
 type UserUsecase struct {
@@ -24,7 +18,7 @@ func NewUserUsecase(userRepo domain.UserRepo) domain.UserUsecase {
 	}
 }
 
-func (su *UserUsecase) GetByID(ctx context.Context, id string) (*swagger.UserData, error) {
+func (su *UserUsecase) GetByID(ctx context.Context, id int64) (*swagger.UserData, error) {
 	s, err := su.userRepo.GetByID(ctx, id)
 	if err != nil {
 		logrus.Error(err)
@@ -33,7 +27,7 @@ func (su *UserUsecase) GetByID(ctx context.Context, id string) (*swagger.UserDat
 	return s, nil
 }
 
-func (su *UserUsecase) GetAllUser(ctx context.Context) ([]swagger.UserData, error) {
+func (su *UserUsecase) GetAllUser(ctx context.Context) ([]swagger.UserDataShort, error) {
 	s, err := su.userRepo.GetAllUser(ctx)
 	if err != nil {
 		logrus.Error(err)
@@ -41,6 +35,7 @@ func (su *UserUsecase) GetAllUser(ctx context.Context) ([]swagger.UserData, erro
 	}
 	return s, nil
 }
+<<<<<<< HEAD
 
 type CustomValidator struct {
 	validator *validator.Validate
@@ -112,3 +107,5 @@ func (su *UserUsecase) LogIn(ctx context.Context, userName string, userPassword 
 	correctLogIn, err := su.userRepo.LogIn(ctx, userName, userPassword)
 	return correctLogIn, err
 }
+=======
+>>>>>>> upstream/main

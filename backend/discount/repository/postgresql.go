@@ -17,28 +17,27 @@ func NewPostgressqlDiscountRepo(db *sql.DB) domain.DiscountRepo {
 	return &postgresqlDiscountRepo{db}
 }
 
-func (p *postgresqlDiscountRepo) GetShippingByStoreID(ctx context.Context, id int64) ([]swagger.ShippingDiscount, error) {
+func (p *postgresqlDiscountRepo) GetShippingByStoreID(ctx context.Context, id int64) (*swagger.ShippingDiscount, error) {
 	sqlStatement := `
 	SELECT discounts.discount_id, status, description, name, max_price 
-	FROM discounts JOIN shipping_discount ON discounts.discount_id = shipping_discount.discount_id
-	WHERE store_id = $1;
+	FROM discounts NATURAL JOIN shipping_discount
+	WHERE shipping_discount.store_id = $1 AND discounts.status = 1;
 	`
-	rows, err := p.db.Query(sqlStatement, id)
+	row := p.db.QueryRow(sqlStatement, id)
+
+	shipping_discount := &swagger.ShippingDiscount{}
+	err := row.Scan(&shipping_discount.DiscountId, &shipping_discount.Status, &shipping_discount.DiscountDescription, &shipping_discount.DiscountName, &shipping_discount.DiscountMaxPrice)
+
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+
 	if err != nil {
 		logrus.Error(err)
 		return nil, err
 	}
-	shipping_discounts := []swagger.ShippingDiscount{}
-	for rows.Next() {
-		shipping_discount := swagger.ShippingDiscount{}
-		err := rows.Scan(&shipping_discount.DiscountId, &shipping_discount.Status, &shipping_discount.DiscountDescription, &shipping_discount.DiscountName, &shipping_discount.DiscountMaxPrice)
-		if err != nil {
-			logrus.Error(err)
-			return nil, err
-		}
-		shipping_discounts = append(shipping_discounts, shipping_discount)
-	}
-	return shipping_discounts, nil
+
+	return shipping_discount, nil
 }
 
 func (p *postgresqlDiscountRepo) AddSeasoning(ctx context.Context, seasoning *swagger.SeasoningDiscount) error {
@@ -81,6 +80,38 @@ func (p *postgresqlDiscountRepo) AddShipping(ctx context.Context, shipping *swag
 	return nil
 }
 
+func (p *postgresqlDiscountRepo) DisableDiscountByDiscountID(ctx context.Context, id int64) error {
+	sqlStatement := `
+	UPDATE discounts
+	SET status = 0
+	WHERE discount_id = $1;
+	`
+	_, err := p.db.Exec(sqlStatement, id)
+
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}
+
+func (p *postgresqlDiscountRepo) IsExistShippingDiscountByStoreID(ctx context.Context, id int64) (bool, error) {
+	sqlStatement := `
+	SELECT COUNT(*) > 0 FROM shipping_discount NATURAL JOIN discounts WHERE shipping_discount.store_id = $1 AND discounts.status = 1
+	`
+	row := p.db.QueryRow(sqlStatement, id)
+
+	exist := false
+	err := row.Scan(&exist)
+	if err != nil {
+		logrus.Error(err)
+		return false, err
+	}
+
+	return exist, nil
+}
+
 func (p *postgresqlDiscountRepo) AddEvent(ctx context.Context, event *swagger.EventDiscount, id int64) error {
 	sqlStatement := `
 	WITH ins1 AS (
@@ -99,4 +130,52 @@ func (p *postgresqlDiscountRepo) AddEvent(ctx context.Context, event *swagger.Ev
 	}
 
 	return nil
+}
+
+func (p *postgresqlDiscountRepo) GetAllSeasoning(ctx context.Context) ([]swagger.SeasoningDiscount, error) {
+	sqlStatement := `
+	SELECT discounts.discount_id, name, description, start_date, end_date, discount_percentage, status 
+	FROM discounts NATURAL JOIN seasoning_discount
+	WHERE discounts.status = 1;
+	`
+	rows, err := p.db.Query(sqlStatement)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+	seasoningDiscounts := []swagger.SeasoningDiscount{}
+	for rows.Next() {
+		seasoningDiscount := swagger.SeasoningDiscount{}
+		err := rows.Scan(&seasoningDiscount.DiscountId, &seasoningDiscount.DiscountName, &seasoningDiscount.DiscountDescription, &seasoningDiscount.DiscountStartDate, &seasoningDiscount.DiscountEndDate, &seasoningDiscount.DiscountPercentage, &seasoningDiscount.Status)
+		if err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+		seasoningDiscounts = append(seasoningDiscounts, seasoningDiscount)
+	}
+	return seasoningDiscounts, nil
+}
+
+func (p *postgresqlDiscountRepo) GetAllEventByProductID(ctx context.Context, id int64) ([]swagger.EventDiscount, error) {
+	sqlStatement := `
+	SELECT discounts.discount_id, name, description, max_quantity, product_id,  status 
+	FROM discounts NATURAL JOIN event_discount
+	WHERE product_id = $1 AND discounts.status = 1;
+	`
+	rows, err := p.db.Query(sqlStatement, id)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+	eventDiscounts := []swagger.EventDiscount{}
+	for rows.Next() {
+		eventDiscount := swagger.EventDiscount{}
+		err := rows.Scan(&eventDiscount.DiscountId, &eventDiscount.DiscountName, &eventDiscount.DiscountDescription, &eventDiscount.DiscountMaxQuantity, &eventDiscount.ProductId, &eventDiscount.Status)
+		if err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+		eventDiscounts = append(eventDiscounts, eventDiscount)
+	}
+	return eventDiscounts, nil
 }

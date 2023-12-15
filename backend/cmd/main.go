@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"os"
 
 	_storeDelivery "github.com/PUArallelepiped/PUN-street-Universal-Access/store/delivery"
 	_storeRepo "github.com/PUArallelepiped/PUN-street-Universal-Access/store/repository"
@@ -24,6 +25,10 @@ import (
 	_discountRepo "github.com/PUArallelepiped/PUN-street-Universal-Access/discount/repository"
 	_discountUsecase "github.com/PUArallelepiped/PUN-street-Universal-Access/discount/usecase"
 
+	_categoryDelivery "github.com/PUArallelepiped/PUN-street-Universal-Access/category/delivery"
+	_categoryRepo "github.com/PUArallelepiped/PUN-street-Universal-Access/category/repository"
+	_categotyUsecase "github.com/PUArallelepiped/PUN-street-Universal-Access/category/usecase"
+
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -40,6 +45,8 @@ func init() {
 }
 
 func main() {
+	logrus.SetReportCaller(true)
+
 	logrus.Info("HTTP server started!!!")
 
 	restfulHost := viper.GetString("RESTFUL_HOST")
@@ -47,10 +54,16 @@ func main() {
 	dbDatabase := viper.GetString("DB_DATABASE")
 	dbUser := viper.GetString("POSTGRES_USER")
 	dbPassword := viper.GetString("POSTGRES_PASSWORD")
+	dbHost := os.Getenv("DB_HOST")
+
+	// if go not run in docker, host will be localhost
+	if dbHost == "" {
+		dbHost = "localhost"
+	}
 
 	db, err := sql.Open(
 		"postgres",
-		fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", dbUser, dbPassword, dbDatabase),
+		fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", dbHost, dbUser, dbPassword, dbDatabase),
 	)
 
 	if err != nil {
@@ -81,6 +94,10 @@ func main() {
 	discountRepo := _discountRepo.NewPostgressqlDiscountRepo(db)
 	discountUsecase := _discountUsecase.NewDiscountUsecase(discountRepo)
 	_discountDelivery.NewDiscountHandler(r, discountUsecase)
+
+	categoryRepo := _categoryRepo.NewPostgressqlCategoryRepo(db)
+	categoryUsecase := _categotyUsecase.NewCategoryUsecase(categoryRepo)
+	_categoryDelivery.NewCategoryHandler(r, categoryUsecase)
 
 	logrus.Fatal(r.Run(restfulHost + ":" + restfulPort))
 }

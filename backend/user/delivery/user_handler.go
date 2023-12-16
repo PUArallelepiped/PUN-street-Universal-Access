@@ -22,6 +22,8 @@ func NewUserHandler(e *gin.Engine, userUsecase domain.UserUsecase) {
 		v1.GET("/user/get-info/:userID", handler.GetUserById)
 		v1.GET("/admin/get-all-users", handler.GetUsers)
 		v1.GET("/admin/get-all-orders", handler.GetOrders)
+		v1.PUT("/admin/ban-user/:userID", handler.BanUser)
+		v1.PUT("/admin/unban-user/:userID", handler.UnBanUser)
 	}
 }
 
@@ -63,4 +65,40 @@ func (s *UserHandler) GetOrders(c *gin.Context) {
 	}
 
 	c.JSON(200, orders)
+}
+
+func (s *UserHandler) BanUser(c *gin.Context) {
+	userID, err := strconv.ParseInt(c.Param("userID"), 10, 64)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
+	err = s.UserUsecase.BanUser(c, userID)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.Status(200)
+}
+
+func (s *UserHandler) UnBanUser(c *gin.Context) {
+	userID, err := strconv.ParseInt(c.Param("userID"), 10, 64)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
+	err = s.UserUsecase.UnBanUser(c, userID)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.Status(200)
 }

@@ -78,3 +78,31 @@ func (p *postgresqlUserRepo) GetAllOrder(ctx context.Context) ([]swagger.OrderIn
 
 	return orders, nil
 }
+
+func (p *postgresqlUserRepo) BanUser(ctx context.Context, id int64) error {
+	sqlStatement := `
+	UPDATE user_data SET status = 0 WHERE user_id = $1
+	`
+
+	_, err := p.db.Exec(sqlStatement, id)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}
+
+func (p *postgresqlUserRepo) UnBanUser(ctx context.Context, id int64) error {
+	sqlStatement := `
+	UPDATE user_data SET status = 1 WHERE user_id = $1
+	`
+
+	_, err := p.db.Exec(sqlStatement, id)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}

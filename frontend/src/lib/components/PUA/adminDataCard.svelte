@@ -1,41 +1,43 @@
 <script lang="ts">
+	import { backendPath } from '$lib/components/PUA/env';
+
 	import order_icon from '$lib/assets/order_icon.svg';
 	import customer_icon from '$lib/assets/customer_icon.svg';
 	import seller_icon from '$lib/assets/seller_icon.svg';
-	import { onMount } from 'svelte';
 
 	export let firstCol: string;
 	export let secondCol: string;
 	export let type: string;
 
-	export let ben: boolean = false;
-	let self: HTMLDivElement;
+	export let ben: boolean = true;
 
-	onMount(() => {
-		if (ben) {
-			self.classList.remove('border-PUA-dark-gray');
-			self.classList.add('border-PUA-red');
-		} else {
-			self.classList.add('border-PUA-dark-gray');
-			self.classList.remove('border-PUA-red');
-		}
-	});
+    async function banUserById() {
+		await fetch(backendPath + '/admin/ban-user/1',{
+            method: 'PUT'
+        })
+    }
+
+    async function UnbanUserById() {
+		await fetch(backendPath + '/admin/unban-user/1',{
+            method: 'PUT'
+        })
+    }
 
 	function changeButtonStatus() {
 		ben = !ben;
 		if (ben) {
-			self.classList.remove('border-PUA-dark-gray');
-			self.classList.add('border-PUA-red');
-		} else {
-			self.classList.add('border-PUA-dark-gray');
-			self.classList.remove('border-PUA-red');
+			UnbanUserById()
+		}
+		else{
+			banUserById()
 		}
 	}
 </script>
 
 <div
-	bind:this={self}
-	class="mx-12 my-3 flex justify-between rounded-2xl border-2 border-PUA-dark-gray hover:bg-slate-200"
+    class:border-PUA-dark-gray={ben}
+    class:border-PUA-red={!ben}
+	class="mx-12 my-3 flex justify-between rounded-2xl border-2 hover:bg-slate-200"
 >
 	<button class="w-full">
 		<div class="flex items-center justify-between">
@@ -61,13 +63,13 @@
 				{:else if ben}
 					<button
 						on:click={changeButtonStatus}
-						class="flex w-24 justify-center border-2 border-PUA-dark-red bg-PUA-dark-red px-7 py-0 text-white"
-						>UnBen</button
+						class="w-24 border-2 border-PUA-dark-red px-7 py-0 text-PUA-dark-red">Ben</button
 					>
 				{:else}
-					<button
+                    <button
 						on:click={changeButtonStatus}
-						class="w-24 border-2 border-PUA-dark-red px-7 py-0 text-PUA-dark-red">Ben</button
+						class="flex w-24 justify-center border-2 border-PUA-dark-red bg-PUA-dark-red px-7 py-0 text-white"
+						>UnBen</button
 					>
 				{/if}
 			</div>

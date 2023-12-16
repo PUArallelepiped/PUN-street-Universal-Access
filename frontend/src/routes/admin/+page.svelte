@@ -1,78 +1,45 @@
 <script lang="ts">
+	import { backendPath } from '$lib/components/PUA/env';
+
 	import admin_icon from '$lib/assets/admin_icon.svg';
 	import AdminDataCard from '$lib/components/PUA/adminDataCard.svelte';
 
-	let orders: {
-		date: string;
-		user: string;
-	}[] = [
-		{
-			date: '2020-10-11 19:20:50',
-			user: 'user01'
-		},
-		{
-			date: '2020-10-11 19:20:50',
-			user: 'user02'
-		},
-		{
-			date: '2020-10-11 19:20:50',
-			user: 'user03'
-		},
-		{
-			date: '2020-10-11 19:20:50',
-			user: 'user04'
-		}
-	];
+    async function getOrders() {
+		const resp = await fetch(backendPath + '/admin/get-all-orders')
+		const json = await resp.json();
+		console.log(json);
+        return json
+    }
 
-	let users: {
-		name: string;
-		email: string;
-		type: string;
-		status: boolean;
-	}[] = [
-		{
-			name: 'sakana',
-			email: 'r1111111',
-			type: '1',
-			status: false
-		},
-		{
-			name: 'sakana dewanai',
-			email: 't1111111',
-			type: '2',
-			status: false
-		},
-		{
-			name: 'sakana desu',
-			email: 'fsddsdss',
-			type: '2',
-			status: true
-		}
-	];
 
-	let userInfo = {
-		user_name: 'sakana san',
-		user_email: 't111059001',
-		address: 'dsdsadsadasdsadasd',
-		authority: 100
-	};
+    async function getUsers() {
+		const resp = await fetch(backendPath + '/admin/get-all-users')
+		const json = await resp.json();
+		console.log(json);
+        return json
+    }
 
-	function changeDisplay(display_id_name: string, invisible_id_name: string) {
-		if (display_id_name == 'userData') {
-			document.getElementById('userButton')?.classList.add('bg-white');
-			document.getElementById('userButton')?.classList.add('border-b-4');
-			document.getElementById('orderButton')?.classList.remove('bg-white');
-			document.getElementById('orderButton')?.classList.remove('border-b-4');
-		} else {
-			document.getElementById('orderButton')?.classList.add('bg-white');
-			document.getElementById('orderButton')?.classList.add('border-b-4');
-			document.getElementById('userButton')?.classList.remove('bg-white');
-			document.getElementById('userButton')?.classList.remove('border-b-4');
-		}
+    async function getUserInfo() {
+		const resp = await fetch(backendPath + '/user/get-info/1')
+		const json = await resp.json();
+		console.log(json);
+        return json
+    }
 
-		document.getElementById(display_id_name)?.classList.remove('hidden');
-		document.getElementById(invisible_id_name)?.classList.add('hidden');
-	}
+
+    function switchProfileTabUserList() {
+        profileTab = 0
+    }
+
+    function switchProfileTabOrderList() {
+        profileTab = 1
+    }
+
+    let getUser = getUsers()
+    let getOrder = getOrders()
+    let getUserInfoFunction = getUserInfo()
+    let profileTab = 0
+
 </script>
 
 <div class="flex justify-center font-bold">
@@ -80,40 +47,60 @@
 		<div class="flex bg-PUA-stone">
 			<img src={admin_icon} alt="" class="my-6 ml-10 flex h-28 w-28" />
 			<div class="m-7 flex flex-col justify-between">
-				<div>
-					<div class="text-2xl text-PUA-gray">{userInfo.user_name}</div>
-					<div class="text-gray-300">{userInfo.user_email}</div>
-				</div>
-				<div class="text-xl text-PUA-gray">{userInfo.address}</div>
+                {#await getUserInfoFunction}
+                    <div></div>
+                {:then userInfo}
+                    <div>
+                        <div class="text-2xl text-PUA-gray">{userInfo.user_name}</div>
+                        <div class="text-gray-300">{userInfo.user_email}</div>
+                    </div>
+                    <div class="text-xl text-PUA-gray">{userInfo.address}</div>
+                {/await}
 			</div>
 		</div>
 		<div class="flex h-10">
 			<button
-				id="userButton"
-				on:click={() => changeDisplay('userData', 'orderData')}
-				class="w-full border-b-4 border-PUA-dark-red bg-gray-200 bg-white text-xl text-PUA-dark-red"
+                class:bg-white={profileTab == 0}
+                class:bg-gray-200={profileTab != 0}
+                class:border-b-4={profileTab == 0}
+                on:click={switchProfileTabUserList}
+				class="w-full border-PUA-dark-red text-xl text-PUA-dark-red"
 				>User List</button
 			>
 			<button
-				id="orderButton"
-				on:click={() => changeDisplay('orderData', 'userData')}
+                class:bg-white={profileTab == 1}
+                class:bg-gray-200={profileTab != 1}
+                class:border-b-4={profileTab == 1}
+                on:click={switchProfileTabOrderList}
 				class="w-full border-PUA-dark-red bg-gray-200 text-xl text-PUA-dark-red">Order List</button
 			>
 		</div>
-		<div id="userData" class="bg-white">
-			{#each users as user}
-				<AdminDataCard
-					firstCol={user.name}
-					secondCol={user.email}
-					type={user.type}
-					ben={user.status}
-				></AdminDataCard>
-			{/each}
+		<div
+        class:hidden={profileTab != 0}
+        class="bg-white">
+            {#await getUser}
+                <div></div>
+            {:then users} 
+                {#each users as user}
+                    <AdminDataCard
+                        firstCol={user.user_name}
+                        secondCol={user.user_email}
+                        type={user.authority}
+                        ben={user.status}
+                    ></AdminDataCard>
+                {/each}
+            {/await}
 		</div>
-		<div id="orderData" class="hidden bg-white">
-			{#each orders as order}
-				<AdminDataCard firstCol={order.date} secondCol={order.user} type="0"></AdminDataCard>
-			{/each}
+		<div
+        class:hidden={profileTab != 1}
+        class="hidden bg-white">
+            {#await getOrder}
+                <div></div>
+            {:then orders} 
+                {#each orders as order}
+                    <AdminDataCard firstCol={order.order_date} secondCol={order.user_name} type="0"></AdminDataCard>
+                {/each}
+            {/await}
 		</div>
 	</div>
 </div>

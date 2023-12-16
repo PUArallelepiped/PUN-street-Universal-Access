@@ -45,3 +45,23 @@ func (su *UserUsecase) GetAllOrder(ctx context.Context) ([]swagger.OrderInfoShor
 
 	return orders, nil
 }
+
+func (su *UserUsecase) BanUser(ctx context.Context, id int64) error {
+	err := su.userRepo.BanUser(ctx, id)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}
+
+func (su *UserUsecase) UnBanUser(ctx context.Context, id int64) error {
+	err := su.userRepo.UnBanUser(ctx, id)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}

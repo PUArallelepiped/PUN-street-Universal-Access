@@ -1,5 +1,4 @@
 <script>
-	import { page } from '$app/stores';
 	import '../app.css';
 	import Navbar from '$lib/navbar.svelte';
 	const routes = [

@@ -5,7 +5,6 @@
 	import InputBox from '$lib/components/PUA/InputBox.svelte';
 	import OkButton from '$lib/components/PUA/OkButton.svelte';
 	import CheckBox from '$lib/components/PUA/CheckBox.svelte';
-	import { Check, StoreIcon, User, UserSquare } from 'lucide-svelte';
 	import { backendPath } from '$lib/components/PUA/env';
 	import ErrorMessage from '$lib/components/PUA/ErrorMessage.svelte';
 	import { goto } from '$app/navigation';
@@ -165,10 +164,7 @@
 			method: 'POST',
 			body: JSON.stringify(userInfo)
 		});
-		if (res.status == 200) {
-			const data = await res.json();
-			// console.log(data);
-		} else {
+		if (res.status != 200) {
 			errorMsg = 'Register failed';
 			errorMsgVisible = true;
 		}

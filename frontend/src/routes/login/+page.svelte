@@ -5,7 +5,6 @@
 	import InputBox from '$lib/components/PUA/InputBox.svelte';
 	import { ErrorMessage } from '$lib';
 	import NisePanda from '$lib/assets/nise_panda.png';
-	import DiscountButton from '$lib/components/PUA/discountButton.svelte';
 
 	let user_email = '';
 	let password = '';

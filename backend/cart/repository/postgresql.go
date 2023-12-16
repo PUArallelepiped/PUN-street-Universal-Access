@@ -359,3 +359,31 @@ func (p *postgresqlCartRepo) CheckoutOrderInfo(ctx context.Context, customerId i
 
 	return nil
 }
+
+func (p *postgresqlCartRepo) GetSellerOrders(ctx context.Context, id int64) (*[]swagger.StoreOrderStatusInfo, error) {
+	sqlStatement := `
+		SELECT store_id, cart_id, order_date, total_price, user_id, status 
+		FROM orders 
+		WHERE store_id = $1 AND status != 0 AND status != 6
+	`
+
+	rows, err := p.db.Query(sqlStatement, id)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	orders := &[]swagger.StoreOrderStatusInfo{}
+	for rows.Next() {
+		order := &swagger.StoreOrderStatusInfo{}
+		err := rows.Scan(&order.StoreId, &order.CartId, &order.OrderDate, &order.TotalPrice, &order.UserId, &order.Status)
+		if err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+
+		*orders = append(*orders, *order)
+	}
+
+	return orders, nil
+}

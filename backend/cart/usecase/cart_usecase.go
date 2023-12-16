@@ -193,3 +193,13 @@ func (cu *cartUsecase) UpdateOrderStatusByID(ctx context.Context, customerId int
 
 	return nil
 }
+
+func (cu *cartUsecase) GetSellerOrders(ctx context.Context, id int64) (*[]swagger.StoreOrderStatusInfo, error) {
+	orders, err := cu.cartRepo.GetSellerOrders(ctx, id)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	return orders, nil
+}

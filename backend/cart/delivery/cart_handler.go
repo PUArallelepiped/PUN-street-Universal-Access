@@ -30,6 +30,7 @@ func NewCartHandler(e *gin.Engine, cartUsecase domain.CartUsecase) {
 		v1.DELETE("/customer/:userID/delete/product/:productID", handler.DeleteProduct)
 
 		v1.PUT("/seller/update-order-status/customer/:userID/cart/:cartID/store/:storeID", handler.UpdateOrderStatus)
+		v1.GET("/seller/store/:storeID/orders", handler.GetSellerOrders)
 	}
 }
 func (ch *CartHandler) GetAllHistory(c *gin.Context) {
@@ -66,14 +67,6 @@ func (ch *CartHandler) GetRunOrder(c *gin.Context) {
 	}
 
 	c.JSON(200, runOrderArray)
-}
-
-func (ch *CartHandler) GetCartsByUserCartID() {
-
-}
-
-func (ch *CartHandler) PostProductToCart(c *gin.Context) {
-
 }
 
 func (ch *CartHandler) DeleteProduct(c *gin.Context) {
@@ -210,4 +203,22 @@ func (ch *CartHandler) UpdateOrderStatus(c *gin.Context) {
 	}
 
 	c.Status(200)
+}
+
+func (ch *CartHandler) GetSellerOrders(c *gin.Context) {
+	storeID, err := strconv.ParseInt(c.Param("storeID"), 10, 64)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
+	orders, err := ch.CartUsecase.GetSellerOrders(c, storeID)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, orders)
 }

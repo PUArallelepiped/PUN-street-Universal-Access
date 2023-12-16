@@ -2344,7 +2344,6 @@ components:
         total_price: 9999
         user_id: 1
         status: 1
-        example: user1
     StoreOrderStatusInfoArray:
       type: array
       items:

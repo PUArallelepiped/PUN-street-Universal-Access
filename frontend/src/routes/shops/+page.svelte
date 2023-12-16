@@ -89,39 +89,57 @@
 	});
 </script>
 
-<div class="h-[50px] w-[40%] overflow-hidden">
-	<div class="float-left text-2xl">PUN Street Access</div>
-</div>
-
-<div class="flex justify-start">
-	<div class="float-left w-[40%]">
-		<Input type="text" placeholder="QQㄋㄟㄋㄟ好喝到咩噗茶" class="max-w-xs" />
-
-		<p class="h-[30px] w-[325px] text-center text-lg">Sort</p>
+<div class="flex justify-start bg-gray-200">
+	<div class="w-30 float-left mt-[15px]">
+		<Input type="text" placeholder="QQㄋㄟㄋㄟ好喝到咩噗茶" class="my-3 ml-3 max-w-xs bg-white" />
+		<div
+			class="my-3 inline-flex h-[25px] items-center justify-center gap-2.5 rounded-full bg-PUA-red px-[23px] py-1"
+		>
+			<div
+				class="mt-2 h-[43px] w-[300px] text-center font-['Inter'] text-xl font-bold leading-relaxed text-white"
+			>
+				Sort
+			</div>
+		</div>
 		<div>
 			{#each sortCheckboxes as { id }}
-				<div class="h-[30px]">
+				<div class="ml-2 h-[30px]">
 					<Checkbox {id} />
 					<Label for={id}>{id}</Label>
 				</div>
 			{/each}
 		</div>
 
-		<p class="h-[30px] w-[325px] text-center text-lg">Price</p>
-		<div class="flex w-[325px] justify-between">
+		<div
+			class="my-3 inline-flex h-[25px] items-center justify-center gap-2.5 rounded-full bg-PUA-red px-[23px] py-1"
+		>
+			<div
+				class="mt-2 h-[43px] w-[300px] text-center font-['Inter'] text-xl font-bold leading-relaxed text-white"
+			>
+				Price
+			</div>
+		</div>
+		<div class="ml-3 flex w-[350px] justify-between">
 			<div>NT$1</div>
-			<div>NT$700</div>
 			<div>NT$1000</div>
 		</div>
-		<div class="h-[30px] w-[325px]">
+		<div class="my-3 ml-3 h-[30px] w-[325px]">
 			<DoubleRangeSlider bind:start bind:end />
 		</div>
 
-		<p class="h-[30px] w-[325px] text-center text-lg">Tag</p>
+		<div
+			class="my-3 inline-flex h-[25px] items-center justify-center gap-2.5 rounded-full bg-PUA-red px-[23px] py-1"
+		>
+			<div
+				class="mt-2 h-[43px] w-[300px] text-center font-['Inter'] text-xl font-bold leading-relaxed text-white"
+			>
+				Tag
+			</div>
+		</div>
 		<div>
 			<div class="max-w-60 pr-40">
 				{#each tagCheckboxes as { id }}
-					<div class="flex-wrap">
+					<div class="ml-2 flex-wrap">
 						<Checkbox {id} />
 						<Label for={id}>{id}</Label>
 					</div>
@@ -130,14 +148,17 @@
 		</div>
 	</div>
 
-	<div class="flex flex-wrap pl-20">
+	<div class="gap-x-25 ml-20 grid w-[900px] grid-cols-2 items-start justify-start">
 		{#each shopListResponse as shop}
-			<div class="flex-fill float-left w-[500px]">
+			<div
+				class="inline-flex flex-col items-start justify-start gap-3 rounded px-6 py-3 hover:bg-gray-300"
+			>
 				<StoreCard
 					name={shop.name}
 					description={shop.description}
 					picture={shop.picture}
 					address={shop.address}
+					rate={shop.rate}
 				/>
 			</div>
 		{/each}

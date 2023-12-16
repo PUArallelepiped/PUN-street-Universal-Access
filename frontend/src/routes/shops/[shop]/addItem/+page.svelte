@@ -2,7 +2,8 @@
 	import { Input } from '$lib/components/ui/input';
 	import transhcan from '$lib/assets/transhcan.svg';
 	import close from '$lib/assets/close.svg';
-
+	import { onMount } from 'svelte';
+	import { backendPath } from '$lib/components/PUA/env';
 	import {
 		Redradiobox,
 		Textcontainer,
@@ -18,35 +19,12 @@
 
 	let nextCategoryId = data.length + 1;
 
-	function addNewCategory() {
-		data = [...data, { id: nextCategoryId, category: `${nextCategoryId}`, subcategories: [] }];
-		nextCategoryId++;
-	}
+	let showModel = false; //only 模擬
+	let discount_name_Input = '';
+	let discount_maxquantity_Input = '';
+	let discount_description_Input = '';
 
-	function addNewSubcategory(index: number) {
-		const currentData = data[index];
-		data[index] = {
-			...currentData,
-			subcategories: [
-				...currentData.subcategories,
-				(currentData.subcategories.length + 1).toString()
-			]
-		};
-	}
-
-	function removeCategory(id: number) {
-		data = data.filter((cat) => cat.id !== id);
-	}
-
-	function removeNewSubcategory(index: number) {
-		const currentData = data[index];
-
-		if (currentData.subcategories.length > 0) {
-			currentData.subcategories.pop();
-		}
-
-		data[index] = { ...currentData };
-	}
+	let Status = [{ label: '下架中' }, { label: '已售完' }];
 
 	let buttons = [
 		{ id: '1', label: '買二送一' },
@@ -55,27 +33,131 @@
 		{ id: '4', label: '買二送一' },
 		{ id: '5', label: '買二送一' }
 	];
+	type productRespType = {
+		store_id: number;
+		product_label_array: {
+			item_array: {
+				name: string;
+			}[];
+			product_id: number;
+			label_name: string;
+			required: boolean;
+		}[];
+		price: number;
+		product_id: number;
+		name: string;
+		description: string;
+		stock: number;
+		event_discount_array: {
+			discount_max_quantity: number;
+			product_id: number;
+			discount_name: string;
+			discount_description: string;
+			discount_id: number;
+			status: number;
+		}[];
+		picture: string;
+		status: number;
+	};
+	let product_data: productRespType = {
+		store_id: 0,
+		product_label_array: [
+			{
+				item_array: [{ name: '' }],
+				product_id: 0,
+				label_name: '',
+				required: false
+			}
+		],
+		price: 0,
+		product_id: 0,
+		name: '',
+		description: '',
+		stock: 0,
+		event_discount_array: [
+			{
+				discount_max_quantity: 0,
+				product_id: 0,
+				discount_name: '',
+				discount_description: '',
+				discount_id: 0,
+				status: 0
+			}
+		],
+		picture: '',
+		status: 0
+	};
+	function addNewCategory() {
+		const newLabel = {
+			item_array: [{ name: '' }],
+			product_id: product_data.product_id,
+			label_name: '',
+			required: false
+		};
 
-	let Status = [{ label: '下架中' }, { label: '已售完' }];
+		product_data = {
+			...product_data,
+			product_label_array: [...product_data.product_label_array, newLabel]
+		};
+	}
+
+	function addNewSubcategory(index: number) {
+		const newItem = { name: '' };
+		if (index >= 0 && index < product_data.product_label_array.length) {
+			const newArray = [...product_data.product_label_array];
+			newArray[index].item_array.push(newItem);
+			product_data = {
+				...product_data,
+				product_label_array: newArray
+			};
+		}
+	}
+
+	function removeCategory(index: number) {
+		if (index >= 0 && index < product_data.product_label_array.length) {
+			const newArray = product_data.product_label_array.filter((_, i) => i !== index);
+			product_data = {
+				...product_data,
+				product_label_array: newArray
+			};
+		}
+	}
+
+	function removeNewSubcategory(index: number) {
+		if (index >= 0 && index < product_data.product_label_array.length) {
+			const newArray = [...product_data.product_label_array];
+
+			if (newArray[index].item_array.length > 0) {
+				newArray[index].item_array.pop();
+				product_data = {
+					...product_data,
+					product_label_array: newArray
+				};
+			}
+		}
+	}
 
 	function addDiscountButton() {
 		buttons = [...buttons, { id: '6', label: `買二送一` }];
 		return null;
 	}
-
-	let showModel = false; //only 模擬
-	let discount_name_Input = '';
-	let discount_maxquantity_Input = '';
-	let discount_description_Input = '';
-	function toggleModel() {
-		showModel = !showModel;
-	}
+	let k = 0;
+	onMount(async () => {
+		const backResp = await fetch(backendPath + `/product/8`);
+		if (backResp.status == 200) {
+			product_data = await backResp.json();
+		}
+		k = backResp.status;
+	});
 </script>
 
-<div class="flex justify-start">
-	<div class="relative left-1/2 top-6 h-full w-4/5 -translate-x-1/2 transform">
-		<div class="h-100 text-33 flex w-full flex-col justify-center text-PUA-dark-red">
+<p>{k}</p>
+<p>{product_data.description}</p>
+<div class="flex h-fit justify-start">
+	<div class="relative left-1/2 mt-6 h-full w-4/5 -translate-x-1/2 transform">
+		<div class="h-100 text-33 text-PUA-dark-red flex w-full flex-col justify-center">
 			<Input
+				bind:value={product_data.name}
 				type="text"
 				placeholder="Enter Product Name"
 				class="max-wxs w-full rounded-[0] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-3xl"
@@ -98,6 +180,7 @@
 				<div class="flex items-center">
 					<div class="gap-3 py-[20px] text-3xl font-bold">NT$</div>
 					<Input
+						value={product_data.price}
 						type="text"
 						placeholder="Enter price"
 						class="ml-[10px] w-[180px] max-w-xs rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-[30px]"
@@ -106,14 +189,14 @@
 
 				<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
 				<div class="w-[250px] text-base text-gray-600">
-					<Textarea width="64" />
+					<Textarea width="64" bind:value={product_data.description} />
 				</div>
 
 				<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
 			</div>
-			<div class="relative h-full w-full">
+			<div class="relative h-fit w-full">
 				<div class="relative mb-[10px] w-full">
-					{#each data as { id, category, subcategories }, index (category)}
+					{#each product_data.product_label_array as item, index}
 						<div class="mb-[15px]">
 							<div class="flex h-[30px] items-center border-b-[1px] border-solid border-red-950">
 								<div class="flex w-[80%] items-center">
@@ -121,39 +204,46 @@
 										width="100"
 										min_width="100"
 										max_Width="200"
-										id={category + 'label'}
+										id={index.toString()}
 										text_size="14"
+										bind:inputValue={item.label_name}
 									/>
+
 									<NeedChooseLabel></NeedChooseLabel>
 
 									<div class="ml-2 mr-2 flex items-center justify-center">
-										<Redradiobox name={category + 'Choice'} id={category + 'yes'} checked={true} />
+										<Redradiobox
+											name={item.label_name + 'Choice'}
+											id={item.label_name + 'yes'}
+											checked={true}
+										/>
 									</div>
 
 									<label for="Choice" class="text-red-950">Yes</label>
-									<div class="ml-2 mr-2 flex items-center justify-center">
-										<Redradiobox name={category + 'Choice'} id={category + 'No'} />
+									<div class="items-cener ml-2 mr-2 flex justify-center">
+										<Redradiobox name={item.label_name + 'Choice'} id={item.label_name + 'No'} />
 									</div>
 									<label for="Choice" class="text-red-950">No</label>
 								</div>
 								<div class="flex w-1/3 items-center justify-end">
-									<button on:click={() => removeCategory(id)} class="flex">
+									<button on:click={() => removeCategory(index)} class="flex">
 										<img src={transhcan} alt="Trash Can" class="object-cover" />
 									</button>
 								</div>
 							</div>
 							<div class="relative ml-[25px] mt-[10px] w-[90%] flex-col items-start">
-								{#each subcategories as subcategory, subIndex (subcategory)}
+								{#each item.item_array as { name }, subIndex}
 									<div
 										class="flex w-full items-center space-x-2 border-b-[1px] border-solid border-red-900"
 									>
-										<Redradiobox name={category} id={category + subcategory} />
+										<Redradiobox name={item.label_name} id={item.label_name + name} />
 
 										<div class="mx-auto flex w-full justify-end">
 											<input
 												class="w-full border-b-[1px] border-solid border-gray-300 border-transparent bg-transparent text-end underline outline-none"
 												type="text"
 												placeholder="item{subIndex + 1}"
+												value={name}
 											/>
 										</div>
 									</div>
@@ -191,8 +281,8 @@
 					type={false}
 				></DisCountArea>
 
-				<div class="flex h-[30px] w-full items-center border-b-[1px] border-solid border-PUA-stone">
-					<div class="font-bold text-PUA-stone">Set Status</div>
+				<div class="border-PUA-stone flex h-[30px] w-full items-center border-b-[1px] border-solid">
+					<div class="text-PUA-stone font-bold">Set Status</div>
 				</div>
 				<div class="m-4 flex justify-center gap-10">
 					{#each Status as { label }}
@@ -215,72 +305,3 @@
 		</div>
 	</div>
 </div>
-
-{#if showModel}
-	<div
-		class="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50 backdrop-blur"
-	>
-		<div class="rounded bg-white p-5">
-			<div class="flex">
-				<div class="w-1/2 text-left text-xl font-bold text-PUA-stone">
-					<h2>Add A Discount</h2>
-				</div>
-				<div class="flex w-1/2 justify-end">
-					<button on:click={toggleModel}>
-						<img src={close} alt="" class="h-[25px] object-cover" />
-					</button>
-				</div>
-			</div>
-			<div class="relative ml-16 mr-16">
-				<div class="flex w-full items-center justify-center pb-2 pt-2">
-					<div class="flex w-64 rounded-[10px] border-[3px] border-red-900 p-3 text-red-900">
-						<div class="w-2/5 text-center font-bold">Event Discount</div>
-						<div class="ml-1 mr-1 border-r-[2px] border-red-900"></div>
-						<div class="flex w-3/5 flex-wrap items-center justify-center text-center font-bold">
-							<p>Get</p>
-							<p class="ml-1 mr-1 text-xl">{discount_maxquantity_Input}</p>
-							<p>FOR FREE ONE</p>
-						</div>
-					</div>
-				</div>
-				<div class="mt-2">
-					<p class="text-3 font-bold text-red-900">Enter Max Quantity</p>
-					<input
-						type="text"
-						class="w-full border-b-[2px] border-red-900 font-bold"
-						bind:value={discount_maxquantity_Input}
-						placeholder=" Enter Max Quantity"
-					/>
-
-					<ErrorMsg width={'24'} height={'24'}></ErrorMsg>
-				</div>
-				<div class="mt-2">
-					<p class="text-3 font-bold text-red-900">Discount Name</p>
-					<input
-						type="text"
-						class="w-full border-b-[2px] border-red-900 font-bold"
-						bind:value={discount_name_Input}
-						placeholder=" Enter Discount Name"
-					/>
-
-					<ErrorMsg width={'24'} height={'24'}></ErrorMsg>
-				</div>
-				<div class="mt-2">
-					<p class="text-3 font-bold text-red-900">Description</p>
-					<input
-						type="text"
-						class="w-full border-b-[2px] border-red-900 font-bold"
-						bind:value={discount_description_Input}
-						placeholder=" Enter Discount Description"
-					/>
-					<ErrorMsg width={'24'} height={'24'}></ErrorMsg>
-				</div>
-			</div>
-			<div class="mt-5 flex items-center justify-between gap-5 text-center">
-				<button class="w-4/5 rounded-[20px] bg-gray-200 font-bold text-red-900"> Delete </button>
-
-				<button class="w-4/5 rounded-[20px] bg-orange-700 font-bold text-white"> Save </button>
-			</div>
-		</div>
-	</div>
-{/if}

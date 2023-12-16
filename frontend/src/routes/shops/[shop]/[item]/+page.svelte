@@ -15,8 +15,12 @@
 			subcategories: string[];
 		}[];
 		discount: {
-			id: string;
-			label: string;
+			discount_max_quantity: number;
+			product_id: number;
+			discount_name: string;
+			discount_description: string;
+			discount_id: number;
+			status: number;
 		}[];
 	} = {
 		title: '奶油龍蝦腳加水餃 放在一起烤 嘿~它為什麼要這樣叫阿',
@@ -34,26 +38,36 @@
 			{ id: 1, need_choose: false, category: '加牛奶', subcategories: ['是', '否'] }
 		],
 		discount: [
-			{ id: '1', label: '買二送一' },
-			{ id: '2', label: '買二送一' },
-			{ id: '3', label: '買二送一' },
-			{ id: '4', label: '買二送一' },
-			{ id: '5', label: '買二送一' },
-			{ id: '6', label: '買二送一' }
+			{
+				discount_max_quantity: 2,
+				product_id: 1,
+				discount_name: 'new year discount',
+				discount_description: 'black tea get two for one free',
+				discount_id: 1,
+				status: 1
+			},
+			{
+				discount_max_quantity: 2,
+				product_id: 1,
+				discount_name: 'new year discount',
+				discount_description: 'black tea get two for one free',
+				discount_id: 1,
+				status: 1
+			}
 		]
 	};
 </script>
 
 <div class="flex justify-center">
 	<div class="my-6 flex h-full w-4/5 flex-col gap-8">
-		<div class=" flex w-full items-center text-4xl text-PUA-dark-red">
+		<div class=" text-PUA-dark-red flex w-full items-center text-4xl">
 			{product.title}
 		</div>
 
 		<div class="flex gap-16">
 			<div class="">
 				<img src={product.picture} alt="" class="mt-100 flex h-60 w-60 rounded-lg object-cover" />
-				<div class="flex items-baseline gap-3 py-5 font-bold text-PUA-dark-red">
+				<div class="text-PUA-dark-red flex items-baseline gap-3 py-5 font-bold">
 					<p class="text-2xl">NT$</p>
 					<p class="text-4xl">{product.price}</p>
 				</div>
@@ -66,12 +80,12 @@
 					{#each product.choose as { need_choose, category, subcategories }}
 						<div class="">
 							<div class="flex items-center">
-								<div class="font-bold text-PUA-stone">{category}</div>
+								<div class="text-PUA-stone font-bold">{category}</div>
 								{#if need_choose}
 									<NeedChooseLabel></NeedChooseLabel>
 								{/if}
 							</div>
-							<div class="h-[1px] bg-PUA-dark-red"></div>
+							<div class="bg-PUA-dark-red h-[1px]"></div>
 							<div class="flex flex-col">
 								{#each subcategories as subcategory}
 									<Checkcontainer {category} {subcategory}></Checkcontainer>

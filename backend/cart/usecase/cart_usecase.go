@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"errors"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
@@ -64,8 +65,18 @@ func (cu *cartUsecase) DeleteProduct(ctx context.Context, customerId int64, prod
 }
 
 func (cu *cartUsecase) AddProductToCart(ctx context.Context, customerId int64, cartInfo *swagger.CartInfo) error {
+	//check product status != 2
+	status, err := cu.cartRepo.IsProductCanAdd(ctx, cartInfo.ProductId)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+	if !status {
+		return errors.New("The inventory is not enough for the supply")
+	}
+
 	// add or update product in cart
-	err := cu.cartRepo.AddProductToCart(ctx, customerId, cartInfo)
+	err = cu.cartRepo.AddProductToCart(ctx, customerId, cartInfo)
 	if err != nil {
 		logrus.Error(err)
 		return err

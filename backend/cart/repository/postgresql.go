@@ -156,11 +156,13 @@ func (p *postgresqlCartRepo) DeleteProduct(ctx context.Context, customerId int64
 func (p *postgresqlCartRepo) AddProductToCart(ctx context.Context, customerId int64, cartInfo *swagger.CartInfo) error {
 	sqlStatement := `
 	INSERT INTO carts (customer_id, cart_id, store_id, product_id, product_quantity, event_discount_id) VALUES
-	($1, $2, $3, $4, $5, $6)
+	($1, 
+	(SELECT current_cart_id FROM user_data WHERE user_id = $1),
+	$2, $3, $4, $5)
 	ON CONFLICT (customer_id, product_id, store_id, cart_id) DO UPDATE 
 	SET product_quantity = EXCLUDED.product_quantity;
 	`
-	_, err := p.db.Exec(sqlStatement, customerId, cartInfo.CartId, cartInfo.StoreId, cartInfo.ProductId, cartInfo.ProductQuantity, cartInfo.DiscountId)
+	_, err := p.db.Exec(sqlStatement, customerId, cartInfo.StoreId, cartInfo.ProductId, cartInfo.ProductQuantity, cartInfo.DiscountId)
 	if err != nil {
 		logrus.Error(err)
 		return err
@@ -175,15 +177,47 @@ func (p *postgresqlCartRepo) AddOrderByCartInfo(ctx context.Context, customerId 
 		shipping_discount_id, status, total_price, Order_date, taking_address, taking_method) VALUES 
     ($1, 
 	(SELECT current_cart_id FROM user_data WHERE user_id = $1),
-	$2, 1, 1, 0, 0, '2020-01-01 00:00:00', '台北市', 1)
+	$2, 
+	(SELECT COALESCE(
+		(SELECT discount_id
+		FROM seasoning_discount
+		WHERE start_date <= $3 AND end_date >= $3),
+		1
+	) AS discount_id),
+	(SELECT COALESCE(shipping_discount.discount_id, 1) FROM shipping_discount LEFT JOIN
+	discounts ON shipping_discount.discount_id = discounts.discount_id
+	WHERE shipping_discount.store_id = $2 AND discounts.status = 1),
+	0, 
+	0, 
+	'2020-01-01 00:00:00', 
+	(SELECT address FROM user_data WHERE user_id = $1), 
+	1)
 	`
-	_, err := p.db.Exec(sqlStatement, customerId, storeId)
+	dt := time.Now().Format("01-02-2006 15:04:05")
+
+	_, err := p.db.Exec(sqlStatement, customerId, storeId, dt)
 	if err != nil {
 		logrus.Error(err)
 		return err
 	}
 
 	return nil
+}
+
+func (p *postgresqlCartRepo) IsProductCanAdd(ctx context.Context, id int64) (bool, error) {
+	sqlStatement := `
+	SELECT (status != 2) FROM products WHERE product_id = $1
+	`
+	row := p.db.QueryRow(sqlStatement, id)
+
+	canAdd := false
+	err := row.Scan(&canAdd)
+	if err != nil {
+		logrus.Error(err)
+		return false, err
+	}
+
+	return canAdd, nil
 }
 
 func (p *postgresqlCartRepo) GetHistoryCart(ctx context.Context, customerId int64, cartId int64, storeId int64) (*swagger.StoreOrderInfo, error) {
@@ -362,9 +396,16 @@ func (p *postgresqlCartRepo) CheckoutOrderInfo(ctx context.Context, customerId i
 
 func (p *postgresqlCartRepo) GetSellerOrders(ctx context.Context, id int64) (*[]swagger.StoreOrderStatusInfo, error) {
 	sqlStatement := `
-		SELECT store_id, cart_id, order_date, total_price, user_id, status 
-		FROM orders 
-		WHERE store_id = $1 AND status != 0 AND status != 6
+		SELECT 
+		user_data.name,
+		orders.store_id, 
+		orders.cart_id, 
+		orders.order_date, 
+		orders.total_price, 
+		orders.user_id, 
+		orders.status 
+		FROM orders LEFT JOIN user_data ON orders.user_id = user_data.user_id
+		WHERE orders.store_id = $1 AND orders.status != 0 AND orders.status != 6
 	`
 
 	rows, err := p.db.Query(sqlStatement, id)
@@ -376,7 +417,7 @@ func (p *postgresqlCartRepo) GetSellerOrders(ctx context.Context, id int64) (*[]
 	orders := &[]swagger.StoreOrderStatusInfo{}
 	for rows.Next() {
 		order := &swagger.StoreOrderStatusInfo{}
-		err := rows.Scan(&order.StoreId, &order.CartId, &order.OrderDate, &order.TotalPrice, &order.UserId, &order.Status)
+		err := rows.Scan(&order.UserName, &order.StoreId, &order.CartId, &order.OrderDate, &order.TotalPrice, &order.UserId, &order.Status)
 		if err != nil {
 			logrus.Error(err)
 			return nil, err

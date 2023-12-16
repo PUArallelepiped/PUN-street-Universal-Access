@@ -9,6 +9,7 @@ import (
 type CartRepo interface {
 	IsExitsOrderByStoreCartId(ctx context.Context, customerId int64, storeId int64) (bool, error)
 	IsExitsCartByStoreCartId(ctx context.Context, customerId int64, storeId int64) (bool, error)
+	IsProductCanAdd(ctx context.Context, id int64) (bool, error)
 
 	DeleteProduct(ctx context.Context, customerId int64, productId int64) (int64, error)
 	DeleteOrder(ctx context.Context, customerId int64, storeId int64) error

@@ -109,6 +109,10 @@ func (ch *CartHandler) AddProductToCart(c *gin.Context) {
 	err = ch.CartUsecase.AddProductToCart(c, customerID, cartInfo)
 	if err != nil {
 		logrus.Error(err)
+		if err.Error() == "The inventory is not enough for the supply" {
+			c.Status(418)
+			return
+		}
 		c.Status(500)
 		return
 	}

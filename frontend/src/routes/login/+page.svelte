@@ -4,6 +4,8 @@
 	import { goto } from '$app/navigation';
 	import InputBox from '$lib/components/PUA/InputBox.svelte';
 	import { ErrorMessage } from '$lib';
+	import NisePanda from '$lib/assets/nise_panda.png';
+	import DiscountButton from '$lib/components/PUA/discountButton.svelte';
 
 	let user_email = '';
 	let password = '';
@@ -42,7 +44,12 @@
 <div>
 	<h1 class="mx-20 my-10 p-12 text-5xl font-medium leading-10 text-red-900">| Sign in to PUA</h1>
 
-	<div class="absolute inset-x-0 bottom-0 h-96 bg-red-900"></div>
+	<div>
+		<img class="absolute left-44 top-80 scale-125" src={NisePanda} alt="panda" />
+		<img class="absolute left-108 top-96 scale-125" src={NisePanda} alt="panda" />
+		<img class="absolute left-172 top-112 scale-125" src={NisePanda} alt="panda" />
+	</div>
+	<div class="absolute inset-x-0 bottom-0 h-60 bg-red-900"></div>
 	<div class="absolute right-1">
 		<form class=" mx-20 rounded-2xl bg-white px-8 py-5 shadow" on:submit|preventDefault={login}>
 			<div class="flex flex-col items-center gap-11">

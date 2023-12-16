@@ -213,8 +213,18 @@
 			<div class="flex flex-col items-center gap-10 rounded-lg bg-white p-12">
 				<InputBox onInput={HandleInput} bind:value={userInfo.user_name} type="" label="Name" />
 				<InputBox onInput={HandleInput} bind:value={userInfo.user_email} type="" label="Email" />
-				<InputBox onInput={HandleInput} bind:value={userInfo.password} type="password" label="Password" />
-				<InputBox onInput={HandleInput} bind:value={checkPassword} type="password" label="Password Check" />
+				<InputBox
+					onInput={HandleInput}
+					bind:value={userInfo.password}
+					type="password"
+					label="Password"
+				/>
+				<InputBox
+					onInput={HandleInput}
+					bind:value={checkPassword}
+					type="password"
+					label="Password Check"
+				/>
 				<InputBox onInput={HandleInput} bind:value={userInfo.phone} type="" label="Phone Number" />
 				<!-- <InputBox bind:value={userInfo.birthday} type="" label="Birthday" /> -->
 				<InputBox onInput={HandleInput} bind:value={userInfo.address} type="" label="Address" />

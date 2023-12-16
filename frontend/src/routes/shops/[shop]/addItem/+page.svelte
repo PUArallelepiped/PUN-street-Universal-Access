@@ -80,7 +80,7 @@
 	onMount(async () => {
 		const Resp = await fetch(`/product.json`);
 		product_data = await Resp.json();
-		const backResp = await fetch(backendPath + `/product/2`);
+		const backResp = await fetch(backendPath + `/product/9`);
 		if (backResp.status == 200) {
 			product_data = await backResp.json();
 		}
@@ -89,7 +89,7 @@
 
 <div class="flex h-fit justify-start">
 	<div class="relative left-1/2 mt-6 h-full w-4/5 -translate-x-1/2 transform">
-		<div class="h-100 text-33 text-PUA-dark-red flex w-full flex-col justify-center">
+		<div class="h-100 text-33 flex w-full flex-col justify-center text-PUA-dark-red">
 			<Input
 				bind:value={product_data.name}
 				type="text"
@@ -101,26 +101,36 @@
 		</div>
 		<div class="flex h-full w-full">
 			<div class="relative h-full w-[500px]">
-				<div
-					class="mt-100 flex h-[250px] w-[250px] items-center justify-center rounded-lg bg-gray-300 shadow-inner"
-				>
+				<div class=" flex h-[250px] w-[250px] rounded-lg bg-gray-300 shadow-inner">
 					{#if !product_data.picture}
-						<label
-							for="fileInput"
-							class="h-11 cursor-pointer rounded-[20px] bg-gray-400 px-12 py-2 text-white shadow-md"
-							>Upload Image</label
-						>
-						<input
-							type="file"
-							id="fileInput"
-							accept="image/png, image/jpeg"
-							class="absolute right-0 top-0 cursor-pointer font-bold opacity-0"
-						/>
+						<div class="flex h-full w-full items-center justify-center">
+							<label
+								for="fileInput"
+								class="h-11 cursor-pointer rounded-[20px] bg-gray-400 px-12 py-2 text-white shadow-md"
+								>Upload Image</label
+							>
+							<input
+								type="file"
+								id="fileInput"
+								accept="image/png, image/jpeg"
+								class="absolute right-0 top-0 cursor-pointer font-bold opacity-0"
+							/>
+						</div>
 					{:else}
+						<div class="absolute z-10 h-[250px] w-[250px] bg-opacity-0">
+							<label for="fileInput" class=" block h-full w-full cursor-pointer bg-opacity-0"
+							></label>
+							<input
+								type="file"
+								id="fileInput"
+								accept="image/png, image/jpeg"
+								class="absolute right-0 top-0 cursor-pointer font-bold opacity-0"
+							/>
+						</div>
 						<img
 							src={product_data.picture}
 							alt=""
-							class="mt-100 flex h-full w-full rounded-lg object-cover"
+							class="flex h-full w-full rounded-lg object-cover"
 						/>
 					{/if}
 				</div>
@@ -159,8 +169,8 @@
 					type={false}
 				></DisCountArea>
 
-				<div class="border-PUA-stone flex h-[30px] w-full items-center border-b-[1px] border-solid">
-					<div class="text-PUA-stone font-bold">Set Status</div>
+				<div class="flex h-[30px] w-full items-center border-b-[1px] border-solid border-PUA-stone">
+					<div class="font-bold text-PUA-stone">Set Status</div>
 				</div>
 				<div class="m-4 flex justify-center gap-10">
 					{#each Status as { label }, index}

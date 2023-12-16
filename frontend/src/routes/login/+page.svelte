@@ -35,6 +35,7 @@
 
 	function handleInput() {
 		errorMsgVisible = false;
+		return;
 	}
 </script>
 

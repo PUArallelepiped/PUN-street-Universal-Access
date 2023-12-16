@@ -4,42 +4,39 @@
 	import admin_icon from '$lib/assets/admin_icon.svg';
 	import AdminDataCard from '$lib/components/PUA/adminDataCard.svelte';
 
-    async function getOrders() {
-		const resp = await fetch(backendPath + '/admin/get-all-orders')
+	async function getOrders() {
+		const resp = await fetch(backendPath + '/admin/get-all-orders');
 		const json = await resp.json();
 		console.log(json);
-        return json
-    }
+		return json;
+	}
 
-
-    async function getUsers() {
-		const resp = await fetch(backendPath + '/admin/get-all-users')
+	async function getUsers() {
+		const resp = await fetch(backendPath + '/admin/get-all-users');
 		const json = await resp.json();
 		console.log(json);
-        return json
-    }
+		return json;
+	}
 
-    async function getUserInfo() {
-		const resp = await fetch(backendPath + '/user/get-info/1')
+	async function getUserInfo() {
+		const resp = await fetch(backendPath + '/user/get-info/1');
 		const json = await resp.json();
 		console.log(json);
-        return json
-    }
+		return json;
+	}
 
+	function switchProfileTabUserList() {
+		profileTab = 0;
+	}
 
-    function switchProfileTabUserList() {
-        profileTab = 0
-    }
+	function switchProfileTabOrderList() {
+		profileTab = 1;
+	}
 
-    function switchProfileTabOrderList() {
-        profileTab = 1
-    }
-
-    let getUser = getUsers()
-    let getOrder = getOrders()
-    let getUserInfoFunction = getUserInfo()
-    let profileTab = 0
-
+	let getUser = getUsers();
+	let getOrder = getOrders();
+	let getUserInfoFunction = getUserInfo();
+	let profileTab = 0;
 </script>
 
 <div class="flex justify-center font-bold">
@@ -47,60 +44,56 @@
 		<div class="flex bg-PUA-stone">
 			<img src={admin_icon} alt="" class="my-6 ml-10 flex h-28 w-28" />
 			<div class="m-7 flex flex-col justify-between">
-                {#await getUserInfoFunction}
-                    <div></div>
-                {:then userInfo}
-                    <div>
-                        <div class="text-2xl text-PUA-gray">{userInfo.user_name}</div>
-                        <div class="text-gray-300">{userInfo.user_email}</div>
-                    </div>
-                    <div class="text-xl text-PUA-gray">{userInfo.address}</div>
-                {/await}
+				{#await getUserInfoFunction}
+					<div></div>
+				{:then userInfo}
+					<div>
+						<div class="text-2xl text-PUA-gray">{userInfo.user_name}</div>
+						<div class="text-gray-300">{userInfo.user_email}</div>
+					</div>
+					<div class="text-xl text-PUA-gray">{userInfo.address}</div>
+				{/await}
 			</div>
 		</div>
 		<div class="flex h-10">
 			<button
-                class:bg-white={profileTab == 0}
-                class:bg-gray-200={profileTab != 0}
-                class:border-b-4={profileTab == 0}
-                on:click={switchProfileTabUserList}
-				class="w-full border-PUA-dark-red text-xl text-PUA-dark-red"
-				>User List</button
+				class:bg-white={profileTab == 0}
+				class:bg-gray-200={profileTab != 0}
+				class:border-b-4={profileTab == 0}
+				on:click={switchProfileTabUserList}
+				class="w-full border-PUA-dark-red text-xl text-PUA-dark-red">User List</button
 			>
 			<button
-                class:bg-white={profileTab == 1}
-                class:bg-gray-200={profileTab != 1}
-                class:border-b-4={profileTab == 1}
-                on:click={switchProfileTabOrderList}
+				class:bg-white={profileTab == 1}
+				class:bg-gray-200={profileTab != 1}
+				class:border-b-4={profileTab == 1}
+				on:click={switchProfileTabOrderList}
 				class="w-full border-PUA-dark-red bg-gray-200 text-xl text-PUA-dark-red">Order List</button
 			>
 		</div>
-		<div
-        class:hidden={profileTab != 0}
-        class="bg-white">
-            {#await getUser}
-                <div></div>
-            {:then users} 
-                {#each users as user}
-                    <AdminDataCard
-                        firstCol={user.user_name}
-                        secondCol={user.user_email}
-                        type={user.authority}
-                        ben={user.status}
-                    ></AdminDataCard>
-                {/each}
-            {/await}
+		<div class:hidden={profileTab != 0} class="bg-white">
+			{#await getUser}
+				<div></div>
+			{:then users}
+				{#each users as user}
+					<AdminDataCard
+						firstCol={user.user_name}
+						secondCol={user.user_email}
+						type={user.authority}
+						ben={user.status}
+					></AdminDataCard>
+				{/each}
+			{/await}
 		</div>
-		<div
-        class:hidden={profileTab != 1}
-        class="hidden bg-white">
-            {#await getOrder}
-                <div></div>
-            {:then orders} 
-                {#each orders as order}
-                    <AdminDataCard firstCol={order.order_date} secondCol={order.user_name} type="0"></AdminDataCard>
-                {/each}
-            {/await}
+		<div class:hidden={profileTab != 1} class="hidden bg-white">
+			{#await getOrder}
+				<div></div>
+			{:then orders}
+				{#each orders as order}
+					<AdminDataCard firstCol={order.order_date} secondCol={order.user_name} type="0"
+					></AdminDataCard>
+				{/each}
+			{/await}
 		</div>
 	</div>
 </div>

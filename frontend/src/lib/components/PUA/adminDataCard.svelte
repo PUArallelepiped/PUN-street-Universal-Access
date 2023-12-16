@@ -11,32 +11,31 @@
 
 	export let ben: boolean = true;
 
-    async function banUserById() {
-		await fetch(backendPath + '/admin/ban-user/1',{
-            method: 'PUT'
-        })
-    }
+	async function banUserById() {
+		await fetch(backendPath + '/admin/ban-user/1', {
+			method: 'PUT'
+		});
+	}
 
-    async function UnbanUserById() {
-		await fetch(backendPath + '/admin/unban-user/1',{
-            method: 'PUT'
-        })
-    }
+	async function UnbanUserById() {
+		await fetch(backendPath + '/admin/unban-user/1', {
+			method: 'PUT'
+		});
+	}
 
 	function changeButtonStatus() {
 		ben = !ben;
 		if (ben) {
-			UnbanUserById()
-		}
-		else{
-			banUserById()
+			UnbanUserById();
+		} else {
+			banUserById();
 		}
 	}
 </script>
 
 <div
-    class:border-PUA-dark-gray={ben}
-    class:border-PUA-red={!ben}
+	class:border-PUA-dark-gray={ben}
+	class:border-PUA-red={!ben}
 	class="mx-12 my-3 flex justify-between rounded-2xl border-2 hover:bg-slate-200"
 >
 	<button class="w-full">
@@ -66,7 +65,7 @@
 						class="w-24 border-2 border-PUA-dark-red px-7 py-0 text-PUA-dark-red">Ben</button
 					>
 				{:else}
-                    <button
+					<button
 						on:click={changeButtonStatus}
 						class="flex w-24 justify-center border-2 border-PUA-dark-red bg-PUA-dark-red px-7 py-0 text-white"
 						>UnBen</button

@@ -5,6 +5,7 @@
 	import Chart, { type ChartItem } from 'chart.js/auto';
 	import { onMount } from 'svelte';
 
+	let choosingMonth = 1;
 	let currentTab = 0;
 	function switchProfile() {
 		currentTab = 0;
@@ -12,6 +13,37 @@
 	function switchAccount() {
 		currentTab = 1;
 	}
+	function pchoo() {
+		let form = document.getElementById('monthRadio') as HTMLFormElement;
+		form?.submit();
+	}
+	function handleSubmit(event) {
+		event.preventDefault();
+		const formData = new FormData(document.getElementById('monthRadio') as HTMLFormElement);
+		fetch('?/statistic', {
+			method: 'POST',
+			body: formData
+		})
+			.then((response) => response.json())
+			.then((data) => console.log(data));
+	}
+	let month = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+	let monthText = [
+		'for index align',
+		'一月',
+		'二月',
+		'三月',
+		'四月',
+		'五月',
+		'六月',
+		'七月',
+		'八月',
+		'九月',
+		'十月',
+		'十一月',
+		'十二月',
+		'十三月'
+	];
 	onMount(() => {
 		const data = [
 			{ year: 2010, count: 10 },
@@ -106,7 +138,7 @@
 			</div>
 		</div>
 
-		<div class="grow bg-white">
+		<div class="grow bg-gray-100">
 			<div class:hidden={currentTab != 0} class="flex w-full flex-col gap-7 px-24 py-10">
 				<div class="">
 					<div class="inline-flex items-center justify-center rounded-full bg-gray-300 px-5">
@@ -193,10 +225,36 @@
 					>
 				</div>
 			</div>
-			<div>
-				<div class:hidden={currentTab != 2} class="hidden w-full p-20">
-					<canvas id="acquisitions"></canvas>
-				</div>
+			<div class:hidden={currentTab != 2} class="hidden w-full p-20">
+				<form
+					action="?/statistic"
+					id="monthRadio"
+					method="post"
+					on:submit|preventDefault={handleSubmit}
+				>
+					{#each month as key}
+						<input
+							type="radio"
+							bind:group={choosingMonth}
+							name={'month'}
+							id={'check' + key}
+							value={key}
+							class="hidden"
+							on:change={handleSubmit}
+						/>
+						<label
+							for={'check' + key}
+							class:bg-PUA-dark-red={choosingMonth === key}
+							class:bg-gray-100={!(choosingMonth === key)}
+							class:text-white={choosingMonth === key}
+							class:text-PUA-dark-red={!(choosingMonth === key)}
+							class="leading-relaxe h-10 rounded-full border-2 border-PUA-dark-red px-3 text-2xl font-bold"
+						>
+							{monthText[key]}</label
+						>
+					{/each}
+				</form>
+				<canvas id="acquisitions"></canvas>
 			</div>
 		</div>
 	</div>

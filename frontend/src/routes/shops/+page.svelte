@@ -8,6 +8,7 @@
 	import { CheckBox } from '$lib';
 	import type { PageData } from './$types';
 	import DualRangeSlider from '$lib/components/PUA/dualRangeSlider.svelte';
+	import { LampFloor } from 'lucide-svelte';
 	let start = 0;
 	let end = 1;
 
@@ -25,11 +26,14 @@
 					<div class=" flex w-80 justify-between">
 						<div class="text-sm font-bold leading-tight text-PUA-dark-red">
 							NT$
-							<span class="text-base leading-tight text-PUA-dark-red">1</span>
+							<span class="text-base leading-tight text-PUA-dark-red"
+								>{Math.floor(start * 1000)}</span
+							>
 						</div>
 						<div class="text-sm font-bold leading-tight text-PUA-dark-red">
 							NT$
-							<span class="text-base leading-tight text-PUA-dark-red">1000</span>
+							<span class="text-base leading-tight text-PUA-dark-red">{Math.floor(end * 1000)}</span
+							>
 						</div>
 					</div>
 					<div class="  w-full px-10">

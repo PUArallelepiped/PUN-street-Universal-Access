@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"math"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
@@ -144,10 +145,10 @@ func (p *postgresqlStoreRepo) GetAllProductSellingById(ctx context.Context, id i
 func (p *postgresqlStoreRepo) UpdateRate(ctx context.Context, id int64, newRate float32) error {
 	sqlStatement := `
 	UPDATE stores
-	SET stores.rate = $1 ,stores.rate_count = stores.rate_count+1
-	WHERE stores.store_id=$2
+	SET rate = $1 , rate_count = rate_count+1
+	WHERE store_id=$2
 	`
-	if _, err := p.db.Exec(sqlStatement, id, newRate); err != nil {
+	if _, err := p.db.Exec(sqlStatement, newRate , id); err != nil {
 		return err
 	}
 	return nil
@@ -167,6 +168,7 @@ func (p *postgresqlStoreRepo) CalculateRate(ctx context.Context, id int64, rate 
 		return err
 	} else {
 		newRate := (storeRateInfo.Rate*float32(storeRateInfo.RateCount) + rate.Rate) / float32((storeRateInfo.RateCount + 1))
+		newRate = float32(math.Round(float64(newRate)*10)) / 10
 		return p.UpdateRate(ctx, id, newRate)
 	}
 }

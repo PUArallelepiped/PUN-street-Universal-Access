@@ -10,7 +10,7 @@
 
 <a href="{$page.route.id}/{name}" class="shrink">
 	<div
-		class="flex h-96 w-96 flex-col items-center justify-start gap-3 rounded-lg bg-white px-6 py-3 hover:bg-PUA-dark-gray"
+		class="flex h-96 w-96 flex-col items-center justify-start gap-3 rounded-lg bg-white px-6 py-3 hover:bg-gray-300"
 	>
 		<div class="relative">
 			<img src={picture} alt="" class="h-48 w-80 rounded object-cover" />
@@ -24,7 +24,7 @@
 			</div>
 		</div>
 		<div class="w-full text-4xl font-semibold leading-relaxed text-PUA-dark-orange">{name}</div>
-		<div class="flex flex-wrap gap-2">
+		<div class="flex w-full flex-wrap justify-start gap-2">
 			{#if category_array != null}
 				{#each category_array as tag}
 					<div

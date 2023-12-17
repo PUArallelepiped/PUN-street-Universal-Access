@@ -3,41 +3,22 @@
 
 	import { Input } from '$lib/components/ui/input';
 
-	import DoubleRangeSlider from '$lib/components/ui/doubleSlider/doubleRangeSlider.svelte';
-	import { backendPath } from '$lib/components/PUA/env';
 	import StoreCard from '$lib/components/PUA/storeCard.svelte';
 	import SortTag from '$lib/components/PUA/sortTag.svelte';
-	import type { category, shopListResponse } from '$lib';
 	import { CheckBox } from '$lib';
 	import type { PageData } from './$types';
-	import BlueButton from '$lib/components/PUA/blueButton.svelte';
+	import DualRangeSlider from '$lib/components/PUA/dualRangeSlider.svelte';
 	let start = 0;
 	let end = 1;
 
 	export let data: PageData;
-	console.log(data.categories);
-
-	let sortCheckboxes = [
-		{ id: 'Nice shop' },
-		{ id: 'Fast shop' },
-		{ id: 'Something nice for you' },
-		{ id: 'Distance' }
-	];
 </script>
 
+<div class="w-1/2"></div>
 <div class="flex justify-start">
 	<div class="float-left m-5 flex flex-col items-center">
 		<Input type="text" placeholder="QQㄋㄟㄋㄟ好喝到咩噗茶" class="m-5  max-w-xs bg-white" />
 		<div class="flex w-96 flex-col justify-center gap-10 rounded-lg bg-white p-10">
-			<div class="flex flex-col items-center gap-5">
-				<SortTag value="Sort"></SortTag>
-				<div class="flex w-full max-w-xs flex-col justify-start gap-1 px-4">
-					{#each sortCheckboxes as { id }}
-						<CheckBox {id} text={id} value={id}></CheckBox>
-					{/each}
-				</div>
-			</div>
-
 			<div class="flex flex-col items-center gap-5">
 				<SortTag value="Price"></SortTag>
 				<div class="flex flex-col">
@@ -52,7 +33,7 @@
 						</div>
 					</div>
 					<div class="  w-full px-10">
-						<DoubleRangeSlider bind:start bind:end />
+						<DualRangeSlider bind:start bind:end></DualRangeSlider>
 					</div>
 				</div>
 			</div>

@@ -53,6 +53,8 @@ import CheckBox from './components/PUA/CheckBox.svelte';
 export { CheckBox };
 import SortTag from './components/PUA/sortTag.svelte';
 export { SortTag };
+import DualRangeSlider from './components/PUA/dualRangeSlider.svelte';
+export { DualRangeSlider };
 
 export type category = { category_name: string; category_id: number };
 

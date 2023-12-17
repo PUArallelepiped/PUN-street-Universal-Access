@@ -79,7 +79,7 @@
 		<div class:hidden={profileTab != 1} class="hidden bg-white">
 			{#await getOrders() then orders}
 				{#each orders as order}
-					<AdminDataCard firstCol={order.order_date} secondCol={order.user_name} type="0"
+					<AdminDataCard firstCol={order.order_date} secondCol={order.user_name} type="order"
 					></AdminDataCard>
 				{/each}
 			{/await}

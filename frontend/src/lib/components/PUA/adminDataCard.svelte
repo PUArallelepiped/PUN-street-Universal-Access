@@ -42,12 +42,12 @@
 	<button class="w-full">
 		<div class="flex items-center justify-between">
 			<div class="flex items-center">
-				{#if type == '0'}
-					<img src={order_icon} alt="" class="my-4 ml-6 flex h-16 w-16" />
-				{:else if type == '1'}
+				{#if type === 'customer'}
 					<img src={customer_icon} alt="" class="my-4 ml-6 flex h-16 w-16" />
-				{:else}
+				{:else if type === 'store'}
 					<img src={seller_icon} alt="" class="my-4 ml-6 flex h-16 w-16" />
+				{:else}
+					<img src={order_icon} alt="" class="my-4 ml-6 flex h-16 w-16" />
 				{/if}
 				<div class="m-4 flex text-left text-PUA-dark-red">
 					{firstCol}<br />
@@ -55,7 +55,7 @@
 				</div>
 			</div>
 			<div class="m-6">
-				{#if type == '0'}
+				{#if type === 'order'}
 					<button
 						class="border-2 border-PUA-dark-red px-7 py-0 text-PUA-dark-red hover:bg-PUA-dark-red hover:text-white"
 						>Detail</button

@@ -22,12 +22,8 @@
 		return json;
 	}
 
-	function switchProfileTabUserList() {
-		profileTab = 0;
-	}
-
-	function switchProfileTabOrderList() {
-		profileTab = 1;
+	function switchProfileTab(tabNumber :number) {
+		profileTab = tabNumber
 	}
 
 	let getUser = getUsers();
@@ -57,14 +53,14 @@
 				class:bg-white={profileTab == 0}
 				class:bg-gray-200={profileTab != 0}
 				class:border-b-4={profileTab == 0}
-				on:click={switchProfileTabUserList}
+				on:click={() => {switchProfileTab(0)}}
 				class="w-full border-PUA-dark-red text-xl text-PUA-dark-red">User List</button
 			>
 			<button
 				class:bg-white={profileTab == 1}
 				class:bg-gray-200={profileTab != 1}
 				class:border-b-4={profileTab == 1}
-				on:click={switchProfileTabOrderList}
+				on:click={() => {switchProfileTab(1)}}
 				class="w-full border-PUA-dark-red bg-gray-200 text-xl text-PUA-dark-red">Order List</button
 			>
 		</div>

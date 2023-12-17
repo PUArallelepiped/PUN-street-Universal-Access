@@ -259,6 +259,7 @@
 			<div class="text-center text-xl font-bold leading-8 text-PUA-dark-red">
 				you are a PUA member now
 			</div>
+			<div class="flex h-9" />
 			<OkButton onclick={GotoLogin} text="Go to Login"></OkButton>
 		</div>
 	{/if}

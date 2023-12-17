@@ -23,12 +23,12 @@
 		});
 	}
 
-	function changeButtonStatus() {
+	async function changeButtonStatus() {
 		ben = !ben;
 		if (ben) {
-			UnbanUserById();
+			await UnbanUserById();
 		} else {
-			banUserById();
+			await banUserById();
 		}
 	}
 </script>

@@ -34,13 +34,13 @@
 		<div class="flex bg-PUA-stone">
 			<img src={admin_icon} alt="" class="my-6 ml-10 flex h-28 w-28" />
 			<div class="m-7 flex flex-col justify-between">
-				{#await getUserInfo() then userInfo}
+				<!-- {#await getUserInfo() then userInfo}
 					<div>
 						<div class="text-2xl text-PUA-gray">{userInfo.user_name}</div>
 						<div class="text-gray-300">{userInfo.user_email}</div>
 					</div>
 					<div class="text-xl text-PUA-gray">{userInfo.address}</div>
-				{/await}
+				{/await} -->
 			</div>
 		</div>
 		<div class="flex h-10">
@@ -72,12 +72,12 @@
 			{/await}
 		</div>
 		<div class:hidden={profileTab != 1} class="hidden bg-white">
-			{#await getOrders() then orders}
+			<!-- {#await getOrders() then orders}
 				{#each orders as order}
 					<AdminDataCard firstCol={order.order_date} secondCol={order.user_name} type="0"
 					></AdminDataCard>
 				{/each}
-			{/await}
+			{/await} -->
 		</div>
 	</div>
 </div>

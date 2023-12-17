@@ -8,34 +8,35 @@
 	export let firstCol: string;
 	export let secondCol: string;
 	export let type: string;
+	export let userID: number = 0;
 
-	export let ben: boolean = true;
+	export let ban: boolean = true;
 
-	async function banUserById() {
-		await fetch(backendPath + '/admin/ban-user/1', {
+	async function banUserById(userID: number) {
+		await fetch(backendPath + '/admin/ban-user/' + userID.toString(), {
 			method: 'PUT'
 		});
 	}
 
-	async function UnbanUserById() {
-		await fetch(backendPath + '/admin/unban-user/1', {
+	async function UnbanUserById(userID: number) {
+		await fetch(backendPath + '/admin/unban-user/' + userID.toString(), {
 			method: 'PUT'
 		});
 	}
 
 	async function changeButtonStatus() {
-		ben = !ben;
-		if (ben) {
-			await UnbanUserById();
+		ban = !ban;
+		if (ban) {
+			await UnbanUserById(userID);
 		} else {
-			await banUserById();
+			await banUserById(userID);
 		}
 	}
 </script>
 
 <div
-	class:border-PUA-dark-gray={ben}
-	class:border-PUA-red={!ben}
+	class:border-PUA-dark-gray={ban}
+	class:border-PUA-red={!ban}
 	class="mx-12 my-3 flex justify-between rounded-2xl border-2 hover:bg-slate-200"
 >
 	<button class="w-full">
@@ -59,16 +60,16 @@
 						class="border-2 border-PUA-dark-red px-7 py-0 text-PUA-dark-red hover:bg-PUA-dark-red hover:text-white"
 						>Detail</button
 					>
-				{:else if ben}
+				{:else if ban}
 					<button
 						on:click={changeButtonStatus}
-						class="w-24 border-2 border-PUA-dark-red px-7 py-0 text-PUA-dark-red">Ben</button
+						class="w-24 border-2 border-PUA-dark-red px-7 py-0 text-PUA-dark-red">Ban</button
 					>
 				{:else}
 					<button
 						on:click={changeButtonStatus}
 						class="flex w-24 justify-center border-2 border-PUA-dark-red bg-PUA-dark-red px-7 py-0 text-white"
-						>UnBen</button
+						>UnBan</button
 					>
 				{/if}
 			</div>

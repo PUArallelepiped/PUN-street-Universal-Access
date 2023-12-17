@@ -70,7 +70,8 @@
 						firstCol={user.user_name}
 						secondCol={user.user_email}
 						type={user.authority}
-						ben={user.status}
+						userID={user.user_id}
+						ban={user.status}
 					></AdminDataCard>
 				{/each}
 			{/await}

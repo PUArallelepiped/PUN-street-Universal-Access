@@ -141,3 +141,32 @@ func (p *postgresqlStoreRepo) GetAllProductSellingById(ctx context.Context, id i
 	return productSellingArray, nil
 
 }
+func (p *postgresqlStoreRepo) UpdateRate(ctx context.Context, id int64, newRate float32) error {
+	sqlStatement := `
+	UPDATE stores
+	SET stores.rate = $1 ,stores.rate_count = stores.rate_count+1
+	WHERE stores.store_id=$2
+	`
+	if _, err := p.db.Exec(sqlStatement, id, newRate); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *postgresqlStoreRepo) CalculateRate(ctx context.Context, id int64, rate swagger.RateInfo) error {
+	sqlStatement := `
+		SELECT stores.rate, stores.rate_count
+		FROM stores
+		WHERE stores.store_id =$1
+	`
+	row := p.db.QueryRow(sqlStatement, id)
+	storeRateInfo := &swagger.StoreInfo{}
+
+	if err := row.Scan(&storeRateInfo.Rate, &storeRateInfo.RateCount); err != nil {
+		logrus.Error(err)
+		return err
+	} else {
+		newRate := (storeRateInfo.Rate*float32(storeRateInfo.RateCount) + rate.Rate) / float32((storeRateInfo.RateCount + 1))
+		return p.UpdateRate(ctx, id, newRate)
+	}
+}

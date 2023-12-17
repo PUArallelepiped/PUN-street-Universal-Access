@@ -26,9 +26,6 @@
 		profileTab = tabNumber
 	}
 
-	let getUser = getUsers();
-	let getOrder = getOrders();
-	let getUserInfoFunction = getUserInfo();
 	let profileTab = 0;
 </script>
 
@@ -37,9 +34,7 @@
 		<div class="flex bg-PUA-stone">
 			<img src={admin_icon} alt="" class="my-6 ml-10 flex h-28 w-28" />
 			<div class="m-7 flex flex-col justify-between">
-				{#await getUserInfoFunction}
-					<div></div>
-				{:then userInfo}
+				{#await getUserInfo() then userInfo}
 					<div>
 						<div class="text-2xl text-PUA-gray">{userInfo.user_name}</div>
 						<div class="text-gray-300">{userInfo.user_email}</div>
@@ -65,9 +60,7 @@
 			>
 		</div>
 		<div class:hidden={profileTab != 0} class="bg-white">
-			{#await getUser}
-				<div></div>
-			{:then users}
+			{#await getUsers() then users}
 				{#each users as user}
 					<AdminDataCard
 						firstCol={user.user_name}
@@ -79,9 +72,7 @@
 			{/await}
 		</div>
 		<div class:hidden={profileTab != 1} class="hidden bg-white">
-			{#await getOrder}
-				<div></div>
-			{:then orders}
+			{#await getOrders() then orders}
 				{#each orders as order}
 					<AdminDataCard firstCol={order.order_date} secondCol={order.user_name} type="0"
 					></AdminDataCard>

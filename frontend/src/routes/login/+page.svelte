@@ -29,10 +29,9 @@
 			const data = await res.json();
 			goto('/shops');
 		} else if (res.status == 403) {
-			errorMsg = 'You got banned, haha'
+			errorMsg = 'You got banned, haha';
 			errorMsgVisible = true;
-		}
-		else {
+		} else {
 			errorMsg = 'Email or Password ERROR';
 			errorMsgVisible = true;
 		}

@@ -26,7 +26,7 @@
 			})
 		});
 		if (res.status == 200) {
-			const data = await res.json();
+			await res.json();
 			goto('/shops');
 		} else if (res.status == 403) {
 			errorMsg = 'You got banned, haha';

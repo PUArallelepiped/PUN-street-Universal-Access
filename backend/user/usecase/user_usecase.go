@@ -24,7 +24,7 @@ func NewUserUsecase(userRepo domain.UserRepo) domain.UserUsecase {
 
 type Claims struct {
 	Email     string `json:"email"`
-	Authority int    `json:"authority"`
+	Authority string `json:"authority"`
 	jwt.StandardClaims
 }
 
@@ -36,7 +36,7 @@ func init() {
 	}
 }
 
-func CreateToken(email string, authority int) (string, error) {
+func CreateToken(email string, authority string) (string, error) {
 	expiresAt := time.Now().Add(24 * time.Hour).Unix()
 	issuedAt := time.Now().Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, Claims{

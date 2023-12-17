@@ -19,18 +19,18 @@ func NewPostgressqlUserRepo(db *sql.DB) domain.UserRepo {
 	return &postgresqlUserRepo{db}
 }
 
-func (p *postgresqlUserRepo) Login(ctx context.Context, email string, password string) (int, error) {
+func (p *postgresqlUserRepo) Login(ctx context.Context, email string, password string) (string, error) {
 	sqlStatement := `
 	SELECT password, authority FROM user_data WHERE email = $1;
 	`
-	var hashedPassword string
-	var authority int
-	err := p.db.QueryRow(sqlStatement, email).Scan(&hashedPassword, &authority)
+	var realPassword string
+	var authority string
+	err := p.db.QueryRow(sqlStatement, email).Scan(&realPassword, &authority)
 	if err != nil {
-		return 0, err
+		return "", err
 	}
-	if hashedPassword != password {
-		return 0, errors.New("wrong password")
+	if realPassword != password {
+		return "", errors.New("wrong password")
 	}
 
 	return authority, nil

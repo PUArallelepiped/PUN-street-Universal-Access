@@ -618,7 +618,8 @@ paths:
       tags:
       - customer
       - cart
-      summary: add product to cart / update product quantity and check order exits by store if not exits add a new order status = 0
+      summary: add product to cart / update product quantity and check order exits
+        by store if not exits add a new order status = 0
       parameters:
       - name: userID
         in: path
@@ -1466,13 +1467,13 @@ components:
         product_label_array:
         - item_array:
           - name: have
-          - name: no
+          - name: false
           product_id: 1
           label_name: milk
           required: true
         - item_array:
           - name: have
-          - name: no
+          - name: false
           product_id: 1
           label_name: milk22
           required: true
@@ -1602,9 +1603,8 @@ components:
           type: string
           example: t110595959@rice.org.tw
         authority:
-          type: integer
-          format: int64
-          example: 100
+          type: string
+          example: customer
         status:
           type: integer
           format: int64
@@ -1613,7 +1613,7 @@ components:
         user_email: t110595959@rice.org.tw
         user_id: 1
         user_name: pasta
-        authority: 100
+        authority: customer
         status: 1
     UserDataShortArray:
       type: array
@@ -1645,9 +1645,8 @@ components:
           type: string
           example: t110595959@rice.org.tw
         authority:
-          type: integer
-          format: int64
-          example: 100
+          type: string
+          example: customer
         password:
           type: string
           example: "123456"
@@ -1677,7 +1676,7 @@ components:
         user_id: 1
         phone: "0912345678"
         user_name: pasta
-        authority: 100
+        authority: customer
         status: 1
     UserArray:
       type: array

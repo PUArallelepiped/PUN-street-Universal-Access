@@ -8,7 +8,6 @@
 	import { CheckBox } from '$lib';
 	import type { PageData } from './$types';
 	import DualRangeSlider from '$lib/components/PUA/dualRangeSlider.svelte';
-	import { LampFloor } from 'lucide-svelte';
 	let start = 0;
 	let end = 1;
 

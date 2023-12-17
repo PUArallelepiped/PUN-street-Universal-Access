@@ -7,21 +7,18 @@
 	async function getOrders() {
 		const resp = await fetch(backendPath + '/admin/get-all-orders');
 		const json = await resp.json();
-		console.log(json);
 		return json;
 	}
 
 	async function getUsers() {
 		const resp = await fetch(backendPath + '/admin/get-all-users');
 		const json = await resp.json();
-		console.log(json);
 		return json;
 	}
 
 	async function getUserInfo() {
 		const resp = await fetch(backendPath + '/user/get-info/1');
 		const json = await resp.json();
-		console.log(json);
 		return json;
 	}
 

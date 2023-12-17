@@ -8,14 +8,8 @@
  */
 package swagger
 
-type UserDataShort struct {
-	UserId int64 `json:"user_id"`
-
-	UserName string `json:"user_name"`
-
+type LoginInfo struct {
 	UserEmail string `json:"user_email"`
 
-	Authority string `json:"authority"`
-
-	Status int64 `json:"status"`
+	Password string `json:"password"`
 }

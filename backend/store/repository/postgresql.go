@@ -148,7 +148,7 @@ func (p *postgresqlStoreRepo) UpdateRate(ctx context.Context, id int64, newRate 
 	SET rate = $1 , rate_count = rate_count+1
 	WHERE store_id=$2
 	`
-	if _, err := p.db.Exec(sqlStatement, newRate , id); err != nil {
+	if _, err := p.db.Exec(sqlStatement, newRate, id); err != nil {
 		return err
 	}
 	return nil

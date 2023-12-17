@@ -13,6 +13,7 @@ type UserRepo interface {
 	RegisterUser(ctx context.Context, user *swagger.RegisterInfo, authority string) (int, error)
 	RegisterStore(ctx context.Context, storeInfo swagger.StoreRegisterInfo, id int) error
 	CheckEmail(ctx context.Context, email string) (bool, error)
+	IsUserBanned(ctx context.Context, email string) (bool, error)
 }
 
 type UserUsecase interface {

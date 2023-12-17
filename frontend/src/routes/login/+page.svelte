@@ -9,6 +9,7 @@
 	let user_email = '';
 	let password = '';
 	let errorMsgVisible = false;
+	let errorMsg = 'Email or Password ERROR';
 
 	onMount(() => {
 		let errorMsg = window.document.getElementById('errorMsg')! as HTMLElement;
@@ -27,9 +28,12 @@
 		if (res.status == 200) {
 			const data = await res.json();
 			goto('/shops');
-			console.log(data);
-		} else {
-			console.log('error');
+		} else if (res.status == 403) {
+			errorMsg = 'You got banned, haha'
+			errorMsgVisible = true;
+		}
+		else {
+			errorMsg = 'Email or Password ERROR';
 			errorMsgVisible = true;
 		}
 	}
@@ -57,7 +61,7 @@
 				<InputBox label="Password" bind:value={password} onInput={handleInput} type="password"
 				></InputBox>
 			</div>
-			<ErrorMessage {errorMsgVisible} errorMsg="Email or Password ERROR"></ErrorMessage>
+			<ErrorMessage {errorMsgVisible} {errorMsg}></ErrorMessage>
 			<div class="m-3 flex h-16 items-end justify-between gap-10 text-center">
 				<div class="w-48">
 					<div class="text-center text-base font-bold leading-tight text-stone-400">

@@ -827,6 +827,8 @@ paths:
           description: login success
         "400":
           description: bad request
+        "403":
+          description: banned
         "500":
           description: Unexpected error
   /validate:

@@ -112,3 +112,19 @@ func (p *postgresqlUserRepo) CheckEmail(ctx context.Context, email string) (bool
 	}
 	return exists, nil
 }
+
+func (p *postgresqlUserRepo) IsUserBanned(ctx context.Context, email string) (bool, error) {
+	sqlStatement := `
+		SELECT status FROM user_data WHERE email = $1;
+	`
+	var status int
+	err := p.db.QueryRow(sqlStatement, email).Scan(&status)
+	if err != nil {
+		logrus.Error(err)
+		return false, err
+	}
+	if status == 0 {
+		return true, nil
+	}
+	return false, nil
+}

@@ -71,6 +71,10 @@ func (u *UserHandler) Login(c *gin.Context) {
 
 	token, err := u.UserUsecase.Login(c, user.UserEmail, user.Password)
 	if err != nil {
+		if err.Error() == "banned" {
+			c.JSON(403, "banned")
+			return
+		}
 		logrus.Error(err)
 		c.Status(500)
 		return

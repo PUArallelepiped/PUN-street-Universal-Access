@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
@@ -55,6 +56,13 @@ func CreateToken(email string, authority int) (string, error) {
 }
 
 func (uu *UserUsecase) Login(ctx context.Context, email string, password string) (string, error) {
+	isBanned, err := uu.userRepo.IsUserBanned(ctx, email)
+	if err != nil {
+		return "", err
+	}
+	if isBanned {
+		return "", errors.New("banned")
+	}
 	authority, err := uu.userRepo.Login(ctx, email, password)
 	if err != nil {
 		return "", err

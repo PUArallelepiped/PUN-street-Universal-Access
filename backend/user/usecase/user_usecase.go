@@ -56,16 +56,18 @@ func CreateToken(email string, authority string) (string, error) {
 }
 
 func (uu *UserUsecase) Login(ctx context.Context, email string, password string) (string, error) {
+	// check if user password is correct
+	authority, err := uu.userRepo.Login(ctx, email, password)
+	if err != nil {
+		return "", err
+	}
+	// check if user is banned
 	isBanned, err := uu.userRepo.IsUserBanned(ctx, email)
 	if err != nil {
 		return "", err
 	}
 	if isBanned {
 		return "", errors.New("banned")
-	}
-	authority, err := uu.userRepo.Login(ctx, email, password)
-	if err != nil {
-		return "", err
 	}
 	token, err := CreateToken(email, authority)
 	if err != nil {

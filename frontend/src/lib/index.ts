@@ -51,3 +51,5 @@ import InputBox from './components/PUA/InputBox.svelte';
 export { InputBox };
 import CheckBox from './components/PUA/CheckBox.svelte';
 export { CheckBox };
+import ErrorMessage from './components/PUA/ErrorMessage.svelte';
+export { ErrorMessage };

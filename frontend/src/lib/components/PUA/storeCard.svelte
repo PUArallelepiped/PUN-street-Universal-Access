@@ -6,7 +6,6 @@
 	export let name: string = 'im pasta';
 	export let picture: string = 'https://i.imgur.com/T5zyE63.png';
 	export let rate: number = 0;
-	console.log(category_array);
 </script>
 
 <a href="{$page.route.id}/{name}" class="shrink">

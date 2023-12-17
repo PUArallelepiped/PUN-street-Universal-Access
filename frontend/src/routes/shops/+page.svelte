@@ -7,10 +7,15 @@
 	import { backendPath } from '$lib/components/PUA/env';
 	import StoreCard from '$lib/components/PUA/storeCard.svelte';
 	import SortTag from '$lib/components/PUA/sortTag.svelte';
-	import TagCheckbox from '$lib/components/PUA/tagCheckbox.svelte';
-	import type { category } from '$lib';
+	import type { category, shopListResponse } from '$lib';
+	import { CheckBox } from '$lib';
+	import type { PageData } from './$types';
+	import BlueButton from '$lib/components/PUA/blueButton.svelte';
 	let start = 0;
 	let end = 1;
+
+	export let data: PageData;
+	console.log(data.categories);
 
 	let sortCheckboxes = [
 		{ id: 'Nice shop' },
@@ -18,59 +23,6 @@
 		{ id: 'Something nice for you' },
 		{ id: 'Distance' }
 	];
-
-	let tagCheckboxes = [
-		{ id: 'Fresh' },
-		{ id: 'Organic' },
-		{ id: 'Healthy' },
-		{ id: 'Dairy-free' },
-		{ id: 'Bakery' },
-		{ id: 'Cafe' },
-		{ id: 'Sugar-free' },
-		{ id: 'Vegetarian' },
-		{ id: 'Free-delivery' }
-	];
-
-	let shopListResponse: {
-		address: string;
-		description: string;
-		name: string;
-		picture: string;
-		rate: number;
-		rate_count: number;
-		shipping_fee: number;
-		status: number;
-		store_id: number;
-		category_array: category[];
-	}[] = [
-		{
-			store_id: 1,
-			shipping_fee: 100,
-			address: 'pun street',
-			rate_count: 10,
-			rate: 5,
-			category_array: [
-				{
-					category_name: 'drink',
-					category_id: 1
-				},
-				{
-					category_name: 'drink',
-					category_id: 1
-				}
-			],
-			name: "i'm pasta",
-			description: 'good pasta',
-			picture: 'https://i.imgur.com/1.jpg',
-			status: 1
-		}
-	];
-
-	async function getShopList() {
-		const resp = await fetch(backendPath + '/stores');
-		shopListResponse = await resp.json();
-		return shopListResponse;
-	}
 </script>
 
 <div class="flex justify-start">
@@ -81,7 +33,7 @@
 				<SortTag value="Sort"></SortTag>
 				<div class="flex w-full max-w-xs flex-col justify-start gap-1 px-4">
 					{#each sortCheckboxes as { id }}
-						<TagCheckbox {id}></TagCheckbox>
+						<CheckBox {id} text={id} value={id}></CheckBox>
 					{/each}
 				</div>
 			</div>
@@ -107,8 +59,9 @@
 			<div class="flex flex-col items-center justify-center gap-5">
 				<SortTag value="Tag"></SortTag>
 				<div class="flex w-full max-w-xs flex-col justify-start gap-1 px-4">
-					{#each tagCheckboxes as { id }}
-						<TagCheckbox {id}></TagCheckbox>
+					{#each data.categories as { category_id, category_name }}
+						<CheckBox id={category_id.toString()} text={category_name} value={category_name}
+						></CheckBox>
 					{/each}
 				</div>
 			</div>
@@ -116,15 +69,13 @@
 	</div>
 
 	<div class=" m-4 flex h-min flex-wrap gap-3">
-		{#await getShopList() then shops}
-			{#each shops as shop}
-				<StoreCard
-					name={shop.name}
-					picture={shop.picture}
-					rate={shop.rate}
-					category_array={shop.category_array}
-				/>
-			{/each}
-		{/await}
+		{#each data.shopListResponses as shop}
+			<StoreCard
+				name={shop.name}
+				picture={shop.picture}
+				rate={shop.rate}
+				category_array={shop.category_array}
+			/>
+		{/each}
 	</div>
 </div>

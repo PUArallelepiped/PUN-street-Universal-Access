@@ -4,10 +4,10 @@
 	export let text: string;
 </script>
 
-<div class="flex gap-3">
-	<input type="checkbox" {id} name="" {value} class="h-7 w-7 accent-PUA-dark-orange" />
+<div class="flex items-center justify-start gap-3">
+	<input type="checkbox" {id} name="" {value} class="h-7 w-7 accent-PUA-dark-red" />
 	<label for={id}>
-		<div class="text-center text-xl font-bold leading-relaxed text-PUA-dark-orange">
+		<div class="truncate text-center text-xl font-bold leading-relaxed text-PUA-dark-red">
 			{text}
 		</div>
 	</label>

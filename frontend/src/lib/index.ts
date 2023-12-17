@@ -54,7 +54,17 @@ export { CheckBox };
 import SortTag from './components/PUA/sortTag.svelte';
 export { SortTag };
 
-import TagCheckbox from './components/PUA/tagCheckbox.svelte';
-export { TagCheckbox };
-
 export type category = { category_name: string; category_id: number };
+
+export type shopListResponse = {
+	address: string;
+	description: string;
+	name: string;
+	picture: string;
+	rate: number;
+	rate_count: number;
+	shipping_fee: number;
+	status: number;
+	store_id: number;
+	category_array: category[];
+};

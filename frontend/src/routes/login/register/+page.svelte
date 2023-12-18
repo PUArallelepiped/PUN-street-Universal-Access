@@ -5,20 +5,81 @@
 	import InputBox from '$lib/components/PUA/InputBox.svelte';
 	import OkButton from '$lib/components/PUA/OkButton.svelte';
 	import CheckBox from '$lib/components/PUA/CheckBox.svelte';
+	import { backendPath } from '$lib/components/PUA/env';
+	import ErrorMessage from '$lib/components/PUA/ErrorMessage.svelte';
+	import { goto } from '$app/navigation';
 	let context: { text: string; status: boolean }[] = [
-		{ text: 'Choose User Type', status: false },
-		{ text: 'Compelete basic information', status: false },
-		{ text: 'Check email', status: false },
-		{ text: 'Compelete!', status: false }
+		{ text: 'Choose User Type', status: true },
+		{ text: 'Complete basic information', status: false },
+		// { text: 'Check email', status: false }, // dlc
+		{ text: 'Complete!', status: false }
 	];
-	function NextStep(): null {
+	interface StoreInfo {
+		name: string;
+		description: string;
+		address: string;
+		shipping_fee: number | null;
+		picture: string;
+	}
+	interface UserInfo {
+		user_name: string;
+		user_email: string;
+		password: string;
+		phone: string;
+		address: string;
+		birthday: string;
+		StoreRegisterInfo: StoreInfo | null;
+	}
+	let storeInfo: StoreInfo = {
+		name: '',
+		description: '',
+		address: '',
+		shipping_fee: null,
+		picture: 'https://i.imgur.com/3i3tyXJ.gif'
+	};
+	let userInfo: UserInfo = {
+		user_name: '',
+		user_email: '',
+		password: '',
+		phone: '',
+		address: '',
+		birthday: '2002-01-01',
+		StoreRegisterInfo: null
+	};
+	let checkPassword = '';
+	let errorMsgVisible: boolean = false;
+	let errorMsg: string = '';
+	let goodPUA = false;
+	let goodPUAStore = false;
+	async function NextStep() {
 		for (let index = 0; index < context.length; index++) {
-			if (!context[index].status) {
-				context[index].status = !context[index].status;
-				return null;
+			if (!context[index + 1].status) {
+				// check null & pwd
+				HandleError(context[index].text);
+				if (errorMsgVisible) {
+					return;
+				}
+				// check email
+				if (context[index].text === 'Complete basic information') {
+					const exists = (await CheckEmailExist()).valueOf();
+					if (exists === true) {
+						errorMsg = 'Email already exists';
+						errorMsgVisible = true;
+						return;
+					}
+				}
+				if (context[index].text === 'Complete Store Info') {
+					userInfo.StoreRegisterInfo = storeInfo;
+					console.log(userInfo);
+				}
+				if (context[index + 1].text === 'Complete!') {
+					Register();
+				}
+				context[index + 1].status = !context[index + 1].status;
+				break;
 			}
 		}
-		return null;
+		return;
 	}
 	function ClickWallet() {
 		NextStep();
@@ -26,16 +87,107 @@
 	function ClickCasher() {
 		context = context
 			.slice(0, 2)
-			.concat({ text: 'Compelete Store Info', status: false })
-			.concat(context.slice(2, 5));
+			.concat({ text: 'Complete Store Info', status: false })
+			.concat(context.slice(2, 4));
 		NextStep();
+	}
+	function CheckPassword() {
+		if (userInfo.password === checkPassword) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	function CheckGoodPUA() {
+		goodPUA = !goodPUA;
+		return;
+	}
+	function CheckGoodPUAStore() {
+		goodPUAStore = !goodPUAStore;
+		return;
+	}
+	function CheckUserInfoNull() {
+		if (
+			userInfo.user_name === '' ||
+			userInfo.user_email === '' ||
+			userInfo.password === '' ||
+			userInfo.phone === '' ||
+			userInfo.address === ''
+		) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	function CheckStoreInfoNull() {
+		if (
+			storeInfo.name === '' ||
+			storeInfo.description === '' ||
+			storeInfo.address === '' ||
+			storeInfo.shipping_fee === null
+		) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	function HandleError(context: string) {
+		if (context === 'Complete basic information') {
+			errorMsg = 'Please fill in all the blanks';
+			if (CheckUserInfoNull()) {
+				errorMsg = 'Please fill in all the blanks';
+				errorMsgVisible = true;
+			} else if (CheckPassword()) {
+				errorMsg = 'Password not match';
+				errorMsgVisible = true;
+			}
+		} else if (context === 'Complete Store Info') {
+			errorMsg = 'Please fill in all the blanks';
+			if (CheckStoreInfoNull()) {
+				errorMsg = 'Please fill in all the blanks';
+				errorMsgVisible = true;
+			} else if (storeInfo.shipping_fee !== null && isNaN(storeInfo.shipping_fee) === true) {
+				errorMsg = 'Shipping fee must be a number';
+				errorMsgVisible = true;
+			}
+		}
+	}
+	function HandleInput() {
+		errorMsgVisible = false;
+	}
+	function GotoLogin() {
+		goto('/login');
+	}
+	async function Register() {
+		storeInfo.shipping_fee = Number(storeInfo.shipping_fee);
+		const res = await fetch(backendPath + '/register', {
+			method: 'POST',
+			body: JSON.stringify(userInfo)
+		});
+		if (res.status != 200) {
+			errorMsg = 'Register failed';
+			errorMsgVisible = true;
+		}
+	}
+	async function CheckEmailExist() {
+		const res = await fetch(backendPath + '/check-email', {
+			method: 'POST',
+			body: JSON.stringify({ user_email: userInfo.user_email })
+		});
+		const exists = await res.json();
+		// console.log(exists)
+		if (res.status == 200 && exists === true) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 </script>
 
 <div class="flex flex-col gap-9 py-10">
 	<ProgressBar {context}></ProgressBar>
 
-	{#if !context[0].status}
+	{#if !context[1].status}
 		<div class="flex justify-center gap-28">
 			<button
 				on:click={ClickWallet}
@@ -52,37 +204,63 @@
 				<div class="text-center text-4xl font-bold leading-8 text-red-900">Store</div>
 			</button>
 		</div>
-	{:else if !context[1].status}
-		<div class="flex justify-center">
-			<div class="flex flex-col items-center gap-10 rounded-lg bg-white p-12">
-				<InputBox value="" type="" label="Name" />
-				<InputBox value="" type="" label="Email" />
-				<InputBox value="" type="" label="Password" />
-				<InputBox value="" type="" label="Password Check" />
-				<InputBox value="" type="" label="Phone Number" />
-				<InputBox value="" type="" label="Birthday" />
-				<InputBox value="" type="" label="Address" />
-				<CheckBox value="si" id="id" text="Do you be a good PUA user?"></CheckBox>
-				<OkButton onclick={NextStep} text="Next Step"></OkButton>
-			</div>
-		</div>
-	{:else if !context[2].status && context[2].text === 'Compelete Store Info'}
-		<div class="flex justify-center">
-			<div class="flex flex-col items-center gap-10 rounded-lg bg-white p-12">
-				<InputBox value="" type="" label="Store Name" />
-				<InputBox value="" type="" label="Store Description" />
-				<InputBox value="" type="" label="Address" />
-				<InputBox value="" type="" label="Shipping Fee" />
-				<CheckBox value="si" id="id" text="Do you be a good PUA user?"></CheckBox>
-				<OkButton onclick={NextStep} text="Next Step"></OkButton>
-			</div>
-		</div>
 	{:else if !context[2].status}
+		<div class="flex justify-center">
+			<div class="flex flex-col items-center gap-10 rounded-lg bg-white p-12">
+				<InputBox onInput={HandleInput} bind:value={userInfo.user_name} type="" label="Name" />
+				<InputBox onInput={HandleInput} bind:value={userInfo.user_email} type="" label="Email" />
+				<InputBox
+					onInput={HandleInput}
+					bind:value={userInfo.password}
+					type="password"
+					label="Password"
+				/>
+				<InputBox
+					onInput={HandleInput}
+					bind:value={checkPassword}
+					type="password"
+					label="Password Check"
+				/>
+				<InputBox onInput={HandleInput} bind:value={userInfo.phone} type="" label="Phone Number" />
+				<!-- <InputBox bind:value={userInfo.birthday} type="" label="Birthday" /> -->
+				<InputBox onInput={HandleInput} bind:value={userInfo.address} type="" label="Address" />
+				<CheckBox onclick={CheckGoodPUA} value="si" id="goodPUA" text="Do you be a good PUA user?"
+				></CheckBox>
+				<ErrorMessage {errorMsgVisible} {errorMsg}></ErrorMessage>
+				<OkButton onclick={NextStep} text="Next Step" disabled={!goodPUA}></OkButton>
+			</div>
+		</div>
+	{:else if context[2].text === 'Complete Store Info' && !context[3].status}
+		<div class="flex justify-center">
+			<div class="flex flex-col items-center gap-10 rounded-lg bg-white p-12">
+				<InputBox onInput={HandleInput} bind:value={storeInfo.name} type="" label="Store Name" />
+				<InputBox
+					onInput={HandleInput}
+					bind:value={storeInfo.description}
+					type=""
+					label="Store Description"
+				/>
+				<InputBox onInput={HandleInput} bind:value={storeInfo.address} type="" label="Address" />
+				<InputBox
+					onInput={HandleInput}
+					bind:value={storeInfo.shipping_fee}
+					type=""
+					label="Shipping Fee"
+				/>
+				<CheckBox onclick={CheckGoodPUAStore} value="si" id="id" text="Do you be a good PUA store?"
+				></CheckBox>
+				<ErrorMessage {errorMsgVisible} {errorMsg}></ErrorMessage>
+				<OkButton onclick={NextStep} text="Next Step" disabled={!goodPUAStore}></OkButton>
+			</div>
+		</div>
+	{:else}
 		<div class="flex flex-col items-center">
 			<div class="text-center text-4xl font-bold leading-8 text-PUA-dark-red">Compelete!</div>
 			<div class="text-center text-xl font-bold leading-8 text-PUA-dark-red">
-				you r a PUA member now
+				you are a PUA member now
 			</div>
+			<div class="flex h-9" />
+			<OkButton onclick={GotoLogin} text="Go to Login"></OkButton>
 		</div>
 	{/if}
 </div>

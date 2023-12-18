@@ -64,6 +64,15 @@ const config = {
 			},
 			fontFamily: {
 				sans: [...fontFamily.sans]
+			},
+			spacing: {
+				108: '27rem',
+				112: '28rem',
+				128: '32rem',
+				140: '35rem',
+				144: '36rem',
+				160: '40rem',
+				172: '43rem'
 			}
 		}
 	}

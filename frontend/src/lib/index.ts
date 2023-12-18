@@ -51,9 +51,14 @@ import InputBox from './components/PUA/InputBox.svelte';
 export { InputBox };
 import CheckBox from './components/PUA/CheckBox.svelte';
 export { CheckBox };
+<<<<<<< HEAD
 import CategoryLabel from '$lib/components/PUA/store_page_seller/categoryLabel.svelte';
 export { CategoryLabel };
 import DiscountCard from '$lib/components/PUA/store_page_seller/discountCard.svelte';
 export { DiscountCard };
 import StoreProductCard from '$lib/components/PUA/store_page_seller/storeProductCard.svelte';
 export { StoreProductCard };
+=======
+import ErrorMessage from './components/PUA/ErrorMessage.svelte';
+export { ErrorMessage };
+>>>>>>> upstream/main

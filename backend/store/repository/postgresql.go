@@ -58,7 +58,7 @@ func (p *postgresqlStoreRepo) GetAllStore(ctx context.Context) ([]swagger.StoreI
 	(SELECT 
 		jsonb_agg(jsonb_build_object('category_id', categories.category_id,'category_name', categories.name)) AS categories_item 
 		FROM categories NATURAL JOIN 
-		(SELECT labels.category_id FROM labels WHERE labels.store_id = stores.store_id)
+		(SELECT labels.category_id FROM labels WHERE labels.store_id = stores.store_id) AS label
 	) AS category_array
 	FROM stores;
 	`

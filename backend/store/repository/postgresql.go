@@ -148,11 +148,9 @@ func (p *postgresqlStoreRepo) CalculateRate(ctx context.Context, id int64, rate 
 	SET rate = ROUND((rate*rate_count+$1)::numeric/(rate_count+1),1) , rate_count = rate_count+1
 	WHERE store_id=$2
 	`
-
 	if _, err := p.db.Exec(sqlStatement, rate.Rate, id); err != nil {
 		logrus.Error(err)
 		return err
-		
 	} 
 	return nil
 }

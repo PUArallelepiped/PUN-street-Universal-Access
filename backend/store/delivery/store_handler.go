@@ -111,10 +111,10 @@ func (s *StoreHandler) PostRate(c *gin.Context) {
 		c.Status(400)
 		return
 	}
-	if err:=s.StoreUsecase.CalculateRate(c, storeID, rate); err !=nil{
+	if err:=s.StoreUsecase.CalculateRate(c, storeID, rate); err != nil{
 		logrus.Error(err)
 		c.Status(500)
 		return
 	}
-
+	c.Status(200)
 }

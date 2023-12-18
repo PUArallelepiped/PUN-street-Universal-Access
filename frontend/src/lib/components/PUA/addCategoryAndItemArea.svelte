@@ -69,6 +69,7 @@
 						idYes={item.label_name + 'yes' + index.toString()}
 						nameNo={item.label_name + 'Choice' + index.toString()}
 						idNo={item.label_name + 'No' + index.toString()}
+						bind:group={item.required}
 					></RequiredArea>
 				</div>
 				<div class="flex w-1/3 items-center justify-end">

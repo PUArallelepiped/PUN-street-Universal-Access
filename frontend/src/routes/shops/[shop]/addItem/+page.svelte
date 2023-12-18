@@ -80,7 +80,7 @@
 	}
 
 	async function getProductResp() {
-		const res = await fetch(backendPath + `/product/10`);
+		const res = await fetch(backendPath + `/product/12`);
 
 		if (res.status == 200) {
 			product_data = await res.json();
@@ -226,7 +226,6 @@
 								{/if}
 							</div>
 						{/each}
-						<p>{product_data.status}</p>
 					</div>
 					<div class="mb-5 flex items-center justify-center">
 						<OkButton onclick={post} text="Add Product"></OkButton>

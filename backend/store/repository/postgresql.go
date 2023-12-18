@@ -153,5 +153,5 @@ func (p *postgresqlStoreRepo) CalculateRate(ctx context.Context, id int64, rate 
 		logrus.Error(err)
 		return err
 	} 
-	return nil;
+	return nil
 }

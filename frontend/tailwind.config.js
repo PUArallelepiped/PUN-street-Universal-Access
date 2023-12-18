@@ -48,7 +48,6 @@ const config = {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				'PUA-red': '#DD0808',
-				'PUA-pink': '#CF8A8A',
 				'PUA-dark-red': '#822E2E',
 				'PUA-orange': '#C65633',
 				'PUA-dark-orange': '#461616',
@@ -57,6 +56,7 @@ const config = {
 				'PUA-stone': '#755555',
 				'PUA-green': '#577246'
 			},
+
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
@@ -64,6 +64,15 @@ const config = {
 			},
 			fontFamily: {
 				sans: [...fontFamily.sans]
+			},
+			spacing: {
+				108: '27rem',
+				112: '28rem',
+				128: '32rem',
+				140: '35rem',
+				144: '36rem',
+				160: '40rem',
+				172: '43rem'
 			}
 		}
 	}

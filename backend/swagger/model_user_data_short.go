@@ -15,7 +15,7 @@ type UserDataShort struct {
 
 	UserEmail string `json:"user_email"`
 
-	Authority int64 `json:"authority"`
+	Authority string `json:"authority"`
 
 	Status int64 `json:"status"`
 }

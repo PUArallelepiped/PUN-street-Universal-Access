@@ -4,6 +4,10 @@
 	import DenyButton from '$lib/components/PUA/denyButton.svelte';
 	import Chart, { type ChartItem } from 'chart.js/auto';
 	import { onMount } from 'svelte';
+	import type { PageData } from '../$types';
+	import type { ActionData } from './$types';
+	import { applyAction, deserialize } from '$app/forms';
+	import type { ActionResult } from '@sveltejs/kit';
 
 	let choosingMonth = 1;
 	let currentTab = 0;
@@ -13,19 +17,41 @@
 	function switchAccount() {
 		currentTab = 1;
 	}
-	function pchoo() {
-		let form = document.getElementById('monthRadio') as HTMLFormElement;
-		form?.submit();
-	}
-	function handleSubmit(event) {
+	// export let data: PageData;
+	export let form: ActionData;
+	type chartType = { product_name: number; product_quantity: number };
+	let chartData: chartType[] = [
+		{ product_name: 2010, product_quantity: 10 },
+		{ product_name: 2010, product_quantity: 10 },
+		{ product_name: 2010, product_quantity: 10 },
+		{ product_name: 2010, product_quantity: 10 },
+		{ product_name: 2010, product_quantity: 10 },
+		{ product_name: 2010, product_quantity: 10 },
+		{ product_name: 2010, product_quantity: 10 },
+		{ product_name: 2010, product_quantity: 10 },
+		{ product_name: 2010, product_quantity: 10 }
+	];
+	async function handleSubmit(event) {
 		event.preventDefault();
 		const formData = new FormData(document.getElementById('monthRadio') as HTMLFormElement);
-		fetch('?/statistic', {
+		const resp = await fetch('?/statistic', {
 			method: 'POST',
 			body: formData
-		})
-			.then((response) => response.json())
-			.then((data) => console.log(data));
+		});
+		const data: ActionResult = deserialize(await resp.text());
+
+		if (data.type === 'success') {
+			console.log(data.data);
+			chartData = data.data as chartType[];
+			chart.data.datasets = [
+				{
+					label: 'Acquisitions by year',
+					data: chartData.map((row) => row.product_quantity)
+				}
+			];
+			chart.data.labels = chartData.map((row) => row.product_name);
+			chart.update();
+		}
 	}
 	let month = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 	let monthText = [
@@ -44,32 +70,29 @@
 		'十二月',
 		'十三月'
 	];
-	onMount(() => {
-		const data = [
-			{ year: 2010, count: 10 },
-			{ year: 2011, count: 20 },
-			{ year: 2012, count: 15 },
-			{ year: 2013, count: 25 },
-			{ year: 2014, count: 22 },
-			{ year: 2015, count: 30 },
-			{ year: 2016, count: 28 }
-		];
-
+	let chart: Chart;
+	function initChart() {
 		console.log(document.getElementById('acquisitions'));
 		const test = document.getElementById('acquisitions') as ChartItem;
 
-		new Chart(test, {
+		if (chart) {
+			chart.destroy();
+		}
+		chart = new Chart(test, {
 			type: 'bar',
 			data: {
-				labels: data.map((row) => row.year),
+				labels: chartData.map((row) => row.product_name),
 				datasets: [
 					{
 						label: 'Acquisitions by year',
-						data: data.map((row) => row.count)
+						data: chartData.map((row) => row.product_quantity)
 					}
 				]
 			}
 		});
+	}
+	onMount(() => {
+		initChart();
 	});
 </script>
 
@@ -232,27 +255,29 @@
 					method="post"
 					on:submit|preventDefault={handleSubmit}
 				>
-					{#each month as key}
-						<input
-							type="radio"
-							bind:group={choosingMonth}
-							name={'month'}
-							id={'check' + key}
-							value={key}
-							class="hidden"
-							on:change={handleSubmit}
-						/>
-						<label
-							for={'check' + key}
-							class:bg-PUA-dark-red={choosingMonth === key}
-							class:bg-gray-100={!(choosingMonth === key)}
-							class:text-white={choosingMonth === key}
-							class:text-PUA-dark-red={!(choosingMonth === key)}
-							class="leading-relaxe h-10 rounded-full border-2 border-PUA-dark-red px-3 text-2xl font-bold"
-						>
-							{monthText[key]}</label
-						>
-					{/each}
+					<div class="flex flex-wrap gap-2">
+						{#each month as key}
+							<input
+								type="radio"
+								bind:group={choosingMonth}
+								name={'month'}
+								id={'check' + key}
+								value={key}
+								class="hidden"
+								on:change={handleSubmit}
+							/>
+							<label
+								for={'check' + key}
+								class:bg-PUA-dark-red={choosingMonth === key}
+								class:bg-gray-100={!(choosingMonth === key)}
+								class:text-white={choosingMonth === key}
+								class:text-PUA-dark-red={!(choosingMonth === key)}
+								class="leading-relaxe h-10 rounded-full border-2 border-PUA-dark-red px-3 text-2xl font-bold"
+							>
+								{monthText[key]}</label
+							>
+						{/each}
+					</div>
 				</form>
 				<canvas id="acquisitions"></canvas>
 			</div>

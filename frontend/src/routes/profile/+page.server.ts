@@ -7,8 +7,7 @@ export const actions = {
 		const resp = await fetch(
 			backendPath + '/store/' + '1' + '/get-selling/' + '2020/' + data.get('month')
 		);
-
-		console.log(resp);
-		return resp.json();
+		const j = await resp.json();
+		return j;
 	}
 };

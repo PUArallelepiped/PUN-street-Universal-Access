@@ -4,6 +4,7 @@
 	import { backendPath } from '$lib/components/PUA/env';
 	import { Textarea, DisCountArea, OkButton, StatusButton, ErrorMsg } from '$lib/index';
 	import AddCategoryAndItemArea from '$lib/components/PUA/addCategoryAndItemArea.svelte';
+
 	let showModel = false; //only 模擬
 	let Status = [{ label: '上架中' }, { label: '已售完' }]; //1上架中  2已售完
 	type productRespType = {
@@ -77,121 +78,161 @@
 		};
 		return null;
 	}
-	onMount(async () => {
-		const Resp = await fetch(`/product.json`);
-		product_data = await Resp.json();
-		const backResp = await fetch(backendPath + `/product/9`);
-		if (backResp.status == 200) {
-			product_data = await backResp.json();
+
+	async function getProductResp() {
+		const res = await fetch(backendPath + `/product/10`);
+
+		if (res.status == 200) {
+			product_data = await res.json();
 		}
-	});
+		return;
+	}
+
+	async function PostProductResp() {
+		console.log(product_data);
+		let poet_status = fetch(backendPath + `/store/` + product_data.store_id + `/add-product`, {
+			method: 'POST',
+			//別忘了把主體参數轉成字串，否則資料會變成[object Object]，它無法被成功儲存在後台
+			body: JSON.stringify(product_data)
+		});
+		console.log(poet_status);
+	}
+
+	function post() {
+		PostProductResp();
+		return null;
+	}
+
+	// onMount(async () => {
+	// 	getRandomNumber();
+	// const Resp = await fetch(`/product.json`);
+	// product_data = await Resp.json();
+	// const backResp = await fetch(backendPath + `/product/2`);
+	// if (backResp.status == 200) {
+	// 	product_data = await backResp.json();
+	// }
+	// console.log(product_data);
+	// });
 </script>
 
-<div class="flex h-fit justify-start">
-	<div class="relative left-1/2 mt-6 h-full w-4/5 -translate-x-1/2 transform">
-		<div class="h-100 text-33 text-PUA-dark-red flex w-full flex-col justify-center">
-			<Input
-				bind:value={product_data.name}
-				type="text"
-				placeholder="Enter Product Name"
-				class="max-wxs w-full rounded-[0] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-3xl"
-			/>
-
-			<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
-		</div>
-		<div class="flex h-full w-full">
-			<div class="relative h-full w-[500px]">
-				<div class=" flex h-[250px] w-[250px] rounded-lg bg-gray-300 shadow-inner">
-					{#if !product_data.picture}
-						<div class="flex h-full w-full items-center justify-center">
-							<label
-								for="fileInput"
-								class="h-11 cursor-pointer rounded-[20px] bg-gray-400 px-12 py-2 text-white shadow-md"
-								>Upload Image</label
-							>
-							<input
-								type="file"
-								id="fileInput"
-								accept="image/png, image/jpeg"
-								class="absolute right-0 top-0 cursor-pointer font-bold opacity-0"
-							/>
-						</div>
-					{:else}
-						<div class="absolute z-10 h-[250px] w-[250px] bg-opacity-0">
-							<label for="fileInput" class=" block h-full w-full cursor-pointer bg-opacity-0"
-							></label>
-							<input
-								type="file"
-								id="fileInput"
-								accept="image/png, image/jpeg"
-								class="absolute right-0 top-0 cursor-pointer font-bold opacity-0"
-							/>
-						</div>
-						<img
-							src={product_data.picture}
-							alt=""
-							class="flex h-full w-full rounded-lg object-cover"
-						/>
-					{/if}
-				</div>
-				<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
-
-				<div class="flex items-center">
-					<div class="gap-3 py-[20px] text-3xl font-bold">NT$</div>
-					<Input
-						value={product_data.price}
-						type="text"
-						placeholder="Enter price"
-						class="ml-[10px] w-[180px] max-w-xs rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-[30px]"
-					/>
-				</div>
-
-				<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
-				<div class="w-[250px] text-base text-gray-600">
-					<Textarea width="64" bind:value={product_data.description} />
-				</div>
+{#await getProductResp() then number}
+	<div class="flex h-fit justify-start">
+		<div class="relative left-1/2 mt-6 h-full w-4/5 -translate-x-1/2 transform">
+			<div class="h-100 text-33 text-PUA-dark-red flex w-full flex-col justify-center">
+				<Input
+					bind:value={product_data.name}
+					type="text"
+					placeholder="Enter Product Name"
+					class="max-wxs w-full rounded-[0] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-3xl"
+				/>
 
 				<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
 			</div>
-			<div class="relative h-fit w-full">
-				<AddCategoryAndItemArea
-					bind:category_item={product_data.product_label_array}
-					bind:product_id={product_data.product_id}
-				></AddCategoryAndItemArea>
-				<DisCountArea
-					toggleModel={() => {
-						showModel = !showModel;
-						return null;
-					}}
-					bind:discount={product_data.event_discount_array}
-					{addDiscountButton}
-					addSign={true}
-					type={false}
-				></DisCountArea>
+			<div class="flex h-full w-full">
+				<div class="relative h-full w-[500px]">
+					<div class=" flex h-[250px] w-[250px] rounded-lg bg-gray-300 shadow-inner">
+						{#if !product_data.picture}
+							<div class="flex h-full w-full items-center justify-center">
+								<label
+									for="fileInput"
+									class="h-11 cursor-pointer rounded-[20px] bg-gray-400 px-12 py-2 text-white shadow-md"
+									>Upload Image</label
+								>
+								<input
+									type="file"
+									id="fileInput"
+									accept="image/png, image/jpeg"
+									class="absolute right-0 top-0 cursor-pointer font-bold opacity-0"
+								/>
+							</div>
+						{:else}
+							<div class="absolute z-10 h-[250px] w-[250px] bg-opacity-0">
+								<label for="fileInput" class=" block h-full w-full cursor-pointer bg-opacity-0"
+								></label>
+								<input
+									type="file"
+									id="fileInput"
+									accept="image/png, image/jpeg"
+									class="absolute right-0 top-0 cursor-pointer font-bold opacity-0"
+								/>
+							</div>
+							<img
+								src={product_data.picture}
+								alt=""
+								class="flex h-full w-full rounded-lg object-cover"
+							/>
+						{/if}
+					</div>
+					<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
 
-				<div class="border-PUA-stone flex h-[30px] w-full items-center border-b-[1px] border-solid">
-					<div class="text-PUA-stone font-bold">Set Status</div>
+					<div class="flex items-center">
+						<div class="gap-3 py-[20px] text-3xl font-bold">NT$</div>
+						<input
+							bind:value={product_data.price}
+							type="number"
+							min="0"
+							max="100"
+							placeholder="Enter price"
+							class="ml-[10px] w-[180px] max-w-xs rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400 bg-transparent text-[30px]"
+						/>
+					</div>
+
+					<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
+					<div class="w-[250px] text-base text-gray-600">
+						<Textarea width="64" bind:value={product_data.description} />
+					</div>
+
+					<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
 				</div>
-				<div class="m-4 flex justify-center gap-10">
-					{#each Status as { label }, index}
-						<div class="flex items-center justify-center">
-							{#if index + 1 == product_data.status}
-								<StatusButton text={label} id={label} checked={true}></StatusButton>
-							{:else}
-								<StatusButton text={label} id={label}></StatusButton>
-							{/if}
-						</div>
-					{/each}
-				</div>
-				<div class="mb-5 flex items-center justify-center">
-					<OkButton
-						onclick={() => {
+				<div class="relative h-fit w-full">
+					<AddCategoryAndItemArea
+						bind:category_item={product_data.product_label_array}
+						bind:product_id={product_data.product_id}
+					></AddCategoryAndItemArea>
+					<DisCountArea
+						toggleModel={() => {
+							showModel = !showModel;
 							return null;
 						}}
-						text="Add Product"
-					></OkButton>
+						bind:discount={product_data.event_discount_array}
+						{addDiscountButton}
+						addSign={true}
+						type={false}
+					></DisCountArea>
+
+					<div
+						class="border-PUA-stone flex h-[30px] w-full items-center border-b-[1px] border-solid"
+					>
+						<div class="text-PUA-stone font-bold">Set Status</div>
+					</div>
+					<div class="m-4 flex justify-center gap-10">
+						{#each Status as { label }, index}
+							<div class="flex items-center justify-center">
+								{#if index + 1 == product_data.status}
+									<StatusButton
+										text={label}
+										id={label}
+										checked={true}
+										value={index + 1}
+										bind:group={product_data.status}
+									></StatusButton>
+								{:else}
+									<StatusButton
+										text={label}
+										id={label}
+										value={index + 1}
+										bind:group={product_data.status}
+									></StatusButton>
+								{/if}
+							</div>
+						{/each}
+						<p>{product_data.status}</p>
+					</div>
+					<div class="mb-5 flex items-center justify-center">
+						<OkButton onclick={post} text="Add Product"></OkButton>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+{/await}

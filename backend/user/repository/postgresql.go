@@ -73,9 +73,10 @@ func (p *postgresqlUserRepo) GetAllUser(ctx context.Context) ([]swagger.UserData
 
 func (p *postgresqlUserRepo) GetAllOrder(ctx context.Context) ([]swagger.OrderInfoShort, error) {
 	sqlStatement := `
-		SELECT orders.cart_id, orders.store_id, orders.order_date, orders.user_id, user_data.name  
-		FROM orders LEFT JOIN user_data 
-		ON orders.user_id = user_data.user_id
+	SELECT orders.cart_id, orders.store_id, orders.order_date, orders.user_id, user_data.name  
+	FROM orders LEFT JOIN user_data 
+	ON orders.user_id = user_data.user_id
+	ORDER BY orders.order_date	
 	`
 
 	rows, err := p.db.Query(sqlStatement)

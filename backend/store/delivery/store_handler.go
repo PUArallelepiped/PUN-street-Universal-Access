@@ -105,16 +105,19 @@ func (s *StoreHandler) PostRate(c *gin.Context) {
 	if err != nil {
 		return
 	}
+
 	var rate swagger.RateInfo
 	if err := c.BindJSON(&rate); err != nil {
 		logrus.Error(err)
 		c.Status(400)
 		return
 	}
+
 	if err := s.StoreUsecase.CalculateRate(c, storeID, rate); err != nil{
 		logrus.Error(err)
 		c.Status(500)
 		return
 	}
+	
 	c.Status(200)
 }

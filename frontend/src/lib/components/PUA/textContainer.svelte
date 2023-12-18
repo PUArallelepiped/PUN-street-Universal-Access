@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	let inputValue = '';
+	export let inputValue = '';
 	export let width: string = '0';
 	export let min_width: string = '0';
 	export let max_Width: string = '0';

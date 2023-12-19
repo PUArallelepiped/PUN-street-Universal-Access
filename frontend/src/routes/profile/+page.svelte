@@ -10,6 +10,7 @@
 	import type { ActionResult } from '@sveltejs/kit';
 
 	let choosingMonth = 1;
+	let choosingYear = 2020;
 	let currentTab = 0;
 	function switchProfile() {
 		currentTab = 0;
@@ -19,8 +20,10 @@
 	}
 	// export let data: PageData;
 	export let form: ActionData;
-	type chartType = { product_name: number; product_quantity: number };
-	let chartData: chartType[] = [
+	type monthChartType = { product_name: number; product_quantity: number };
+	type yearChartType = { price: number };
+	let yearChartData: yearChartType[] = [{ price: 100 }];
+	let monthChartData: monthChartType[] = [
 		{ product_name: 2010, product_quantity: 10 },
 		{ product_name: 2010, product_quantity: 10 },
 		{ product_name: 2010, product_quantity: 10 },
@@ -31,31 +34,55 @@
 		{ product_name: 2010, product_quantity: 10 },
 		{ product_name: 2010, product_quantity: 10 }
 	];
-	async function handleSubmit(event) {
+	async function handleSubmit(event: Event) {
 		event.preventDefault();
-		const formData = new FormData(document.getElementById('monthRadio') as HTMLFormElement);
-		const resp = await fetch('?/statistic', {
+		await UpdateMonthData();
+		await UpdateYearData();
+	}
+	async function UpdateYearData() {
+		const formData = new FormData(document.getElementById('stasticForm') as HTMLFormElement);
+		const resp = await fetch('?/yearStatistic', {
 			method: 'POST',
 			body: formData
 		});
 		const data: ActionResult = deserialize(await resp.text());
 
 		if (data.type === 'success') {
-			console.log(data.data);
-			chartData = data.data as chartType[];
-			chart.data.datasets = [
+			yearChartData = data.data as yearChartType[];
+			console.log(monthChartData);
+			yearChart.data.datasets = [
 				{
-					label: 'Acquisitions by year',
-					data: chartData.map((row) => row.product_quantity)
+					label: 'product quantity',
+					data: yearChartData.map((row) => row.price)
 				}
 			];
-			chart.data.labels = chartData.map((row) => row.product_name);
-			chart.update();
+			yearChart.data.labels = monthText;
+			yearChart.update();
 		}
 	}
+	async function UpdateMonthData() {
+		const formData = new FormData(document.getElementById('stasticForm') as HTMLFormElement);
+		const resp = await fetch('?/monthStatistic', {
+			method: 'POST',
+			body: formData
+		});
+		const data: ActionResult = deserialize(await resp.text());
+
+		if (data.type === 'success') {
+			monthChartData = data.data as monthChartType[];
+			monthChart.data.datasets = [
+				{
+					label: 'product quantity',
+					data: monthChartData.map((row) => row.product_quantity)
+				}
+			];
+			monthChart.data.labels = monthChartData.map((row) => row.product_name);
+			monthChart.update();
+		}
+	}
+	let year = [2020, 2021, 2022, 2023];
 	let month = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 	let monthText = [
-		'for index align',
 		'一月',
 		'二月',
 		'三月',
@@ -70,22 +97,35 @@
 		'十二月',
 		'十三月'
 	];
-	let chart: Chart;
+	let monthChart: Chart;
+	let yearChart: Chart;
 	function initChart() {
-		console.log(document.getElementById('acquisitions'));
-		const test = document.getElementById('acquisitions') as ChartItem;
+		const mChart = document.getElementById('monthChart') as ChartItem;
+		const yChart = document.getElementById('yearChart') as ChartItem;
 
-		if (chart) {
-			chart.destroy();
+		if (monthChart) {
+			monthChart.destroy();
 		}
-		chart = new Chart(test, {
+		monthChart = new Chart(mChart, {
 			type: 'bar',
 			data: {
-				labels: chartData.map((row) => row.product_name),
+				labels: monthChartData.map((row) => row.product_name),
 				datasets: [
 					{
-						label: 'Acquisitions by year',
-						data: chartData.map((row) => row.product_quantity)
+						label: 'product quantity',
+						data: monthChartData.map((row) => row.product_quantity)
+					}
+				]
+			}
+		});
+		yearChart = new Chart(yChart, {
+			type: 'line',
+			data: {
+				labels: monthText,
+				datasets: [
+					{
+						label: 'product quantity',
+						data: yearChartData.map((row) => row.price)
 					}
 				]
 			}
@@ -93,6 +133,8 @@
 	}
 	onMount(() => {
 		initChart();
+		UpdateMonthData();
+		UpdateYearData();
 	});
 </script>
 
@@ -251,10 +293,34 @@
 			<div class:hidden={currentTab != 2} class="hidden w-full p-20">
 				<form
 					action="?/statistic"
-					id="monthRadio"
+					id="stasticForm"
 					method="post"
+					class="flex flex-col gap-2"
 					on:submit|preventDefault={handleSubmit}
 				>
+					<div class="flex flex-wrap gap-2">
+						{#each year as key}
+							<input
+								type="radio"
+								bind:group={choosingYear}
+								name={'year'}
+								id={'year' + key}
+								value={key}
+								class="hidden"
+								on:change={handleSubmit}
+							/>
+							<label
+								for={'year' + key}
+								class:bg-PUA-dark-red={choosingYear === key}
+								class:bg-gray-100={!(choosingYear === key)}
+								class:text-white={choosingYear === key}
+								class:text-PUA-dark-red={!(choosingYear === key)}
+								class="leading-relaxe h-10 rounded-full border-2 border-PUA-dark-red px-6 text-2xl font-bold"
+							>
+								{key}</label
+							>
+						{/each}
+					</div>
 					<div class="flex flex-wrap gap-2">
 						{#each month as key}
 							<input
@@ -274,12 +340,13 @@
 								class:text-PUA-dark-red={!(choosingMonth === key)}
 								class="leading-relaxe h-10 rounded-full border-2 border-PUA-dark-red px-3 text-2xl font-bold"
 							>
-								{monthText[key]}</label
+								{monthText[key - 1]}</label
 							>
 						{/each}
 					</div>
 				</form>
-				<canvas id="acquisitions"></canvas>
+				<canvas id="monthChart"></canvas>
+				<canvas id="yearChart"></canvas>
 			</div>
 		</div>
 	</div>

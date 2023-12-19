@@ -25,7 +25,7 @@ func (p *postgresqlStoreRepo) GetByID(ctx context.Context, id int64) (*swagger.S
     (SELECT 
         jsonb_agg(jsonb_build_object('category_id', categories.category_id,'category_name', categories.name)) AS categories_item 
 		FROM categories NATURAL JOIN 
-        (SELECT labels.category_id FROM labels WHERE labels.store_id = $1)
+        (SELECT labels.category_id FROM labels WHERE labels.store_id = $1) AS label
     ) AS category_array
 	FROM stores
 	WHERE store_id = $1;

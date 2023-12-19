@@ -7,16 +7,12 @@ export const actions = {
 		const resp = await fetch(
 			backendPath + '/store/' + '1' + '/get-selling/' + data.get('year') + '/' + data.get('month')
 		);
-		const j = await resp.json();
-		return j;
+		return await resp.json();
 	},
 	yearStatistic: async ({ request }) => {
 		const data = await request.formData();
 
 		const resp = await fetch(backendPath + '/store/' + '1' + '/get-statistics/' + data.get('year'));
-		console.log(resp);
-		const j = await resp.json();
-		console.log(j);
-		return j;
+		return await resp.json();
 	}
 };

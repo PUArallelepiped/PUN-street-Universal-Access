@@ -4,9 +4,7 @@
 	import DenyButton from '$lib/components/PUA/denyButton.svelte';
 	import Chart, { type ChartItem } from 'chart.js/auto';
 	import { onMount } from 'svelte';
-	import type { PageData } from '../$types';
-	import type { ActionData } from './$types';
-	import { applyAction, deserialize } from '$app/forms';
+	import { deserialize } from '$app/forms';
 	import type { ActionResult } from '@sveltejs/kit';
 
 	let choosingMonth = 1;
@@ -18,22 +16,10 @@
 	function switchAccount() {
 		currentTab = 1;
 	}
-	// export let data: PageData;
-	export let form: ActionData;
 	type monthChartType = { product_name: number; product_quantity: number };
 	type yearChartType = { price: number };
 	let yearChartData: yearChartType[] = [{ price: 100 }];
-	let monthChartData: monthChartType[] = [
-		{ product_name: 2010, product_quantity: 10 },
-		{ product_name: 2010, product_quantity: 10 },
-		{ product_name: 2010, product_quantity: 10 },
-		{ product_name: 2010, product_quantity: 10 },
-		{ product_name: 2010, product_quantity: 10 },
-		{ product_name: 2010, product_quantity: 10 },
-		{ product_name: 2010, product_quantity: 10 },
-		{ product_name: 2010, product_quantity: 10 },
-		{ product_name: 2010, product_quantity: 10 }
-	];
+	let monthChartData: monthChartType[] = [{ product_name: 2010, product_quantity: 10 }];
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
 		await UpdateMonthData();
@@ -49,11 +35,13 @@
 
 		if (data.type === 'success') {
 			yearChartData = data.data as yearChartType[];
-			console.log(monthChartData);
 			yearChart.data.datasets = [
 				{
 					label: 'product quantity',
-					data: yearChartData.map((row) => row.price)
+					data: yearChartData.map((row) => row.price),
+					//set color
+					borderColor: '#461616',
+					backgroundColor: '#461616'
 				}
 			];
 			yearChart.data.labels = monthText;
@@ -73,7 +61,10 @@
 			monthChart.data.datasets = [
 				{
 					label: 'product quantity',
-					data: monthChartData.map((row) => row.product_quantity)
+					data: monthChartData.map((row) => row.product_quantity),
+					borderColor: '#461616',
+					backgroundColor: '#461616',
+					maxBarThickness: 50
 				}
 			];
 			monthChart.data.labels = monthChartData.map((row) => row.product_name);
@@ -94,8 +85,7 @@
 		'九月',
 		'十月',
 		'十一月',
-		'十二月',
-		'十三月'
+		'十二月'
 	];
 	let monthChart: Chart;
 	let yearChart: Chart;
@@ -125,7 +115,9 @@
 				datasets: [
 					{
 						label: 'product quantity',
-						data: yearChartData.map((row) => row.price)
+						data: yearChartData.map((row) => row.price),
+						borderColor: '#36A2EB',
+						backgroundColor: '#FFFFFF'
 					}
 				]
 			}

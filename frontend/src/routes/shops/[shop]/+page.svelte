@@ -19,7 +19,7 @@
 		</div>
 	</div>
 	<div class="flex-row space-y-2 p-2">
-		{#each prodctListResponse as product}
+		{#each data.productList as product}
 			<ProductCard
 				name={product.name}
 				href={'./' + shopName + '/' + product.product_id}

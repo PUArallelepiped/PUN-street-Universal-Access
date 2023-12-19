@@ -31,7 +31,7 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 async function getShopInfo(shop: string) {
 	try {
-		const resp = await fetch(backendPath + '/stores/' + shop);
+		const resp = await fetch(backendPath + '/store/' + shop);
 		if (resp.ok) {
 			return (await resp.json()) as shopInfoType;
 		}

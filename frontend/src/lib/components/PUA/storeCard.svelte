@@ -3,14 +3,15 @@
 	import type { category } from '$lib';
 
 	export let category_array: category[];
+	export let id: number;
 	export let name: string = 'im pasta';
 	export let picture: string = 'https://i.imgur.com/T5zyE63.png';
 	export let rate: number = 0;
 </script>
 
-<a href="{$page.route.id}/{name}" class="shrink">
+<a href="{$page.route.id}/{id}" class="shrink">
 	<div
-		class="flex h-96 w-96 flex-col items-center justify-start gap-3 rounded-lg bg-white px-6 py-3 hover:bg-gray-300"
+		class="flex h-96 w-96 flex-col items-center justify-start rounded-lg bg-white px-6 py-3 hover:bg-gray-300"
 	>
 		<div class="relative">
 			<img src={picture} alt="" class="h-48 w-80 rounded object-cover" />

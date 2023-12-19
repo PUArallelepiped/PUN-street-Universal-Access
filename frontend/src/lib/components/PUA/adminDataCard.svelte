@@ -16,16 +16,16 @@
 		const resp = await fetch(backendPath + '/admin/ban-user/' + userID.toString(), {
 			method: 'PUT'
 		});
-		const json = await resp.json()
-		ban = json.status
+		const json = await resp.json();
+		ban = json.status;
 	}
 
 	async function UnbanUserById(userID: number) {
 		const resp = await fetch(backendPath + '/admin/unban-user/' + userID.toString(), {
 			method: 'PUT'
 		});
-		const json = await resp.json()
-		ban = json.status
+		const json = await resp.json();
+		ban = json.status;
 	}
 
 	async function changeButtonStatus() {

@@ -12,64 +12,66 @@
 		address: string;
 		authority: string;
 		status: number;
-	}
+	};
 	type orderShort = {
 		store_id: number;
 		cart_id: number;
 		user_id: number;
 		user_name: string;
 		order_date: string;
-	}
+	};
 
-
-	let userInfo : userShort = {
-		user_id : 1,
-		user_name : "admin",
-		user_email:"aaa",
-		address:"aaa",
-		authority: 'admin',
-		status: 1
-	}
-
-
-	let users : userShort[] = [{
-		user_id : 1,
-		user_name : "admin",
-		user_email:"aaa",
-		address:"aaa",
-		authority: 'admin',
-		status: 1
-	}]
-	let orders : orderShort[] = [{
-		store_id: 1,
-		cart_id: 1,
+	let userInfo: userShort = {
 		user_id: 1,
-		user_name: "admin",
-		order_date: "aa",
-	}]
+		user_name: 'admin',
+		user_email: 'aaa',
+		address: 'aaa',
+		authority: 'admin',
+		status: 1
+	};
+
+	let users: userShort[] = [
+		{
+			user_id: 1,
+			user_name: 'admin',
+			user_email: 'aaa',
+			address: 'aaa',
+			authority: 'admin',
+			status: 1
+		}
+	];
+	let orders: orderShort[] = [
+		{
+			store_id: 1,
+			cart_id: 1,
+			user_id: 1,
+			user_name: 'admin',
+			order_date: 'aa'
+		}
+	];
 
 	onMount(async () => {
-		getUserInfo()
-		getUsers()
-		getOrders()
+		getUserInfo();
+		getUsers();
+		getOrders();
 	});
 
 	async function getOrders() {
 		const resp = await fetch(backendPath + '/admin/get-all-orders');
 		const json = await resp.json();
-		orders = json
+		orders = json;
 	}
 
 	async function getUsers() {
 		const resp = await fetch(backendPath + '/admin/get-all-users');
 		const json = await resp.json();
-		users = json
+		users = json;
 	}
 
 	async function getUserInfo() {
 		const resp = await fetch(backendPath + '/user/get-info/1');
 		const json = await resp.json();
-		userInfo = json
+		userInfo = json;
 	}
 
 	function switchProfileTab(tabNumber: number) {

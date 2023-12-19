@@ -1,5 +1,10 @@
 <script lang="ts">
+<<<<<<< HEAD
 	export let value = '';
+=======
+	export let inputValue = '';
+
+>>>>>>> upstream/main
 	export let width: string = '10';
 
 	function handleInput(event: Event) {

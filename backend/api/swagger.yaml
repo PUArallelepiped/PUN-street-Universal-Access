@@ -618,7 +618,8 @@ paths:
       tags:
       - customer
       - cart
-      summary: add product to cart
+      summary: add product to cart / update product quantity and check order exits
+        by store if not exits add a new order status = 0
       parameters:
       - name: userID
         in: path
@@ -646,7 +647,7 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /customer/{userID}/cart/{cartID}/delete/product/{productID}:
+  /customer/{userID}/delete/product/{productID}:
     delete:
       tags:
       - customer
@@ -656,16 +657,6 @@ paths:
       - name: userID
         in: path
         description: The ID of the user to return.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: string
-              example: "1"
-              x-content-type: application/json
-      - name: cartID
-        in: path
-        description: The ID of the cart to return.
         required: true
         content:
           application/json:
@@ -686,56 +677,6 @@ paths:
       responses:
         "200":
           description: delete success
-        "400":
-          description: bad request
-        "500":
-          description: Unexpected error
-  /customer/{userID}/cart/{cartID}/update/product/{productID}:
-    put:
-      tags:
-      - customer
-      - cart
-      summary: update product quantity in cart
-      parameters:
-      - name: userID
-        in: path
-        description: The ID of the user to return.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: string
-              example: "1"
-              x-content-type: application/json
-      - name: cartID
-        in: path
-        description: The ID of the cart to return.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: string
-              example: "1"
-              x-content-type: application/json
-      - name: productID
-        in: path
-        description: The ID of the product to return.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: string
-              example: "1"
-              x-content-type: application/json
-      requestBody:
-        description: product quantity
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/product_productID_body'
-      responses:
-        "200":
-          description: update success
         "400":
           description: bad request
         "500":
@@ -807,6 +748,74 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserData'
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /login:
+    post:
+      tags:
+      - user
+      summary: login
+      requestBody:
+        description: login info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInfo'
+      responses:
+        "200":
+          description: login success
+        "400":
+          description: bad request
+        "403":
+          description: banned
+        "500":
+          description: Unexpected error
+  /validate:
+    get:
+      tags:
+      - user
+      summary: validate jwt token
+      responses:
+        "200":
+          description: validate success
+        "401":
+          description: Unauthorized
+        "500":
+          description: Unexpected error
+  /register:
+    post:
+      tags:
+      - user
+      summary: register
+      requestBody:
+        description: register info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterInfo'
+      responses:
+        "200":
+          description: register success
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
+  /check-email:
+    post:
+      tags:
+      - user
+      summary: check email exist
+      requestBody:
+        description: email info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailInfo'
+      responses:
+        "200":
+          description: exist or not
         "400":
           description: bad request
         "500":
@@ -1458,13 +1467,13 @@ components:
         product_label_array:
         - item_array:
           - name: have
-          - name: no
+          - name: false
           product_id: 1
           label_name: milk
           required: true
         - item_array:
           - name: have
-          - name: no
+          - name: false
           product_id: 1
           label_name: milk22
           required: true
@@ -1594,9 +1603,8 @@ components:
           type: string
           example: t110595959@rice.org.tw
         authority:
-          type: integer
-          format: int64
-          example: 100
+          type: string
+          example: customer
         status:
           type: integer
           format: int64
@@ -1605,7 +1613,7 @@ components:
         user_email: t110595959@rice.org.tw
         user_id: 1
         user_name: pasta
-        authority: 100
+        authority: customer
         status: 1
     UserDataShortArray:
       type: array
@@ -1637,9 +1645,8 @@ components:
           type: string
           example: t110595959@rice.org.tw
         authority:
-          type: integer
-          format: int64
-          example: 100
+          type: string
+          example: customer
         password:
           type: string
           example: "123456"
@@ -1669,7 +1676,7 @@ components:
         user_id: 1
         phone: "0912345678"
         user_name: pasta
-        authority: 100
+        authority: customer
         status: 1
     UserArray:
       type: array
@@ -2432,3 +2439,75 @@ components:
       items:
         $ref: '#/components/schemas/StoreInfoWithCategory'
       x-schema-name: StoreInfoWithCategoryArray
+    LoginInfo:
+      required:
+      - password
+      - user_email
+      properties:
+        user_email:
+          type: string
+          example: a@gmail.com
+        password:
+          type: string
+          example: pwd1
+    RegisterInfo:
+      required:
+      - StoreRegisterInfo
+      - address
+      - birthday
+      - password
+      - phone
+      - user_email
+      - user_name
+      properties:
+        user_name:
+          type: string
+          example: artist
+        user_email:
+          type: string
+          example: artist@gmail.com
+        password:
+          type: string
+          example: pwd1
+        phone:
+          type: string
+          example: "0912345678"
+        address:
+          type: string
+          example: NTUT
+        birthday:
+          type: string
+          example: 2021-01-01
+        StoreRegisterInfo:
+          $ref: '#/components/schemas/StoreRegisterInfo'
+    StoreRegisterInfo:
+      required:
+      - address
+      - description
+      - name
+      - picture
+      - shipping_fee
+      properties:
+        name:
+          type: string
+          example: pick-up store
+        description:
+          type: string
+          example: good pick-up
+        address:
+          type: string
+          example: pun street
+        shipping_fee:
+          type: integer
+          format: int64
+          example: 100
+        picture:
+          type: string
+          example: https://i.imgur.com/3i3tyXJ.gif
+    EmailInfo:
+      required:
+      - user_email
+      properties:
+        user_email:
+          type: string
+          example: a@gmail.com

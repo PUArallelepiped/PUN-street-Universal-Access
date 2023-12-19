@@ -38,6 +38,7 @@
 		"chinese-translate": "^1.0.2",
 		"clsx": "^2.0.0",
 		"lucide-svelte": "^0.288.0",
+		"svelte-routing": "^2.7.0",
 		"tailwind-merge": "^1.14.0",
 		"tailwind-variants": "^0.1.14",
 		"yootils": "^0.3.1"

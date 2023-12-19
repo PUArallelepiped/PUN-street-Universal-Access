@@ -1,5 +1,5 @@
 <script lang="ts">
-	import error from '$lib/assets/error.png';
+	import error from '$lib/assets/error.svg';
 
 	export let height: string = '6';
 	export let width: string = '6';

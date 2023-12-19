@@ -3,7 +3,9 @@
 PUA
 
 # how to run it
+
 ## need
+
 - git
 - docker
 - npm
@@ -53,6 +55,7 @@ when open pull request
 ```bash
 npm run format
 ```
+
 ```bash
 gofmt -w .
 ```
@@ -87,7 +90,8 @@ docker-compose up postgres-db
 ```
 
 ### init data
-* put .sql file into db folder
+
+- put .sql file into db folder
 
 ### into postgres
 

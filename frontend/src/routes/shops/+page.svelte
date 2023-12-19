@@ -69,6 +69,7 @@
 			status: 1,
 			shipping_fee: 15
 		},
+
 		{
 			store_id: 3,
 			description: 'moooooooooooooos',

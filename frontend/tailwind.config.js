@@ -48,7 +48,6 @@ const config = {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				'PUA-red': '#DD0808',
-				'PUA-pink': '#CF8A8A',
 				'PUA-dark-red': '#822E2E',
 				'PUA-orange': '#C65633',
 				'PUA-dark-orange': '#461616',
@@ -57,6 +56,7 @@ const config = {
 				'PUA-stone': '#755555',
 				'PUA-green': '#577246'
 			},
+
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',

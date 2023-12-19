@@ -59,6 +59,7 @@
 				picture={shop.picture}
 				rate={shop.rate}
 				category_array={shop.category_array}
+				id={shop.store_id}
 			/>
 		{/each}
 	</div>

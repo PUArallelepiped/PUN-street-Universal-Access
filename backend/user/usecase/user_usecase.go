@@ -132,24 +132,27 @@ func (su *UserUsecase) GetAllOrder(ctx context.Context) ([]swagger.OrderInfoShor
 	return orders, nil
 }
 
-func (su *UserUsecase) BanUser(ctx context.Context, id int64) error {
+func (su *UserUsecase) BanUser(ctx context.Context, id int64) (*swagger.UserDataShort, error) {
 	err := su.userRepo.BanUser(ctx, id)
 	if err != nil {
 		logrus.Error(err)
-		return err
+		return nil, err
 	}
+	user, err := su.userRepo.GetUser(ctx, id)
 
-	return nil
+	return user, nil
 }
 
-func (su *UserUsecase) UnBanUser(ctx context.Context, id int64) error {
+func (su *UserUsecase) UnBanUser(ctx context.Context, id int64) (*swagger.UserDataShort, error) {
 	err := su.userRepo.UnBanUser(ctx, id)
 	if err != nil {
 		logrus.Error(err)
-		return err
+		return nil, err
 	}
 
-	return nil
+	user, err := su.userRepo.GetUser(ctx, id)
+
+	return user, nil
 }
 
 func (su *UserUsecase) RegisterUser(ctx context.Context, user *swagger.RegisterInfo) error {

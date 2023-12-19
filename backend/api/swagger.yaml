@@ -1203,7 +1203,11 @@ paths:
               x-content-type: application/json
       responses:
         "200":
-          description: ok
+          description: return UserDataShort
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDataShort'
         "400":
           description: bad request
         "500":
@@ -1226,7 +1230,11 @@ paths:
               x-content-type: application/json
       responses:
         "200":
-          description: ok
+          description: return UserDataShort
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDataShort'
         "400":
           description: bad request
         "500":

@@ -82,14 +82,14 @@ func (s *UserHandler) BanUser(c *gin.Context) {
 		return
 	}
 
-	err = s.UserUsecase.BanUser(c, userID)
+	user, err := s.UserUsecase.BanUser(c, userID)
 	if err != nil {
 		logrus.Error(err)
 		c.Status(500)
 		return
 	}
 
-	c.Status(200)
+	c.JSON(200, user)
 }
 
 func (s *UserHandler) UnBanUser(c *gin.Context) {
@@ -100,14 +100,14 @@ func (s *UserHandler) UnBanUser(c *gin.Context) {
 		return
 	}
 
-	err = s.UserUsecase.UnBanUser(c, userID)
+	user, err := s.UserUsecase.UnBanUser(c, userID)
 	if err != nil {
 		logrus.Error(err)
 		c.Status(500)
 		return
 	}
 
-	c.Status(200)
+	c.JSON(200, user)
 }
 
 func (u *UserHandler) Login(c *gin.Context) {

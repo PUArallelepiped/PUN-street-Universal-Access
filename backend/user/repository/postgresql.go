@@ -46,10 +46,29 @@ func (p *postgresqlUserRepo) GetByID(ctx context.Context, id int64) (*swagger.Us
 	return s, nil
 }
 
+func (p *postgresqlUserRepo) GetUser(ctx context.Context, id int64) (*swagger.UserDataShort, error) {
+	sqlStatement := `
+		SELECT 	email, user_id, name, authority, status
+		FROM user_data WHERE user_id = $1;
+	`
+
+	row := p.db.QueryRow(sqlStatement, id)
+
+	user := &swagger.UserDataShort{}
+	err := row.Scan(&user.UserEmail, &user.UserId, &user.UserName, &user.Authority, &user.Status)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	return user, nil
+}
+
 func (p *postgresqlUserRepo) GetAllUser(ctx context.Context) ([]swagger.UserDataShort, error) {
 	sqlStatement := `
 		SELECT 	email, user_id, name, authority, status
-		FROM user_data WHERE user_id != 1;
+		FROM user_data WHERE authority != 'admin'
+		ORDER BY user_id
 	`
 
 	rows, err := p.db.Query(sqlStatement)
@@ -57,18 +76,18 @@ func (p *postgresqlUserRepo) GetAllUser(ctx context.Context) ([]swagger.UserData
 		logrus.Error(err)
 		return nil, err
 	}
-	l := []swagger.UserDataShort{}
+	users := []swagger.UserDataShort{}
 	for rows.Next() {
-		s := swagger.UserDataShort{}
-		err := rows.Scan(&s.UserEmail, &s.UserId, &s.UserName, &s.Authority, &s.Status)
+		user := swagger.UserDataShort{}
+		err := rows.Scan(&user.UserEmail, &user.UserId, &user.UserName, &user.Authority, &user.Status)
 		if err != nil {
 			logrus.Error(err)
 			return nil, err
 		}
-		l = append(l, s)
+		users = append(users, user)
 	}
 
-	return l, nil
+	return users, nil
 }
 
 func (p *postgresqlUserRepo) GetAllOrder(ctx context.Context) ([]swagger.OrderInfoShort, error) {

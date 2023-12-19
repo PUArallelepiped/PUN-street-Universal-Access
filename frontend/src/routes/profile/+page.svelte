@@ -40,8 +40,8 @@
 					label: 'product quantity',
 					data: yearChartData.map((row) => row.price),
 					//set color
-					borderColor: '#461616',
-					backgroundColor: '#461616'
+					borderColor: '#822E2E',
+					backgroundColor: '#822E2E'
 				}
 			];
 			yearChart.data.labels = monthText;
@@ -62,8 +62,8 @@
 				{
 					label: 'product quantity',
 					data: monthChartData.map((row) => row.product_quantity),
-					borderColor: '#461616',
-					backgroundColor: '#461616',
+					borderColor: '#822E2E',
+					backgroundColor: '#822E2E',
 					maxBarThickness: 50
 				}
 			];

@@ -18,7 +18,6 @@
 		});
 		const json = await resp.json()
 		ban = json.status
-		console.log(json)
 	}
 
 	async function UnbanUserById(userID: number) {
@@ -27,7 +26,6 @@
 		});
 		const json = await resp.json()
 		ban = json.status
-		console.log(json)
 	}
 
 	async function changeButtonStatus() {

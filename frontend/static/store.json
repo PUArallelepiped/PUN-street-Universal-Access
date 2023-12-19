@@ -1,0 +1,21 @@
+{
+	"store_id": 1,
+	"shipping_fee": 100,
+	"address": "pun street",
+	"rate_count": 10,
+	"rate": 5,
+	"category_array": [
+		{
+			"category_name": "drink",
+			"category_id": 1
+		},
+		{
+			"category_name": "drink",
+			"category_id": 2
+		}
+	],
+	"name": "i'm pasta",
+	"description": "good pasta",
+	"picture": "https://i.imgur.com/1.jpg",
+	"status": 1
+}

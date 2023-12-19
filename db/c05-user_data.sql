@@ -7,7 +7,7 @@ CREATE TABLE
         address VARCHAR(64) NOT NULL,
         phone_number VARCHAR(16) NOT NULL,
         birthday DATE NOT NULL,
-        authority INTEGER NOT NULL,
+        authority VARCHAR(16) NOT NULL,
         current_cart_id INTEGER NOT NULL,
         status INTEGER NOT NULL
     );

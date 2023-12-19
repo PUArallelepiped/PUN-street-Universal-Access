@@ -13,23 +13,28 @@
 	export let ban: boolean = true;
 
 	async function banUserById(userID: number) {
-		await fetch(backendPath + '/admin/ban-user/' + userID.toString(), {
+		const resp = await fetch(backendPath + '/admin/ban-user/' + userID.toString(), {
 			method: 'PUT'
 		});
+		const json = await resp.json()
+		ban = json.status
+		console.log(json)
 	}
 
 	async function UnbanUserById(userID: number) {
-		await fetch(backendPath + '/admin/unban-user/' + userID.toString(), {
+		const resp = await fetch(backendPath + '/admin/unban-user/' + userID.toString(), {
 			method: 'PUT'
 		});
+		const json = await resp.json()
+		ban = json.status
+		console.log(json)
 	}
 
 	async function changeButtonStatus() {
-		ban = !ban;
 		if (ban) {
-			await UnbanUserById(userID);
-		} else {
 			await banUserById(userID);
+		} else {
+			await UnbanUserById(userID);
 		}
 	}
 </script>

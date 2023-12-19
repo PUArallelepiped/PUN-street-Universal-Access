@@ -1,9 +1,12 @@
 package delivery
 
 import (
+	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
+	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -21,6 +24,10 @@ func NewUserHandler(e *gin.Engine, userUsecase domain.UserUsecase) {
 	{
 		v1.GET("/user/get-info/:userID", handler.GetUserById)
 		v1.GET("/admin/get-all-users", handler.GetUsers)
+		v1.POST("/login", handler.Login)
+		v1.GET("/validate", handler.ValidateToken)
+		v1.POST("/register", handler.RegisterUser)
+		v1.POST("/check-email", handler.CheckEmail)
 	}
 }
 
@@ -51,4 +58,86 @@ func (s *UserHandler) GetUsers(c *gin.Context) {
 	}
 
 	c.JSON(200, stores)
+}
+
+func (u *UserHandler) Login(c *gin.Context) {
+	var user swagger.LoginInfo
+
+	if err := c.BindJSON(&user); err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
+	token, err := u.UserUsecase.Login(c, user.UserEmail, user.Password)
+	if err != nil {
+		if err.Error() == "banned" {
+			c.JSON(403, "banned")
+			return
+		}
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+	c.SetSameSite(http.SameSiteStrictMode)
+	c.SetCookie("jwttoken", token, (int)(24*time.Hour), "/", "localhost", false, true)
+
+	c.JSON(200, "Login Success")
+}
+
+func (u *UserHandler) ValidateToken(c *gin.Context) {
+	token, err := c.Cookie("jwttoken")
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+	err = u.UserUsecase.ValidateToken(c, token)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(http.StatusUnauthorized)
+		return
+	}
+	c.JSON(200, "Validate Success")
+}
+
+func (u *UserHandler) RegisterUser(c *gin.Context) {
+	var user swagger.RegisterInfo
+
+	if err := c.BindJSON(&user); err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
+	err := u.UserUsecase.RegisterUser(c, &user)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, "Register Success")
+}
+
+func (u *UserHandler) CheckEmail(c *gin.Context) {
+	var email swagger.EmailInfo
+
+	if err := c.BindJSON(&email); err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+	if email.UserEmail == "" {
+		c.JSON(200, false)
+		return
+	}
+	isExist, err := u.UserUsecase.CheckEmail(c, email.UserEmail)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, isExist)
 }

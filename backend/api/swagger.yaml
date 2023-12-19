@@ -423,7 +423,7 @@ paths:
       tags:
       - seller
       - order
-      summary: update order status
+      summary: update order status to next status
       parameters:
       - name: userID
         in: path
@@ -455,15 +455,13 @@ paths:
               type: string
               example: "1"
               x-content-type: application/json
-      requestBody:
-        description: order status
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/store_storeID_body'
       responses:
         "200":
-          description: update success
+          description: return a Store Order info 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreOrderStatusInfo'
         "400":
           description: bad request
         "500":

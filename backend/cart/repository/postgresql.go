@@ -355,15 +355,16 @@ func (p *postgresqlCartRepo) AddUserCurrentCart(ctx context.Context, id int64) e
 	return nil
 }
 
-func (p *postgresqlCartRepo) UpdateOrderStatusByID(ctx context.Context, customerId int64, cartId int64, storeId int64, status int64) error {
+func (p *postgresqlCartRepo) UpdateOrderStatusByID(ctx context.Context, customerId int64, cartId int64, storeId int64) error {
 	sqlStatement := `
-	UPDATE orders SET status = $1	
-	WHERE user_id = $2 AND 
-	cart_id = $3 AND
-	store_id = $4
+	UPDATE orders SET status = status + 1 
+	WHERE user_id = $1 AND 
+	cart_id = $2 AND
+	store_id = $3 AND
+	status < 6
 	`
 
-	_, err := p.db.Exec(sqlStatement, status, customerId, cartId, storeId)
+	_, err := p.db.Exec(sqlStatement, customerId, cartId, storeId)
 	if err != nil {
 		logrus.Error(err)
 		return err
@@ -427,4 +428,30 @@ func (p *postgresqlCartRepo) GetSellerOrders(ctx context.Context, id int64) (*[]
 	}
 
 	return orders, nil
+}
+
+func (p *postgresqlCartRepo) GetSellerOrder(ctx context.Context, userId int64, cartId int64, storeId int64) (*swagger.StoreOrderStatusInfo, error) {
+	sqlStatement := `
+		SELECT 
+		user_data.name,
+		orders.store_id, 
+		orders.cart_id, 
+		orders.order_date, 
+		orders.total_price, 
+		orders.user_id, 
+		orders.status 
+		FROM orders LEFT JOIN user_data ON orders.user_id = user_data.user_id
+		WHERE orders.user_id = $1 AND orders.cart_id = $2 AND orders.store_id = $3
+	`
+
+	row := p.db.QueryRow(sqlStatement, userId, cartId, storeId)
+
+	order := &swagger.StoreOrderStatusInfo{}
+	err := row.Scan(&order.UserName, &order.StoreId, &order.CartId, &order.OrderDate, &order.TotalPrice, &order.UserId, &order.Status)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	return order, nil
 }

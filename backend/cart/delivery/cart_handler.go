@@ -192,21 +192,14 @@ func (ch *CartHandler) UpdateOrderStatus(c *gin.Context) {
 		}
 	}
 
-	var status *swagger.Status
-	if err := c.BindJSON(&status); err != nil {
-		logrus.Error(err)
-		c.Status(400)
-		return
-	}
-
-	err := ch.CartUsecase.UpdateOrderStatusByID(c, customerID, cartID, storeID, status.Status)
+	order, err := ch.CartUsecase.UpdateOrderStatusByID(c, customerID, cartID, storeID)
 	if err != nil {
 		logrus.Error(err)
 		c.Status(500)
 		return
 	}
 
-	c.Status(200)
+	c.JSON(200, order)
 }
 
 func (ch *CartHandler) GetSellerOrders(c *gin.Context) {

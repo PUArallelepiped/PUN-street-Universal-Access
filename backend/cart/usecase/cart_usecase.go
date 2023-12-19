@@ -195,14 +195,20 @@ func (cu *cartUsecase) Checkout(ctx context.Context, customerId int64) error {
 	return nil
 }
 
-func (cu *cartUsecase) UpdateOrderStatusByID(ctx context.Context, customerId int64, cartId int64, storeId int64, status int64) error {
-	err := cu.cartRepo.UpdateOrderStatusByID(ctx, customerId, cartId, storeId, status)
+func (cu *cartUsecase) UpdateOrderStatusByID(ctx context.Context, customerId int64, cartId int64, storeId int64) (*swagger.StoreOrderStatusInfo, error) {
+	err := cu.cartRepo.UpdateOrderStatusByID(ctx, customerId, cartId, storeId)
 	if err != nil {
 		logrus.Error(err)
-		return err
+		return nil, err
 	}
 
-	return nil
+	order, err := cu.cartRepo.GetSellerOrder(ctx, customerId, cartId, storeId)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	return order, nil
 }
 
 func (cu *cartUsecase) GetSellerOrders(ctx context.Context, id int64) (*[]swagger.StoreOrderStatusInfo, error) {

@@ -135,26 +135,16 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /customer/{userID}/cart/{cartID}/carts:
+  /customer/{userID}/carts:
     get:
       tags:
       - customer
       - cart
-      summary: get carts by userID and cartID
+      summary: get carts by userID and (cartID form userID)
       parameters:
       - name: userID
         in: path
         description: The ID of the user.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: string
-              example: "1"
-              x-content-type: application/json
-      - name: cartID
-        in: path
-        description: The ID of the cart.
         required: true
         content:
           application/json:
@@ -433,7 +423,7 @@ paths:
       tags:
       - seller
       - order
-      summary: update order status
+      summary: update order status to next status
       parameters:
       - name: userID
         in: path
@@ -465,15 +455,13 @@ paths:
               type: string
               example: "1"
               x-content-type: application/json
-      requestBody:
-        description: order status
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/store_storeID_body'
       responses:
         "200":
-          description: update success
+          description: return a Store Order info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreOrderStatusInfo'
         "400":
           description: bad request
         "500":
@@ -1009,13 +997,14 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /customer/{userID}/store/{storeID}/checkout:
+  /customer/{userID}/checkout:
     post:
       tags:
       - customer
       - cart
       - order
-      summary: checkout cart (optional-> email to customer)
+      summary: checkout cart (optional-> email to customer) change order status/total-price
+        and change user_data current_cart_id +1
       parameters:
       - name: userID
         in: path
@@ -1027,67 +1016,9 @@ paths:
               type: string
               example: "1"
               x-content-type: application/json
-      - name: storeID
-        in: path
-        description: The ID of the store .
-        required: true
-        content:
-          application/json:
-            schema:
-              type: string
-              example: "1"
-              x-content-type: application/json
       responses:
         "200":
           description: ok
-        "400":
-          description: bad request
-        "500":
-          description: Unexpected error
-  /customer/{userID}/cart/{cartID}/store/{storeID}/get-total-price:
-    get:
-      tags:
-      - customer
-      - discount
-      summary: get total price of cart
-      parameters:
-      - name: userID
-        in: path
-        description: The ID of the user .
-        required: true
-        content:
-          application/json:
-            schema:
-              type: string
-              example: "1"
-              x-content-type: application/json
-      - name: cartID
-        in: path
-        description: The ID of the cart.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: string
-              example: "1"
-              x-content-type: application/json
-      - name: storeID
-        in: path
-        description: The ID of the store .
-        required: true
-        content:
-          application/json:
-            schema:
-              type: string
-              example: "1"
-              x-content-type: application/json
-      responses:
-        "200":
-          description: ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200'
         "400":
           description: bad request
         "500":
@@ -2084,10 +2015,91 @@ components:
         shipping_discount_bool: true
         seasoning_discount_bool: true
     CartOrderInfo:
-      type: array
-      items:
-        $ref: '#/components/schemas/StoreOrderInfo'
-      x-schema-name: CartOrderInfo
+      required:
+      - real_total_price
+      - store_order_info_array
+      type: object
+      properties:
+        real_total_price:
+          type: integer
+          format: int64
+          example: 3333
+        store_order_info_array:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreOrderInfo'
+          x-schema-name: CartOrderInfo
+      example:
+        real_total_price: 3333
+        store_order_info_array:
+        - store_id: 1
+          store_name: i'm pasta
+          store_shipping_fee: 100
+          product_order:
+          - event_discount_max_quantity: 10
+            event_discount_id: 1
+            product_id: 1
+            product_price: 9999
+            product_name: pasta
+            product_quantity: 10
+            product_picture: https://i.imgur.com/1.jpg
+          - event_discount_max_quantity: 10
+            event_discount_id: 1
+            product_id: 1
+            product_price: 9999
+            product_name: pasta
+            product_quantity: 10
+            product_picture: https://i.imgur.com/1.jpg
+          shipping_discount:
+            discount_name: free shipping
+            discount_description: free shipping when total price over 1000
+            discount_max_price: 1000
+            discount_id: 1
+            status: 1
+          shipping_discount_bool: true
+          seasoning_discount:
+            discount_start_date: 2021-01-01 00:00:00
+            discount_name: spring discount
+            discount_end_date: 2021-01-01 00:00:00
+            discount_description: all products get 30% off
+            discount_percentage: 70
+            discount_id: 1
+            status: 1
+          seasoning_discount_bool: true
+          total_price: 1000
+        - store_id: 1
+          store_name: i'm pasta
+          store_shipping_fee: 100
+          product_order:
+          - event_discount_max_quantity: 10
+            event_discount_id: 1
+            product_id: 1
+            product_price: 9999
+            product_name: pasta
+            product_quantity: 10
+          - event_discount_max_quantity: 10
+            event_discount_id: 1
+            product_id: 1
+            product_price: 9999
+            product_name: pasta
+            product_quantity: 10
+          shipping_discount:
+            discount_name: free shipping
+            discount_description: free shipping when total price over 1000
+            discount_max_price: 1000
+            discount_id: 1
+            status: 1
+          shipping_discount_bool: true
+          seasoning_discount:
+            discount_start_date: 2021-01-01 00:00:00
+            discount_name: spring discount
+            discount_end_date: 2021-01-01 00:00:00
+            discount_description: all products get 30% off
+            discount_percentage: 70
+            discount_id: 1
+            status: 1
+          seasoning_discount_bool: true
+          total_price: 1000
     HistoryDetailStoreOrderInfo:
       type: object
       properties:
@@ -2130,6 +2142,16 @@ components:
             $ref: '#/components/schemas/ProductOrderInfo'
           x-schema-name: ProductOrderInfo
     StoreOrderInfo:
+      required:
+      - product_order
+      - seasoning_discount
+      - seasoning_discount_bool
+      - shipping_discount
+      - shipping_discount_bool
+      - store_id
+      - store_name
+      - store_shipping_fee
+      - total_price
       type: object
       properties:
         store_id:
@@ -2148,6 +2170,20 @@ components:
           items:
             $ref: '#/components/schemas/ProductOrderInfo'
           x-schema-name: ProductOrderInfo
+        shipping_discount:
+          $ref: '#/components/schemas/ShippingDiscount'
+        shipping_discount_bool:
+          type: boolean
+          example: true
+        seasoning_discount:
+          $ref: '#/components/schemas/SeasoningDiscount'
+        seasoning_discount_bool:
+          type: boolean
+          example: true
+        total_price:
+          type: integer
+          format: int64
+          example: 1000
       example:
         store_id: 1
         store_name: i'm pasta
@@ -2159,16 +2195,38 @@ components:
           product_price: 9999
           product_name: pasta
           product_quantity: 10
+          product_picture: https://i.imgur.com/1.jpg
         - event_discount_max_quantity: 10
           event_discount_id: 1
           product_id: 1
           product_price: 9999
           product_name: pasta
           product_quantity: 10
+          product_picture: https://i.imgur.com/1.jpg
+        shipping_discount:
+          discount_name: free shipping
+          discount_description: free shipping when total price over 1000
+          discount_max_price: 1000
+          discount_id: 1
+          status: 1
+        shipping_discount_bool: true
+        seasoning_discount:
+          discount_start_date: 2021-01-01 00:00:00
+          discount_name: spring discount
+          discount_end_date: 2021-01-01 00:00:00
+          discount_description: all products get 30% off
+          discount_percentage: 70
+          discount_id: 1
+          status: 1
+        seasoning_discount_bool: true
+        total_price: 1000
     ProductOrderInfo:
       required:
+      - event_discount_id
+      - event_discount_max_quantity
       - product_id
       - product_name
+      - product_picture
       - product_price
       - product_quantity
       type: object
@@ -2188,6 +2246,9 @@ components:
           type: integer
           format: int64
           example: 10
+        product_picture:
+          type: string
+          example: https://i.imgur.com/1.jpg
         event_discount_id:
           type: integer
           format: int64
@@ -2202,6 +2263,7 @@ components:
         product_price: 9999
         product_name: pasta
         product_quantity: 10
+        product_picture: https://i.imgur.com/1.jpg
     OrderInfoShort:
       required:
       - cart_id
@@ -2326,13 +2388,16 @@ components:
       required:
       - cart_id
       - order_date
-      - product_order_info_array
       - status
       - store_id
       - total_price
       - user_id
+      - user_name
       type: object
       properties:
+        user_name:
+          type: string
+          example: user1
         user_id:
           type: integer
           format: int64
@@ -2356,28 +2421,11 @@ components:
           type: integer
           format: int64
           example: 1
-        product_order_info_array:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductOrderInfo'
       example:
         store_id: 1
         cart_id: 1
         order_date: 2021-01-01 00:00:00
         total_price: 9999
-        product_order_info_array:
-        - event_discount_max_quantity: 10
-          event_discount_id: 1
-          product_id: 1
-          product_price: 9999
-          product_name: pasta
-          product_quantity: 10
-        - event_discount_max_quantity: 10
-          event_discount_id: 1
-          product_id: 1
-          product_price: 9999
-          product_name: pasta
-          product_quantity: 10
         user_id: 1
         status: 1
     StoreOrderStatusInfoArray:

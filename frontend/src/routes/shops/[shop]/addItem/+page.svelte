@@ -6,8 +6,6 @@
 	import AddCategoryAndItemArea from '$lib/components/PUA/addCategoryAndItemArea.svelte';
 	import ChangeDiscountPage from '$lib/components/PUA/changeDiscountPage.svelte';
 
-	let showModel = false;
-	let Status = [{ label: '上架中' }, { label: '已售完' }]; //1上架中  2已售完
 	type productRespType = {
 		store_id: number;
 		product_label_array: {
@@ -70,7 +68,10 @@
 		discount_id: 0,
 		status: 0
 	};
+	let showModel = false;
+	let Status = [{ label: '上架中' }, { label: '已售完' }]; //1上架中  2已售完
 	let new_index = 0;
+	let discountData = { kind: 'Shipping Discount', how: 'NT$', way: 'free shipping' };
 
 	function addDiscountButton() {
 		const newLabel = { ...current_discount_array };
@@ -91,7 +92,6 @@
 		}
 		return null;
 	}
-	let discountData = { kind: 'Shipping Discount', how: 'NT$', way: 'free shipping' };
 	function getDiscount(i: number) {
 		if (product_data.event_discount_array[i]) {
 			current_discount_array = product_data.event_discount_array[i];
@@ -106,7 +106,6 @@
 			};
 		}
 		new_index = i;
-		console.log(new_index);
 		return null;
 	}
 
@@ -121,12 +120,11 @@
 	}
 
 	async function PostProductResp() {
-		console.log(product_data);
-		let poet_status = fetch(backendPath + `/store/` + product_data.store_id + `/add-product`, {
+		let post_status = fetch(backendPath + `/store/` + product_data.store_id + `/add-product`, {
 			method: 'POST',
 			body: JSON.stringify(product_data)
 		});
-		console.log(poet_status);
+		console.log(post_status);
 	}
 
 	function post() {
@@ -138,10 +136,10 @@
 	});
 </script>
 
-{#await getProductResp() then number}
+{#await getProductResp() then}
 	<div class="flex h-fit justify-start">
 		<div class="relative left-1/2 mt-6 h-full w-4/5 -translate-x-1/2 transform">
-			<div class="h-100 text-33 text-PUA-dark-red flex w-full flex-col justify-center">
+			<div class="h-100 text-33 flex w-full flex-col justify-center text-PUA-dark-red">
 				<Input
 					bind:value={product_data.name}
 					type="text"
@@ -224,9 +222,9 @@
 					></DisCountArea>
 
 					<div
-						class="border-PUA-stone flex h-[30px] w-full items-center border-b-[1px] border-solid"
+						class="flex h-[30px] w-full items-center border-b-[1px] border-solid border-PUA-stone"
 					>
-						<div class="text-PUA-stone font-bold">Set Status</div>
+						<div class="font-bold text-PUA-stone">Set Status</div>
 					</div>
 					<div class="m-4 flex justify-center gap-10">
 						{#each Status as { label }, index}

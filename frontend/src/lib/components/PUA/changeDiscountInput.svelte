@@ -8,13 +8,13 @@
 </script>
 
 <div class="mt-2">
-	<p class="text-3 text-PUA-stone font-bold">{title}</p>
+	<p class="text-3 font-bold text-PUA-stone">{title}</p>
 	{#if type === 'text'}
 		<input
 			required={true}
 			{name}
 			type="text"
-			class="... border-PUA-stone peer w-full border-b-[2px] font-bold"
+			class="... peer w-full border-b-[2px] border-PUA-stone font-bold"
 			bind:value
 			placeholder={text}
 		/>
@@ -25,7 +25,7 @@
 			min="1"
 			max="99999"
 			type="number"
-			class="border-PUA-stone peer w-full border-b-[2px] font-bold"
+			class="peer w-full border-b-[2px] border-PUA-stone font-bold"
 			bind:value
 			placeholder={text}
 		/>

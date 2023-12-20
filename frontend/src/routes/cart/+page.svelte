@@ -29,7 +29,6 @@
 	let seasoningDiscountList: seasonindDiscount[] = [];
 	onMount(async () => {
 		const init = await fetch(`/seasoningDiscount.json`);
-		console.log(init);
 		if (init.status == 200) {
 			seasoningDiscountList = await init.json();
 		}
@@ -65,8 +64,6 @@
 		const resp = await fetch(backendPath + '/customer/1/cart/1/carts');
 		cartInfos = await resp.json();
 		processedInfo = cartInfoProcess(cartInfos);
-		console.log(processedIndex);
-		console.log(processedInfo);
 	});
 	function cartInfoProcess(cartInfos: cartInfo[]) {
 		let processedInfo: cartInfo[][] = [];
@@ -82,7 +79,6 @@
 		return processedInfo;
 	}
 	function checkout() {
-		console.log('checkout');
 		//TODO customer id need to change
 		let r = async () => {
 			const resp = await fetch(backendPath + '/customer/1/cart/1/store/1/checkout', {
@@ -93,7 +89,7 @@
 					taking_method: 1
 				})
 			});
-			console.log(resp.status);
+			console.log(resp);
 		};
 		r();
 		return null;

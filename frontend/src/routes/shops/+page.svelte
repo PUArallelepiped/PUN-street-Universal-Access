@@ -1,170 +1,66 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
+	// import { page } from '$app/stores';
 
-	//import * as Menubar from "$lib/components/ui/menubar";
-	//import * as Select from "$lib/components/ui/select";
 	import { Input } from '$lib/components/ui/input';
-	import { Checkbox } from '$lib/components/ui/checkbox';
-	import { Label } from '$lib/components/ui/label';
-	//import { Slider } from '$lib/components/ui/slider';
-	//import { Button } from "$lib/components/ui/button";
-	//let checked = false;
 
-	import DoubleRangeSlider from '$lib/components/ui/doubleSlider/doubleRangeSlider.svelte';
-	import { backendPath } from '$lib/components/PUA/env';
-	import StoreCard from '$lib/components/ui/storeCard/storeCard.svelte';
+	import StoreCard from '$lib/components/PUA/storeCard.svelte';
+	import SortTag from '$lib/components/PUA/sortTag.svelte';
+	import { CheckBox } from '$lib';
+	import type { PageData } from './$types';
+	import DualRangeSlider from '$lib/components/PUA/dualRangeSlider.svelte';
 	let start = 0;
 	let end = 1;
 
-	let sortCheckboxes = [
-		{ id: 'Nice shop' },
-		{ id: 'Fast shop' },
-		{ id: 'Something nice for you' },
-		{ id: 'Distance' }
-	];
-
-	let tagCheckboxes = [
-		{ id: 'Fresh' },
-		{ id: 'Organic' },
-		{ id: 'Healthy' },
-		{ id: 'Dairy-free' },
-		{ id: 'Bakery' },
-		{ id: 'Cafe' },
-		{ id: 'Sugar-free' },
-		{ id: 'Vegetarian' },
-		{ id: 'Free-delivery' }
-	];
-
-	let shopListResponse: {
-		address: string;
-		description: string;
-		name: string;
-		picture: string;
-		rate: number;
-		rate_count: number;
-		shipping_fee: number;
-		status: number;
-		store_id: number;
-	}[] = [
-		{
-			store_id: 1,
-			description: 'you are not pasta',
-			name: 'im pasta',
-			address: 'pun street',
-			rate: 4,
-			rate_count: 100,
-			picture: 'https://i.imgur.com/3i3tyXJ.gif',
-			status: 1,
-			shipping_fee: 35
-		},
-		{
-			store_id: 2,
-			description: 'special meal',
-			name: 'number five',
-			address: 'pun street',
-			rate: 3.5,
-			rate_count: 5,
-			picture: 'https://i.imgur.com/3i3tyXJ.gif',
-			status: 1,
-			shipping_fee: 15
-		},
-
-		{
-			store_id: 3,
-			description: 'moooooooooooooos',
-			name: 'mos burger',
-			address: 'NTUT',
-			rate: 4,
-			rate_count: 123,
-			picture: 'https://i.imgur.com/3i3tyXJ.gif',
-			status: 1,
-			shipping_fee: 55
-		}
-	];
-
-	onMount(async () => {
-		const resp = await fetch(backendPath + '/stores');
-		shopListResponse = await resp.json();
-		console.log(shopListResponse);
-	});
+	export let data: PageData;
 </script>
 
-<div class="flex justify-start bg-gray-200">
-	<div class="w-30 float-left mt-[15px]">
-		<Input type="text" placeholder="QQㄋㄟㄋㄟ好喝到咩噗茶" class="my-3 ml-3 max-w-xs bg-white" />
-		<div
-			class="my-3 inline-flex h-[25px] items-center justify-center gap-2.5 rounded-full bg-PUA-red px-[23px] py-1"
-		>
-			<div
-				class="mt-2 h-[43px] w-[300px] text-center font-['Inter'] text-xl font-bold leading-relaxed text-white"
-			>
-				Sort
-			</div>
-		</div>
-		<div>
-			{#each sortCheckboxes as { id }}
-				<div class="ml-2 h-[30px]">
-					<Checkbox {id} />
-					<Label for={id}>{id}</Label>
-				</div>
-			{/each}
-		</div>
-
-		<div
-			class="my-3 inline-flex h-[25px] items-center justify-center gap-2.5 rounded-full bg-PUA-red px-[23px] py-1"
-		>
-			<div
-				class="mt-2 h-[43px] w-[300px] text-center font-['Inter'] text-xl font-bold leading-relaxed text-white"
-			>
-				Price
-			</div>
-		</div>
-		<div class="ml-3 flex w-[350px] justify-between">
-			<div>NT$1</div>
-			<div>NT$1000</div>
-		</div>
-		<div class="my-3 ml-3 h-[30px] w-[325px]">
-			<DoubleRangeSlider bind:start bind:end />
-		</div>
-
-		<div
-			class="my-3 inline-flex h-[25px] items-center justify-center gap-2.5 rounded-full bg-PUA-red px-[23px] py-1"
-		>
-			<div
-				class="mt-2 h-[43px] w-[300px] text-center font-['Inter'] text-xl font-bold leading-relaxed text-white"
-			>
-				Tag
-			</div>
-		</div>
-		<div>
-			<div class="max-w-60 pr-40">
-				{#each tagCheckboxes as { id }}
-					<div class="ml-2 flex-wrap">
-						<Checkbox {id} />
-						<Label for={id}>{id}</Label>
+<div class="w-1/2"></div>
+<div class="flex justify-start">
+	<div class="float-left m-5 flex flex-col items-center">
+		<Input type="text" placeholder="QQㄋㄟㄋㄟ好喝到咩噗茶" class="m-5  max-w-xs bg-white" />
+		<div class="flex w-96 flex-col justify-center gap-10 rounded-lg bg-white p-10">
+			<div class="flex flex-col items-center gap-5">
+				<SortTag value="Price"></SortTag>
+				<div class="flex flex-col">
+					<div class=" flex w-80 justify-between">
+						<div class="text-sm font-bold leading-tight text-PUA-dark-red">
+							NT$
+							<span class="text-base leading-tight text-PUA-dark-red"
+								>{Math.floor(start * 1000)}</span
+							>
+						</div>
+						<div class="text-sm font-bold leading-tight text-PUA-dark-red">
+							NT$
+							<span class="text-base leading-tight text-PUA-dark-red">{Math.floor(end * 1000)}</span
+							>
+						</div>
 					</div>
-				{/each}
+					<div class="  w-full px-10">
+						<DualRangeSlider bind:start bind:end></DualRangeSlider>
+					</div>
+				</div>
+			</div>
+			<div class="flex flex-col items-center justify-center gap-5">
+				<SortTag value="Tag"></SortTag>
+				<div class="flex w-full max-w-xs flex-col justify-start gap-1 px-4">
+					{#each data.categories as { category_id, category_name }}
+						<CheckBox id={category_id.toString()} text={category_name} value={category_name}
+						></CheckBox>
+					{/each}
+				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="gap-x-25 ml-20 grid w-[900px] grid-cols-2 items-start justify-start">
-		{#each shopListResponse as shop}
-			<div
-				class="inline-flex flex-col items-start justify-start gap-3 rounded px-6 py-3 hover:bg-gray-300"
-			>
-				<StoreCard
-					name={shop.name}
-					description={shop.description}
-					picture={shop.picture}
-					address={shop.address}
-					rate={shop.rate}
-				/>
-			</div>
+	<div class=" m-4 flex h-min flex-wrap gap-3">
+		{#each data.shopListResponses as shop}
+			<StoreCard
+				name={shop.name}
+				picture={shop.picture}
+				rate={shop.rate}
+				category_array={shop.category_array}
+				id={shop.store_id}
+			/>
 		{/each}
 	</div>
 </div>
-
-<h1>here is shop list</h1>
-<p>Visit <a href="{$page.route.id}/impasta" class="text-blue-400"> Shop </a></p>

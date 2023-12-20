@@ -60,3 +60,7 @@ func (su *storeUsecase) GetAllProductSellingById(ctx context.Context, id int64, 
 
 	return productStatistics, nil
 }
+
+func (su *storeUsecase) CalculateRate(ctx context.Context, id int64, rate swagger.RateInfo) error {
+	return su.storeRepo.CalculateRate(ctx, id, rate)
+}

@@ -50,6 +50,7 @@
 		dis_haved = true;
 		toggleModel();
 		add_Discount();
+		event.preventDefault();
 	}
 </script>
 
@@ -60,7 +61,7 @@
 		>
 			<div class="rounded bg-white p-5">
 				<div class="flex">
-					<div class="w-1/2 text-left text-xl font-bold text-PUA-stone">
+					<div class="text-PUA-stone w-1/2 text-left text-xl font-bold">
 						<h2>Add A Discount</h2>
 					</div>
 					<div class="flex w-1/2 justify-end">
@@ -72,11 +73,11 @@
 				<form on:submit={handleSubmit}>
 					<div class="relative mx-16 my-8">
 						<div class="flex w-full items-center justify-center pb-2 pt-2">
-							<div class="flex w-80 rounded-xl border-4 border-PUA-stone p-2 text-PUA-stone">
+							<div class="border-PUA-stone text-PUA-stone flex w-80 rounded-xl border-4 p-2">
 								<div class="  px-2 py-2 text-center text-base font-semibold">
 									{discountData.kind}
 								</div>
-								<div class="mt-2 h-12 w-1 bg-PUA-stone"></div>
+								<div class="bg-PUA-stone mt-2 h-12 w-1"></div>
 								<div class="w-full px-2 font-semibold">
 									<div class="flex items-baseline justify-center">
 										<span class="ml-1 mr-1 text-base">{discountData.how}</span><span

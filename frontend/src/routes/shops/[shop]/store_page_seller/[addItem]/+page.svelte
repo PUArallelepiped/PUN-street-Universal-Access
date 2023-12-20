@@ -7,9 +7,8 @@
 	import ChangeDiscountPage from '$lib/components/PUA/changeDiscountPage.svelte';
 	import type { PageData } from './$types';
 	export let data: PageData;
-	let shop_try = data.shop;
-	let item_try = data.item;
-	let store_id = 1;
+	let shop_id = data.shop;
+	let item_id = data.item;
 	type productRespType = {
 		store_id: number;
 		product_label_array: {
@@ -37,7 +36,7 @@
 		status: number;
 	};
 	let product_data: productRespType = {
-		store_id: store_id,
+		store_id: Number(shop_id),
 		product_label_array: [
 			{
 				item_array: [{ name: '' }],
@@ -105,21 +104,23 @@
 	}
 
 	async function getProductResp() {
-		const res = await fetch(backendPath + `/product/1`);
+		if (item_id != '0') {
+			const res = await fetch(backendPath + `/product/` + item_id);
 
-		if (res.status == 200) {
-			product_data = await res.json();
+			if (res.status == 200) {
+				product_data = await res.json();
+			}
+			console.log(product_data);
 		}
-		console.log(product_data);
 		return;
 	}
 
 	async function PostProductResp() {
-		console.log(product_data);
-		let post_status = fetch(backendPath + `/store/` + store_id + `/add-product`, {
+		let post_status = fetch(backendPath + `/store/` + shop_id + `/add-product`, {
 			method: 'POST',
 			body: JSON.stringify(product_data)
 		});
+		window.location.href = './';
 		console.log(post_status);
 	}
 
@@ -128,8 +129,6 @@
 	});
 </script>
 
-<p>{shop_try}</p>
-<p>{item_try}</p>
 {#await getProductResp() then}
 	<form on:submit={PostProductResp}>
 		<div class="flex h-fit justify-start">

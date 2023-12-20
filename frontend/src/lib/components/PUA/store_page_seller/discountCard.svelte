@@ -21,23 +21,23 @@
 </script>
 
 {#if !dis_haved}
-	<button on:click class=" left-0 top-0 flex h-24 w-72 rounded-xl bg-gray-300 text-PUA-stone">
+	<button on:click class=" text-PUA-stone left-0 top-0 flex h-24 w-72 rounded-xl bg-gray-300">
 		<div class="left-0 top-0 z-10 flex h-full w-72 items-center justify-center rounded-[8px]">
 			<img
 				src={Adddiscount}
 				alt=""
 				class="h-6 w-6 bg-transparent transition-opacity duration-300"
 			/>
-			<p class="p-2 font-bold text-PUA-stone">Add Discount</p>
+			<p class="text-PUA-stone p-2 font-bold">Add Discount</p>
 		</div>
 	</button>
 {:else}
 	<div class="flex items-center gap-4">
 		<button on:click>
-			<div class="left-0 top-0 flex h-24 w-80 rounded-xl text-PUA-stone">
+			<div class="text-PUA-stone left-0 top-0 flex h-24 w-80 rounded-xl">
 				<div class="relative">
 					<div
-						class=" group absolute left-0 top-0 z-10 flex h-full w-80 items-center justify-center rounded-xl border-4 border-PUA-stone hover:bg-neutral-400/75"
+						class=" border-PUA-stone group absolute left-0 top-0 z-10 flex h-full w-80 items-center justify-center rounded-xl border-4 hover:bg-neutral-400/75"
 					>
 						<img
 							src={Mouseon}
@@ -45,7 +45,7 @@
 							class="h-6 w-6 bg-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 						/>
 						<p
-							class="p-2 font-bold text-PUA-dark-red opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+							class="text-PUA-dark-red p-2 font-bold opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 						>
 							Change Discount
 						</p>
@@ -53,10 +53,10 @@
 				</div>
 
 				<div
-					class="bg-transport flex w-full items-center rounded-xl border-4 border-PUA-stone text-center font-semibold text-PUA-stone"
+					class="bg-transport border-PUA-stone text-PUA-stone flex w-full items-center rounded-xl border-4 text-center font-semibold"
 				>
 					<div class=" px-4 py-4 text-base font-semibold">Shipping Discount</div>
-					<div class="h-12 w-1 bg-PUA-stone"></div>
+					<div class="bg-PUA-stone h-12 w-1"></div>
 					<div class="relative w-full px-4">
 						<div class="flex items-baseline justify-center">
 							<span class="ml-1 mr-1 text-base">NT$</span>

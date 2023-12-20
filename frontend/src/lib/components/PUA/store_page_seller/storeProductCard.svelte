@@ -36,7 +36,7 @@
 
 			<p class="w-10 text-end text-xl">{price}</p>
 		</div>
-		<button on:click>
+		<button on:click|preventDefault>
 			<img src={transhcan} alt="" />
 		</button>
 	</div>

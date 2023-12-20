@@ -6,8 +6,9 @@
 	import TagLabelArea from '$lib/components/PUA/store_page_seller/tagLabelArea.svelte';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
+	import { backendPath } from '$lib/components/PUA/env';
 	export let data: PageData;
-	let shopName = data.shop;
+	let shop_id = data.shop;
 
 	interface productsType {
 		product_id: number;
@@ -136,24 +137,62 @@
 		}
 	};
 
+	async function getProductResp() {
+		const init_product = await fetch(backendPath + `/store/` + shop_id + `/products`);
+		if (init_product.status == 200) {
+			productsList = await init_product.json();
+		}
+		return;
+	}
+
+	async function getCategoryResp() {
+		const tag_category = await fetch(backendPath + `/categories`);
+		if (tag_category.status == 200) {
+			tagList = await tag_category.json();
+		}
+		return;
+	}
+
+	async function getDiscountResp() {
+		const init_shipping_discount = await fetch(
+			backendPath + `/store/` + shop_id + `/shipping-discount`
+		);
+		if (init_shipping_discount.status == 200) {
+			shippingList = await init_shipping_discount.json();
+			shippingList.discount_max_quantity = 1000;
+			dis_haved = shippingList ? true : false;
+			console.log(shippingList);
+		}
+		return;
+	}
+
+	async function getStoreResp() {
+		const init_store_data = await fetch(backendPath + `/store/` + shop_id);
+		if (init_store_data.status == 200) {
+			shopDataList = await init_store_data.json();
+		}
+		return;
+	}
+
+	async function getData() {
+		getProductResp();
+		getCategoryResp();
+		getDiscountResp();
+		getStoreResp();
+	}
+
 	onMount(() => {
 		toggleHeight();
 	});
 
 	onMount(async () => {
-		const init_product = await fetch(`/products.json`);
-		productsList = await init_product.json();
-		const tag_category = await fetch(`/categories.json`);
-		tagList = await tag_category.json();
-		const init_shipping_discount = await fetch(`/shipping-discount.json`);
-		shippingList = await init_shipping_discount.json();
-		dis_haved = shippingList ? true : false;
-		const init_store_data = await fetch(`/store.json`);
-		shopDataList = await init_store_data.json();
+		getData();
 	});
 </script>
 
-<p>{shopName}</p>
+<p>{shop_id}</p>
+
+<!-- {#await getData() then} -->
 <div class="h-48 w-full overflow-hidden">
 	<img src={watermelon} alt="" class="w-full object-cover" />
 </div>
@@ -216,3 +255,4 @@
 		return null;
 	}}
 ></ChangeDiscountPage>
+<!-- {/await} -->

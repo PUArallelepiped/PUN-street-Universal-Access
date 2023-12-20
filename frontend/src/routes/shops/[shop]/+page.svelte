@@ -1,57 +1,9 @@
 <script lang="ts">
 	import watermelon from '$lib/assets/watermelon.png';
-	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import { ProductCard } from '$lib';
-	import { backendPath } from '$lib/components/PUA/env';
 	export let data: PageData;
 	let shopName = data.shop;
-
-	let shopInfoResponse: {
-		store_id: number;
-		shipping_fee: number;
-		address: string;
-		rate_count: number;
-		rate: number;
-		name: string;
-		description: string;
-		picture: string;
-		status: number;
-	} = {
-		store_id: 1,
-		shipping_fee: 100,
-		address: '100台灣台北市中正區八德路一段82巷9弄17號',
-		rate_count: 10,
-		rate: 5,
-		name: 'Im pasta',
-		description: 'good pasta',
-		picture: 'https://i.imgur.com/1.jpg',
-		status: 1
-	};
-	type ProductResponse = {
-		name: string;
-		description: string;
-		price: number;
-		picture: string;
-		product_id: number;
-		status: number;
-		stock: number;
-		store_id: number;
-	};
-	let prodctListResponse: ProductResponse[] = [];
-	onMount(async () => {
-		const resp = await fetch('/shop.json');
-		prodctListResponse = await resp.json();
-
-		const backResp = await fetch(backendPath + `/store/1/products`);
-		if (backResp.status == 200) {
-			prodctListResponse = await backResp.json();
-		}
-	});
-	onMount(async () => {
-		const resp = await fetch(backendPath + `/store/1`);
-		shopInfoResponse = await resp.json();
-	});
 </script>
 
 <div class="h-48 w-full overflow-hidden">
@@ -60,14 +12,14 @@
 <div class="mx-5 lg:px-40">
 	<div class="p-2">
 		<div class="m-1 p-2 text-5xl font-bold">
-			{shopInfoResponse.name}
+			{data.shopInfo.name}
 		</div>
 		<div class="pl-5">
-			{shopInfoResponse.address}
+			{data.shopInfo.address}
 		</div>
 	</div>
 	<div class="flex-row space-y-2 p-2">
-		{#each prodctListResponse as product}
+		{#each data.productList as product}
 			<ProductCard
 				name={product.name}
 				href={'./' + shopName + '/' + product.product_id}
@@ -81,34 +33,34 @@
 
 <div class=" bg-orange-950 p-5 text-white">
 	<div class="text-lg font-bold">DEBUG AREA</div>
-	{#if shopInfoResponse}
+	{#if data.shopInfo}
 		<div class="flex-col text-center">
 			<div>
-				{shopInfoResponse.store_id}
+				{data.shopInfo.store_id}
 			</div>
 			<div>
-				fee:{shopInfoResponse.shipping_fee}
+				fee:{data.shopInfo.shipping_fee}
 			</div>
 			<div>
-				{shopInfoResponse.address}
+				{data.shopInfo.address}
 			</div>
 			<div>
-				rate_count: {shopInfoResponse.rate_count}
+				rate_count: {data.shopInfo.rate_count}
 			</div>
 			<div>
-				rate:{shopInfoResponse.rate}
+				rate:{data.shopInfo.rate}
 			</div>
 			<div>
-				{shopInfoResponse.name}
+				{data.shopInfo.name}
 			</div>
 			<div>
-				{shopInfoResponse.description}
+				{data.shopInfo.description}
 			</div>
 			<div>
-				{shopInfoResponse.picture}
+				{data.shopInfo.picture}
 			</div>
 			<div>
-				status:{shopInfoResponse.status}
+				status:{data.shopInfo.status}
 			</div>
 		</div>
 	{:else}

@@ -4,8 +4,9 @@
 	import { backendPath } from '$lib/components/PUA/env';
 	import { Textarea, DisCountArea, OkButton, StatusButton, ErrorMsg } from '$lib/index';
 	import AddCategoryAndItemArea from '$lib/components/PUA/addCategoryAndItemArea.svelte';
+	import ChangeDiscountPage from '$lib/components/PUA/changeDiscountPage.svelte';
 
-	let showModel = false; //only 模擬
+	let showModel = false;
 	let Status = [{ label: '上架中' }, { label: '已售完' }]; //1上架中  2已售完
 	type productRespType = {
 		store_id: number;
@@ -63,14 +64,7 @@
 	};
 
 	function addDiscountButton() {
-		const newLabel = {
-			discount_max_quantity: 0,
-			product_id: 1,
-			discount_name: '',
-			discount_description: 'buy 2 get 1 free', //simulate
-			discount_id: 1,
-			status: 1
-		};
+		const newLabel = { ...current_discount_array };
 
 		product_data = {
 			...product_data,
@@ -92,7 +86,6 @@
 		console.log(product_data);
 		let poet_status = fetch(backendPath + `/store/` + product_data.store_id + `/add-product`, {
 			method: 'POST',
-			//別忘了把主體参數轉成字串，否則資料會變成[object Object]，它無法被成功儲存在後台
 			body: JSON.stringify(product_data)
 		});
 		console.log(poet_status);
@@ -102,17 +95,36 @@
 		PostProductResp();
 		return null;
 	}
+	let current_discount_array = {
+		discount_max_quantity: 0,
+		product_id: 0,
+		discount_name: '',
+		discount_description: '',
+		discount_id: 0,
+		status: 0
+	};
+	let discountData = { kind: 'Shipping Discount', how: 'NT$', way: 'free shipping' };
+	function getDiscount(i: number) {
+		if (product_data.event_discount_array[i]) {
+			current_discount_array = product_data.event_discount_array[i];
+			console.log(current_discount_array);
+		} else {
+			current_discount_array = {
+				discount_max_quantity: 0,
+				product_id: 0,
+				discount_name: '',
+				discount_description: '',
+				discount_id: 0,
+				status: 0
+			};
+			console.log('找不到符合條件的物件');
+		}
+		return null;
+	}
 
-	// onMount(async () => {
-	// 	getRandomNumber();
-	// const Resp = await fetch(`/product.json`);
-	// product_data = await Resp.json();
-	// const backResp = await fetch(backendPath + `/product/2`);
-	// if (backResp.status == 200) {
-	// 	product_data = await backResp.json();
-	// }
-	// console.log(product_data);
-	// });
+	onMount(async () => {
+		getProductResp();
+	});
 </script>
 
 {#await getProductResp() then number}
@@ -195,7 +207,7 @@
 							return null;
 						}}
 						bind:discount={product_data.event_discount_array}
-						{addDiscountButton}
+						addDiscountButton={getDiscount}
 						addSign={true}
 						type={false}
 					></DisCountArea>
@@ -234,4 +246,15 @@
 			</div>
 		</div>
 	</div>
+
+	<ChangeDiscountPage
+		bind:changePageData={current_discount_array}
+		{discountData}
+		bind:showModel
+		dis_haved={false}
+		add_Discount={addDiscountButton}
+		delete_Discount={() => {
+			return null;
+		}}
+	></ChangeDiscountPage>
 {/await}

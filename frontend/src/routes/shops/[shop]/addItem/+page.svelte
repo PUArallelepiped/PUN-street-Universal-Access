@@ -41,7 +41,7 @@
 				item_array: [{ name: '' }],
 				product_id: 0,
 				label_name: '',
-				required: false
+				required: true
 			}
 		],
 		price: 0,
@@ -81,7 +81,6 @@
 				...product_data,
 				event_discount_array: [...product_data.event_discount_array, newLabel]
 			};
-			console.log('找不到符合條件的物件');
 		}
 		return null;
 	}
@@ -89,9 +88,6 @@
 		if (new_index >= 0 && new_index < product_data.event_discount_array.length) {
 			const newArray = product_data.event_discount_array.filter((_, i) => i !== new_index);
 			product_data.event_discount_array = newArray;
-			console.log(product_data);
-		} else {
-			console.log('no_delete');
 		}
 		return null;
 	}
@@ -108,8 +104,6 @@
 				discount_id: 0,
 				status: 0
 			};
-			console.log('找不到符合條件的物件');
-			console.log(current_discount_array);
 		}
 		new_index = i;
 		console.log(new_index);
@@ -117,11 +111,12 @@
 	}
 
 	async function getProductResp() {
-		const res = await fetch(backendPath + `/product/12`);
+		const res = await fetch(backendPath + `/product/16`);
 
 		if (res.status == 200) {
 			product_data = await res.json();
 		}
+		console.log(product_data);
 		return;
 	}
 

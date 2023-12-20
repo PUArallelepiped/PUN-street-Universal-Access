@@ -73,7 +73,7 @@
 					></RequiredArea>
 				</div>
 				<div class="flex w-1/3 items-center justify-end">
-					<button on:click={() => removeCategory(index)} class="flex">
+					<button on:click={() => removeCategory(index)} class="flex" type="button">
 						<img src={transhcan} alt="Trash Can" class="object-cover" />
 					</button>
 				</div>
@@ -97,11 +97,13 @@
 				{/each}
 				<div class="flex h-[30px] w-full items-center justify-end">
 					<button
+						type="button"
 						on:click={() => removeNewSubcategory(index)}
 						class="m-[3px] h-[20x] w-[20px] rounded-[10px] bg-red-900 px-[0px] py-[0px] text-sm font-bold text-white"
 						>-</button
 					>
 					<button
+						type="button"
 						on:click={() => addNewSubcategory(index)}
 						class="m-[3px] h-[20x] w-[20px] rounded-[10px] bg-red-900 px-[0px] py-[0px] text-sm font-bold text-white"
 						>+</button
@@ -113,6 +115,7 @@
 </div>
 <div class="flex h-full items-center justify-center">
 	<button
+		type="button"
 		on:click={addNewCategory}
 		class="h-[30px] w-[30px] rounded-[15px] bg-red-900 font-bold text-white">+</button
 	>

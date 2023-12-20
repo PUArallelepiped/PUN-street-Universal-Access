@@ -11,7 +11,7 @@ type shopInfoType = {
 	description: string;
 	picture: string;
 	status: number;
-	category_array : {category_name:string;category_id:number}[]
+	category_array: { category_name: string; category_id: number }[];
 };
 type ProductInfoType = {
 	name: string;

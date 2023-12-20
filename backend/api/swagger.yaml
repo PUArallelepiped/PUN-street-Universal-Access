@@ -820,6 +820,22 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
+  /userID:
+    get:
+      tags:
+      - user
+      summary: get user ID by cookie
+      responses:
+        "200":
+          description: return user ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdInfo'
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
   /seller/store/{storeID}/orders:
     get:
       tags:
@@ -2511,3 +2527,11 @@ components:
         user_email:
           type: string
           example: a@gmail.com
+    IdInfo:
+      required:
+      - user_id
+      properties:
+        user_id:
+          type: integer
+          format: int64
+          example: 1

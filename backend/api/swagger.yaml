@@ -457,7 +457,7 @@ paths:
               x-content-type: application/json
       responses:
         "200":
-          description: return a Store Order info 
+          description: return a Store Order info
           content:
             application/json:
               schema:
@@ -1330,13 +1330,13 @@ components:
         product_label_array:
         - item_array:
           - name: have
-          - name: no
+          - name: false
           product_id: 1
           label_name: milk
           required: true
         - item_array:
           - name: have
-          - name: no
+          - name: false
           product_id: 1
           label_name: milk22
           required: true
@@ -1933,6 +1933,9 @@ components:
         shipping_discount_bool: true
         seasoning_discount_bool: true
     CartOrderInfo:
+      required:
+      - real_total_price
+      - store_order_info_array
       type: object
       properties:
         real_total_price:
@@ -2066,6 +2069,7 @@ components:
       - store_id
       - store_name
       - store_shipping_fee
+      - total_price
       type: object
       properties:
         store_id:

@@ -25,5 +25,5 @@ type StoreOrderInfo struct {
 
 	SeasoningDiscountBool bool `json:"seasoning_discount_bool"`
 
-	TotalPrice int64 `json:"total_price,omitempty"`
+	TotalPrice int64 `json:"total_price"`
 }

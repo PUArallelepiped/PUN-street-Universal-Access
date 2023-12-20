@@ -9,7 +9,7 @@
 package swagger
 
 type CartOrderInfo struct {
-	RealTotalPrice int64 `json:"real_total_price,omitempty"`
+	RealTotalPrice int64 `json:"real_total_price"`
 
-	StoreOrderInfoArray []StoreOrderInfo `json:"store_order_info_array,omitempty"`
+	StoreOrderInfoArray []StoreOrderInfo `json:"store_order_info_array"`
 }

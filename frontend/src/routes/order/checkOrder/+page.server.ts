@@ -16,6 +16,9 @@ export const load: PageServerLoad = async () => {
 async function getHistory() {
 	// todo custumer id
 	const customerId = 1;
-	const resp = await fetch(backendPath + '/customer/' + customerId + '/order-status');
+	const resp = await fetch(backendPath + '/customer/' + customerId + '/order-status', {
+		method: 'PUT',
+		body: JSON.stringify({ status: 4 })
+	});
 	return (await resp.json()) as orderInfoType[];
 }

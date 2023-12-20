@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { PUALabel } from '$lib';
 	import drone from '$lib/assets/drone.png';
+	import OkButton from './OkButton.svelte';
 	import ProgressBar from './progressBar.svelte';
 
 	export let status: number;
@@ -23,7 +24,16 @@
 			<img src={picture} alt="" class="h-64 w-72 rounded-xl object-cover" />
 		</div>
 		<div class="flex flex-col justify-around">
-			<div class=" text-5xl font-semibold text-orange-950">運送中...</div>
+			<div class="flex items-center justify-start gap-5">
+				<div class=" text-5xl font-semibold text-orange-950">運送中...</div>
+
+				<OkButton
+					text="Check Order"
+					onclick={() => {
+						return null;
+					}}
+				></OkButton>
+			</div>
 			<div class=" text-2xl font-semibold text-orange-950">{shopName}</div>
 			<div class="flex gap-5">
 				<img src={drone} alt="" class="h-20 w-32 rounded-xl object-cover" />

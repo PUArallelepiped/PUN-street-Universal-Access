@@ -9,6 +9,8 @@
 package swagger
 
 type StoreOrderStatusInfo struct {
+	UserName string `json:"user_name"`
+
 	UserId int64 `json:"user_id"`
 
 	CartId int64 `json:"cart_id"`
@@ -20,6 +22,4 @@ type StoreOrderStatusInfo struct {
 	TotalPrice int64 `json:"total_price"`
 
 	Status int64 `json:"status"`
-
-	ProductOrderInfoArray []ProductOrderInfo `json:"product_order_info_array"`
 }

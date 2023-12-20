@@ -154,6 +154,7 @@ func (p *postgresqlStoreRepo) CalculateRate(ctx context.Context, id int64, rate 
 	if _, err := p.db.Exec(sqlStatement, tempRate, id); err != nil {
 		logrus.Error(err)
 		return err
+		
 	}
 	return nil
 	

@@ -2,11 +2,14 @@
 	import { PUALabel } from '$lib';
 	import drone from '$lib/assets/drone.png';
 	import OkButton from './OkButton.svelte';
+	import { backendPath } from './env';
 	import ProgressBar from './progressBar.svelte';
 
 	export let status: number;
 	export let picture: string;
 	export let shopName: string;
+	export let cartID: number;
+	export let storeID: number;
 	let context: { text: string; status: boolean }[] = [
 		{ text: 'Accept order', status: 0 <= status },
 		{ text: 'Making order', status: 1 <= status },
@@ -29,7 +32,26 @@
 
 				<OkButton
 					text="Check Order"
-					onclick={() => {
+					onclick={async () => {
+						let userId = 1;
+						const resp = await fetch(
+							backendPath +
+								'/seller/update-order-status/customer/' +
+								userId +
+								'/cart/' +
+								cartID +
+								'/store/' +
+								storeID,
+							{
+								method: 'PUT',
+								headers: {
+									'Content-Type': 'application/json'
+								},
+								body: JSON.stringify({
+									status: 3
+								})
+							}
+						);
 						return null;
 					}}
 				></OkButton>

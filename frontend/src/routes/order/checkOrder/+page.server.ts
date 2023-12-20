@@ -10,20 +10,17 @@ type orderInfoType = {
 };
 export const load: PageServerLoad = async () => {
 	return {
-		orderInfoList: await getHistory()
+		orderInfoList: await getOrder()
 	};
 };
 
-async function getHistory() {
+// todo custumer id
+async function getOrder() {
 	try {
 		const customerId = 1;
-		const resp = await fetch(backendPath + '/customer/' + customerId + '/order-status', {
-			method: 'PUT',
-			body: JSON.stringify({ status: 4 })
-		});
+		const resp = await fetch(backendPath + '/customer/' + customerId + '/order-status');
 		return (await resp.json()) as orderInfoType[];
 	} catch {
 		return [];
 	}
-	// todo custumer id
 }

@@ -13,6 +13,8 @@
 				shopName={orderInfo.store_name}
 				picture={orderInfo.store_picture}
 				status={orderInfo.status}
+				cartID={orderInfo.cart_id}
+				storeID={orderInfo.store_id}
 			></CheckOrderPart>
 		{/each}
 	{/if}

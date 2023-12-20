@@ -13,6 +13,7 @@ export const load: PageServerLoad = async () => {
 		orderInfoList: await getHistory()
 	};
 };
+
 async function getHistory() {
 	try {
 		const customerId = 1;

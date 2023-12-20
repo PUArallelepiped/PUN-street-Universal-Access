@@ -150,11 +150,10 @@ func (p *postgresqlStoreRepo) CalculateRate(ctx context.Context, id int64, rate 
 	WHERE store_id=$2
 	`
 	tempRate := float32(math.Max(0, math.Min(5, float64(rate.Rate))))
-
 	if _, err := p.db.Exec(sqlStatement, tempRate, id); err != nil {
 		logrus.Error(err)
 		return err
-		
+
 	}
 	return nil
 	

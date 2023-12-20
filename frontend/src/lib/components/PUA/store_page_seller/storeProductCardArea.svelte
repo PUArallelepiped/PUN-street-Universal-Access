@@ -11,7 +11,7 @@
 		stock: number;
 		store_id: number;
 	}[];
-
+	export let shopName = '1';
 	let prodctListResponse_nextId = 0;
 	if (prodctListResponse_nextId) {
 		prodctListResponse_nextId = productListResponse.length + 1;
@@ -32,6 +32,7 @@
 			description={product.description}
 			price={product.price}
 			imgUrl={product.picture}
+			herf={'./' + shopName + '/' + product.product_id}
 			on:click={() => removeStoreProductCard(product.product_id)}
 		/>
 	{/each}

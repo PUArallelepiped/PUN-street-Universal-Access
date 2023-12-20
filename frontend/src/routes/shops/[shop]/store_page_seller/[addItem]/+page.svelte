@@ -5,6 +5,10 @@
 	import { Textarea, DisCountArea, OkButton, StatusButton, ErrorMsg } from '$lib/index';
 	import AddCategoryAndItemArea from '$lib/components/PUA/addCategoryAndItemArea.svelte';
 	import ChangeDiscountPage from '$lib/components/PUA/changeDiscountPage.svelte';
+	import type { PageData } from './$types';
+	export let data: PageData;
+	let shop_try = data.shop;
+	let item_try = data.item;
 	let store_id = 1;
 	type productRespType = {
 		store_id: number;
@@ -124,11 +128,13 @@
 	});
 </script>
 
+<p>{shop_try}</p>
+<p>{item_try}</p>
 {#await getProductResp() then}
 	<form on:submit={PostProductResp}>
 		<div class="flex h-fit justify-start">
 			<div class="relative left-1/2 mt-6 h-full w-4/5 -translate-x-1/2 transform">
-				<div class="h-100 text-33 flex w-full flex-col justify-center text-PUA-dark-red">
+				<div class="h-100 text-33 text-PUA-dark-red flex w-full flex-col justify-center">
 					<Input
 						required
 						bind:value={product_data.name}
@@ -211,9 +217,9 @@
 						></DisCountArea>
 
 						<div
-							class="flex h-[30px] w-full items-center border-b-[1px] border-solid border-PUA-stone"
+							class="border-PUA-stone flex h-[30px] w-full items-center border-b-[1px] border-solid"
 						>
-							<div class="font-bold text-PUA-stone">Set Status</div>
+							<div class="text-PUA-stone font-bold">Set Status</div>
 						</div>
 						<div class="m-4 flex justify-center gap-10">
 							{#each Status as { label }, index}

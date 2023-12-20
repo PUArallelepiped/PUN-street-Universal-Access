@@ -5,6 +5,9 @@
 	import StoreProductCardArea from '$lib/components/PUA/store_page_seller/storeProductCardArea.svelte';
 	import TagLabelArea from '$lib/components/PUA/store_page_seller/tagLabelArea.svelte';
 	import { onMount } from 'svelte';
+	import type { PageData } from './$types';
+	export let data: PageData;
+	let shopName = data.shop;
 
 	interface productsType {
 		product_id: number;
@@ -150,13 +153,14 @@
 	});
 </script>
 
+<p>{shopName}</p>
 <div class="h-48 w-full overflow-hidden">
 	<img src={watermelon} alt="" class="w-full object-cover" />
 </div>
 
 <div class="mt-10 lg:px-40">
 	<div class="mx-5 space-y-2">
-		<div class="text-5xl font-bold text-PUA-stone">{shopDataList.name}</div>
+		<div class="text-PUA-stone text-5xl font-bold">{shopDataList.name}</div>
 		<div class="font-bold text-red-950">{shopDataList.address}</div>
 		<div class="flex w-full justify-start gap-6">
 			<TagLabelArea

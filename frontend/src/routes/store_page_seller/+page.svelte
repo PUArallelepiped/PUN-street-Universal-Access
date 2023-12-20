@@ -23,7 +23,7 @@
 	interface shippingDiscountType {
 		discount_name: string;
 		discount_description: string;
-		discount_max_price: number;
+		discount_max_quantity: number;
 		discount_id: number;
 		status: number;
 	}
@@ -71,7 +71,7 @@
 	let shippingList: shippingDiscountType = {
 		discount_name: 'free shipping',
 		discount_description: 'free shipping when total price over 1000',
-		discount_max_price: 1000,
+		discount_max_quantity: 1000,
 		discount_id: 1,
 		status: 1
 	};
@@ -107,7 +107,7 @@
 			...shippingList,
 			discount_name: '',
 			discount_description: '',
-			discount_max_price: 0,
+			discount_max_quantity: 0,
 			discount_id: 0,
 			status: 0
 		};
@@ -136,6 +136,7 @@
 	onMount(() => {
 		toggleHeight();
 	});
+
 	onMount(async () => {
 		const init_product = await fetch(`/products.json`);
 		productsList = await init_product.json();
@@ -155,7 +156,7 @@
 
 <div class="mt-10 lg:px-40">
 	<div class="mx-5 space-y-2">
-		<div class="text-5xl font-bold text-PUA-stone">{shopDataList.name}</div>
+		<div class="text-PUA-stone text-5xl font-bold">{shopDataList.name}</div>
 		<div class="font-bold text-red-950">{shopDataList.address}</div>
 		<div class="flex w-full justify-start gap-6">
 			<TagLabelArea
@@ -200,5 +201,14 @@
 		</div>
 	</div>
 </div>
-<ChangeDiscountPage bind:changePageData={shippingList} bind:showModel bind:dis_haved
+<ChangeDiscountPage
+	bind:changePageData={shippingList}
+	bind:showModel
+	bind:dis_haved
+	add_Discount={() => {
+		return null;
+	}}
+	delete_Discount={() => {
+		return null;
+	}}
 ></ChangeDiscountPage>

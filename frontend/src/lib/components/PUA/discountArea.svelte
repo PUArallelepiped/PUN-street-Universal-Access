@@ -14,6 +14,8 @@
 	export let addSign: boolean = true;
 
 	export let type: boolean = false;
+
+	$: last_index = discount.length;
 </script>
 
 <div class="relative h-full w-full">
@@ -37,7 +39,6 @@
 								on:click={() => {
 									toggleModel(), addDiscountButton(index);
 								}}
-								on:click={addDiscountButton(index)}
 								class="rounded-[10px] border-2 border-lime-800 px-2 py-0 font-bold text-lime-800 hover:bg-lime-800 hover:text-white active:bg-lime-800"
 								>買{discount_max_quantity}送一</button
 							>
@@ -48,7 +49,7 @@
 			{#if addSign}
 				<div class="flex items-center">
 					<button
-						on:click={addDiscountButton(-1)}
+						on:click={addDiscountButton(last_index)}
 						on:click={toggleModel}
 						class="h-5 w-5 rounded-[10px] bg-lime-800 text-center text-[13px] font-bold text-white"
 						>+</button

@@ -62,14 +62,57 @@
 		picture: '',
 		status: 0
 	};
+	let current_discount_array = {
+		discount_max_quantity: 0,
+		product_id: 0,
+		discount_name: '',
+		discount_description: '',
+		discount_id: 0,
+		status: 0
+	};
+	let new_index = 0;
 
 	function addDiscountButton() {
 		const newLabel = { ...current_discount_array };
-
-		product_data = {
-			...product_data,
-			event_discount_array: [...product_data.event_discount_array, newLabel]
-		};
+		if (product_data.event_discount_array[new_index]) {
+			product_data.event_discount_array[new_index] = current_discount_array;
+		} else {
+			product_data = {
+				...product_data,
+				event_discount_array: [...product_data.event_discount_array, newLabel]
+			};
+			console.log('找不到符合條件的物件');
+		}
+		return null;
+	}
+	function delete_Discount() {
+		if (new_index >= 0 && new_index < product_data.event_discount_array.length) {
+			const newArray = product_data.event_discount_array.filter((_, i) => i !== new_index);
+			product_data.event_discount_array = newArray;
+			console.log(product_data);
+		} else {
+			console.log('no_delete');
+		}
+		return null;
+	}
+	let discountData = { kind: 'Shipping Discount', how: 'NT$', way: 'free shipping' };
+	function getDiscount(i: number) {
+		if (product_data.event_discount_array[i]) {
+			current_discount_array = product_data.event_discount_array[i];
+		} else {
+			current_discount_array = {
+				discount_max_quantity: 0,
+				product_id: 0,
+				discount_name: '',
+				discount_description: '',
+				discount_id: 0,
+				status: 0
+			};
+			console.log('找不到符合條件的物件');
+			console.log(current_discount_array);
+		}
+		new_index = i;
+		console.log(new_index);
 		return null;
 	}
 
@@ -95,33 +138,6 @@
 		PostProductResp();
 		return null;
 	}
-	let current_discount_array = {
-		discount_max_quantity: 0,
-		product_id: 0,
-		discount_name: '',
-		discount_description: '',
-		discount_id: 0,
-		status: 0
-	};
-	let discountData = { kind: 'Shipping Discount', how: 'NT$', way: 'free shipping' };
-	function getDiscount(i: number) {
-		if (product_data.event_discount_array[i]) {
-			current_discount_array = product_data.event_discount_array[i];
-			console.log(current_discount_array);
-		} else {
-			current_discount_array = {
-				discount_max_quantity: 0,
-				product_id: 0,
-				discount_name: '',
-				discount_description: '',
-				discount_id: 0,
-				status: 0
-			};
-			console.log('找不到符合條件的物件');
-		}
-		return null;
-	}
-
 	onMount(async () => {
 		getProductResp();
 	});
@@ -253,8 +269,6 @@
 		bind:showModel
 		dis_haved={false}
 		add_Discount={addDiscountButton}
-		delete_Discount={() => {
-			return null;
-		}}
+		{delete_Discount}
 	></ChangeDiscountPage>
 {/await}

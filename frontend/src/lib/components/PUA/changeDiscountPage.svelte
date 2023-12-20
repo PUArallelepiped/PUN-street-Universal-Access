@@ -30,12 +30,8 @@
 	currentData = { ...changePageData };
 
 	$: {
-		if (!showModel) {
-			initPage();
-		}
-		if (!dis_haved) {
-			initPage();
-		}
+		changePageData;
+		initPage();
 	}
 	function initPage() {
 		currentData = { ...changePageData };
@@ -53,6 +49,7 @@
 		changePageData = { ...currentData };
 		dis_haved = true;
 		toggleModel();
+		add_Discount();
 	}
 </script>
 
@@ -72,7 +69,7 @@
 						</button>
 					</div>
 				</div>
-				<form on:submit={handleSubmit} method="post">
+				<form on:submit={handleSubmit}>
 					<div class="relative mx-16 my-8">
 						<div class="flex w-full items-center justify-center pb-2 pt-2">
 							<div class="border-PUA-stone text-PUA-stone flex w-80 rounded-xl border-4 p-2">
@@ -97,7 +94,6 @@
 							text={' Enter Max Quantity'}
 							name={'MaxQuantity'}
 						></ChangeDiscountInput>
-
 						<ChangeDiscountInput
 							title={'Discount Name'}
 							bind:value={currentData.discount_name}
@@ -114,19 +110,16 @@
 
 					<div class="mt-5 flex items-center justify-between gap-5 text-center">
 						<button
+							type="button"
+							on:click={() => {
+								delete_Discount(), toggleModel();
+							}}
 							class="w-4/5 rounded-[20px] bg-gray-200 font-bold text-red-900"
-							on:click={delete_Discount}
 						>
 							Delete
 						</button>
 
-						<button
-							on:click={() => {
-								handleSubmit(), add_Discount();
-							}}
-							type="submit"
-							class="w-4/5 rounded-[20px] bg-orange-700 font-bold text-white"
-						>
+						<button type="submit" class="w-4/5 rounded-[20px] bg-orange-700 font-bold text-white">
 							Save
 						</button>
 					</div>

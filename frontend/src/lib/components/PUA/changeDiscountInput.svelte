@@ -8,24 +8,24 @@
 </script>
 
 <div class="mt-2">
-	<p class="text-3 font-bold text-PUA-stone">{title}</p>
+	<p class="text-3 text-PUA-stone font-bold">{title}</p>
 	{#if type === 'text'}
 		<input
-			required
+			required={true}
 			{name}
 			type="text"
-			class="... peer w-full border-b-[2px] border-PUA-stone font-bold"
+			class="... border-PUA-stone peer w-full border-b-[2px] font-bold"
 			bind:value
 			placeholder={text}
 		/>
 	{:else if type === 'number'}
 		<input
-			required
+			required={true}
 			{name}
 			min="1"
 			max="99999"
 			type="number"
-			class="peer w-full border-b-[2px] border-PUA-stone font-bold"
+			class="border-PUA-stone peer w-full border-b-[2px] font-bold"
 			bind:value
 			placeholder={text}
 		/>

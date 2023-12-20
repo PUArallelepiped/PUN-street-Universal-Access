@@ -50,7 +50,6 @@
 		dis_haved = true;
 		toggleModel();
 		add_Discount();
-		event.preventDefault();
 	}
 </script>
 
@@ -70,7 +69,7 @@
 						</button>
 					</div>
 				</div>
-				<form on:submit={handleSubmit}>
+				<form on:submit|preventDefault={handleSubmit}>
 					<div class="relative mx-16 my-8">
 						<div class="flex w-full items-center justify-center pb-2 pt-2">
 							<div class="border-PUA-stone text-PUA-stone flex w-80 rounded-xl border-4 p-2">

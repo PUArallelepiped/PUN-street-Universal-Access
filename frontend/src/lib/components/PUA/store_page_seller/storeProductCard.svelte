@@ -9,7 +9,10 @@
 	export let href: string = './';
 </script>
 
-<a {href} class="flex items-center justify-between rounded-3xl bg-white">
+<a
+	{href}
+	class="flex items-center justify-between rounded-3xl bg-white duration-150 hover:scale-105"
+>
 	<div class="m-4 flex h-24 items-center">
 		<div class="h-24 w-24 overflow-hidden rounded-lg">
 			<img src={imgUrl} alt="" class="h-full object-cover object-center" />
@@ -36,7 +39,10 @@
 
 			<p class="w-10 text-end text-xl">{price}</p>
 		</div>
-		<button on:click|preventDefault>
+		<button
+			on:click|preventDefault
+			class="transition-transform duration-200 hover:scale-125 active:scale-90"
+		>
 			<img src={transhcan} alt="" />
 		</button>
 	</div>

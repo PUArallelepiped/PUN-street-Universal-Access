@@ -2,18 +2,38 @@
 	import OkButton from './OkButton.svelte';
 	import Star from '$lib/assets/Star.svg';
 	import noStar from '$lib/assets/noStar.svg';
+	import { invalidateAll } from '$app/navigation';
+	import { onMount } from 'svelte';
 	export let avgRate: number = 4.87;
 	export let shopName: string;
 	export let date: string;
 	export let cost: number;
 	export let img: string;
 	let rate = 2;
+	let rateList: boolean[] = [];
+	onMount(() => {
+		getRateList();
+	});
 	function getRateList() {
-		let rateList = [];
+		rateList = [];
 		for (let i = 0; i < 5; i++) {
 			rateList.push(i < rate);
 		}
 		return rateList;
+	}
+	async function rateStore(index: number) {
+		try {
+			// fetch('http://localhost:5000/store/1/rate', {
+			// 	method: 'POST',
+			// 	body: JSON.stringify({
+			// 		rate: index
+			// 	})
+			// });
+		} catch {}
+		rate = index;
+
+		getRateList();
+		return null;
 	}
 </script>
 
@@ -58,13 +78,21 @@
 
 		<div class="flex gap-2">
 			<div class="text-2xl font-semibold leading-normal text-PUA-dark-red">Rate store</div>
-			{#each getRateList() as r}
-				{#if r}
-					<img src={Star} alt="" class="h-7 w-7" />
-				{:else}
-					<img src={noStar} alt="" class="h-7 w-7" />
-				{/if}
-			{/each}
+			{#if rate >= 0}
+				{#each rateList as r, index}
+					<button
+						on:click={() => {
+							rateStore(index + 1);
+						}}
+					>
+						{#if r}
+							<img src={Star} alt="" class="h-7 w-7" />
+						{:else}
+							<img src={noStar} alt="" class="h-7 w-7" />
+						{/if}
+					</button>
+				{/each}
+			{/if}
 		</div>
 	</div>
 	<div class="flex items-center justify-center">

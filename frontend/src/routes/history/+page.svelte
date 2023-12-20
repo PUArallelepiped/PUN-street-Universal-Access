@@ -15,6 +15,7 @@
 			cost={history.total_price}
 			date={history.order_date}
 			shopName={history.store_name}
+			img={history.store_picture}
 		></HistoryCard>
 	{/each}
 </div>

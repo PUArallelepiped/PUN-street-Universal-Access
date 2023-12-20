@@ -6,6 +6,7 @@
 	export let shopName: string;
 	export let date: string;
 	export let cost: number;
+	export let img: string;
 	let rate = 2;
 	function getRateList() {
 		let rateList = [];
@@ -18,7 +19,7 @@
 
 <div class="flex gap-5 rounded-xl bg-white p-2">
 	<div class="relative h-32 w-64">
-		<img class=" rounded-xl shadow-inner" src="https://via.placeholder.com/256x128" alt="no pic" />
+		<img class="flex h-full w-full rounded-xl object-cover shadow-inner" src={img} alt="no pic" />
 		<div
 			class="absolute right-3 top-3 flex items-center gap-1 rounded-lg border-2
 			 border-white border-opacity-50 bg-PUA-dark-red

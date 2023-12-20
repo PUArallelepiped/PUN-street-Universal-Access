@@ -1,5 +1,7 @@
 <script lang="ts">
 	import wallet from '$lib/assets/profile_wallet.svg';
+	import { backendPath } from '$lib/components/PUA/env';
+	import { onMount } from 'svelte';
 
 	let currentTab = 0;
 	function switchProfile() {
@@ -22,6 +24,40 @@
 		}
 		currentTab = 1;
 	}
+
+	type userShort = {
+		user_id: number;
+		user_name: string;
+		user_email: string;
+		address: string;
+		authority: string;
+		status: number;
+		phone: string;
+		birthday: string;
+		password: string;
+	};
+
+	let userInfo: userShort = {
+		user_id: 1,
+		user_name: 'admin',
+		user_email: 'aaa',
+		address: 'aaa',
+		authority: 'admin',
+		status: 1,
+		phone: '0912345678',
+		birthday: '2021-05-01',
+		password: '123456'
+	};
+
+	onMount(async () => {
+		getUserInfo();
+	});
+
+	async function getUserInfo() {
+		const resp = await fetch(backendPath + '/user/get-info/1');
+		const json = await resp.json();
+		userInfo = json;
+	}
 </script>
 
 <div class="flex justify-center">
@@ -30,10 +66,10 @@
 			<div class="flex">
 				<img src={wallet} alt="" class="my-6 ml-10" />
 				<div class="flex-col pl-5 pt-7">
-					<div class="font-['Inter'] text-2xl font-bold text-PUA-gray">Usernamenamename</div>
-					<div class="font-['Inter'] text-base font-bold text-PUA-gray">t110595959@rice.org.tw</div>
+					<div class="font-['Inter'] text-2xl font-bold text-PUA-gray">{userInfo.user_name}</div>
+					<div class="font-['Inter'] text-base font-bold text-PUA-gray">{userInfo.user_email}</div>
 					<div class="pt-5 font-['Inter'] text-xl font-bold text-PUA-gray">
-						100台灣台北市中正區八德路一段82巷9弄17號
+						{userInfo.address}
 					</div>
 				</div>
 			</div>
@@ -65,7 +101,7 @@
 					</div>
 					<input
 						type="text"
-						value="Usernamename"
+						value={userInfo.user_name}
 						class="flex bg-inherit font-['Inter'] text-2xl font-bold text-PUA-dark-orange underline focus:outline-none"
 					/>
 				</div>
@@ -77,7 +113,7 @@
 					</div>
 					<input
 						type="text"
-						value="09-XXXX-XXXX"
+						value={userInfo.phone}
 						class="flex bg-inherit font-['Inter'] text-2xl font-bold text-PUA-dark-orange underline focus:outline-none"
 					/>
 				</div>
@@ -89,7 +125,7 @@
 					</div>
 					<input
 						type="text"
-						value="2021-05-01"
+						value={userInfo.birthday}
 						class="flex bg-inherit font-['Inter'] text-2xl font-bold text-PUA-dark-orange underline focus:outline-none"
 					/>
 				</div>
@@ -114,7 +150,7 @@
 					</div>
 					<input
 						type="text"
-						value="t110595959@rice.org.tw"
+						value={userInfo.user_email}
 						class="flex bg-inherit font-['Inter'] text-2xl font-bold text-PUA-dark-orange underline focus:outline-none"
 					/>
 				</div>
@@ -126,7 +162,7 @@
 					</div>
 					<input
 						type="text"
-						value="●●●●●●●●●●"
+						value={userInfo.password}
 						class="flex bg-inherit font-['Inter'] text-2xl font-bold text-PUA-dark-orange underline focus:outline-none"
 					/>
 				</div>

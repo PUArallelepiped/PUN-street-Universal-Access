@@ -28,6 +28,7 @@ func NewUserHandler(e *gin.Engine, userUsecase domain.UserUsecase) {
 		v1.GET("/validate", handler.ValidateToken)
 		v1.POST("/register", handler.RegisterUser)
 		v1.POST("/check-email", handler.CheckEmail)
+		v1.GET("/userID", handler.GetUserIdByCookie)
 	}
 }
 
@@ -140,4 +141,21 @@ func (u *UserHandler) CheckEmail(c *gin.Context) {
 	}
 
 	c.JSON(200, isExist)
+}
+
+func (u *UserHandler) GetUserIdByCookie(c *gin.Context) {
+	token, err := c.Cookie("jwttoken")
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+	}
+	id, err := u.UserUsecase.GetUserIdByCookie(c, token)
+	idInfo := swagger.IdInfo{
+		UserId: id,
+	}
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+	}
+	c.JSON(200, idInfo)
 }

@@ -34,7 +34,7 @@
 					text="Check Order"
 					onclick={async () => {
 						let userId = 1;
-						const resp = await fetch(
+						await fetch(
 							backendPath +
 								'/seller/update-order-status/customer/' +
 								userId +

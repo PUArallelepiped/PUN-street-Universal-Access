@@ -1,6 +1,8 @@
 <script lang="ts">
+	import ErrorMsg from './errorMsg.svelte';
 	export let value = '';
 	export let width: string = '10';
+	export let required: boolean = false;
 
 	function handleInput(event: Event) {
 		const target = event.target as HTMLTextAreaElement;
@@ -13,9 +15,13 @@
 </script>
 
 <textarea
+	{required}
 	bind:value
 	on:input={handleInput}
-	class="w-{width}  h-7 overflow-hidden border-b-[1px] border-solid border-b-gray-400 bg-transparent text-xl outline-none"
+	class="w-{width}  peer h-7 overflow-hidden border-b-[1px] border-solid border-b-gray-400 bg-transparent text-xl outline-none"
 	placeholder="Enter text"
 	id="svelteTextarea"
 ></textarea>
+<div class="invisible w-64 peer-invalid:visible">
+	<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
+</div>

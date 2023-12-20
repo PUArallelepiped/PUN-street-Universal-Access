@@ -18,6 +18,10 @@ export const load: PageServerLoad = async () => {
 	};
 };
 async function getHistory() {
-	const resp = await fetch(backendPath + '/customer/1/get-history');
-	return (await resp.json()) as historyInfoType[];
+	try {
+		const resp = await fetch(backendPath + '/customer/1/get-history');
+		return (await resp.json()) as historyInfoType[];
+	} catch {
+		return [] as historyInfoType[];
+	}
 }

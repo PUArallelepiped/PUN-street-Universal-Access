@@ -4,6 +4,7 @@
 	import noStar from '$lib/assets/noStar.svg';
 	import { invalidateAll } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { backendPath } from './env';
 	export let avgRate: number = 4.87;
 	export let shopName: string;
 	export let date: string;
@@ -23,12 +24,12 @@
 	}
 	async function rateStore(index: number) {
 		try {
-			// fetch('http://localhost:5000/store/1/rate', {
-			// 	method: 'POST',
-			// 	body: JSON.stringify({
-			// 		rate: index
-			// 	})
-			// });
+			fetch(backendPath + '/store/1/rate', {
+				method: 'POST',
+				body: JSON.stringify({
+					rate: index
+				})
+			});
 		} catch {}
 		rate = index;
 

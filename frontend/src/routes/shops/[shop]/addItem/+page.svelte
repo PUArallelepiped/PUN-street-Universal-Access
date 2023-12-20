@@ -71,7 +71,7 @@
 	let showModel = false;
 	let Status = [{ label: '上架中' }, { label: '已售完' }]; //1上架中  2已售完
 	let new_index = 0;
-	let discountData = { kind: 'Shipping Discount', how: 'NT$', way: 'free shipping' };
+	let discountData = { kind: 'Event Discount', how: 'Get', way: 'FOR FREE ONE' };
 
 	function addDiscountButton() {
 		const newLabel = { ...current_discount_array };
@@ -110,7 +110,7 @@
 	}
 
 	async function getProductResp() {
-		const res = await fetch(backendPath + `/product/16`);
+		const res = await fetch(backendPath + `/product/2`);
 
 		if (res.status == 200) {
 			product_data = await res.json();
@@ -120,6 +120,7 @@
 	}
 
 	async function PostProductResp() {
+		console.log(product_data);
 		let post_status = fetch(backendPath + `/store/` + product_data.store_id + `/add-product`, {
 			method: 'POST',
 			body: JSON.stringify(product_data)

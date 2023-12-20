@@ -119,10 +119,6 @@
 		console.log(post_status);
 	}
 
-	// function post() {
-	// 	PostProductResp();
-	// 	return null;
-	// }
 	onMount(async () => {
 		getProductResp();
 	});

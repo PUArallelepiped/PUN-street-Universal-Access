@@ -15,6 +15,11 @@
 		rate_count: number;
 		rate: number;
 		name: string;
+		category_array: {
+			category_name: string;
+			category_id: number;
+		}[];
+
 		description: string;
 		picture: string;
 		status: number;
@@ -24,6 +29,16 @@
 		address: '100台灣台北市中正區八德路一段82巷9弄17號',
 		rate_count: 10,
 		rate: 5,
+		category_array: [
+			{
+				category_name: 'drink',
+				category_id: 1
+			},
+			{
+				category_name: 'drink',
+				category_id: 1
+			}
+		],
 		name: 'Im pasta',
 		description: 'good pasta',
 		picture: 'https://i.imgur.com/1.jpg',
@@ -65,6 +80,7 @@
 		shopInfoResponse = await resp.json();
 		// const tag_category = await fetch(`/categories.json`);
 		// tagList = await tag_category.json();
+		console.log(shopInfoResponse);
 	});
 </script>
 

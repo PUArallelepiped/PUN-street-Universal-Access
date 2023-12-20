@@ -2,7 +2,6 @@
 	import watermelon from '$lib/assets/watermelon.png';
 	import { Counter } from '$lib';
 	import { DiscountArea, Checkcontainer, OkButton, NeedChooseLabel } from '$lib/index';
-
 	let product: {
 		title: string;
 		picture: string;

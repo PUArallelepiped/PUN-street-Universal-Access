@@ -5,7 +5,7 @@
 	import { Textarea, DisCountArea, OkButton, StatusButton, ErrorMsg } from '$lib/index';
 	import AddCategoryAndItemArea from '$lib/components/PUA/addCategoryAndItemArea.svelte';
 	import ChangeDiscountPage from '$lib/components/PUA/changeDiscountPage.svelte';
-
+	let store_id = 1;
 	type productRespType = {
 		store_id: number;
 		product_label_array: {
@@ -33,7 +33,7 @@
 		status: number;
 	};
 	let product_data: productRespType = {
-		store_id: 0,
+		store_id: store_id,
 		product_label_array: [
 			{
 				item_array: [{ name: '' }],
@@ -47,18 +47,9 @@
 		name: '',
 		description: '',
 		stock: 0,
-		event_discount_array: [
-			{
-				discount_max_quantity: 0,
-				product_id: 0,
-				discount_name: '',
-				discount_description: '',
-				discount_id: 0,
-				status: 0
-			}
-		],
+		event_discount_array: [],
 		picture: '',
-		status: 0
+		status: 1
 	};
 	let current_discount_array = {
 		discount_max_quantity: 0,
@@ -66,10 +57,10 @@
 		discount_name: '',
 		discount_description: '',
 		discount_id: 0,
-		status: 0
+		status: 1
 	};
 	let showModel = false;
-	let Status = [{ label: '上架中' }, { label: '已售完' }]; //1上架中  2已售完
+	let Status = [{ label: '上架中' }, { label: '已售完' }];
 	let new_index = 0;
 	let discountData = { kind: 'Event Discount', how: 'Get', way: 'FOR FREE ONE' };
 
@@ -110,7 +101,7 @@
 	}
 
 	async function getProductResp() {
-		const res = await fetch(backendPath + `/product/2`);
+		const res = await fetch(backendPath + `/product/0`);
 
 		if (res.status == 200) {
 			product_data = await res.json();
@@ -121,7 +112,7 @@
 
 	async function PostProductResp() {
 		console.log(product_data);
-		let post_status = fetch(backendPath + `/store/` + product_data.store_id + `/add-product`, {
+		let post_status = fetch(backendPath + `/store/` + store_id + `/add-product`, {
 			method: 'POST',
 			body: JSON.stringify(product_data)
 		});

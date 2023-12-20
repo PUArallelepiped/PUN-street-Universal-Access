@@ -1467,13 +1467,13 @@ components:
         product_label_array:
         - item_array:
           - name: have
-          - name: false
+          - name: no
           product_id: 1
           label_name: milk
           required: true
         - item_array:
           - name: have
-          - name: false
+          - name: no
           product_id: 1
           label_name: milk22
           required: true

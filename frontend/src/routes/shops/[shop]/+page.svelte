@@ -4,6 +4,7 @@
 	import type { PageData } from './$types';
 	import { ProductCard } from '$lib';
 	import { backendPath } from '$lib/components/PUA/env';
+	import TagLabelAreaForShow from '$lib/components/PUA/tagLabelAreaForShow.svelte';
 	export let data: PageData;
 	let shopName = data.shop;
 
@@ -48,22 +49,43 @@
 			prodctListResponse = await backResp.json();
 		}
 	});
+	let tagList = [
+		{ category_id: 0, category_name: 'free' },
+		{ category_id: 1, category_name: 'drink' },
+		{ category_id: 2, category_name: 'drink' },
+		{ category_id: 3, category_name: 'local' },
+		{ category_id: 4, category_name: 'free delivery hahahaha' },
+		{ category_id: 5, category_name: 'color' },
+		{ category_id: 6, category_name: 'school free' },
+		{ category_id: 7, category_name: 'for student' },
+		{ category_id: 8, category_name: 'delicious' }
+	];
 	onMount(async () => {
 		const resp = await fetch(backendPath + `/store/1`);
 		shopInfoResponse = await resp.json();
+		// const tag_category = await fetch(`/categories.json`);
+		// tagList = await tag_category.json();
 	});
 </script>
 
 <div class="h-48 w-full overflow-hidden">
 	<img src={watermelon} alt="" class="w-full object-cover" />
 </div>
-<div class="mx-5 lg:px-40">
-	<div class="p-2">
+<div class="mx-5 mt-10 lg:px-40">
+	<!-- <div class="p-2">
 		<div class="m-1 p-2 text-5xl font-bold">
 			{shopInfoResponse.name}
 		</div>
 		<div class="pl-5">
 			{shopInfoResponse.address}
+		</div>
+	</div> -->
+	<div class="mx-5 space-y-2">
+		<div class="text-PUA-stone text-5xl font-bold">{shopInfoResponse.name}</div>
+		<div class="font-bold text-red-950">{shopInfoResponse.address}</div>
+		<div class="flex w-full justify-start gap-6">
+			<TagLabelAreaForShow tagText={tagList} star_score={shopInfoResponse.rate.toString()}
+			></TagLabelAreaForShow>
 		</div>
 	</div>
 	<div class="flex-row space-y-2 p-2">

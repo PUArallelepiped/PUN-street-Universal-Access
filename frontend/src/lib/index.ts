@@ -51,6 +51,25 @@ import InputBox from './components/PUA/InputBox.svelte';
 export { InputBox };
 import CheckBox from './components/PUA/CheckBox.svelte';
 export { CheckBox };
+import SortTag from './components/PUA/sortTag.svelte';
+export { SortTag };
+import DualRangeSlider from './components/PUA/dualRangeSlider.svelte';
+export { DualRangeSlider };
+
+export type category = { category_name: string; category_id: number };
+
+export type shopListResponse = {
+	address: string;
+	description: string;
+	name: string;
+	picture: string;
+	rate: number;
+	rate_count: number;
+	shipping_fee: number;
+	status: number;
+	store_id: number;
+	category_array: category[];
+};
 import CategoryLabel from '$lib/components/PUA/store_page_seller/categoryLabel.svelte';
 export { CategoryLabel };
 import DiscountCard from '$lib/components/PUA/store_page_seller/discountCard.svelte';

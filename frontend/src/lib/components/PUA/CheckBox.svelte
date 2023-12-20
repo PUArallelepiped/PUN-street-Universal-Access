@@ -15,7 +15,7 @@
 		class="h-7 w-7 accent-PUA-dark-orange"
 	/>
 	<label for={id}>
-		<div class="text-center text-xl font-bold leading-relaxed text-PUA-dark-orange">
+		<div class="truncate text-center text-xl font-bold leading-relaxed text-PUA-dark-red">
 			{text}
 		</div>
 	</label>

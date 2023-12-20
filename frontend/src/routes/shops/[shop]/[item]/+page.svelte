@@ -2,79 +2,121 @@
 	import watermelon from '$lib/assets/watermelon.png';
 	import { Counter } from '$lib';
 	import { DiscountArea, Checkcontainer, OkButton, NeedChooseLabel } from '$lib/index';
-
-	let product: {
-		title: string;
-		picture: string;
+	type productRespType = {
+		store_id: number;
+		product_label_array: {
+			item_array: {
+				name: string;
+			}[];
+			product_id: number;
+			label_name: string;
+			required: boolean;
+		}[];
 		price: number;
-		content: string;
-		choose: {
-			id: number;
-			need_choose: boolean;
-			category: string;
-			subcategories: string[];
+		product_id: number;
+		name: string;
+		description: string;
+		stock: number;
+		event_discount_array: {
+			discount_max_quantity: number;
+			product_id: number;
+			discount_name: string;
+			discount_description: string;
+			discount_id: number;
+			status: number;
 		}[];
-		discount: {
-			id: string;
-			label: string;
-		}[];
-	} = {
-		title: '奶油龍蝦腳加水餃 放在一起烤 嘿~它為什麼要這樣叫阿',
-		picture: watermelon,
-		price: 70,
-		content:
-			'1. 茶葉原料產地為斯里蘭卡。 2. 茶葉原料產地為斯里蘭卡, 印度及印尼。 冰飲。總熱量為 372.1大卡。標準糖量為 83.7 克。含咖啡因 59.5 毫克。',
-		choose: [
+		picture: string;
+		status: number;
+	};
+	let product: productRespType = {
+		store_id: 1,
+		product_label_array: [
 			{
-				id: 0,
-				need_choose: true,
-				category: '調整甜度',
-				subcategories: ['正常糖', '半糖', '微糖', '少糖', '無糖']
+				item_array: [
+					{
+						name: 'have'
+					},
+					{
+						name: 'false'
+					}
+				],
+				product_id: 1,
+				label_name: 'milk',
+				required: true
 			},
-			{ id: 1, need_choose: false, category: '加牛奶', subcategories: ['是', '否'] }
+			{
+				item_array: [
+					{
+						name: 'have'
+					},
+					{
+						name: 'false'
+					}
+				],
+				product_id: 1,
+				label_name: 'milk22',
+				required: true
+			}
 		],
-		discount: [
-			{ id: '1', label: '買二送一' },
-			{ id: '2', label: '買二送一' },
-			{ id: '3', label: '買二送一' },
-			{ id: '4', label: '買二送一' },
-			{ id: '5', label: '買二送一' },
-			{ id: '6', label: '買二送一' }
-		]
+		price: 9999,
+		product_id: 1,
+		name: 'pasta',
+		description: 'tasty pasta',
+		stock: 100,
+		event_discount_array: [
+			{
+				discount_max_quantity: 2,
+				product_id: 1,
+				discount_name: 'new year discount',
+				discount_description: 'black tea get two for one free',
+				discount_id: 1,
+				status: 1
+			},
+			{
+				discount_max_quantity: 2,
+				product_id: 1,
+				discount_name: 'new year discount',
+				discount_description: 'black tea get two for one free',
+				discount_id: 1,
+				status: 1
+			}
+		],
+		picture: 'https://i.imgur.com/1.jpg',
+		status: 1
 	};
 </script>
 
 <div class="flex justify-center">
 	<div class="my-6 flex h-full w-4/5 flex-col gap-8">
-		<div class=" flex w-full items-center text-4xl text-PUA-dark-red">
-			{product.title}
+		<div class=" text-PUA-dark-red flex w-full items-center text-4xl">
+			{product.name}
 		</div>
 
 		<div class="flex gap-16">
 			<div class="">
 				<img src={product.picture} alt="" class="mt-100 flex h-60 w-60 rounded-lg object-cover" />
-				<div class="flex items-baseline gap-3 py-5 font-bold text-PUA-dark-red">
+				<div class="text-PUA-dark-red flex items-baseline gap-3 py-5 font-bold">
 					<p class="text-2xl">NT$</p>
 					<p class="text-4xl">{product.price}</p>
 				</div>
 				<div class="w-[250px] text-justify text-base text-gray-600">
-					{product.content}
+					{product.description}
 				</div>
 			</div>
 			<div class=" flex w-full flex-col gap-4">
 				<div class=" flex w-full flex-col gap-4">
-					{#each product.choose as { need_choose, category, subcategories }}
+					{#each product.product_label_array as { required, label_name, item_array }}
 						<div class="">
 							<div class="flex items-center">
-								<div class="font-bold text-PUA-stone">{category}</div>
-								{#if need_choose}
+								<div class="text-PUA-stone font-bold">{label_name}</div>
+								{#if required}
 									<NeedChooseLabel></NeedChooseLabel>
 								{/if}
 							</div>
-							<div class="h-[1px] bg-PUA-dark-red"></div>
+							<div class="bg-PUA-dark-red h-[1px]"></div>
 							<div class="flex flex-col">
-								{#each subcategories as subcategory}
-									<Checkcontainer {category} {subcategory}></Checkcontainer>
+								{#each item_array as { name }}
+									<Checkcontainer category={label_name} subcategory={name}></Checkcontainer>
 								{/each}
 							</div>
 						</div>
@@ -82,7 +124,7 @@
 				</div>
 				<div>
 					<DiscountArea
-						discount={product.discount}
+						discount={product.event_discount_array}
 						toggleModel={() => {
 							return null;
 						}}

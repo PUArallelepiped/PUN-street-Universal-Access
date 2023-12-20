@@ -1,8 +1,12 @@
-<script>
+<script lang="ts">
 	import OkButton from './OkButton.svelte';
 	import Star from '$lib/assets/Star.svg';
 	import noStar from '$lib/assets/noStar.svg';
-	let rate = 4;
+	export let avgRate: number = 4.87;
+	export let shopName: string;
+	export let date: string;
+	export let cost: number;
+	let rate = 2;
 	function getRateList() {
 		let rateList = [];
 		for (let i = 0; i < 5; i++) {
@@ -43,13 +47,13 @@
 					</g>
 				</svg>
 			</div>
-			4.87
+			{avgRate}
 		</div>
 	</div>
 	<div class="flex w-96 flex-col">
-		<div class=" text-2xl font-bold leading-relaxed text-PUA-dark-orange">Shop name</div>
-		<div class=" text-base font-bold leading-relaxed text-PUA-dark-orange">2020-10-11</div>
-		<div class=" text-base font-bold leading-relaxed text-PUA-dark-orange">NT$999</div>
+		<div class=" text-2xl font-bold leading-relaxed text-PUA-dark-orange">{shopName}</div>
+		<div class=" text-base font-bold leading-relaxed text-PUA-dark-orange">{date}</div>
+		<div class=" text-base font-bold leading-relaxed text-PUA-dark-orange">NT${cost}</div>
 
 		<div class="flex gap-2">
 			<div class="text-2xl font-semibold leading-normal text-PUA-dark-red">Rate store</div>

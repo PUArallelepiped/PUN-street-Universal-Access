@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"math"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
@@ -140,4 +141,18 @@ func (p *postgresqlStoreRepo) GetAllProductSellingById(ctx context.Context, id i
 	}
 	return productSellingArray, nil
 
+}
+
+func (p *postgresqlStoreRepo) CalculateRate(ctx context.Context, id int64, rate swagger.RateInfo) error {
+	sqlStatement := `
+	UPDATE stores
+	SET rate = ROUND((rate*rate_count+$1)::numeric/(rate_count+1),1) , rate_count = rate_count+1
+	WHERE store_id=$2
+	`
+	tempRate := float32(math.Max(0, math.Min(5, float64(rate.Rate))))
+	if _, err := p.db.Exec(sqlStatement, tempRate, id); err != nil {
+		logrus.Error(err)
+		return err
+	}
+	return nil
 }

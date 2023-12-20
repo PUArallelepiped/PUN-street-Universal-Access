@@ -20,15 +20,17 @@ func NewCartHandler(e *gin.Engine, cartUsecase domain.CartUsecase) {
 	}
 	v1 := e.Group("/api/v1")
 	{
-		v1.GET("/customer/:userID/cart/:cartID/carts")
-		v1.GET("/customer/:userID/cart/:cartID/store/:storeID/carts")
-		v1.GET("/customer/:userID/cart/:cartID/store/:storeID/get-total-price")
+		v1.GET("/customer/:userID/carts", handler.GetCurrentCarts)
+		v1.GET("/customer/:userID/cart/:cartID/store/:storeID/carts", handler.GetHistoryCart)
 		v1.GET("/customer/:userID/get-history", handler.GetAllHistory)
 		v1.GET("/customer/:userID/order-status", handler.GetRunOrder)
 
 		v1.POST("/customer/:userID/cart", handler.AddProductToCart)
-		v1.POST("/customer/:userID/store/:storeID/checkout")
+		v1.POST("/customer/:userID/checkout", handler.Checkout)
 		v1.DELETE("/customer/:userID/delete/product/:productID", handler.DeleteProduct)
+
+		v1.PUT("/seller/update-order-status/customer/:userID/cart/:cartID/store/:storeID", handler.UpdateOrderStatus)
+		v1.GET("/seller/store/:storeID/orders", handler.GetSellerOrders)
 	}
 }
 func (ch *CartHandler) GetAllHistory(c *gin.Context) {
@@ -116,4 +118,104 @@ func (ch *CartHandler) AddProductToCart(c *gin.Context) {
 	}
 
 	c.Status(200)
+}
+
+func (ch *CartHandler) GetHistoryCart(c *gin.Context) {
+	customerID, customerErr := strconv.ParseInt(c.Param("userID"), 10, 64)
+	cartID, cartErr := strconv.ParseInt(c.Param("cartID"), 10, 64)
+	storeID, storeErr := strconv.ParseInt(c.Param("storeID"), 10, 64)
+	errArr := []error{customerErr, cartErr, storeErr}
+	for _, err := range errArr {
+		if err != nil {
+			logrus.Error(err)
+			c.Status(400)
+			return
+		}
+	}
+
+	storeOrder, err := ch.CartUsecase.GetHistoryCart(c, customerID, cartID, storeID)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, storeOrder)
+}
+
+func (ch *CartHandler) GetCurrentCarts(c *gin.Context) {
+	customerID, err := strconv.ParseInt(c.Param("userID"), 10, 64)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
+	cartOrder, err := ch.CartUsecase.GetCurrentCartsByUserID(c, customerID)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, cartOrder)
+}
+
+func (ch *CartHandler) Checkout(c *gin.Context) {
+	customerID, err := strconv.ParseInt(c.Param("userID"), 10, 64)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
+	err = ch.CartUsecase.Checkout(c, customerID)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.Status(200)
+}
+
+func (ch *CartHandler) UpdateOrderStatus(c *gin.Context) {
+	customerID, customerErr := strconv.ParseInt(c.Param("userID"), 10, 64)
+	cartID, cartErr := strconv.ParseInt(c.Param("cartID"), 10, 64)
+	storeID, storeErr := strconv.ParseInt(c.Param("storeID"), 10, 64)
+	errArr := []error{customerErr, cartErr, storeErr}
+	for _, err := range errArr {
+		if err != nil {
+			logrus.Error(err)
+			c.Status(400)
+			return
+		}
+	}
+
+	order, err := ch.CartUsecase.UpdateOrderStatusByID(c, customerID, cartID, storeID)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, order)
+}
+
+func (ch *CartHandler) GetSellerOrders(c *gin.Context) {
+	storeID, err := strconv.ParseInt(c.Param("storeID"), 10, 64)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
+	orders, err := ch.CartUsecase.GetSellerOrders(c, storeID)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, orders)
 }

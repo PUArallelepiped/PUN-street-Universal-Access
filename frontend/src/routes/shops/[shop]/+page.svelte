@@ -1,6 +1,5 @@
 <script lang="ts">
 	import watermelon from '$lib/assets/watermelon.png';
-	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import { ProductCard } from '$lib';
 	import { backendPath } from '$lib/components/PUA/env';
@@ -82,6 +81,8 @@
 		// tagList = await tag_category.json();
 		console.log(shopInfoResponse);
 	});
+	export let data: PageData;
+	let shopName = data.shop;
 </script>
 
 <div class="h-48 w-full overflow-hidden">
@@ -90,10 +91,10 @@
 <div class="mx-5 mt-10 lg:px-40">
 	<!-- <div class="p-2">
 		<div class="m-1 p-2 text-5xl font-bold">
-			{shopInfoResponse.name}
+			{data.shopInfo.name}
 		</div>
 		<div class="pl-5">
-			{shopInfoResponse.address}
+			{data.shopInfo.address}
 		</div>
 	</div> -->
 	<div class="mx-5 space-y-2">
@@ -105,7 +106,7 @@
 		</div>
 	</div>
 	<div class="flex-row space-y-2 p-2">
-		{#each prodctListResponse as product}
+		{#each data.productList as product}
 			<ProductCard
 				name={product.name}
 				href={'./' + shopName + '/' + product.product_id}
@@ -119,34 +120,34 @@
 
 <div class=" bg-orange-950 p-5 text-white">
 	<div class="text-lg font-bold">DEBUG AREA</div>
-	{#if shopInfoResponse}
+	{#if data.shopInfo}
 		<div class="flex-col text-center">
 			<div>
-				{shopInfoResponse.store_id}
+				{data.shopInfo.store_id}
 			</div>
 			<div>
-				fee:{shopInfoResponse.shipping_fee}
+				fee:{data.shopInfo.shipping_fee}
 			</div>
 			<div>
-				{shopInfoResponse.address}
+				{data.shopInfo.address}
 			</div>
 			<div>
-				rate_count: {shopInfoResponse.rate_count}
+				rate_count: {data.shopInfo.rate_count}
 			</div>
 			<div>
-				rate:{shopInfoResponse.rate}
+				rate:{data.shopInfo.rate}
 			</div>
 			<div>
-				{shopInfoResponse.name}
+				{data.shopInfo.name}
 			</div>
 			<div>
-				{shopInfoResponse.description}
+				{data.shopInfo.description}
 			</div>
 			<div>
-				{shopInfoResponse.picture}
+				{data.shopInfo.picture}
 			</div>
 			<div>
-				status:{shopInfoResponse.status}
+				status:{data.shopInfo.status}
 			</div>
 		</div>
 	{:else}

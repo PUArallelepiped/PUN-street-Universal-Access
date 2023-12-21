@@ -9,6 +9,7 @@
 	export let date: string;
 	export let cost: number;
 	export let img: string;
+	export let storeId: number;
 	let rate = 2;
 	let rateList: boolean[] = [];
 	onMount(() => {
@@ -23,7 +24,7 @@
 	}
 	async function rateStore(index: number) {
 		try {
-			fetch(backendPath + '/store/1/rate', {
+			fetch(backendPath + '/store/' + storeId + '/rate', {
 				method: 'POST',
 				body: JSON.stringify({
 					rate: index

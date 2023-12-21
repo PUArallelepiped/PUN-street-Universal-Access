@@ -11,6 +11,7 @@
 
 	{#each data.history as history}
 		<HistoryCard
+			storeId={history.store_id}
 			avgRate={history.store_rate}
 			cost={history.total_price}
 			date={history.order_date}

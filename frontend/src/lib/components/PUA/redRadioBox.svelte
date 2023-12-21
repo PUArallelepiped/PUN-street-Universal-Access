@@ -2,6 +2,8 @@
 	export let name: string = '';
 	export let id: string = '';
 	export let checked: boolean = false;
+	export let value: boolean | string = ' ';
+	export let group: boolean | string | number = false;
 </script>
 
 <div class="flex">
@@ -25,6 +27,8 @@
 			{id}
 			{name}
 			{checked}
+			{value}
+			bind:group
 		/>
 		<label for={id}></label>
 	</div>

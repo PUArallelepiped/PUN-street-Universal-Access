@@ -1,6 +1,6 @@
 <script lang="ts">
 	import start from '$lib/assets/start.svg';
-	export let text = 'null';
+	export let text: number | string = 0;
 </script>
 
 <div
@@ -9,3 +9,5 @@
 	<img src={start} alt="" />
 	{text}
 </div>
+
+<!-- <p>{text}</p> -->

@@ -11,6 +11,7 @@ type shopInfoType = {
 	description: string;
 	picture: string;
 	status: number;
+	category_array: { category_name: string; category_id: number }[];
 };
 type ProductInfoType = {
 	name: string;
@@ -21,6 +22,9 @@ type ProductInfoType = {
 	status: number;
 	stock: number;
 	store_id: number;
+	event_discount_array: {
+		discount_max_quantity: number;
+	}[];
 };
 export const load: PageServerLoad = async ({ params }) => {
 	return {

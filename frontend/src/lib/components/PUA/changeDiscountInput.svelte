@@ -11,7 +11,7 @@
 	<p class="text-3 font-bold text-PUA-stone">{title}</p>
 	{#if type === 'text'}
 		<input
-			required
+			required={true}
 			{name}
 			type="text"
 			class="... peer w-full border-b-[2px] border-PUA-stone font-bold"
@@ -20,7 +20,7 @@
 		/>
 	{:else if type === 'number'}
 		<input
-			required
+			required={true}
 			{name}
 			min="1"
 			max="99999"

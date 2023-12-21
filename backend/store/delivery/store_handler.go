@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
+	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -23,6 +24,7 @@ func NewStoreHandler(e *gin.Engine, storeUsecase domain.StoreUsecase) {
 		v1.GET("/stores", handler.GetStores)
 		v1.GET("/store/:storeID/get-statistics/:year", handler.GetStatistics)
 		v1.GET("/store/:storeID/get-selling/:year/:month", handler.GetSelling)
+		v1.POST("/store/:storeID/rate", handler.PostRate)
 	}
 }
 
@@ -95,4 +97,27 @@ func (s *StoreHandler) GetSelling(c *gin.Context) {
 	}
 
 	c.JSON(200, productStatistic)
+}
+
+func (s *StoreHandler) PostRate(c *gin.Context) {
+
+	storeID, err := strconv.ParseInt(c.Param("storeID"), 10, 64)
+	if err != nil {
+		return
+	}
+
+	var rate swagger.RateInfo
+	if err := c.BindJSON(&rate); err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
+	if err := s.StoreUsecase.CalculateRate(c, storeID, rate); err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.Status(200)
 }

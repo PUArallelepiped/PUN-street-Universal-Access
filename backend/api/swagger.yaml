@@ -1134,7 +1134,11 @@ paths:
               x-content-type: application/json
       responses:
         "200":
-          description: ok
+          description: return UserDataShort
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDataShort'
         "400":
           description: bad request
         "500":
@@ -1157,7 +1161,11 @@ paths:
               x-content-type: application/json
       responses:
         "200":
-          description: ok
+          description: return UserDataShort
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDataShort'
         "400":
           description: bad request
         "500":
@@ -1220,7 +1228,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderInfoShort'
+                $ref: '#/components/schemas/OrderInfoShortArray'
         "400":
           description: bad request
         "500":
@@ -2248,6 +2256,11 @@ components:
         product_name: pasta
         product_quantity: 10
         product_picture: https://i.imgur.com/1.jpg
+    OrderInfoShortArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/OrderInfoShort'
+      x-schema-name: OrderInfoShortArray
     OrderInfoShort:
       required:
       - cart_id

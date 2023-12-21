@@ -7,6 +7,9 @@
 	export let name: string = 'TEA EGG';
 	export let imgUrl: string = watermelon;
 	export let href: string = './';
+	export let event_discount_array: { discount_max_quantity: number }[] = [
+		{ discount_max_quantity: 0 }
+	];
 </script>
 
 <a
@@ -21,18 +24,20 @@
 			<div
 				class="flex flex-col content-start text-xl md:flex-row md:items-center md:text-2xl lg:flex-row lg:items-center lg:text-2xl"
 			>
-				<div class="text-PUA-dark-orange mr-1 font-semibold">{name}</div>
+				<div class="mr-1 font-semibold text-PUA-dark-orange">{name}</div>
 				<div class="md:flew-row flex flex-col sm:flex-row lg:flex-row">
-					<BuyNforOneFree></BuyNforOneFree>
+					{#each event_discount_array as { discount_max_quantity }}
+						<BuyNforOneFree quantity={discount_max_quantity}></BuyNforOneFree>
+					{/each}
 				</div>
 			</div>
-			<div class="text-PUA-dark-gray whitespace-pre-line text-base font-normal">
+			<div class="whitespace-pre-line text-base font-normal text-PUA-dark-gray">
 				{description}
 			</div>
 		</div>
 	</div>
 	<div
-		class="text-PUA-dark-orange mr-5 flex w-40 items-center justify-end gap-8 text-sm font-semibold"
+		class="mr-5 flex w-40 items-center justify-end gap-8 text-sm font-semibold text-PUA-dark-orange"
 	>
 		<div class="flex items-center">
 			<p>NT$</p>

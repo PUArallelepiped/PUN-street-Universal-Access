@@ -19,6 +19,14 @@
 		price: number;
 		stock: number;
 		status: number;
+		event_discount_array: {
+			discount_max_quantity: number;
+			product_id: number;
+			discount_name: string;
+			discount_description: string;
+			discount_id: number;
+			status: number;
+		}[];
 	}
 	interface categoriesType {
 		category_id: number;
@@ -46,16 +54,10 @@
 		address: string;
 		rate_count: number;
 		rate: number;
-		category_array: [
-			{
-				category_name: string;
-				category_id: number;
-			},
-			{
-				category_name: string;
-				category_id: number;
-			}
-		];
+		category_array: {
+			category_name: string;
+			category_id: number;
+		}[];
 		name: string;
 		description: string;
 		picture: string;
@@ -70,7 +72,8 @@
 			picture: '',
 			price: 0,
 			stock: 0,
-			status: 0
+			status: 0,
+			event_discount_array: []
 		}
 	];
 	let tagList: categoriesType[] = [
@@ -122,7 +125,7 @@
 	let showModel = false;
 	let dis_haved: boolean;
 	async function putDiscount(discount_id: number) {
-		const resp = await fetch(backendPath + '/discount/' + discount_id + '/delete-discount', {
+		await fetch(backendPath + '/discount/' + discount_id + '/delete-discount', {
 			method: 'PUT'
 		});
 	}
@@ -157,27 +160,23 @@
 		return null;
 	}
 	function deleteDiscountCard() {
-		putDiscount(shippingListResp.discount_id);
-		shippingList = {
-			...shippingList,
-			discount_name: '',
-			discount_description: '',
-			discount_max_quantity: 0,
-			discount_id: 0,
-			status: 0
-		};
-		dis_haved = !dis_haved;
+		if (dis_haved) {
+			putDiscount(shippingListResp.discount_id);
+			shippingList = {
+				...shippingList,
+				discount_name: '',
+				discount_description: '',
+				discount_max_quantity: 0,
+				discount_id: 0,
+				status: 0
+			};
+			dis_haved = !dis_haved;
+		}
 		return null;
 	}
 
 	let myElement: HTMLDivElement | null = null;
 	let k = 0;
-
-	$: {
-		k = 20 * productsList.length + 50;
-		showProductCard;
-		toggleHeight();
-	}
 
 	const toggleHeight = () => {
 		if (myElement) {
@@ -193,6 +192,9 @@
 		const init_product = await fetch(backendPath + `/store/` + shop_id + `/products`);
 		if (init_product.status == 200) {
 			productsList = await init_product.json();
+			k = 20 * productsList.length + 50;
+			showProductCard;
+			toggleHeight();
 		}
 		return;
 	}
@@ -219,8 +221,8 @@
 					discount_max_quantity: shippingListResp.discount_max_price,
 					status: shippingListResp.status
 				};
-				dis_haved = shippingList ? true : false;
 			}
+			dis_haved = shippingListResp ? true : false;
 		}
 		return;
 	}
@@ -234,18 +236,18 @@
 	}
 
 	async function getData() {
-		getProductResp();
-		getCategoryResp();
-		getDiscountResp();
-		getStoreResp();
+		await getProductResp();
+		await getCategoryResp();
+		await getDiscountResp();
+		await getStoreResp();
 	}
-
-	onMount(() => {
+	$: {
+		k = 20 * productsList.length + 50;
+		showProductCard;
 		toggleHeight();
-	});
-
+	}
 	onMount(async () => {
-		getData();
+		await getData();
 	});
 </script>
 
@@ -256,7 +258,7 @@
 
 	<div class="mt-10 lg:px-40">
 		<div class="mx-5 space-y-2">
-			<div class="text-PUA-stone text-5xl font-bold">{shopDataList.name}</div>
+			<div class="text-5xl font-bold text-PUA-stone">{shopDataList.name}</div>
 			<div class="font-bold text-red-950">{shopDataList.address}</div>
 			<div class="flex w-full justify-start gap-6">
 				<TagLabelArea

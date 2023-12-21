@@ -43,11 +43,12 @@
 	<TagStar text={star_score}></TagStar>
 </div>
 <div class="flex w-full flex-wrap gap-2">
-	{#each tagText as { category_id, category_name }}
-		<TagLabel canRemove={true} text={category_name} on:click={() => removedTag(category_id)}
-		></TagLabel>
-	{/each}
-
+	{#if tagText}
+		{#each tagText as { category_id, category_name }}
+			<TagLabel canRemove={true} text={category_name} on:click={() => removedTag(category_id)}
+			></TagLabel>
+		{/each}
+	{/if}
 	{#if menu_show}
 		<TagMenu
 			bind:tagMenuData={tagText_all}

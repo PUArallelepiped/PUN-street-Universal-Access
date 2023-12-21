@@ -11,6 +11,14 @@
 		status: number;
 		stock: number;
 		store_id: number;
+		event_discount_array: {
+			discount_max_quantity: number;
+			product_id: number;
+			discount_name: string;
+			discount_description: string;
+			discount_id: number;
+			status: number;
+		}[];
 	}[];
 	export let shop_id = '1';
 
@@ -31,16 +39,19 @@
 </script>
 
 <div class="mx-5 flex-row space-y-2 p-2">
-	{#each productListResponse as product}
-		<StoreProductCard
-			name={product.name}
-			description={product.description}
-			price={product.price}
-			imgUrl={product.picture}
-			href={'./' + 'store_page_seller/' + product.product_id}
-			on:click={() => removeStoreProductCard(product.product_id)}
-		/>
-	{/each}
+	{#if productListResponse}
+		{#each productListResponse as product}
+			<StoreProductCard
+				event_discount_array={product.event_discount_array}
+				name={product.name}
+				description={product.description}
+				price={product.price}
+				imgUrl={product.picture}
+				href={'./' + 'store_page_seller/' + product.product_id}
+				on:click={() => removeStoreProductCard(product.product_id)}
+			/>
+		{/each}
+	{/if}
 	<div class="flex h-20 items-center justify-center">
 		<TagAdd href={'./' + 'store_page_seller/0'}></TagAdd>
 	</div>

@@ -248,6 +248,7 @@
 									return null;
 								}}
 								text="Add Product"
+								type={'submit'}
 							></OkButton>
 						</div>
 					</div>

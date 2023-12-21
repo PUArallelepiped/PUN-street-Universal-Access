@@ -53,6 +53,7 @@
 						type="button"
 						on:click={addDiscountButton(last_index)}
 						on:click={toggleModel}
+						type="button"
 						class="h-5 w-5 rounded-[10px] bg-lime-800 text-center text-[13px] font-bold text-white"
 						>+</button
 					>

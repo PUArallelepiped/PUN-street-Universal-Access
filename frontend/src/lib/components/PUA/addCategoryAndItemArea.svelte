@@ -73,7 +73,7 @@
 					></RequiredArea>
 				</div>
 				<div class="flex w-1/3 items-center justify-end">
-					<button on:click={() => removeCategory(index)} class="flex">
+					<button on:click={() => removeCategory(index)} class="flex" type="button">
 						<img src={transhcan} alt="Trash Can" class="object-cover" />
 					</button>
 				</div>

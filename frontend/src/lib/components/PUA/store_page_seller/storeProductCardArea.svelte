@@ -28,11 +28,6 @@
 		console.log();
 		productListResponse = await resp.json();
 	}
-	// async function putDiscount(id: number) {
-	// 	const resp = await fetch(backendPath + '/product/' + id + '/delete-product', {
-	// 		method: 'PUT'
-	// 	});
-	// }
 </script>
 
 <div class="mx-5 flex-row space-y-2 p-2">

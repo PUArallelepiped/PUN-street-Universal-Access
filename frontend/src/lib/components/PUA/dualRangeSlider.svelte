@@ -169,7 +169,7 @@
 	.body {
 		top: 0;
 		position: absolute;
-		background-color: #822E2E;
+		background-color: #822e2e;
 		bottom: 0;
 	}
 </style>

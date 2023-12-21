@@ -133,7 +133,7 @@
 	<form on:submit={PostProductResp}>
 		<div class="flex h-fit justify-start">
 			<div class="relative left-1/2 mt-6 h-full w-4/5 -translate-x-1/2 transform">
-				<div class="h-100 text-33 flex w-full flex-col justify-center text-PUA-dark-red">
+				<div class="h-100 text-33 text-PUA-dark-red flex w-full flex-col justify-center">
 					<Input
 						required
 						bind:value={product_data.name}
@@ -142,7 +142,7 @@
 						class="max-wxs peer w-full rounded-[0] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-3xl"
 					/>
 					<div class="invisible py-4 peer-invalid:visible">
-						<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
+						<ErrorMsg width={'30'} height={'30'} text={`CANNOT BE EMPTY`}></ErrorMsg>
 					</div>
 				</div>
 				<div class="flex h-full w-full">
@@ -191,8 +191,12 @@
 								placeholder="Enter price"
 								class="peer ml-[10px] w-[180px] max-w-xs rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400 bg-transparent text-[30px]"
 							/>
-							<div class="invisible w-64 peer-invalid:visible">
-								<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
+							<div class="invisible h-8 w-64 peer-invalid:visible">
+								{#if !product_data.price}
+									<ErrorMsg width={'30'} height={'30'} text={'CANNOT BE EMPTY'}></ErrorMsg>
+								{:else if product_data.price > 999999999 || product_data.price < 0}
+									<ErrorMsg width={'30'} height={'30'} text={'EXCEEDS LIMIT'}></ErrorMsg>
+								{/if}
 							</div>
 						</div>
 						<div class="w-[250px] text-base text-gray-600">
@@ -216,9 +220,9 @@
 						></DisCountArea>
 
 						<div
-							class="flex h-[30px] w-full items-center border-b-[1px] border-solid border-PUA-stone"
+							class="border-PUA-stone flex h-[30px] w-full items-center border-b-[1px] border-solid"
 						>
-							<div class="font-bold text-PUA-stone">Set Status</div>
+							<div class="text-PUA-stone font-bold">Set Status</div>
 						</div>
 						<div class="m-4 flex justify-center gap-10">
 							{#each Status as { label }, index}

@@ -23,5 +23,5 @@
 	id="svelteTextarea"
 ></textarea>
 <div class="invisible w-64 peer-invalid:visible">
-	<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
+	<ErrorMsg width={'30'} height={'30'} text={'CANNOT BE EMPTY'}></ErrorMsg>
 </div>

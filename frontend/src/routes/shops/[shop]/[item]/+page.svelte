@@ -8,6 +8,7 @@
 	export let data: PageData;
 	let item_id = data.item;
 	let userID = '1';
+	let get_event_discount_id = 1;
 	type productRespType = {
 		store_id: number;
 		product_label_array: {
@@ -33,6 +34,14 @@
 		}[];
 		picture: string;
 		status: number;
+	};
+	type productCartPostType = {
+		cart_id: number;
+		product_id: number;
+		customer_id: number;
+		product_quantity: number;
+		discount_id: number | null;
+		store_id: number;
 	};
 	let product: productRespType = {
 		store_id: 1,
@@ -91,6 +100,14 @@
 		status: 1
 	};
 
+	let productCartPost: productCartPostType = {
+		cart_id: 0,
+		product_id: 1,
+		customer_id: 1,
+		product_quantity: 1,
+		discount_id: 1,
+		store_id: 1
+	};
 	async function getProductResp() {
 		const res = await fetch(backendPath + `/product/` + item_id);
 
@@ -101,12 +118,20 @@
 		return;
 	}
 	async function PostProductResp() {
-		console.log(product);
-		// let post_status = fetch(backendPath + `/customer/` + userID + `/cart`, {
-		// 	method: 'POST',
-		// 	body: JSON.stringify(product)
-		// });
-		// console.log(post_status);
+		productCartPost = {
+			cart_id: 0,
+			product_id: product.product_id,
+			customer_id: Number(userID),
+			product_quantity: Number(productCartPost.product_quantity),
+			discount_id: get_event_discount_id,
+			store_id: product.store_id
+		};
+		console.log(productCartPost);
+		let post_status = fetch(backendPath + `/customer/` + userID + `/cart`, {
+			method: 'POST',
+			body: JSON.stringify(productCartPost)
+		});
+		console.log(post_status);
 	}
 	onMount(async () => {
 		getProductResp();
@@ -152,6 +177,7 @@
 					</div>
 					<div>
 						<DiscountArea
+							bind:group={get_event_discount_id}
 							discount={product.event_discount_array}
 							toggleModel={() => {
 								return null;
@@ -163,9 +189,8 @@
 							type={true}
 						></DiscountArea>
 					</div>
-
 					<div class="  flex flex-wrap items-center justify-around gap-4">
-						<Counter />
+						<Counter bind:count={productCartPost.product_quantity} />
 
 						<OkButton onclick={PostProductResp} text="Add Cart"></OkButton>
 					</div>

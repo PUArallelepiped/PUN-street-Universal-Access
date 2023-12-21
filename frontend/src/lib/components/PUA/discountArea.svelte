@@ -14,6 +14,7 @@
 	export let addSign: boolean = true;
 
 	export let type: boolean = false;
+	export let group = 1;
 </script>
 
 <div class="relative h-full w-full">
@@ -26,7 +27,12 @@
 				<div class="flex justify-center">
 					{#if type}
 						<div class="">
-							<DiscountButton text={discount_description} id={discount_id} />
+							<DiscountButton
+								text={discount_description}
+								id={discount_id}
+								bind:value={discount_id}
+								bind:group
+							/>
 						</div>
 					{:else}
 						<div class="">

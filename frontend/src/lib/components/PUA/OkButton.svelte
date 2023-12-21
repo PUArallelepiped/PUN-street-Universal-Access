@@ -4,12 +4,14 @@
 	export let onclick: clickFunction | clickFunctionAsync = () => {};
 	export let text: string;
 	export let disabled: boolean = false;
+	export let type: 'button' | 'submit' | 'reset' | null | undefined = 'button';
 </script>
 
 <button
 	class=" w-52 rounded-3xl bg-PUA-orange px-2 text-center text-lg font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
 	on:click={onclick}
 	{disabled}
+	{type}
 >
 	{text}
 </button>

@@ -2,7 +2,6 @@
 	import watermelon from '$lib/assets/watermelon.png';
 	import { Counter } from '$lib';
 	import { DiscountArea, Checkcontainer, OkButton, NeedChooseLabel } from '$lib/index';
-
 	let product: {
 		title: string;
 		picture: string;
@@ -15,8 +14,12 @@
 			subcategories: string[];
 		}[];
 		discount: {
-			id: string;
-			label: string;
+			discount_max_quantity: number;
+			product_id: number;
+			discount_name: string;
+			discount_description: string;
+			discount_id: number;
+			status: number;
 		}[];
 	} = {
 		title: '奶油龍蝦腳加水餃 放在一起烤 嘿~它為什麼要這樣叫阿',
@@ -34,12 +37,22 @@
 			{ id: 1, need_choose: false, category: '加牛奶', subcategories: ['是', '否'] }
 		],
 		discount: [
-			{ id: '1', label: '買二送一' },
-			{ id: '2', label: '買二送一' },
-			{ id: '3', label: '買二送一' },
-			{ id: '4', label: '買二送一' },
-			{ id: '5', label: '買二送一' },
-			{ id: '6', label: '買二送一' }
+			{
+				discount_max_quantity: 2,
+				product_id: 1,
+				discount_name: 'new year discount',
+				discount_description: 'black tea get two for one free',
+				discount_id: 1,
+				status: 1
+			},
+			{
+				discount_max_quantity: 2,
+				product_id: 1,
+				discount_name: 'new year discount',
+				discount_description: 'black tea get two for one free',
+				discount_id: 1,
+				status: 1
+			}
 		]
 	};
 </script>

@@ -1,7 +1,7 @@
 {
 	"discount_name": "free shipping",
 	"discount_description": "free shipping when total price over 1000",
-	"discount_max_price": 1000,
+	"discount_max_quantity": 1000,
 	"discount_id": 1,
 	"status": 1
 }

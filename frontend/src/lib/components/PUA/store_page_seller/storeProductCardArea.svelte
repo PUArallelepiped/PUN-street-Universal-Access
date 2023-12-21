@@ -23,6 +23,13 @@
 			productListResponse = productListResponse.filter((cat) => cat.product_id !== id);
 		}
 	}
+	// async function getCategoryResp() {
+	// 	const tag_category = await fetch(backendPath + `/categories`);
+	// 	if (tag_category.status == 200) {
+	// 		tagList = await tag_category.json();
+	// 	}
+	// 	return;
+	// }
 </script>
 
 <div class="mx-5 flex-row space-y-2 p-2">

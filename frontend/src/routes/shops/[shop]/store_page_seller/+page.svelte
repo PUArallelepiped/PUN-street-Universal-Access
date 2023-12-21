@@ -32,6 +32,14 @@
 		status: number;
 	}
 
+	interface shippingDiscountRespType {
+		discount_name: string;
+		discount_description: string;
+		discount_max_price: number;
+		discount_id: number;
+		status: number;
+	}
+
 	interface storeDataType {
 		store_id: number;
 		shipping_fee: number;
@@ -76,6 +84,14 @@
 		discount_name: 'free shipping',
 		discount_description: 'free shipping when total price over 1000',
 		discount_max_quantity: 1000,
+		discount_id: 1,
+		status: 1
+	};
+
+	let shippingListResp: shippingDiscountRespType = {
+		discount_name: 'free shipping',
+		discount_description: 'free shipping when total price over 1000',
+		discount_max_price: 1000,
 		discount_id: 1,
 		status: 1
 	};
@@ -158,8 +174,11 @@
 			backendPath + `/store/` + shop_id + `/shipping-discount`
 		);
 		if (init_shipping_discount.status == 200) {
-			shippingList = await init_shipping_discount.json();
-			shippingList.discount_max_quantity = 1000;
+			shippingListResp = await init_shipping_discount.json();
+			shippingList = {
+				...shippingListResp,
+				discount_max_quantity: shippingListResp.discount_max_price
+			};
 			dis_haved = shippingList ? true : false;
 			console.log(shippingList);
 		}
@@ -183,6 +202,10 @@
 
 	onMount(() => {
 		toggleHeight();
+		console.log(productsList);
+		console.log(tagList);
+		console.log(shippingList);
+		console.log(shopDataList);
 	});
 
 	onMount(async () => {
@@ -192,67 +215,67 @@
 
 <p>{shop_id}</p>
 
-<!-- {#await getData() then} -->
-<div class="h-48 w-full overflow-hidden">
-	<img src={watermelon} alt="" class="w-full object-cover" />
-</div>
-
-<div class="mt-10 lg:px-40">
-	<div class="mx-5 space-y-2">
-		<div class="text-PUA-stone text-5xl font-bold">{shopDataList.name}</div>
-		<div class="font-bold text-red-950">{shopDataList.address}</div>
-		<div class="flex w-full justify-start gap-6">
-			<TagLabelArea
-				bind:tagText={shopDataList.category_array}
-				bind:tagText_all={tagList}
-				star_score={shopDataList.rate.toString()}
-			></TagLabelArea>
-		</div>
+{#await getData() then}
+	<div class="h-48 w-full overflow-hidden">
+		<img src={watermelon} alt="" class="w-full object-cover" />
 	</div>
 
-	<div bind:this={myElement} class="min-h-screen">
-		<CategoryLabel
-			on:click={() => (showProductCard = !showProductCard)}
-			text={'Product List'}
-			img_need={true}
-			bind:dropdown={showProductCard}
-		></CategoryLabel>
+	<div class="mt-10 lg:px-40">
+		<div class="mx-5 space-y-2">
+			<div class="text-PUA-stone text-5xl font-bold">{shopDataList.name}</div>
+			<div class="font-bold text-red-950">{shopDataList.address}</div>
+			<div class="flex w-full justify-start gap-6">
+				<TagLabelArea
+					bind:tagText={shopDataList.category_array}
+					bind:tagText_all={tagList}
+					star_score={shopDataList.rate.toString()}
+				></TagLabelArea>
+			</div>
+		</div>
 
-		<div
-			class={` ${
-				showProductCard ? 'max-h-full' : 'max-h-0'
-			}   overflow-hidden transition-all duration-[1300ms] ease-in-out`}
-		>
+		<div bind:this={myElement} class="min-h-screen">
+			<CategoryLabel
+				on:click={() => (showProductCard = !showProductCard)}
+				text={'Product List'}
+				img_need={true}
+				bind:dropdown={showProductCard}
+			></CategoryLabel>
+
 			<div
 				class={` ${
-					showProductCard ? ' translate-y-0 ' : 'translate-y-[-100%]'
-				}   transition-all duration-[1500ms] ease-in-out `}
+					showProductCard ? 'max-h-full' : 'max-h-0'
+				}   overflow-hidden transition-all duration-[1300ms] ease-in-out`}
 			>
-				<StoreProductCardArea bind:productListResponse={productsList}></StoreProductCardArea>
+				<div
+					class={` ${
+						showProductCard ? ' translate-y-0 ' : 'translate-y-[-100%]'
+					}   transition-all duration-[1500ms] ease-in-out `}
+				>
+					<StoreProductCardArea bind:productListResponse={productsList}></StoreProductCardArea>
+				</div>
 			</div>
-		</div>
-		<CategoryLabel text={'Shipping Discount List'}></CategoryLabel>
-		<div class="relative mx-5 space-y-4">
-			<div class="flex items-center gap-4">
-				<DiscountCard
-					bind:discountCardData={shippingList}
-					bind:dis_haved
-					on:click={() => (showModel = !showModel)}
-					{deleteDiscountCard}
-				></DiscountCard>
+			<CategoryLabel text={'Shipping Discount List'}></CategoryLabel>
+			<div class="relative mx-5 space-y-4">
+				<div class="flex items-center gap-4">
+					<DiscountCard
+						bind:discountCardData={shippingList}
+						bind:dis_haved
+						on:click={() => (showModel = !showModel)}
+						{deleteDiscountCard}
+					></DiscountCard>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
-<ChangeDiscountPage
-	bind:changePageData={shippingList}
-	bind:showModel
-	bind:dis_haved
-	add_Discount={() => {
-		return null;
-	}}
-	delete_Discount={() => {
-		return null;
-	}}
-></ChangeDiscountPage>
-<!-- {/await} -->
+	<ChangeDiscountPage
+		bind:changePageData={shippingList}
+		bind:showModel
+		bind:dis_haved
+		add_Discount={() => {
+			return null;
+		}}
+		delete_Discount={() => {
+			return null;
+		}}
+	></ChangeDiscountPage>
+{/await}

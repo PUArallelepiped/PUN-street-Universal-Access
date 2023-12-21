@@ -116,11 +116,12 @@
 	}
 
 	async function PostProductResp() {
-		let post_status = fetch(backendPath + `/store/` + shop_id + `/add-product`, {
+		let post_status = await fetch(backendPath + `/store/` + shop_id + `/add-product`, {
 			method: 'POST',
 			body: JSON.stringify(product_data)
 		});
 		window.location.href = './';
+		console.log(product_data);
 		console.log(post_status);
 	}
 
@@ -133,20 +134,20 @@
 	<form on:submit={PostProductResp}>
 		<div class="flex h-fit justify-start">
 			<div class="relative left-1/2 mt-6 h-full w-4/5 -translate-x-1/2 transform">
-				<div class="h-100 text-33 flex w-full flex-col justify-center text-PUA-dark-red">
+				<div class="h-100 text-PUA-dark-red flex w-full flex-col justify-center">
 					<Input
 						required
 						bind:value={product_data.name}
 						type="text"
 						placeholder="Enter Product Name"
-						class="max-wxs peer w-full rounded-[0] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-3xl"
+						class="max-wxs peer w-full rounded-[0] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-4xl"
 					/>
 					<div class="invisible py-4 peer-invalid:visible">
 						<ErrorMsg width={'30'} height={'30'} text={`CANNOT BE EMPTY`}></ErrorMsg>
 					</div>
 				</div>
-				<div class="flex h-full w-full">
-					<div class="relative h-full w-[500px]">
+				<div class="flex h-full w-full gap-16">
+					<div class="relative h-full">
 						<div class=" flex h-[250px] w-[250px] rounded-lg bg-gray-300 shadow-inner">
 							{#if !product_data.picture}
 								<div class="flex h-full w-full items-center justify-center">
@@ -180,8 +181,8 @@
 								/>
 							{/if}
 						</div>
-						<div class="flex w-64 flex-wrap items-center">
-							<div class="gap-3 py-[20px] text-3xl font-bold">NT$</div>
+						<div class="text-PUA-dark-red flex w-64 flex-wrap items-baseline gap-3 pt-5 font-bold">
+							<div class="text-2xl">NT$</div>
 							<input
 								required
 								bind:value={product_data.price}
@@ -189,7 +190,7 @@
 								min="0"
 								max="999999999"
 								placeholder="Enter price"
-								class="peer ml-[10px] w-[180px] max-w-xs rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400 bg-transparent text-[30px]"
+								class=" peer w-48 rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400 bg-transparent text-4xl placeholder:text-3xl"
 							/>
 							<div class="invisible h-8 w-64 peer-invalid:visible">
 								{#if !product_data.price}
@@ -199,7 +200,7 @@
 								{/if}
 							</div>
 						</div>
-						<div class="w-[250px] text-base text-gray-600">
+						<div class=" text-base text-gray-600">
 							<Textarea width="64" bind:value={product_data.description} required={true} />
 						</div>
 					</div>
@@ -220,9 +221,9 @@
 						></DisCountArea>
 
 						<div
-							class="flex h-[30px] w-full items-center border-b-[1px] border-solid border-PUA-stone"
+							class="border-PUA-stone flex h-[30px] w-full items-center border-b-[1px] border-solid"
 						>
-							<div class="font-bold text-PUA-stone">Set Status</div>
+							<div class="text-PUA-stone font-bold">Set Status</div>
 						</div>
 						<div class="m-4 flex justify-center gap-10">
 							{#each Status as { label }, index}

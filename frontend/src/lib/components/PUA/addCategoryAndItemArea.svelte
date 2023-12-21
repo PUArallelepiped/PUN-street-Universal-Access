@@ -51,8 +51,10 @@
 <div class="relative mb-[10px] w-full">
 	{#each category_item as item, index}
 		<div class="mb-[15px]">
-			<div class="flex h-[30px] items-center border-b-[1px] border-solid border-red-950">
-				<div class="flex w-[80%] items-center">
+			<div
+				class="flex h-[30px] items-center justify-between border-b-[1px] border-solid border-red-950"
+			>
+				<div class="flex items-center">
 					<Textcontainer
 						width="100"
 						min_width="100"
@@ -72,26 +74,26 @@
 						bind:group={item.required}
 					></RequiredArea>
 				</div>
-				<div class="flex w-1/3 items-center justify-end">
+				<div class="flex items-center justify-end">
 					<button on:click={() => removeCategory(index)} class="flex" type="button">
 						<img src={transhcan} alt="Trash Can" class="object-cover" />
 					</button>
 				</div>
 			</div>
-			<div class="relative ml-[25px] mt-[10px] w-[90%] flex-col items-start">
+			<div class="relative flex-col items-start">
 				{#each item.item_array as { name }, subIndex}
-					<div
-						class="flex w-full items-center space-x-2 border-b-[1px] border-solid border-red-900"
-					>
-						<Redradiobox name={item.label_name} id={item.label_name + name} />
+					<div class="flex w-full items-center space-x-2">
+						<div class="flex h-8 w-full items-center px-5">
+							<Redradiobox name={item.label_name} id={item.label_name + name} />
 
-						<div class="mx-auto flex w-full justify-end">
-							<input
-								class="w-full border-b-[1px] border-solid border-gray-300 border-transparent bg-transparent text-end underline outline-none"
-								type="text"
-								placeholder="item{subIndex + 1}"
-								bind:value={name}
-							/>
+							<div class="flex w-full justify-end">
+								<input
+									class="w-full border-b-[1px] border-solid border-gray-300 border-transparent bg-transparent text-end font-bold text-red-950 underline outline-none"
+									type="text"
+									placeholder="item{subIndex + 1}"
+									bind:value={name}
+								/>
+							</div>
 						</div>
 					</div>
 				{/each}

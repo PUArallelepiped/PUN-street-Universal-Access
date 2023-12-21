@@ -18,7 +18,7 @@
 	{required}
 	bind:value
 	on:input={handleInput}
-	class="w-{width}  peer h-7 overflow-hidden border-b-[1px] border-solid border-b-gray-400 bg-transparent text-xl outline-none"
+	class="w-{width} peer h-7 overflow-hidden border-b-[1px] border-solid border-b-gray-400 bg-transparent text-base outline-none"
 	placeholder="Enter text"
 	id="svelteTextarea"
 ></textarea>

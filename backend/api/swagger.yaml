@@ -519,8 +519,7 @@ paths:
                 $ref: '#/components/schemas/ProductInfoWithLabelAndDiscount'
         "500":
           description: Unexpected error
-  /product/{productID}/delete-product:
-    put:
+    delete:
       tags:
       - product
       - seller

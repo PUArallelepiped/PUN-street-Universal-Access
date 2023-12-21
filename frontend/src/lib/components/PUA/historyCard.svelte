@@ -2,7 +2,6 @@
 	import OkButton from './OkButton.svelte';
 	import Star from '$lib/assets/Star.svg';
 	import noStar from '$lib/assets/noStar.svg';
-	import { invalidateAll } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { backendPath } from './env';
 	export let avgRate: number = 4.87;
@@ -30,8 +29,10 @@
 					rate: index
 				})
 			});
-		} catch {}
-		rate = index;
+			rate = index;
+		} catch {
+			rate = index;
+		}
 
 		getRateList();
 		return null;

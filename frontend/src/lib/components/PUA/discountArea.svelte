@@ -33,7 +33,7 @@
 								id={discount_id}
 								bind:value={discount_id}
 								bind:group
-								text={'買' + { discount_max_quantity } + '送一'}
+								text={'買' + discount_max_quantity.toString() + '送一'}
 							/>
 						</div>
 					{:else}

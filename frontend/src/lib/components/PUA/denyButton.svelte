@@ -4,6 +4,6 @@
 </script>
 
 <button
-	class="w-52 rounded-3xl border-2 border-PUA-stone px-2 text-center text-xl font-semibold text-PUA-stone"
+	class="border-PUA-stone text-PUA-stone w-52 rounded-3xl border-2 px-2 text-center text-xl font-semibold"
 	on:click={onclick()}><slot /></button
 >

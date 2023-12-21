@@ -7,6 +7,8 @@
 	export let description: string =
 		'鮮甜柴魚高湯配上香菇、雞腿肉，口感滑潤好滋味。可能不太適合拿來...';
 	export let product_quantity: number = 1;
+	export let discountQuantity: number;
+	export let discountId: number;
 </script>
 
 <div class="flex h-32 w-96 flex-col rounded-xl bg-white p-2.5">
@@ -40,6 +42,8 @@
 				<span class=" text-xl font-semibold text-red-900">x{product_quantity}</span>
 			</div>
 		</div>
-		<BuyNforMFree></BuyNforMFree>
+		{#if discountId !== 0}
+			<BuyNforMFree quantity={discountQuantity}></BuyNforMFree>
+		{/if}
 	</div>
 </div>

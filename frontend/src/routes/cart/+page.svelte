@@ -35,7 +35,7 @@
 		}
 	});
 
-	let showDetail = true;
+	let showDetail = false;
 
 	function checkout() {
 		//TODO customer id need to change
@@ -52,7 +52,7 @@
 </script>
 
 <div class="flex flex-col items-center justify-center gap-5 p-8">
-	<div class="flex max-w-7xl flex-col gap-10">
+	<div class="flex w-max max-w-7xl flex-col gap-10">
 		{#if data.cartInfos}
 			{#each data.cartInfos.store_order_info_array as storeInfo}
 				<div class="flex flex-col">
@@ -77,6 +77,8 @@
 								product_name={productInfo.product_name}
 								product_quantity={productInfo.product_quantity}
 								product_price={productInfo.product_price}
+								discountId={productInfo.event_discount_id}
+								discountQuantity={productInfo.event_discount_max_quantity}
 							></CartItemCard>
 						{/each}
 						<CartMoreItemCard></CartMoreItemCard>
@@ -97,15 +99,18 @@
 						description={storeInfo.shipping_discount.discount_description}
 					></ShippingCoupon>
 				{/each}
-				{#each data.cartInfos.store_order_info_array as storeInfo}
+				{#if data.cartInfos.store_order_info_array.length != 0}
 					<SeasoningCoupon
-						name={storeInfo.seasoning_discount.discount_name}
-						percentage={storeInfo.seasoning_discount.discount_percentage}
-						discount_start_date={storeInfo.seasoning_discount.discount_start_date}
-						discount_end_date={storeInfo.seasoning_discount.discount_end_date}
-						used={storeInfo.seasoning_discount_bool}
+						name={data.cartInfos.store_order_info_array[0].seasoning_discount.discount_name}
+						percentage={data.cartInfos.store_order_info_array[0].seasoning_discount
+							.discount_percentage}
+						discount_start_date={data.cartInfos.store_order_info_array[0].seasoning_discount
+							.discount_start_date}
+						discount_end_date={data.cartInfos.store_order_info_array[0].seasoning_discount
+							.discount_end_date}
+						used={data.cartInfos.store_order_info_array[0].seasoning_discount_bool}
 					/>
-				{/each}
+				{/if}
 			</div>
 		</div>
 		{#if showDetail}

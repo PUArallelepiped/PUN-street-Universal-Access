@@ -18,7 +18,7 @@
 	$: {
 		intersectionData = tagMenuData.filter(
 			(tagItem) =>
-				!disabled_tag.some((disabledItem) => disabledItem.category_id === tagItem.category_id)
+				!disabled_tag.some((disabledItem) => disabledItem.category_name === tagItem.category_name)
 		);
 	}
 </script>
@@ -26,7 +26,7 @@
 <div class=" flex h-7 w-fit items-center justify-center">
 	<div class=" group relative block w-fit text-transparent">
 		<button
-			class="group inline-flex min-w-[142px] items-center justify-center rounded-full border-2 border-PUA-dark-red bg-PUA-dark-red px-4 py-0 text-center text-base font-bold text-white group-hover:border-2 group-hover:border-PUA-dark-red group-hover:bg-transparent group-hover:text-PUA-dark-red"
+			class="border-PUA-dark-red bg-PUA-dark-red group-hover:border-PUA-dark-red group-hover:text-PUA-dark-red group inline-flex min-w-[142px] items-center justify-center rounded-full border-2 px-4 py-0 text-center text-base font-bold text-white group-hover:border-2 group-hover:bg-transparent"
 		>
 			<span class="mr-1">Add Tag</span>
 			<svg
@@ -43,7 +43,7 @@
 				{#each intersectionData as { category_id, category_name }}
 					<li class="block w-fit cursor-pointer">
 						<button
-							class="min-w-[142px] whitespace-nowrap rounded-full border-2 border-PUA-dark-red bg-PUA-dark-red px-4 py-0 text-center font-bold text-white hover:border-2 hover:border-PUA-dark-red hover:bg-white hover:text-PUA-dark-red disabled:cursor-not-allowed disabled:border-gray-300 disabled:bg-gray-300 disabled:text-white hover:disabled:text-white"
+							class="border-PUA-dark-red bg-PUA-dark-red hover:border-PUA-dark-red hover:text-PUA-dark-red min-w-[142px] whitespace-nowrap rounded-full border-2 px-4 py-0 text-center font-bold text-white hover:border-2 hover:bg-white disabled:cursor-not-allowed disabled:border-gray-300 disabled:bg-gray-300 disabled:text-white hover:disabled:text-white"
 							on:click={() => click_function(category_id)}
 						>
 							{category_name}

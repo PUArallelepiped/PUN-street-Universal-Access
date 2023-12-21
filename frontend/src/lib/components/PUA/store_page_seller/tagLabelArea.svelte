@@ -3,33 +3,40 @@
 	import TagAdd from '../tag/tagAdd.svelte';
 	import TagLabel from '../tag/tagLabel.svelte';
 	import TagMenu from '../tag/tagMenu.svelte';
+	import { backendPath } from '../env';
 	export let tagText: { category_id: number; category_name: string }[];
 	export let tagText_all: { category_id: number; category_name: string }[];
 	export let star_score = '';
-	function removeInput_addTag(id: number) {
-		let result = tagText_all.find((item) => item.category_id === id);
-		if (result !== undefined) {
-			tagText = [
-				...tagText,
-				{ category_id: result.category_id, category_name: `${result.category_name}` }
-			];
-		}
+	export let shop_id = '1';
+
+	async function PostGetCategoryResp(id: number) {
+		const resp = await fetch(backendPath + '/store/' + shop_id + '/add-category/' + id.toString(), {
+			method: 'POST'
+		}).then(() => {
+			return fetch(backendPath + `/store/` + shop_id);
+		});
+		let respJson = await resp.json();
+		tagText = respJson.category_array;
+		console.log('tagText', tagText);
+		menu_show = !menu_show;
+		return null;
 	}
 
-	function removedTag(id: number) {
-		let result = tagText.find((item) => item.category_id === id);
-		if (result !== undefined) {
-			tagText = tagText.filter((cat) => cat.category_id !== id);
-		}
+	async function removedTag(id: number) {
+		const resp = await fetch(
+			backendPath + '/store/' + shop_id + '/remove-category/' + id.toString(),
+			{
+				method: 'DELETE'
+			}
+		).then(() => {
+			return fetch(backendPath + `/store/` + shop_id);
+		});
+		let respJson = await resp.json();
+		tagText = respJson.category_array;
+		console.log('tagText', tagText);
 	}
-	function setTag(id: number) {
-		removeInput_addTag(id);
-		menu_valus.show = !menu_valus.show;
-	}
-	let menu_valus = {
-		show: false,
-		return_id: -1
-	};
+
+	let menu_show = false;
 </script>
 
 <div class="flex justify-start">
@@ -41,10 +48,13 @@
 		></TagLabel>
 	{/each}
 
-	{#if menu_valus.show}
-		<TagMenu bind:tagMenuData={tagText_all} bind:disabled_tag={tagText} click_function={setTag}
+	{#if menu_show}
+		<TagMenu
+			bind:tagMenuData={tagText_all}
+			bind:disabled_tag={tagText}
+			click_function={PostGetCategoryResp}
 		></TagMenu>
 	{:else}
-		<TagAdd on:click={() => (menu_valus.show = !menu_valus.show)}></TagAdd>
+		<TagAdd on:click={() => (menu_show = !menu_show)}></TagAdd>
 	{/if}
 </div>

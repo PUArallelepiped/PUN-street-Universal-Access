@@ -80,7 +80,7 @@ func (s *DiscountHandler) AddShippingDiscount(c *gin.Context) {
 		return
 	}
 
-	err = s.DiscountUsecase.AddShipping(c, &discount, storeID)
+	shipping_discount, err := s.DiscountUsecase.AddShipping(c, &discount, storeID)
 
 	if err != nil {
 		logrus.Error(err)
@@ -88,7 +88,7 @@ func (s *DiscountHandler) AddShippingDiscount(c *gin.Context) {
 		return
 	}
 
-	c.Status(200)
+	c.JSON(200, shipping_discount)
 }
 
 func (s *DiscountHandler) AddEventDiscount(c *gin.Context) {

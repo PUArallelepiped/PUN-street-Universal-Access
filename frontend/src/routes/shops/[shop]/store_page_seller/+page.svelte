@@ -81,18 +81,18 @@
 	];
 
 	let shippingList: shippingDiscountType = {
-		discount_name: 'free shipping',
-		discount_description: 'free shipping when total price over 1000',
-		discount_max_quantity: 1000,
-		discount_id: 1,
+		discount_name: '',
+		discount_description: '',
+		discount_max_quantity: 0,
+		discount_id: 0,
 		status: 1
 	};
 
 	let shippingListResp: shippingDiscountRespType = {
-		discount_name: 'free shipping',
-		discount_description: 'free shipping when total price over 1000',
-		discount_max_price: 1000,
-		discount_id: 1,
+		discount_name: '',
+		discount_description: '',
+		discount_max_price: 0,
+		discount_id: 0,
 		status: 1
 	};
 
@@ -121,8 +121,43 @@
 	let showProductCard = true;
 	let showModel = false;
 	let dis_haved: boolean;
+	async function putDiscount(discount_id: number) {
+		const resp = await fetch(backendPath + '/discount/' + discount_id + '/delete-discount', {
+			method: 'PUT'
+		});
+	}
 
+	async function postDiscount() {
+		shippingListResp = {
+			discount_name: shippingList.discount_name,
+			discount_id: shippingList.discount_id,
+			discount_description: shippingList.discount_description,
+			discount_max_price: shippingList.discount_max_quantity,
+			status: shippingListResp.status
+		};
+		const respJson = await fetch(backendPath + '/store/' + '1' + '/shipping-discount', {
+			method: 'POST',
+			body: JSON.stringify(shippingListResp)
+		}).then((resp) => {
+			return resp.json();
+		});
+
+		shippingList = {
+			discount_name: respJson.discount_name,
+			discount_id: respJson.discount_id,
+			discount_description: respJson.discount_description,
+			discount_max_quantity: respJson.discount_max_price,
+			status: respJson.status
+		};
+		dis_haved = shippingList ? true : false;
+	}
+
+	function addDiscount() {
+		postDiscount();
+		return null;
+	}
 	function deleteDiscountCard() {
+		putDiscount(shippingListResp.discount_id);
 		shippingList = {
 			...shippingList,
 			discount_name: '',
@@ -132,6 +167,7 @@
 			status: 0
 		};
 		dis_haved = !dis_haved;
+		return null;
 	}
 
 	let myElement: HTMLDivElement | null = null;
@@ -175,12 +211,16 @@
 		);
 		if (init_shipping_discount.status == 200) {
 			shippingListResp = await init_shipping_discount.json();
-			shippingList = {
-				...shippingListResp,
-				discount_max_quantity: shippingListResp.discount_max_price
-			};
-			dis_haved = shippingList ? true : false;
-			console.log(shippingList);
+			if (shippingListResp) {
+				shippingList = {
+					discount_name: shippingListResp.discount_name,
+					discount_id: shippingListResp.discount_id,
+					discount_description: shippingListResp.discount_description,
+					discount_max_quantity: shippingListResp.discount_max_price,
+					status: shippingListResp.status
+				};
+				dis_haved = shippingList ? true : false;
+			}
 		}
 		return;
 	}
@@ -202,18 +242,12 @@
 
 	onMount(() => {
 		toggleHeight();
-		console.log(productsList);
-		console.log(tagList);
-		console.log(shippingList);
-		console.log(shopDataList);
 	});
 
 	onMount(async () => {
 		getData();
 	});
 </script>
-
-<p>{shop_id}</p>
 
 {#await getData() then}
 	<div class="h-48 w-full overflow-hidden">
@@ -229,6 +263,7 @@
 					bind:tagText={shopDataList.category_array}
 					bind:tagText_all={tagList}
 					star_score={shopDataList.rate.toString()}
+					{shop_id}
 				></TagLabelArea>
 			</div>
 		</div>
@@ -251,7 +286,8 @@
 						showProductCard ? ' translate-y-0 ' : 'translate-y-[-100%]'
 					}   transition-all duration-[1500ms] ease-in-out `}
 				>
-					<StoreProductCardArea bind:productListResponse={productsList}></StoreProductCardArea>
+					<StoreProductCardArea bind:productListResponse={productsList} {shop_id}
+					></StoreProductCardArea>
 				</div>
 			</div>
 			<CategoryLabel text={'Shipping Discount List'}></CategoryLabel>
@@ -271,11 +307,7 @@
 		bind:changePageData={shippingList}
 		bind:showModel
 		bind:dis_haved
-		add_Discount={() => {
-			return null;
-		}}
-		delete_Discount={() => {
-			return null;
-		}}
+		add_Discount={addDiscount}
+		delete_Discount={deleteDiscountCard}
 	></ChangeDiscountPage>
 {/await}

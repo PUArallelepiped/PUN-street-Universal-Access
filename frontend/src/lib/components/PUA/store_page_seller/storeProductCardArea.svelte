@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { StoreProductCard } from '$lib';
 	import TagAdd from '../tag/tagAdd.svelte';
+	import { backendPath } from '../env';
 	export let productListResponse: {
 		name: string;
 		description: string;
@@ -11,24 +12,26 @@
 		stock: number;
 		store_id: number;
 	}[];
+	export let shop_id = '1';
 
 	let prodctListResponse_nextId = 0;
 	if (prodctListResponse_nextId) {
 		prodctListResponse_nextId = productListResponse.length + 1;
 	}
 
-	function removeStoreProductCard(id: number) {
-		let result = productListResponse.find((item) => item.product_id === id);
-		if (result !== undefined) {
-			productListResponse = productListResponse.filter((cat) => cat.product_id !== id);
-		}
+	async function removeStoreProductCard(id: number) {
+		const resp = await fetch(backendPath + '/product/' + id + '/delete-product', {
+			method: 'PUT'
+		}).then(() => {
+			return fetch(backendPath + `/store/` + shop_id + `/products`);
+		});
+		console.log();
+		productListResponse = await resp.json();
 	}
-	// async function getCategoryResp() {
-	// 	const tag_category = await fetch(backendPath + `/categories`);
-	// 	if (tag_category.status == 200) {
-	// 		tagList = await tag_category.json();
-	// 	}
-	// 	return;
+	// async function putDiscount(id: number) {
+	// 	const resp = await fetch(backendPath + '/product/' + id + '/delete-product', {
+	// 		method: 'PUT'
+	// 	});
 	// }
 </script>
 

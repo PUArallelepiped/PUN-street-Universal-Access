@@ -1,7 +1,7 @@
 <script lang="ts">
 	import watermelon from '$lib/assets/watermelon.png';
 	import BuyNforMFree from '$lib/components/PUA/buyNforMFree.svelte';
-	// export let product_id: number = 1;
+	export let product_picture: string;
 	export let product_price: number = 160;
 	export let product_name: string = '茶碗蒸';
 	export let description: string =
@@ -11,7 +11,11 @@
 
 <div class="flex h-32 w-96 flex-col rounded-xl bg-white p-2.5">
 	<div class="flex gap-4">
-		<img class="h-20 w-20 rounded-xl shadow-inner" src={watermelon} alt="img" />
+		<img
+			class="flex h-20 w-20 rounded-xl object-cover shadow-inner"
+			src={product_picture}
+			alt="img"
+		/>
 		<div class="flex flex-col gap-3">
 			<div class="text-2xl font-normal text-orange-950">{product_name}</div>
 			<div class="text-sm font-normal text-neutral-400">

@@ -148,7 +148,7 @@
 				</div>
 				<div class="flex h-full w-full gap-16">
 					<div class="relative h-full">
-						<div class=" flex h-[250px] w-[250px] rounded-lg bg-gray-300 shadow-inner">
+						<div class=" flex h-60 w-60 rounded-lg bg-gray-300 shadow-inner">
 							{#if !product_data.picture}
 								<div class="flex h-full w-full items-center justify-center">
 									<label

@@ -2,6 +2,12 @@
 	import watermelon from '$lib/assets/watermelon.png';
 	import { Counter } from '$lib';
 	import { DiscountArea, Checkcontainer, OkButton, NeedChooseLabel } from '$lib/index';
+	import type { PageData } from './$types';
+	import { onMount } from 'svelte';
+	import { backendPath } from '$lib/components/PUA/env';
+	export let data: PageData;
+	let item_id = data.item;
+	let userID = '1';
 	type productRespType = {
 		store_id: number;
 		product_label_array: {
@@ -84,69 +90,87 @@
 		picture: 'https://i.imgur.com/1.jpg',
 		status: 1
 	};
+
+	async function getProductResp() {
+		const res = await fetch(backendPath + `/product/` + item_id);
+
+		if (res.status == 200) {
+			product = await res.json();
+		}
+		console.log(product);
+		return;
+	}
+	async function PostProductResp() {
+		console.log(product);
+		// let post_status = fetch(backendPath + `/customer/` + userID + `/cart`, {
+		// 	method: 'POST',
+		// 	body: JSON.stringify(product)
+		// });
+		// console.log(post_status);
+	}
+	onMount(async () => {
+		getProductResp();
+	});
 </script>
 
-<div class="flex justify-center">
-	<div class="my-6 flex h-full w-4/5 flex-col gap-8">
-		<div class=" text-PUA-dark-red flex w-full items-center text-4xl">
-			{product.name}
-		</div>
-
-		<div class="flex gap-16">
-			<div class="">
-				<img src={product.picture} alt="" class="mt-100 flex h-60 w-60 rounded-lg object-cover" />
-				<div class="text-PUA-dark-red flex items-baseline gap-3 py-5 font-bold">
-					<p class="text-2xl">NT$</p>
-					<p class="text-4xl">{product.price}</p>
-				</div>
-				<div class="w-[250px] text-justify text-base text-gray-600">
-					{product.description}
-				</div>
+{#await getProductResp() then}
+	<div class="flex justify-center">
+		<div class="my-6 flex h-full w-4/5 flex-col gap-8">
+			<div class=" text-PUA-dark-red flex w-full items-center text-4xl">
+				{product.name}
 			</div>
-			<div class=" flex w-full flex-col gap-4">
+
+			<div class="flex gap-16">
+				<div class="">
+					<img src={product.picture} alt="" class="mt-100 flex h-60 w-60 rounded-lg object-cover" />
+					<div class="text-PUA-dark-red flex items-baseline gap-3 py-5 font-bold">
+						<p class="text-2xl">NT$</p>
+						<p class="text-4xl">{product.price}</p>
+					</div>
+					<div class="w-[250px] text-justify text-base text-gray-600">
+						{product.description}
+					</div>
+				</div>
 				<div class=" flex w-full flex-col gap-4">
-					{#each product.product_label_array as { required, label_name, item_array }}
-						<div class="">
-							<div class="flex items-center">
-								<div class="text-PUA-stone font-bold">{label_name}</div>
-								{#if required}
-									<NeedChooseLabel></NeedChooseLabel>
-								{/if}
+					<div class=" flex w-full flex-col gap-4">
+						{#each product.product_label_array as { required, label_name, item_array }}
+							<div class="">
+								<div class="flex items-center">
+									<div class="text-PUA-stone font-bold">{label_name}</div>
+									{#if required}
+										<NeedChooseLabel></NeedChooseLabel>
+									{/if}
+								</div>
+								<div class="bg-PUA-dark-red h-[1px]"></div>
+								<div class="flex flex-col">
+									{#each item_array as { name }}
+										<Checkcontainer category={label_name} subcategory={name}></Checkcontainer>
+									{/each}
+								</div>
 							</div>
-							<div class="bg-PUA-dark-red h-[1px]"></div>
-							<div class="flex flex-col">
-								{#each item_array as { name }}
-									<Checkcontainer category={label_name} subcategory={name}></Checkcontainer>
-								{/each}
-							</div>
-						</div>
-					{/each}
-				</div>
-				<div>
-					<DiscountArea
-						discount={product.event_discount_array}
-						toggleModel={() => {
-							return null;
-						}}
-						addDiscountButton={() => {
-							return null;
-						}}
-						addSign={false}
-						type={true}
-					></DiscountArea>
-				</div>
+						{/each}
+					</div>
+					<div>
+						<DiscountArea
+							discount={product.event_discount_array}
+							toggleModel={() => {
+								return null;
+							}}
+							addDiscountButton={() => {
+								return null;
+							}}
+							addSign={false}
+							type={true}
+						></DiscountArea>
+					</div>
 
-				<div class="  flex flex-wrap items-center justify-around gap-4">
-					<Counter />
+					<div class="  flex flex-wrap items-center justify-around gap-4">
+						<Counter />
 
-					<OkButton
-						onclick={() => {
-							return null;
-						}}
-						text="Add Cart"
-					></OkButton>
+						<OkButton onclick={PostProductResp} text="Add Cart"></OkButton>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+{/await}

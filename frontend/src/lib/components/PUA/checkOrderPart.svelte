@@ -30,31 +30,33 @@
 			<div class="flex items-center justify-start gap-5">
 				<div class=" text-5xl font-semibold text-orange-950">運送中...</div>
 
-				<OkButton
-					text="Check Order"
-					onclick={async () => {
-						let userId = 1;
-						await fetch(
-							backendPath +
-								'/seller/update-order-status/customer/' +
-								userId +
-								'/cart/' +
-								cartID +
-								'/store/' +
-								storeID,
-							{
-								method: 'PUT',
-								headers: {
-									'Content-Type': 'application/json'
-								},
-								body: JSON.stringify({
-									status: 4
-								})
-							}
-						);
-						return null;
-					}}
-				></OkButton>
+				{#if status == 5}
+					<OkButton
+						text="Check Order"
+						onclick={async () => {
+							let userId = 1;
+							await fetch(
+								backendPath +
+									'/seller/update-order-status/customer/' +
+									userId +
+									'/cart/' +
+									cartID +
+									'/store/' +
+									storeID,
+								{
+									method: 'PUT',
+									headers: {
+										'Content-Type': 'application/json'
+									},
+									body: JSON.stringify({
+										status: 6
+									})
+								}
+							);
+							return null;
+						}}
+					></OkButton>
+				{/if}
 			</div>
 			<div class=" text-2xl font-semibold text-orange-950">{shopName}</div>
 			<div class="flex gap-5">

@@ -52,7 +52,8 @@ async function getCart() {
 		if (resp.ok) {
 			return (await resp.json()) as cartInfo;
 		}
+		return (await (await fetch('./cart.json')).json()) as cartInfo;
 	} catch {
-		return undefined;
+		return (await (await fetch('./cart.json')).json()) as cartInfo;
 	}
 }

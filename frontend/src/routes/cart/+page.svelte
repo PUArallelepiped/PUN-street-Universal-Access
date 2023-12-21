@@ -89,15 +89,23 @@
 			<div class="px-3 text-xl font-semibold leading-normal text-PUA-stone">Discount</div>
 			<hr class="my-3 border-orange-950" />
 			<div class="flex flex-wrap gap-3">
-				<!-- {#each seasoningDiscountList as SeasoningDiscount}
+				{#each data.cartInfos.store_order_info_array as storeInfo}
+					<ShippingCoupon
+						used={storeInfo.shipping_discount_bool}
+						store_name={storeInfo.store_name}
+						max_price={storeInfo.shipping_discount.discount_max_price}
+						description={storeInfo.shipping_discount.discount_description}
+					></ShippingCoupon>
+				{/each}
+				{#each data.cartInfos.store_order_info_array as storeInfo}
 					<SeasoningCoupon
-						name={SeasoningDiscount.discount_name}
-						percentage={SeasoningDiscount.discount_percentage}
-						discount_start_date={SeasoningDiscount.discount_start_date}
-						discount_end_date={SeasoningDiscount.discount_end_date}
-						used={SeasoningDiscount.status === 1}
+						name={storeInfo.seasoning_discount.discount_name}
+						percentage={storeInfo.seasoning_discount.discount_percentage}
+						discount_start_date={storeInfo.seasoning_discount.discount_start_date}
+						discount_end_date={storeInfo.seasoning_discount.discount_end_date}
+						used={storeInfo.seasoning_discount_bool}
 					/>
-				{/each} -->
+				{/each}
 			</div>
 		</div>
 		{#if showDetail}

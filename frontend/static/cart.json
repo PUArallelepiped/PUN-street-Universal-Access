@@ -1,0 +1,91 @@
+{
+    "real_total_price": 3333,
+    "store_order_info_array": [
+      {
+        "store_id": 1,
+        "store_name": "i'm pasta",
+        "store_shipping_fee": 100,
+        "product_order": [
+          {
+            "event_discount_max_quantity": 10,
+            "event_discount_id": 1,
+            "product_id": 1,
+            "product_price": 9999,
+            "product_name": "pasta",
+            "product_quantity": 10,
+            "product_picture": "https://i.imgur.com/1.jpg"
+          },
+          {
+            "event_discount_max_quantity": 10,
+            "event_discount_id": 1,
+            "product_id": 1,
+            "product_price": 9999,
+            "product_name": "pasta",
+            "product_quantity": 10,
+            "product_picture": "https://i.imgur.com/1.jpg"
+          }
+        ],
+        "shipping_discount": {
+          "discount_name": "free shipping",
+          "discount_description": "free shipping when total price over 1000",
+          "discount_max_price": 1000,
+          "discount_id": 1,
+          "status": 1
+        },
+        "shipping_discount_bool": true,
+        "seasoning_discount": {
+          "discount_start_date": "2021-01-01T00:00:00.000Z",
+          "discount_name": "spring discount",
+          "discount_end_date": "2021-01-01T00:00:00.000Z",
+          "discount_description": "all products get 30% off",
+          "discount_percentage": 70,
+          "discount_id": 1,
+          "status": 1
+        },
+        "seasoning_discount_bool": true,
+        "total_price": 1000
+      },
+      {
+        "store_id": 1,
+        "store_name": "i'm pasta",
+        "store_shipping_fee": 100,
+        "product_order": [
+          {
+            "event_discount_max_quantity": 10,
+            "event_discount_id": 1,
+            "product_id": 1,
+            "product_price": 9999,
+            "product_name": "pasta",
+            "product_quantity": 10
+          },
+          {
+            "event_discount_max_quantity": 10,
+            "event_discount_id": 1,
+            "product_id": 1,
+            "product_price": 9999,
+            "product_name": "pasta",
+            "product_quantity": 10
+          }
+        ],
+        "shipping_discount": {
+          "discount_name": "free shipping",
+          "discount_description": "free shipping when total price over 1000",
+          "discount_max_price": 1000,
+          "discount_id": 1,
+          "status": 1
+        },
+        "shipping_discount_bool": true,
+        "seasoning_discount": {
+          "discount_start_date": "2021-01-01T00:00:00.000Z",
+          "discount_name": "spring discount",
+          "discount_end_date": "2021-01-01T00:00:00.000Z",
+          "discount_description": "all products get 30% off",
+          "discount_percentage": 70,
+          "discount_id": 1,
+          "status": 1
+        },
+        "seasoning_discount_bool": true,
+        "total_price": 1000
+      }
+    ]
+  }

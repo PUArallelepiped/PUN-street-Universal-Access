@@ -22,6 +22,9 @@ type ProductInfoType = {
 	status: number;
 	stock: number;
 	store_id: number;
+	event_discount_array: {
+		discount_max_quantity: number;
+	}[];
 };
 export const load: PageServerLoad = async ({ params }) => {
 	return {

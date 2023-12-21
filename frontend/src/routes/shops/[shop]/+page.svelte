@@ -5,6 +5,7 @@
 	import TagLabelAreaForShow from '$lib/components/PUA/tagLabelAreaForShow.svelte';
 	export let data: PageData;
 	let shopName = data.shop;
+	console.log(data);
 </script>
 
 <div class="h-48 w-full overflow-hidden">
@@ -29,44 +30,9 @@
 				description={product.description}
 				price={product.price}
 				imgUrl={product.picture}
+				event_discount_array={product.event_discount_array}
+				status={product.status}
 			/>
 		{/each}
 	</div>
-</div>
-
-<div class=" bg-orange-950 p-5 text-white">
-	<div class="text-lg font-bold">DEBUG AREA</div>
-	{#if data.shopInfo}
-		<div class="flex-col text-center">
-			<div>
-				{data.shopInfo.store_id}
-			</div>
-			<div>
-				fee:{data.shopInfo.shipping_fee}
-			</div>
-			<div>
-				{data.shopInfo.address}
-			</div>
-			<div>
-				rate_count: {data.shopInfo.rate_count}
-			</div>
-			<div>
-				rate:{data.shopInfo.rate}
-			</div>
-			<div>
-				{data.shopInfo.name}
-			</div>
-			<div>
-				{data.shopInfo.description}
-			</div>
-			<div>
-				{data.shopInfo.picture}
-			</div>
-			<div>
-				status:{data.shopInfo.status}
-			</div>
-		</div>
-	{:else}
-		loading....
-	{/if}
 </div>

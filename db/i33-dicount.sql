@@ -6,6 +6,10 @@ INSERT INTO discounts (discount_type, description, name, status) VALUES
     (2, 'free shipping when price over 1000', 'spring discount', 1),
     (2, 'free shipping when price over 500', 'spring discount', 1),
     (2, 'free shipping when price over 300', 'spring discount', 1),
+    (3, 'buy 5 get 1 free', 'halloween', 1),
+    (3, 'buy 4 get 1 free', 'halloween', 1),
     (3, 'buy 3 get 1 free', 'halloween', 1),
     (3, 'buy 2 get 1 free', 'halloween', 1),
-    (3, 'buy 1 get 1 free', 'halloween', 1)
+    (3, 'buy 1 get 1 free', 'halloween', 1),
+    (3, 'buy 6 get 1 free', 'halloween', 1),
+    (3, 'buy 7 get 1 free', 'halloween', 1)

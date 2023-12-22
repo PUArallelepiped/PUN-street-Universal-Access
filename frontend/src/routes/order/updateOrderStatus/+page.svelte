@@ -3,6 +3,8 @@
 	import OrderStatusCard from '$lib/components/PUA/orderStatusCard.svelte';
 	import { onMount } from 'svelte';
 
+	// let user_id = 1;
+
 	let Deliver: string =
 		'M48 0C21.5 0 0 21.5 0 48V368c0 26.5 21.5 48 48 48H64c0 53 43 96 96 96s96-43 96-96H384c0 53 43 96 96 96s96-43 96-96h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V288 256 237.3c0-17-6.7-33.3-18.7-45.3L512 114.7c-12-12-28.3-18.7-45.3-18.7H416V48c0-26.5-21.5-48-48-48H48zM416 160h50.7L544 237.3V256H416V160zM112 416a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm368-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z';
 	let Accept: string =
@@ -35,48 +37,76 @@
 		user: string;
 	}[] = [];
 
-	for (let i = 0; i < orderRespList.length; i++) {
-		statusCardContent[i].time = orderRespList[i].order_date;
-		statusCardContent[i].price = orderRespList[i].total_price.toString();
-		statusCardContent[i].src = icon_array[orderRespList[i].status - 1].icon;
-		statusCardContent[i].text = icon_array[orderRespList[i].status - 1].text;
-		statusCardContent[i].user = orderRespList[i].user_id.toString();
-	}
-	// let statusCardContent: {
-	// 	time: string;
-	// 	price: string;
-	// 	src: string;
-	// 	text: string;
-	// 	user: string;
-	// }[] = [
-	// 	{ time: '2020-10-11 19:20:50', price: '99999', src: Making, text: 'Making', user: 'user01' },
-	// 	{ time: '2020-10-11 19:20:50', price: '99999', src: Deliver, text: 'Deliver', user: 'user01' },
-	// 	{ time: '2020-10-11 19:20:50', price: '99999', src: Accept, text: 'Accept', user: 'user01' },
-	// 	{ time: '2020-10-11 19:20:50', price: '99999', src: Arrival, text: 'Arrival', user: 'user01' },
-	// 	{ time: '2020-10-11 19:20:50', price: '99999', src: Accept, text: 'Accept', user: 'user01' },
-	// 	{ time: '2020-10-11 19:20:50', price: '99999', src: Making, text: 'Making', user: 'user01' },
-	// 	{ time: '2020-10-11 19:20:50', price: '99999', src: Deliver, text: 'Deliver', user: 'user01' },
-	// 	{ time: '2020-10-11 19:20:50', price: '99999', src: Arrival, text: 'Arrival', user: 'user01' }
-	// ];
 	// 	1= 已結帳
 	// 2= 接受訂單
 	// 3= 製作訂單
 	// 4= 運送中
+	// /seller/update-order-status/customer/{userID}/cart/{cartID}/store/{storeID}
+
+	async function postAndChangeStatus(index: number) {
+		const Resp = await fetch(
+			backendPath +
+				`/seller/update-order-status/customer/` +
+				statusCardContent[index].user +
+				`/cart/` +
+				orderRespList[index].cart_id +
+				`/store/` +
+				orderRespList[index].store_id,
+			{
+				method: 'PUT'
+			}
+		);
+
+		let orderResp = await Resp.json();
+
+		statusCardContent[index] = {
+			time: orderResp.order_date,
+			price: orderResp.total_price.toString(),
+			src: icon_array[orderResp.status - 1].icon,
+			text: icon_array[orderResp.status - 1].text,
+			user: orderResp.user_id.toString()
+		};
+
+		// if (res.status == 200) {
+		// 	product_data = await res.json();
+		// }
+		console.log(orderResp);
+		console.log(statusCardContent);
+		return;
+	}
 	async function getOrderRespList() {
-		const Rest = await fetch(backendPath + '/seller/store/' + '1' + '/orders');
-		if (Rest.status == 200) {
-			orderRespList = await Rest.json();
+		const Resp = await fetch(backendPath + '/seller/store/' + '1' + '/orders');
+		if (Resp.status == 200) {
+			orderRespList = await Resp.json();
 
 			console.log(orderRespList);
+
+			if (orderRespList) {
+				for (let i = 0; i < orderRespList.length; i++) {
+					statusCardContent = [
+						...statusCardContent,
+						{
+							time: orderRespList[i].order_date,
+							price: orderRespList[i].total_price.toString(),
+							src: icon_array[orderRespList[i].status - 1].icon,
+							text: icon_array[orderRespList[i].status - 1].text,
+							user: orderRespList[i].user_id.toString()
+						}
+					];
+				}
+
+				console.log(statusCardContent);
+			}
 		}
 	}
-	// /seller/store/{storeID}/orders:
-
-	onMount(async () => {});
+	onMount(async () => {
+		getOrderRespList();
+	});
 </script>
 
 <div class=" flex h-full flex-wrap items-center justify-center gap-10 py-12">
-	{#each statusCardContent as sub}
-		<OrderStatusCard statusCardContent={sub}></OrderStatusCard>
+	{#each statusCardContent as sub, index}
+		<OrderStatusCard on:click={() => postAndChangeStatus(index)} statusCardContent={sub}
+		></OrderStatusCard>
 	{/each}
 </div>

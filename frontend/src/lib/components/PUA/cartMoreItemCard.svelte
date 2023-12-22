@@ -1,10 +1,15 @@
-<div class="flex h-32 w-96 items-center justify-center gap-2 rounded-xl bg-neutral-300">
-	<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-		<circle cx="10" cy="10" r="9" stroke="#755555" stroke-width="2" />
-		<path
-			d="M8.47443 16.054V3.98579H11.5256V16.054H8.47443ZM3.96591 11.5455V8.49432H16.0341V11.5455H3.96591Z"
-			fill="#755555"
-		/>
-	</svg>
-	<div class="text-center text-xl font-bold leading-relaxed text-PUA-stone">More Product</div>
-</div>
+<script lang="ts">
+</script>
+
+<button on:click>
+	<div class="flex h-32 w-96 items-center justify-center gap-2 rounded-xl bg-neutral-300">
+		<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<circle cx="10" cy="10" r="9" stroke="#755555" stroke-width="2" />
+			<path
+				d="M8.47443 16.054V3.98579H11.5256V16.054H8.47443ZM3.96591 11.5455V8.49432H16.0341V11.5455H3.96591Z"
+				fill="#755555"
+			/>
+		</svg>
+		<div class="text-center text-xl font-bold leading-relaxed text-PUA-stone">More Product</div>
+	</div>
+</button>

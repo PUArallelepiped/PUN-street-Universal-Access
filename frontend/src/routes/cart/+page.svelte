@@ -9,9 +9,8 @@
 		ShippingCoupon
 	} from '$lib/index';
 	import type { PageData } from './$types';
-	import { invalidateAll } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	export let data: PageData;
-	console.log(data);
 
 	let showDetail = false;
 
@@ -71,7 +70,11 @@
 									}}
 								></CartItemCard>
 							{/each}
-							<CartMoreItemCard></CartMoreItemCard>
+							<CartMoreItemCard
+								on:click={() => {
+									goto('/shops/' + storeInfo.store_id);
+								}}
+							></CartMoreItemCard>
 						</div>
 					</div>
 				{/each}

@@ -136,7 +136,7 @@
 			discount_id: shippingList.discount_id,
 			discount_description: shippingList.discount_description,
 			discount_max_price: shippingList.discount_max_quantity,
-			status: shippingListResp.status
+			status: shippingList.status
 		};
 		const respJson = await fetch(backendPath + '/store/' + '1' + '/shipping-discount', {
 			method: 'POST',
@@ -152,7 +152,7 @@
 			discount_max_quantity: respJson.discount_max_price,
 			status: respJson.status
 		};
-		dis_haved = shippingList ? true : false;
+		dis_haved = true;
 	}
 
 	function addDiscount() {
@@ -162,16 +162,16 @@
 	function deleteDiscountCard() {
 		if (dis_haved) {
 			putDiscount(shippingListResp.discount_id);
-			shippingList = {
-				...shippingList,
-				discount_name: '',
-				discount_description: '',
-				discount_max_quantity: 0,
-				discount_id: 0,
-				status: 0
-			};
-			dis_haved = !dis_haved;
 		}
+		shippingList = {
+			...shippingList,
+			discount_name: '',
+			discount_description: '',
+			discount_max_quantity: 0,
+			discount_id: 0,
+			status: 1
+		};
+		dis_haved = false;
 		return null;
 	}
 
@@ -308,7 +308,6 @@
 	<ChangeDiscountPage
 		bind:changePageData={shippingList}
 		bind:showModel
-		bind:dis_haved
 		add_Discount={addDiscount}
 		delete_Discount={deleteDiscountCard}
 	></ChangeDiscountPage>

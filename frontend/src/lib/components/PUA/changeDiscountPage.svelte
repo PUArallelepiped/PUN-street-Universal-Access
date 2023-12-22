@@ -18,8 +18,6 @@
 		way: 'free shipping'
 	};
 
-	export let dis_haved: boolean;
-
 	let currentData: {
 		discount_name: string;
 		discount_description: string;
@@ -47,7 +45,6 @@
 
 	async function handleSubmit() {
 		changePageData = { ...currentData };
-		dis_haved = true;
 		toggleModel();
 		add_Discount();
 	}

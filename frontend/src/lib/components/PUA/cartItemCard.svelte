@@ -1,6 +1,6 @@
 <script lang="ts">
-	import watermelon from '$lib/assets/watermelon.png';
 	import BuyNforMFree from '$lib/components/PUA/buyNforMFree.svelte';
+	import { createEventDispatcher } from 'svelte';
 	export let product_picture: string;
 	export let product_price: number = 160;
 	export let product_name: string = '茶碗蒸';
@@ -9,6 +9,7 @@
 	export let product_quantity: number = 1;
 	export let discountQuantity: number;
 	export let discountId: number;
+	const dispatch = createEventDispatcher();
 </script>
 
 <div class="flex h-32 w-96 flex-col rounded-xl bg-white p-2.5">
@@ -19,7 +20,7 @@
 			alt="img"
 		/>
 		<div class="flex flex-col gap-3">
-			<div class="text-2xl font-normal text-orange-950">{product_name}</div>
+			<div class="text-2xl font-bold text-orange-950">{product_name}</div>
 			<div class="text-sm font-normal text-neutral-400">
 				{description}
 			</div>
@@ -27,7 +28,12 @@
 	</div>
 	<div class="flex items-center justify-between">
 		<div class="flex items-center gap-4 px-3">
-			<div class="">
+			<button
+				class="p-2"
+				on:click={() => {
+					dispatch('clickDelete', {});
+				}}
+			>
 				<svg width="16" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path
 						id="Vector"
@@ -35,7 +41,7 @@
 						fill="#755555"
 					/>
 				</svg>
-			</div>
+			</button>
 			<div class="flex items-end gap-4">
 				<span class=" text-base font-semibold text-red-900">NT$ </span>
 				<span class=" text-xl font-semibold text-red-900">{product_price}</span>

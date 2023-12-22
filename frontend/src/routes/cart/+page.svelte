@@ -12,28 +12,9 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import { CassetteTape } from 'lucide-svelte';
+	import { invalidateAll } from '$app/navigation';
 	export let data: PageData;
 	console.log(data);
-	type seasonindDiscount = {
-		discount_start_date: string;
-		discount_name: string;
-		discount_end_date: string;
-		discount_description: string;
-		discount_percentage: number;
-		discount_id: number;
-		status: number;
-	};
-	let seasoningDiscountList: seasonindDiscount[] = [];
-	onMount(async () => {
-		const init = await fetch(`/seasoningDiscount.json`);
-		if (init.status == 200) {
-			seasoningDiscountList = await init.json();
-		}
-		const resp = await fetch(backendPath + `/seasoning-discounts`);
-		if (resp.status == 200) {
-			seasoningDiscountList = await resp.json();
-		}
-	});
 
 	let showDetail = false;
 
@@ -52,64 +33,79 @@
 </script>
 
 <div class="flex flex-col items-center justify-center gap-5 p-8">
-	<div class="flex w-max max-w-7xl flex-col gap-10">
+	<div class="flex w-full max-w-7xl flex-col gap-10">
 		{#if data.cartInfos}
-			{#each data.cartInfos.store_order_info_array as storeInfo}
-				<div class="flex flex-col">
-					<div class="flex justify-between">
-						<div class="px-3 text-xl font-semibold leading-normal text-PUA-stone">
-							{storeInfo.store_name}
+			{#if data.cartInfos.store_order_info_array != null}
+				{#each data.cartInfos.store_order_info_array as storeInfo}
+					<div class="flex flex-col">
+						<div class="flex justify-between">
+							<div class="px-3 text-xl font-semibold leading-normal text-PUA-stone">
+								{storeInfo.store_name}
+							</div>
+							<div class="flex items-baseline gap-2 px-7">
+								<span class="text-xl font-semibold leading-normal text-PUA-stone"
+									>Shipping Fee
+								</span>
+								<span class="text-base font-semibold leading-tight text-PUA-stone">NT$</span>
+								<span class="text-xl font-semibold leading-normal text-PUA-stone"
+									>{storeInfo.store_shipping_fee}</span
+								>
+							</div>
 						</div>
-						<div class="flex items-baseline gap-2 px-7">
-							<span class="text-xl font-semibold leading-normal text-PUA-stone">Shipping Fee </span>
-							<span class="text-base font-semibold leading-tight text-PUA-stone">NT$</span>
-							<span class="text-xl font-semibold leading-normal text-PUA-stone"
-								>{storeInfo.store_shipping_fee}</span
-							>
+						<hr class="my-3 border-orange-950" />
+						<div class="flex flex-wrap gap-3">
+							{#each storeInfo.product_order as productInfo}
+								<CartItemCard
+									product_picture={productInfo.product_picture}
+									description={'null'}
+									product_name={productInfo.product_name}
+									product_quantity={productInfo.product_quantity}
+									product_price={productInfo.product_price}
+									discountId={productInfo.event_discount_id}
+									discountQuantity={productInfo.event_discount_max_quantity}
+									on:clickDelete={async () => {
+										console.log('click delete');
+										const resp = await fetch(
+											backendPath + '/customer/1/delete/product/' + productInfo.product_id,
+											{ method: 'DELETE' }
+										);
+										console.log(resp.status);
+										invalidateAll();
+									}}
+								></CartItemCard>
+							{/each}
+							<CartMoreItemCard></CartMoreItemCard>
 						</div>
 					</div>
-					<hr class="my-3 border-orange-950" />
-					<div class="flex flex-wrap gap-3">
-						{#each storeInfo.product_order as productInfo}
-							<CartItemCard
-								product_picture={productInfo.product_picture}
-								description={'null'}
-								product_name={productInfo.product_name}
-								product_quantity={productInfo.product_quantity}
-								product_price={productInfo.product_price}
-								discountId={productInfo.event_discount_id}
-								discountQuantity={productInfo.event_discount_max_quantity}
-							></CartItemCard>
-						{/each}
-						<CartMoreItemCard></CartMoreItemCard>
-					</div>
-				</div>
-			{/each}
+				{/each}
+			{/if}
 		{/if}
 
 		<div>
 			<div class="px-3 text-xl font-semibold leading-normal text-PUA-stone">Discount</div>
 			<hr class="my-3 border-orange-950" />
 			<div class="flex flex-wrap gap-3">
-				{#each data.cartInfos.store_order_info_array as storeInfo}
-					<ShippingCoupon
-						used={storeInfo.shipping_discount_bool}
-						store_name={storeInfo.store_name}
-						max_price={storeInfo.shipping_discount.discount_max_price}
-						description={storeInfo.shipping_discount.discount_description}
-					></ShippingCoupon>
-				{/each}
-				{#if data.cartInfos.store_order_info_array.length != 0}
-					<SeasoningCoupon
-						name={data.cartInfos.store_order_info_array[0].seasoning_discount.discount_name}
-						percentage={data.cartInfos.store_order_info_array[0].seasoning_discount
-							.discount_percentage}
-						discount_start_date={data.cartInfos.store_order_info_array[0].seasoning_discount
-							.discount_start_date}
-						discount_end_date={data.cartInfos.store_order_info_array[0].seasoning_discount
-							.discount_end_date}
-						used={data.cartInfos.store_order_info_array[0].seasoning_discount_bool}
-					/>
+				{#if data.cartInfos.store_order_info_array != null}
+					{#each data.cartInfos.store_order_info_array as storeInfo}
+						<ShippingCoupon
+							used={storeInfo.shipping_discount_bool}
+							store_name={storeInfo.store_name}
+							max_price={storeInfo.shipping_discount.discount_max_price}
+							description={storeInfo.shipping_discount.discount_description}
+						></ShippingCoupon>
+					{/each}
+					{#if data.cartInfos.store_order_info_array.length != 0}
+						<SeasoningCoupon
+							name={data.cartInfos.store_order_info_array[0].seasoning_discount.discount_name}
+							percentage={data.cartInfos.store_order_info_array[0].seasoning_discount
+								.discount_percentage}
+							discount_start_date={data.cartInfos.store_order_info_array[0].seasoning_discount
+								.discount_start_date}
+							discount_end_date={data.cartInfos.store_order_info_array[0].seasoning_discount
+								.discount_end_date}
+							used={data.cartInfos.store_order_info_array[0].seasoning_discount_bool}
+						/>
+					{/if}
 				{/if}
 			</div>
 		</div>

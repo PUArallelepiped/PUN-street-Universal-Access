@@ -4,15 +4,11 @@
 		OkButton,
 		SeasoningCoupon,
 		CartItemCard,
-		DenyButton,
 		CartMoreItemCard,
 		CartLabelBox,
-		ShippingCoupon,
-		PUALabel
+		ShippingCoupon
 	} from '$lib/index';
-	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
-	import { CassetteTape } from 'lucide-svelte';
 	import { invalidateAll } from '$app/navigation';
 	export let data: PageData;
 	console.log(data);

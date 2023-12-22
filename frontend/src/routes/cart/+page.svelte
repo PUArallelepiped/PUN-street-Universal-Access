@@ -7,7 +7,8 @@
 		DenyButton,
 		CartMoreItemCard,
 		CartLabelBox,
-		ShippingCoupon
+		ShippingCoupon,
+		PUALabel
 	} from '$lib/index';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
@@ -78,6 +79,8 @@
 						</div>
 					</div>
 				{/each}
+			{:else}
+				<div class="text-center text-5xl font-bold text-PUA-dark-red">No Product in your cart</div>
 			{/if}
 		{/if}
 
@@ -106,6 +109,10 @@
 							used={data.cartInfos.store_order_info_array[0].seasoning_discount_bool}
 						/>
 					{/if}
+				{:else}
+					<div class=" w-full text-center text-5xl font-bold text-PUA-dark-red">
+						No Discount In cart
+					</div>
 				{/if}
 			</div>
 		</div>
@@ -117,12 +124,14 @@
 			</div>
 		{/if}
 		<div class="flex justify-between">
-			<DenyButton onclick={() => null}><div class="px-4">Delete All</div></DenyButton>
+			<!-- <DenyButton onclick={() => null}><div class="px-4">Delete All</div></DenyButton> -->
 			<div class="flex place-items-baseline justify-between gap-7">
 				<div class="text-4xl font-semibold text-orange-950">Total Price</div>
 				<div class="flex items-baseline gap-3">
 					<div class="text-2xl font-semibold text-orange-950">NT$</div>
-					<div class="text-right text-3xl font-semibold text-orange-950">9999</div>
+					<div class="text-right text-3xl font-semibold text-orange-950">
+						{data.cartInfos.real_total_price}
+					</div>
 				</div>
 			</div>
 			<OkButton onclick={checkout} text="Check Out"></OkButton>

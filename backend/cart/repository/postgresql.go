@@ -160,7 +160,8 @@ func (p *postgresqlCartRepo) AddProductToCart(ctx context.Context, customerId in
 	(SELECT current_cart_id FROM user_data WHERE user_id = $1),
 	$2, $3, $4, $5)
 	ON CONFLICT (customer_id, product_id, store_id, cart_id) DO UPDATE 
-	SET product_quantity = EXCLUDED.product_quantity;
+	SET product_quantity = EXCLUDED.product_quantity, 
+	event_discount_id = EXCLUDED.event_discount_id;
 	`
 	_, err := p.db.Exec(sqlStatement, customerId, cartInfo.StoreId, cartInfo.ProductId, cartInfo.ProductQuantity, cartInfo.DiscountId)
 	if err != nil {

@@ -14,6 +14,7 @@
 	export let addSign: boolean = true;
 
 	export let type: boolean = false;
+	export let group = 1;
 
 	$: last_index = discount.length;
 </script>
@@ -29,8 +30,10 @@
 					{#if type}
 						<div class="">
 							<DiscountButton
-								text={'買' + { discount_max_quantity } + '送一'}
-								id={discount_id.toString()}
+								id={discount_id}
+								bind:value={discount_id}
+								bind:group
+								text={'買' + discount_max_quantity.toString() + '送一'}
 							/>
 						</div>
 					{:else}

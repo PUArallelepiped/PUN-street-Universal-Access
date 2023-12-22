@@ -1,14 +1,14 @@
 <script lang="ts">
 	import triangle_sub from '$lib/assets/triangle_sub.svg';
 	import triangle_add from '$lib/assets/triangle_add.svg';
-	let count = 0;
+	export let count = 1;
 	export let allowNegative: boolean = false;
 	function add() {
 		count += 1;
 		return null;
 	}
 	function sub() {
-		if (!allowNegative && count == 0) {
+		if (!allowNegative && count == 1) {
 			return null;
 		}
 		count -= 1;

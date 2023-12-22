@@ -6,6 +6,7 @@
 	import AddCategoryAndItemArea from '$lib/components/PUA/addCategoryAndItemArea.svelte';
 	import ChangeDiscountPage from '$lib/components/PUA/changeDiscountPage.svelte';
 	import type { PageData } from './$types';
+	import { goto } from '$app/navigation';
 	export let data: PageData;
 	let shop_id = data.shop;
 	let item_id = data.item;
@@ -120,8 +121,7 @@
 			method: 'POST',
 			body: JSON.stringify(product_data)
 		});
-		window.location.href = './';
-		console.log(product_data);
+		goto('/shops/' + shop_id);
 		console.log(post_status);
 	}
 

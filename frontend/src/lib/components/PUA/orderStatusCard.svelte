@@ -33,11 +33,11 @@
 				</div>
 			</div>
 
-			<a
+			<div
 				class=" flex h-20 w-40 items-center justify-center rounded-2xl bg-PUA-stone p-2 text-center font-bold leading-relaxed text-white hover:border-[3px] hover:border-PUA-stone hover:bg-white hover:text-PUA-stone"
 			>
 				{statusCardContent.text}
-			</a>
+			</div>
 		</button>
 	</div>
 </div>

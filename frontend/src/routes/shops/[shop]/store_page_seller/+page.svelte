@@ -138,7 +138,7 @@
 			discount_max_price: shippingList.discount_max_quantity,
 			status: shippingList.status
 		};
-		const respJson = await fetch(backendPath + '/store/' + '1' + '/shipping-discount', {
+		const respJson = await fetch(backendPath + '/store/' + shop_id + '/shipping-discount', {
 			method: 'POST',
 			body: JSON.stringify(shippingListResp)
 		}).then((resp) => {

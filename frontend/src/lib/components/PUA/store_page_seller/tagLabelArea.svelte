@@ -37,6 +37,16 @@
 	}
 
 	let menu_show = false;
+
+	let intersectionData: {
+		category_id: number;
+		category_name: string;
+	}[];
+	$: {
+		intersectionData = tagText_all.filter(
+			(tagItem) => !tagText?.some((tagText) => tagText.category_name === tagItem.category_name)
+		);
+	}
 </script>
 
 <div class="flex justify-start">
@@ -49,13 +59,13 @@
 			></TagLabel>
 		{/each}
 	{/if}
-	{#if menu_show}
+	{#if menu_show && intersectionData.length !== 0}
 		<TagMenu
 			bind:tagMenuData={tagText_all}
 			bind:disabled_tag={tagText}
 			click_function={PostGetCategoryResp}
 		></TagMenu>
-	{:else}
+	{:else if !menu_show && intersectionData.length !== 0}
 		<TagAdd on:click={() => (menu_show = !menu_show)}></TagAdd>
 	{/if}
 </div>

@@ -121,7 +121,7 @@
 			method: 'POST',
 			body: JSON.stringify(product_data)
 		});
-		goto('/shops/' + shop_id);
+		goto('/shops/' + shop_id + '/store_page_seller');
 		console.log(post_status);
 	}
 

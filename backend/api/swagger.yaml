@@ -754,6 +754,10 @@ paths:
       responses:
         "200":
           description: login success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenInfo'
         "400":
           description: bad request
         "403":
@@ -2585,3 +2589,12 @@ components:
           example: 1
       example:
         user_id: 1
+    TokenInfo:
+      required:
+      - token
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFAZ21haWwuY29tIiwiaWQiOjIsImF1dGhvcml0eSI6InN0b3JlIiwiZXhwIjoxNzAzMjA2ODcwLCJpYXQiOjE3MDMxMjA0NzB9.G64JkqpwZmf-qPYa9WozPeJmzu3aCsn7REh-E2SDgCAtPGZC_7u372y1NyXANSGoIA822GbFwUQNLjaP2ofMqg
+      example:
+        token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFAZ21haWwuY29tIiwiaWQiOjIsImF1dGhvcml0eSI6InN0b3JlIiwiZXhwIjoxNzAzMjA2ODcwLCJpYXQiOjE3MDMxMjA0NzB9.G64JkqpwZmf-qPYa9WozPeJmzu3aCsn7REh-E2SDgCAtPGZC_7u372y1NyXANSGoIA822GbFwUQNLjaP2ofMqg

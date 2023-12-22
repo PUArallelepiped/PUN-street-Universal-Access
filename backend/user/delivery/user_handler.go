@@ -1,9 +1,9 @@
 package delivery
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
@@ -80,10 +80,12 @@ func (u *UserHandler) Login(c *gin.Context) {
 		c.Status(500)
 		return
 	}
-	c.SetSameSite(http.SameSiteStrictMode)
-	c.SetCookie("jwttoken", token, (int)(24*time.Hour), "/", "localhost", false, true)
+	fmt.Println(c.Cookie("jwttoken"))
+	// c.SetSameSite(http.SameSiteStrictMode)
+	// c.SetCookie("jwttoken", token, (int)(24*time.Hour), "/", "localhost", false, true)
 
-	c.JSON(200, "Login Success")
+	// c.JSON(200, "Login Success")
+	c.JSON(200, token)
 }
 
 func (u *UserHandler) ValidateToken(c *gin.Context) {

@@ -5,6 +5,7 @@
 	import InputBox from '$lib/components/PUA/InputBox.svelte';
 	import { ErrorMessage } from '$lib';
 	import NisePanda from '$lib/assets/nise_panda.png';
+	import { getId } from '$lib/components/PUA/getId';
 
 	let user_email = '';
 	let password = '';
@@ -26,7 +27,9 @@
 			})
 		});
 		if (res.status == 200) {
-			await res.json();
+			await res.json().then((data) => document.cookie = 'jwttoken=' + data 
+			 + '; path=/; sameSite=strict;');
+			console.log((await getId()).valueOf());
 			goto('/shops');
 		} else if (res.status == 403) {
 			errorMsg = 'You got banned, haha';

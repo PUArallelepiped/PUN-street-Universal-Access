@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import ErrorMsg from './errorMsg.svelte';
 	export let value = '';
 	export let width: string = '10';
@@ -12,6 +13,14 @@
 			target.style.height = `${target.scrollHeight}px`;
 		}
 	}
+
+	onMount(() => {
+		const textarea = document.getElementById('svelteTextarea') as HTMLTextAreaElement;
+		if (textarea) {
+			textarea.style.height = '0px';
+			textarea.style.height = `${textarea.scrollHeight}px`;
+		}
+	});
 </script>
 
 <textarea

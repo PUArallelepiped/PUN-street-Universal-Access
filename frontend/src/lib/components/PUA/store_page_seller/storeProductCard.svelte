@@ -14,7 +14,7 @@
 
 <a
 	{href}
-	class="flex items-center justify-between rounded-3xl bg-white duration-150 hover:scale-105"
+	class="flex items-center justify-between rounded-3xl bg-white duration-150 hover:scale-[1.02]"
 >
 	<div class="m-4 flex h-24 items-center">
 		<div class="h-24 w-24 overflow-hidden rounded-lg">

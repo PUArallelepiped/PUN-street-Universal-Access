@@ -258,7 +258,7 @@
 
 	<div class="mt-10 lg:px-40">
 		<div class="mx-5 space-y-2">
-			<div class="text-5xl font-bold text-PUA-stone">{shopDataList.name}</div>
+			<div class="text-PUA-stone text-5xl font-bold">{shopDataList.name}</div>
 			<div class="font-bold text-red-950">{shopDataList.address}</div>
 			<div class="flex w-full justify-start gap-6">
 				<TagLabelArea
@@ -281,12 +281,12 @@
 			<div
 				class={` ${
 					showProductCard ? 'max-h-full' : 'max-h-0'
-				}   overflow-hidden transition-all duration-[1300ms] ease-in-out`}
+				} overflow-y-hidden transition-all duration-[1300ms] ease-in-out`}
 			>
 				<div
 					class={` ${
 						showProductCard ? ' translate-y-0 ' : 'translate-y-[-100%]'
-					}   transition-all duration-[1500ms] ease-in-out `}
+					}  transition-all duration-[1500ms] ease-in-out`}
 				>
 					<StoreProductCardArea bind:productListResponse={productsList} {shop_id}
 					></StoreProductCardArea>

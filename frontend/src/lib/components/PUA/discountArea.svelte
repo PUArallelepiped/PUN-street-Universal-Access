@@ -20,9 +20,17 @@
 </script>
 
 <div class="relative h-full w-full">
-	<div class="flex h-7 w-full items-center border-b-[1px] border-solid border-PUA-stone">
-		<div class=" font-bold text-PUA-stone">Add Discount</div>
+	<div class="border-PUA-stone flex h-7 w-full items-center border-b-[1px] border-solid">
+		<div class=" text-PUA-stone font-bold">Add Discount</div>
 	</div>
+	{#if discount.length === 0 && type}
+		<div class=" my-4 flex w-full animate-pulse items-center justify-center">
+			<p class=" text-PUA-stone border-PUA-stone rounded-lg border-2 px-4 text-base font-bold">
+				No Event Discount
+			</p>
+		</div>
+	{/if}
+
 	<div class="flex items-center justify-center">
 		<div class="my-4 flex flex-wrap gap-1">
 			{#each discount as { discount_id, discount_max_quantity }, index}

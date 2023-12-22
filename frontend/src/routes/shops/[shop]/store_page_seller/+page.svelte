@@ -161,7 +161,7 @@
 	}
 	function deleteDiscountCard() {
 		if (dis_haved) {
-			putDiscount(shippingListResp.discount_id);
+			putDiscount(shippingList.discount_id);
 		}
 		shippingList = {
 			...shippingList,

@@ -8,7 +8,7 @@
 </script>
 
 <button
-	class=" w-52 rounded-3xl bg-PUA-orange px-2 text-center text-lg font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+	class=" h-min w-52 rounded-3xl bg-PUA-orange px-2 text-center text-lg font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
 	on:click={onclick}
 	{disabled}
 	{type}

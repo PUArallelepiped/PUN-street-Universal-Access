@@ -60,12 +60,10 @@
 									discountId={productInfo.event_discount_id}
 									discountQuantity={productInfo.event_discount_max_quantity}
 									on:clickDelete={async () => {
-										console.log('click delete');
-										const resp = await fetch(
+										await fetch(
 											backendPath + '/customer/1/delete/product/' + productInfo.product_id,
 											{ method: 'DELETE' }
 										);
-										console.log(resp.status);
 										invalidateAll();
 									}}
 								></CartItemCard>

@@ -7,6 +7,7 @@
 		user: string;
 		status: number;
 	};
+	export let href = './';
 
 	let viewBoxValue = '';
 
@@ -33,7 +34,8 @@
 
 <div class=" w-3/7">
 	<div class=" flex flex-wrap items-center justify-center gap-8">
-		<button
+		<a
+			{href}
 			class=" group flex items-center gap-5 rounded-xl bg-white p-4 shadow transition-all duration-300 hover:-translate-y-6 hover:transform hover:shadow-2xl hover:shadow-zinc-600"
 		>
 			<svg
@@ -64,6 +66,6 @@
 			>
 				{statusCardContent.text}
 			</button>
-		</button>
+		</a>
 	</div>
 </div>

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import watermelon from '$lib/assets/watermelon.png';
 	import type { PageData } from './$types';
 	import { ProductCard } from '$lib';
 	import TagLabelAreaForShow from '$lib/components/PUA/tagLabelAreaForShow.svelte';
@@ -9,7 +8,7 @@
 </script>
 
 <div class="h-48 w-full overflow-hidden">
-	<img src={watermelon} alt="" class="w-full object-cover" />
+	<img src={data.shopInfo.picture} alt="" class="w-full object-cover" />
 </div>
 <div class="mx-5 mt-10 lg:px-40">
 	<div class="mx-5 space-y-2">

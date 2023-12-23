@@ -1,5 +1,4 @@
 <script lang="ts">
-	import watermelon from '$lib/assets/watermelon.png';
 	import { CategoryLabel, DiscountCard } from '$lib';
 	import ChangeDiscountPage from '$lib/components/PUA/changeDiscountPage.svelte';
 	import StoreProductCardArea from '$lib/components/PUA/store_page_seller/storeProductCardArea.svelte';
@@ -253,7 +252,7 @@
 
 {#await getData() then}
 	<div class="h-48 w-full overflow-hidden">
-		<img src={watermelon} alt="" class="w-full object-cover" />
+		<img src={shopDataList.picture} alt="" class="w-full object-cover" />
 	</div>
 
 	<div class="mt-10 lg:px-40">

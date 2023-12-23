@@ -34,7 +34,7 @@
 <div class=" w-3/7">
 	<div class=" flex flex-wrap items-center justify-center gap-8">
 		<button
-			class=" flex items-center gap-5 rounded-xl bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-6 hover:transform hover:shadow-2xl hover:shadow-zinc-600"
+			class=" flex items-center gap-5 rounded-xl bg-white p-4 shadow transition-all duration-300 hover:-translate-y-6 hover:transform hover:shadow-2xl hover:shadow-zinc-600"
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"

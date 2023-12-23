@@ -47,10 +47,29 @@ func (p *postgresqlUserRepo) GetByID(ctx context.Context, id int64) (*swagger.Us
 	return s, nil
 }
 
+func (p *postgresqlUserRepo) GetUser(ctx context.Context, id int64) (*swagger.UserDataShort, error) {
+	sqlStatement := `
+		SELECT 	email, user_id, name, authority, status
+		FROM user_data WHERE user_id = $1;
+	`
+
+	row := p.db.QueryRow(sqlStatement, id)
+
+	user := &swagger.UserDataShort{}
+	err := row.Scan(&user.UserEmail, &user.UserId, &user.UserName, &user.Authority, &user.Status)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	return user, nil
+}
+
 func (p *postgresqlUserRepo) GetAllUser(ctx context.Context) ([]swagger.UserDataShort, error) {
 	sqlStatement := `
 		SELECT 	email, user_id, name, authority, status
-		FROM user_data;
+		FROM user_data WHERE authority != 'admin'
+		ORDER BY user_id
 	`
 
 	rows, err := p.db.Query(sqlStatement)
@@ -58,18 +77,73 @@ func (p *postgresqlUserRepo) GetAllUser(ctx context.Context) ([]swagger.UserData
 		logrus.Error(err)
 		return nil, err
 	}
-	l := []swagger.UserDataShort{}
+	users := []swagger.UserDataShort{}
 	for rows.Next() {
-		s := swagger.UserDataShort{}
-		err := rows.Scan(&s.UserEmail, &s.UserId, &s.UserName, &s.Authority, &s.Status)
+		user := swagger.UserDataShort{}
+		err := rows.Scan(&user.UserEmail, &user.UserId, &user.UserName, &user.Authority, &user.Status)
 		if err != nil {
 			logrus.Error(err)
 			return nil, err
 		}
-		l = append(l, s)
+		users = append(users, user)
 	}
 
-	return l, nil
+	return users, nil
+}
+
+func (p *postgresqlUserRepo) GetAllOrder(ctx context.Context) ([]swagger.OrderInfoShort, error) {
+	sqlStatement := `
+	SELECT orders.cart_id, orders.store_id, orders.order_date, orders.user_id, user_data.name  
+	FROM orders LEFT JOIN user_data 
+	ON orders.user_id = user_data.user_id
+	ORDER BY orders.order_date	
+	`
+
+	rows, err := p.db.Query(sqlStatement)
+	if err != nil {
+		return nil, err
+	}
+
+	orders := []swagger.OrderInfoShort{}
+	for rows.Next() {
+		order := swagger.OrderInfoShort{}
+		err := rows.Scan(&order.CartId, &order.StoreId, &order.OrderDate, &order.UserId, &order.UserName)
+		if err != nil {
+			return nil, err
+		}
+
+		orders = append(orders, order)
+	}
+
+	return orders, nil
+}
+
+func (p *postgresqlUserRepo) BanUser(ctx context.Context, id int64) error {
+	sqlStatement := `
+	UPDATE user_data SET status = 0 WHERE user_id = $1
+	`
+
+	_, err := p.db.Exec(sqlStatement, id)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
+}
+
+func (p *postgresqlUserRepo) UnBanUser(ctx context.Context, id int64) error {
+	sqlStatement := `
+	UPDATE user_data SET status = 1 WHERE user_id = $1
+	`
+
+	_, err := p.db.Exec(sqlStatement, id)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
+	return nil
 }
 
 func (p *postgresqlUserRepo) RegisterUser(ctx context.Context, user *swagger.RegisterInfo, authority string) (int, error) {

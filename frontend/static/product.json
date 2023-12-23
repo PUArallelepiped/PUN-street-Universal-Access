@@ -1,0 +1,56 @@
+{
+	"store_id": 1,
+	"product_label_array": [
+		{
+			"item_array": [
+				{
+					"name": "have"
+				},
+				{
+					"name": "no"
+				}
+			],
+			"product_id": 1,
+			"label_name": "milk",
+			"required": true
+		},
+		{
+			"item_array": [
+				{
+					"name": "have"
+				},
+				{
+					"name": "no"
+				}
+			],
+			"product_id": 1,
+			"label_name": "milk22",
+			"required": false
+		}
+	],
+	"price": 9999,
+	"product_id": 1,
+	"name": "pasta",
+	"description": "tasty pasta",
+	"stock": 100,
+	"event_discount_array": [
+		{
+			"discount_max_quantity": 2,
+			"product_id": 1,
+			"discount_name": "new year discount",
+			"discount_description": "buy 2 get 1 free",
+			"discount_id": 1,
+			"status": 1
+		},
+		{
+			"discount_max_quantity": 2,
+			"product_id": 1,
+			"discount_name": "new year discount",
+			"discount_description": "buy 3 get 1 free",
+			"discount_id": 2,
+			"status": 1
+		}
+	],
+	"picture": "https://i.imgur.com/1.jpg",
+	"status": 2
+}

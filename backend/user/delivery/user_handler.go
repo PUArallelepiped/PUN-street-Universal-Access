@@ -28,6 +28,9 @@ func NewUserHandler(e *gin.Engine, userUsecase domain.UserUsecase) {
 		v1.POST("/register", handler.RegisterUser)
 		v1.POST("/check-email", handler.CheckEmail)
 		v1.GET("/userID", handler.GetUserIdByCookie)
+		v1.GET("/admin/get-all-orders", handler.GetOrders)
+		v1.PUT("/admin/ban-user/:userID", handler.BanUser)
+		v1.PUT("/admin/unban-user/:userID", handler.UnBanUser)
 	}
 }
 
@@ -50,14 +53,61 @@ func (s *UserHandler) GetUserById(c *gin.Context) {
 }
 
 func (s *UserHandler) GetUsers(c *gin.Context) {
-	stores, err := s.UserUsecase.GetAllUser(c)
+	users, err := s.UserUsecase.GetAllUser(c)
 	if err != nil {
 		logrus.Error(err)
 		c.Status(500)
 		return
 	}
 
-	c.JSON(200, stores)
+	c.JSON(200, users)
+}
+
+func (s *UserHandler) GetOrders(c *gin.Context) {
+	orders, err := s.UserUsecase.GetAllOrder(c)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, orders)
+}
+
+func (s *UserHandler) BanUser(c *gin.Context) {
+	userID, err := strconv.ParseInt(c.Param("userID"), 10, 64)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
+	user, err := s.UserUsecase.BanUser(c, userID)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, user)
+}
+
+func (s *UserHandler) UnBanUser(c *gin.Context) {
+	userID, err := strconv.ParseInt(c.Param("userID"), 10, 64)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
+	user, err := s.UserUsecase.UnBanUser(c, userID)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, user)
 }
 
 func (u *UserHandler) Login(c *gin.Context) {

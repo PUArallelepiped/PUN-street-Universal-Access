@@ -7,13 +7,13 @@
 	export let discountCardData: {
 		discount_name: string;
 		discount_description: string;
-		discount_max_price: number;
+		discount_max_quantity: number;
 		discount_id: number;
 		status: number;
 	} = {
 		discount_name: 'free shipping',
 		discount_description: 'free shipping when total price over 1000',
-		discount_max_price: 1000,
+		discount_max_quantity: 1000,
 		discount_id: 1,
 		status: 1
 	};
@@ -60,7 +60,7 @@
 					<div class="relative w-full px-4">
 						<div class="flex items-baseline justify-center">
 							<span class="ml-1 mr-1 text-base">NT$</span>
-							<span class="text-2xl">{discountCardData.discount_max_price}</span>
+							<span class="text-2xl">{discountCardData.discount_max_quantity}</span>
 						</div>
 						<div class="whitespace-nowrap text-xl">free shipping</div>
 					</div>

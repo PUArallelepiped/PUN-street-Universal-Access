@@ -1,286 +1,262 @@
 <script lang="ts">
 	import { Input } from '$lib/components/ui/input';
-	import transhcan from '$lib/assets/transhcan.svg';
-	import close from '$lib/assets/close.svg';
-
-	import {
-		Redradiobox,
-		Textcontainer,
-		Textarea,
-		DisCountArea,
-		OkButton,
-		StatusButton,
-		ErrorMsg,
-		NeedChooseLabel
-	} from '$lib/index';
-
-	let data = [{ id: 0, category: '0', subcategories: ['1', '2', '3'] }];
-
-	let nextCategoryId = data.length + 1;
-
-	function addNewCategory() {
-		data = [...data, { id: nextCategoryId, category: `${nextCategoryId}`, subcategories: [] }];
-		nextCategoryId++;
-	}
-
-	function addNewSubcategory(index: number) {
-		const currentData = data[index];
-		data[index] = {
-			...currentData,
-			subcategories: [
-				...currentData.subcategories,
-				(currentData.subcategories.length + 1).toString()
-			]
-		};
-	}
-
-	function removeCategory(id: number) {
-		data = data.filter((cat) => cat.id !== id);
-	}
-
-	function removeNewSubcategory(index: number) {
-		const currentData = data[index];
-
-		if (currentData.subcategories.length > 0) {
-			currentData.subcategories.pop();
-		}
-
-		data[index] = { ...currentData };
-	}
-
-	let buttons = [
-		{ id: '1', label: '買二送一' },
-		{ id: '2', label: '買二送一' },
-		{ id: '3', label: '買二送一' },
-		{ id: '4', label: '買二送一' },
-		{ id: '5', label: '買二送一' }
-	];
-
-	let Status = [{ label: '下架中' }, { label: '已售完' }];
+	import { onMount } from 'svelte';
+	import { backendPath } from '$lib/components/PUA/env';
+	import { Textarea, DisCountArea, OkButton, StatusButton, ErrorMsg } from '$lib/index';
+	import AddCategoryAndItemArea from '$lib/components/PUA/addCategoryAndItemArea.svelte';
+	import ChangeDiscountPage from '$lib/components/PUA/changeDiscountPage.svelte';
+	let store_id = 1;
+	type productRespType = {
+		store_id: number;
+		product_label_array: {
+			item_array: {
+				name: string;
+			}[];
+			product_id: number;
+			label_name: string;
+			required: boolean;
+		}[];
+		price: number;
+		product_id: number;
+		name: string;
+		description: string;
+		stock: number;
+		event_discount_array: {
+			discount_max_quantity: number;
+			product_id: number;
+			discount_name: string;
+			discount_description: string;
+			discount_id: number;
+			status: number;
+		}[];
+		picture: string;
+		status: number;
+	};
+	let product_data: productRespType = {
+		store_id: store_id,
+		product_label_array: [
+			{
+				item_array: [{ name: '' }],
+				product_id: 0,
+				label_name: '',
+				required: true
+			}
+		],
+		price: 0,
+		product_id: 0,
+		name: '',
+		description: '',
+		stock: 0,
+		event_discount_array: [],
+		picture: '',
+		status: 1
+	};
+	let current_discount_array = {
+		discount_max_quantity: 0,
+		product_id: 0,
+		discount_name: '',
+		discount_description: '',
+		discount_id: 0,
+		status: 1
+	};
+	let showModel = false;
+	let Status = [{ label: '上架中' }, { label: '已售完' }];
+	let new_index = 0;
+	let discountData = { kind: 'Event Discount', how: 'Get', way: 'FOR FREE ONE' };
 
 	function addDiscountButton() {
-		buttons = [...buttons, { id: '6', label: `買二送一` }];
+		const newLabel = { ...current_discount_array };
+		if (product_data.event_discount_array[new_index]) {
+			product_data.event_discount_array[new_index] = current_discount_array;
+		} else {
+			product_data = {
+				...product_data,
+				event_discount_array: [...product_data.event_discount_array, newLabel]
+			};
+		}
+		return null;
+	}
+	function delete_Discount() {
+		if (new_index >= 0 && new_index < product_data.event_discount_array.length) {
+			const newArray = product_data.event_discount_array.filter((_, i) => i !== new_index);
+			product_data.event_discount_array = newArray;
+		}
+		return null;
+	}
+	function getDiscount(i: number) {
+		if (product_data.event_discount_array[i]) {
+			current_discount_array = product_data.event_discount_array[i];
+		} else {
+			current_discount_array = {
+				discount_max_quantity: 0,
+				product_id: 0,
+				discount_name: '',
+				discount_description: '',
+				discount_id: 0,
+				status: 0
+			};
+		}
+		new_index = i;
 		return null;
 	}
 
-	let showModel = false; //only 模擬
-	let discount_name_Input = '';
-	let discount_maxquantity_Input = '';
-	let discount_description_Input = '';
-	function toggleModel() {
-		showModel = !showModel;
+	async function getProductResp() {
+		const res = await fetch(backendPath + `/product/1`);
+
+		if (res.status == 200) {
+			product_data = await res.json();
+		}
+		console.log(product_data);
+		return;
 	}
+
+	async function PostProductResp() {
+		console.log(product_data);
+		let post_status = fetch(backendPath + `/store/` + store_id + `/add-product`, {
+			method: 'POST',
+			body: JSON.stringify(product_data)
+		});
+		console.log(post_status);
+	}
+
+	onMount(async () => {
+		getProductResp();
+	});
 </script>
 
-<div class="flex justify-start">
-	<div class="relative left-1/2 top-6 h-full w-4/5 -translate-x-1/2 transform">
-		<div class="h-100 text-33 flex w-full flex-col justify-center text-PUA-dark-red">
-			<Input
-				type="text"
-				placeholder="Enter Product Name"
-				class="max-wxs w-full rounded-[0] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-3xl"
-			/>
-
-			<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
-		</div>
-		<div class="flex h-full w-full">
-			<div class="relative h-full w-[500px]">
-				<div
-					class="mt-100 flex h-[250px] w-[250px] items-center justify-center rounded-[10px] bg-gray-300 shadow-inner"
-				>
-					<button class="h-11 rounded-[20px] bg-gray-400 px-[50px] py-[3px] text-white shadow-md"
-						>Upload Image</button
-					>
-				</div>
-
-				<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
-
-				<div class="flex items-center">
-					<div class="gap-3 py-[20px] text-3xl font-bold">NT$</div>
+{#await getProductResp() then}
+	<form on:submit={PostProductResp}>
+		<div class="flex h-fit justify-start">
+			<div class="relative left-1/2 mt-6 h-full w-4/5 -translate-x-1/2 transform">
+				<div class="h-100 text-33 flex w-full flex-col justify-center text-PUA-dark-red">
 					<Input
+						required
+						bind:value={product_data.name}
 						type="text"
-						placeholder="Enter price"
-						class="ml-[10px] w-[180px] max-w-xs rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-[30px]"
+						placeholder="Enter Product Name"
+						class="max-wxs peer w-full rounded-[0] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-3xl"
 					/>
+					<div class="invisible py-4 peer-invalid:visible">
+						<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
+					</div>
 				</div>
-
-				<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
-				<div class="w-[250px] text-base text-gray-600">
-					<Textarea width="64" />
-				</div>
-
-				<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
-			</div>
-			<div class="relative h-full w-full">
-				<div class="relative mb-[10px] w-full">
-					{#each data as { id, category, subcategories }, index (category)}
-						<div class="mb-[15px]">
-							<div class="flex h-[30px] items-center border-b-[1px] border-solid border-red-950">
-								<div class="flex w-[80%] items-center">
-									<Textcontainer
-										width="100"
-										min_width="100"
-										max_Width="200"
-										id={category + 'label'}
-										text_size="14"
+				<div class="flex h-full w-full">
+					<div class="relative h-full w-[500px]">
+						<div class=" flex h-[250px] w-[250px] rounded-lg bg-gray-300 shadow-inner">
+							{#if !product_data.picture}
+								<div class="flex h-full w-full items-center justify-center">
+									<label
+										for="fileInput"
+										class="h-11 cursor-pointer rounded-[20px] bg-gray-400 px-12 py-2 text-white shadow-md"
+										>Upload Image</label
+									>
+									<input
+										type="file"
+										id="fileInput"
+										accept="image/png, image/jpeg"
+										class="absolute right-0 top-0 cursor-pointer font-bold opacity-0"
 									/>
-									<NeedChooseLabel></NeedChooseLabel>
-
-									<div class="ml-2 mr-2 flex items-center justify-center">
-										<Redradiobox name={category + 'Choice'} id={category + 'yes'} checked={true} />
-									</div>
-
-									<label for="Choice" class="text-red-950">Yes</label>
-									<div class="ml-2 mr-2 flex items-center justify-center">
-										<Redradiobox name={category + 'Choice'} id={category + 'No'} />
-									</div>
-									<label for="Choice" class="text-red-950">No</label>
 								</div>
-								<div class="flex w-1/3 items-center justify-end">
-									<button on:click={() => removeCategory(id)} class="flex">
-										<img src={transhcan} alt="Trash Can" class="object-cover" />
-									</button>
+							{:else}
+								<div class="absolute z-10 h-[250px] w-[250px] bg-opacity-0">
+									<label for="fileInput" class=" block h-full w-full cursor-pointer bg-opacity-0"
+									></label>
+									<input
+										type="file"
+										id="fileInput"
+										accept="image/png, image/jpeg"
+										class="absolute right-0 top-0 cursor-pointer font-bold opacity-0"
+									/>
 								</div>
-							</div>
-							<div class="relative ml-[25px] mt-[10px] w-[90%] flex-col items-start">
-								{#each subcategories as subcategory, subIndex (subcategory)}
-									<div
-										class="flex w-full items-center space-x-2 border-b-[1px] border-solid border-red-900"
-									>
-										<Redradiobox name={category} id={category + subcategory} />
-
-										<div class="mx-auto flex w-full justify-end">
-											<input
-												class="w-full border-b-[1px] border-solid border-gray-300 border-transparent bg-transparent text-end underline outline-none"
-												type="text"
-												placeholder="item{subIndex + 1}"
-											/>
-										</div>
-									</div>
-								{/each}
-								<div class="flex h-[30px] w-full items-center justify-end">
-									<button
-										on:click={() => removeNewSubcategory(index)}
-										class="m-[3px] h-[20x] w-[20px] rounded-[10px] bg-red-900 px-[0px] py-[0px] text-sm font-bold text-white"
-										>-</button
-									>
-									<button
-										on:click={() => addNewSubcategory(index)}
-										class="m-[3px] h-[20x] w-[20px] rounded-[10px] bg-red-900 px-[0px] py-[0px] text-sm font-bold text-white"
-										>+</button
-									>
-								</div>
+								<img
+									src={product_data.picture}
+									alt=""
+									class="flex h-full w-full rounded-lg object-cover"
+								/>
+							{/if}
+						</div>
+						<div class="flex w-64 flex-wrap items-center">
+							<div class="gap-3 py-[20px] text-3xl font-bold">NT$</div>
+							<input
+								required
+								bind:value={product_data.price}
+								type="number"
+								min="0"
+								max="999999999"
+								placeholder="Enter price"
+								class="peer ml-[10px] w-[180px] max-w-xs rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400 bg-transparent text-[30px]"
+							/>
+							<div class="invisible w-64 peer-invalid:visible">
+								<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
 							</div>
 						</div>
-					{/each}
-				</div>
-				<div class="flex h-full items-center justify-center">
-					<button
-						on:click={addNewCategory}
-						class="h-[30px] w-[30px] rounded-[15px] bg-red-900 font-bold text-white">+</button
-					>
-				</div>
-				<DisCountArea
-					toggleModel={() => {
-						showModel = !showModel;
-						return null;
-					}}
-					discount={buttons}
-					{addDiscountButton}
-					addSign={true}
-					type={false}
-				></DisCountArea>
-
-				<div class="flex h-[30px] w-full items-center border-b-[1px] border-solid border-PUA-stone">
-					<div class="font-bold text-PUA-stone">Set Status</div>
-				</div>
-				<div class="m-4 flex justify-center gap-10">
-					{#each Status as { label }}
-						<div class="flex items-center justify-center">
-							<StatusButton text={label} id={label}></StatusButton>
+						<div class="w-[250px] text-base text-gray-600">
+							<Textarea width="64" bind:value={product_data.description} required={true} />
 						</div>
-					{/each}
-				</div>
-				<div class="flex items-center justify-center">
-					<div class="flex flex-col">
-						<OkButton
-							onclick={() => {
+					</div>
+					<div class="relative h-fit w-full">
+						<AddCategoryAndItemArea
+							bind:category_item={product_data.product_label_array}
+							bind:product_id={product_data.product_id}
+						></AddCategoryAndItemArea>
+						<DisCountArea
+							toggleModel={() => {
+								showModel = !showModel;
 								return null;
 							}}
-							text="Add Product"
-						></OkButton>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+							bind:discount={product_data.event_discount_array}
+							addDiscountButton={getDiscount}
+							addSign={true}
+							type={false}
+						></DisCountArea>
 
-{#if showModel}
-	<div
-		class="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50 backdrop-blur"
-	>
-		<div class="rounded bg-white p-5">
-			<div class="flex">
-				<div class="w-1/2 text-left text-xl font-bold text-PUA-stone">
-					<h2>Add A Discount</h2>
-				</div>
-				<div class="flex w-1/2 justify-end">
-					<button on:click={toggleModel}>
-						<img src={close} alt="" class="h-[25px] object-cover" />
-					</button>
-				</div>
-			</div>
-			<div class="relative ml-16 mr-16">
-				<div class="flex w-full items-center justify-center pb-2 pt-2">
-					<div class="flex w-64 rounded-[10px] border-[3px] border-red-900 p-3 text-red-900">
-						<div class="w-2/5 text-center font-bold">Event Discount</div>
-						<div class="ml-1 mr-1 border-r-[2px] border-red-900"></div>
-						<div class="flex w-3/5 flex-wrap items-center justify-center text-center font-bold">
-							<p>Get</p>
-							<p class="ml-1 mr-1 text-xl">{discount_maxquantity_Input}</p>
-							<p>FOR FREE ONE</p>
+						<div
+							class="flex h-[30px] w-full items-center border-b-[1px] border-solid border-PUA-stone"
+						>
+							<div class="font-bold text-PUA-stone">Set Status</div>
+						</div>
+						<div class="m-4 flex justify-center gap-10">
+							{#each Status as { label }, index}
+								<div class="flex items-center justify-center">
+									{#if index + 1 == product_data.status}
+										<StatusButton
+											text={label}
+											id={label}
+											checked={true}
+											value={index + 1}
+											bind:group={product_data.status}
+										></StatusButton>
+									{:else}
+										<StatusButton
+											text={label}
+											id={label}
+											value={index + 1}
+											bind:group={product_data.status}
+										></StatusButton>
+									{/if}
+								</div>
+							{/each}
+						</div>
+						<div class="mb-5 flex items-center justify-center">
+							<OkButton
+								onclick={() => {
+									return null;
+								}}
+								text="Add Product"
+								type={'submit'}
+							></OkButton>
 						</div>
 					</div>
 				</div>
-				<div class="mt-2">
-					<p class="text-3 font-bold text-red-900">Enter Max Quantity</p>
-					<input
-						type="text"
-						class="w-full border-b-[2px] border-red-900 font-bold"
-						bind:value={discount_maxquantity_Input}
-						placeholder=" Enter Max Quantity"
-					/>
-
-					<ErrorMsg width={'24'} height={'24'}></ErrorMsg>
-				</div>
-				<div class="mt-2">
-					<p class="text-3 font-bold text-red-900">Discount Name</p>
-					<input
-						type="text"
-						class="w-full border-b-[2px] border-red-900 font-bold"
-						bind:value={discount_name_Input}
-						placeholder=" Enter Discount Name"
-					/>
-
-					<ErrorMsg width={'24'} height={'24'}></ErrorMsg>
-				</div>
-				<div class="mt-2">
-					<p class="text-3 font-bold text-red-900">Description</p>
-					<input
-						type="text"
-						class="w-full border-b-[2px] border-red-900 font-bold"
-						bind:value={discount_description_Input}
-						placeholder=" Enter Discount Description"
-					/>
-					<ErrorMsg width={'24'} height={'24'}></ErrorMsg>
-				</div>
-			</div>
-			<div class="mt-5 flex items-center justify-between gap-5 text-center">
-				<button class="w-4/5 rounded-[20px] bg-gray-200 font-bold text-red-900"> Delete </button>
-
-				<button class="w-4/5 rounded-[20px] bg-orange-700 font-bold text-white"> Save </button>
 			</div>
 		</div>
-	</div>
-{/if}
+	</form>
+	<ChangeDiscountPage
+		bind:changePageData={current_discount_array}
+		{discountData}
+		bind:showModel
+		dis_haved={false}
+		add_Discount={addDiscountButton}
+		{delete_Discount}
+	></ChangeDiscountPage>
+{/await}

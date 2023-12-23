@@ -24,7 +24,7 @@
 			viewBoxValue = '0 0 576 512';
 			break;
 		default:
-			viewBoxValue = '0 0 640 512'; // 默认值，如果 status 不匹配任何情况
+			viewBoxValue = '0 0 640 512';
 	}
 </script>
 

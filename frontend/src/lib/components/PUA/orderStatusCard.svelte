@@ -10,21 +10,24 @@
 
 	let viewBoxValue = '';
 
-	switch (statusCardContent.status) {
-		case 1:
-			viewBoxValue = '0 0 512 512';
-			break;
-		case 2:
-			viewBoxValue = '0 0 640 512';
-			break;
-		case 3:
-			viewBoxValue = '0 0 640 512';
-			break;
-		case 4:
-			viewBoxValue = '0 0 576 512';
-			break;
-		default:
-			viewBoxValue = '0 0 640 512';
+	$: {
+		statusCardContent.status;
+		switch (statusCardContent.status) {
+			case 1:
+				viewBoxValue = '0 0 512 512';
+				break;
+			case 2:
+				viewBoxValue = '0 0 580 512';
+				break;
+			case 3:
+				viewBoxValue = '0 0 640 512';
+				break;
+			case 4:
+				viewBoxValue = '0 0 640 512';
+				break;
+			default:
+				viewBoxValue = '0 0 640 600';
+		}
 	}
 </script>
 

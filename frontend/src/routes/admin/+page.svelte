@@ -4,6 +4,8 @@
 	import admin_icon from '$lib/assets/admin_icon.svg';
 	import AdminDataCard from '$lib/components/PUA/adminDataCard.svelte';
 	import { onMount } from 'svelte';
+	import { getId } from '$lib/components/PUA/getId';
+	import { goto } from '$app/navigation';
 
 	type userShort = {
 		user_id: number;
@@ -50,10 +52,20 @@
 		}
 	];
 
+	let isAdmin = false;
+
 	onMount(async () => {
-		getUserInfo();
-		getUsers();
-		getOrders();
+		let userId = (await getId()).valueOf();
+		console.log(userId);
+		if (userId != "1") {
+			goto('/')
+		}
+		else {
+			isAdmin = true;
+			getUserInfo();
+			getUsers();
+			getOrders();
+		}
 	});
 
 	async function getOrders() {
@@ -81,6 +93,7 @@
 	let profileTab = 0;
 </script>
 
+{#if isAdmin}
 <div class="flex justify-center font-bold">
 	<div class="flex w-3/5 flex-col">
 		<div class="flex bg-PUA-stone">
@@ -132,3 +145,5 @@
 		</div>
 	</div>
 </div>
+
+{/if}

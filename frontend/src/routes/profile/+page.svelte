@@ -8,6 +8,7 @@
 	import type { ActionResult } from '@sveltejs/kit';
 	import { backendPath } from '$lib/components/PUA/env';
 	import { getId } from '$lib/components/PUA/getId';
+	import { goto } from '$app/navigation';
 
 	let choosingMonth = 1;
 	let choosingYear = 2020;
@@ -155,11 +156,19 @@
 		userInfo = json;
 	}
 
-	onMount(() => {
-		initChart();
-		UpdateMonthData();
-		UpdateYearData();
-		getUserInfo();
+	let isAdmin = false;
+
+	onMount(async () => {
+		isAdmin = (await getId()).valueOf() == '1';
+		if (isAdmin) {
+			goto('/admin');
+		}
+		else {
+			initChart();
+			UpdateMonthData();
+			UpdateYearData();
+			getUserInfo();
+		}
 	});
 </script>
 

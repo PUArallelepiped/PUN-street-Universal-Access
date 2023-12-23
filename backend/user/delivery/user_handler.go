@@ -1,7 +1,6 @@
 package delivery
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -80,7 +79,7 @@ func (u *UserHandler) Login(c *gin.Context) {
 		c.Status(500)
 		return
 	}
-	fmt.Println(c.Cookie("jwttoken"))
+	// fmt.Println(c.Cookie("jwttoken"))
 	// c.SetSameSite(http.SameSiteStrictMode)
 	// c.SetCookie("jwttoken", token, (int)(24*time.Hour), "/", "localhost", false, true)
 

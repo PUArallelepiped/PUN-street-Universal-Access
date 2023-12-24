@@ -6,4 +6,12 @@ INSERT INTO user_data (name, password, email, address, phone_number, birthday, a
     ('udp', 'pwd4', 'd@gmail.com', 'address_4', '0900-4444', '2024-01-01 11:30:30', 'customer', 1, 1),
     ('icmp', 'pwd5', 'e@gmail.com', 'address_5', '0900-5555', '2025-02-02 11:30:30', 'customer', 1, 1),
     ('dns', 'pwd6', 'f@gmail.com', 'address_6', '0900-6666', '2026-03-03 11:30:30', 'store', 1, 1),
-    ('dhcp', 'pwd7', 'g@gmail.com', 'address_7', '0900-7777', '2027-04-04 11:30:30', 'customer', 1, 1);
+    ('dhcp', 'pwd7', 'g@gmail.com', 'address_7', '0900-7777', '2027-04-04 11:30:30', 'customer', 1, 1),
+    ('rick', 'pwd8', 'roll@gmail.com', 'address_8', '0900-8888', '2028-03-03 11:30:30', 'store', 1, 1),
+    ('cowmen', 'pwd8', 'cowmen@gmail.com', 'address_8', '0900-8888', '2028-03-03 11:30:30', 'store', 1, 1),
+    ('sato', 'pwd9', 'sato@gmail.com', 'address_9', '0900-9999', '2028-03-03 11:30:30', 'store', 1, 1),
+    ('ka', 'pwd10', 'ka@gmail.com', 'address_10', '0901-0000', '2028-03-03 11:30:30', 'store', 1, 1),
+    ('kin', 'pwd10', 'kin@gmail.com', 'address_10', '0901-0000', '2028-03-03 11:30:30', 'store', 1, 1),
+    ('bon', 'pwd10', 'bon@gmail.com', 'address_10', '0902-0000', '2028-03-03 11:30:30', 'store', 1, 1),
+    ('yamamoto', 'pwd10', 'yamamoto@gmail.com', 'address_10', '0902-0000', '2028-03-03 11:30:30', 'store', 1, 1),
+    ('lefa', 'pwd10', 'lefa@gmail.com', 'address_10', '0902-0000', '2028-03-03 11:30:30', 'store', 1, 1)

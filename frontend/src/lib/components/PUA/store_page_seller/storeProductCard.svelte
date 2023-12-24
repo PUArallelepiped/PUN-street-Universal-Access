@@ -6,9 +6,16 @@
 	export let price: number = 123;
 	export let name: string = 'TEA EGG';
 	export let imgUrl: string = watermelon;
+	export let href: string = './';
+	export let event_discount_array: { discount_max_quantity: number }[] = [
+		{ discount_max_quantity: 0 }
+	];
 </script>
 
-<div class="flex items-center justify-between rounded-3xl bg-white">
+<a
+	{href}
+	class="flex items-center justify-between rounded-3xl bg-white duration-150 hover:scale-[1.02]"
+>
 	<div class="m-4 flex h-24 items-center">
 		<div class="h-24 w-24 overflow-hidden rounded-lg">
 			<img src={imgUrl} alt="" class="h-full object-cover object-center" />
@@ -19,7 +26,9 @@
 			>
 				<div class="mr-1 font-semibold text-PUA-dark-orange">{name}</div>
 				<div class="md:flew-row flex flex-col sm:flex-row lg:flex-row">
-					<BuyNforOneFree></BuyNforOneFree>
+					{#each event_discount_array as { discount_max_quantity }}
+						<BuyNforOneFree quantity={discount_max_quantity}></BuyNforOneFree>
+					{/each}
 				</div>
 			</div>
 			<div class="whitespace-pre-line text-base font-normal text-PUA-dark-gray">
@@ -35,8 +44,11 @@
 
 			<p class="w-10 text-end text-xl">{price}</p>
 		</div>
-		<button on:click>
+		<button
+			on:click|preventDefault
+			class="transition-transform duration-200 hover:scale-125 active:scale-90"
+		>
 			<img src={transhcan} alt="" />
 		</button>
 	</div>
-</div>
+</a>

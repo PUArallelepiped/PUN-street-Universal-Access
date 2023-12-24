@@ -18,8 +18,6 @@
 		way: 'free shipping'
 	};
 
-	export let dis_haved: boolean;
-
 	let currentData: {
 		discount_name: string;
 		discount_description: string;
@@ -47,7 +45,6 @@
 
 	async function handleSubmit() {
 		changePageData = { ...currentData };
-		dis_haved = true;
 		toggleModel();
 		add_Discount();
 	}
@@ -69,7 +66,7 @@
 						</button>
 					</div>
 				</div>
-				<form on:submit={handleSubmit}>
+				<form on:submit|preventDefault={handleSubmit}>
 					<div class="relative mx-16 my-8">
 						<div class="flex w-full items-center justify-center pb-2 pt-2">
 							<div class="flex w-80 rounded-xl border-4 border-PUA-stone p-2 text-PUA-stone">

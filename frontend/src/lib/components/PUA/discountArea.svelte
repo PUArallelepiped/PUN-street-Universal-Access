@@ -14,6 +14,7 @@
 	export let addSign: boolean = true;
 
 	export let type: boolean = false;
+	export let group = 1;
 
 	$: last_index = discount.length;
 </script>
@@ -22,6 +23,14 @@
 	<div class="flex h-7 w-full items-center border-b-[1px] border-solid border-PUA-stone">
 		<div class=" font-bold text-PUA-stone">Add Discount</div>
 	</div>
+	{#if discount.length === 0 && type}
+		<div class=" my-4 flex w-full animate-pulse items-center justify-center">
+			<p class=" rounded-lg border-2 border-PUA-stone px-4 text-base font-bold text-PUA-stone">
+				No Event Discount
+			</p>
+		</div>
+	{/if}
+
 	<div class="flex items-center justify-center">
 		<div class="my-4 flex flex-wrap gap-1">
 			{#each discount as { discount_id, discount_max_quantity }, index}
@@ -29,8 +38,10 @@
 					{#if type}
 						<div class="">
 							<DiscountButton
-								text={'買' + { discount_max_quantity } + '送一'}
-								id={discount_id.toString()}
+								id={discount_id}
+								bind:value={discount_id}
+								bind:group
+								text={'買' + discount_max_quantity.toString() + '送一'}
 							/>
 						</div>
 					{:else}
@@ -50,9 +61,9 @@
 			{#if addSign}
 				<div class="flex items-center">
 					<button
+						type="button"
 						on:click={addDiscountButton(last_index)}
 						on:click={toggleModel}
-						type="button"
 						class="h-5 w-5 rounded-[10px] bg-lime-800 text-center text-[13px] font-bold text-white"
 						>+</button
 					>

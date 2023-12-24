@@ -1,20 +1,48 @@
-<script>
+<script lang="ts">
 	import OkButton from './OkButton.svelte';
 	import Star from '$lib/assets/Star.svg';
 	import noStar from '$lib/assets/noStar.svg';
-	let rate = 4;
+	import { onMount } from 'svelte';
+	import { backendPath } from './env';
+	export let avgRate: number = 4.87;
+	export let shopName: string;
+	export let date: string;
+	export let cost: number;
+	export let img: string;
+	export let storeId: number;
+	let rate = 2;
+	let rateList: boolean[] = [];
+	onMount(() => {
+		getRateList();
+	});
 	function getRateList() {
-		let rateList = [];
+		rateList = [];
 		for (let i = 0; i < 5; i++) {
 			rateList.push(i < rate);
 		}
 		return rateList;
 	}
+	async function rateStore(index: number) {
+		try {
+			fetch(backendPath + '/store/' + storeId + '/rate', {
+				method: 'POST',
+				body: JSON.stringify({
+					rate: index
+				})
+			});
+			rate = index;
+		} catch {
+			rate = index;
+		}
+
+		getRateList();
+		return null;
+	}
 </script>
 
 <div class="flex gap-5 rounded-xl bg-white p-2">
 	<div class="relative h-32 w-64">
-		<img class=" rounded-xl shadow-inner" src="https://via.placeholder.com/256x128" alt="no pic" />
+		<img class="flex h-full w-full rounded-xl object-cover shadow-inner" src={img} alt="no pic" />
 		<div
 			class="absolute right-3 top-3 flex items-center gap-1 rounded-lg border-2
 			 border-white border-opacity-50 bg-PUA-dark-red
@@ -43,23 +71,31 @@
 					</g>
 				</svg>
 			</div>
-			4.87
+			{avgRate}
 		</div>
 	</div>
 	<div class="flex w-96 flex-col">
-		<div class=" text-2xl font-bold leading-relaxed text-PUA-dark-orange">Shop name</div>
-		<div class=" text-base font-bold leading-relaxed text-PUA-dark-orange">2020-10-11</div>
-		<div class=" text-base font-bold leading-relaxed text-PUA-dark-orange">NT$999</div>
+		<div class=" text-2xl font-bold leading-relaxed text-PUA-dark-orange">{shopName}</div>
+		<div class=" text-base font-bold leading-relaxed text-PUA-dark-orange">{date}</div>
+		<div class=" text-base font-bold leading-relaxed text-PUA-dark-orange">NT${cost}</div>
 
 		<div class="flex gap-2">
 			<div class="text-2xl font-semibold leading-normal text-PUA-dark-red">Rate store</div>
-			{#each getRateList() as r}
-				{#if r}
-					<img src={Star} alt="" class="h-7 w-7" />
-				{:else}
-					<img src={noStar} alt="" class="h-7 w-7" />
-				{/if}
-			{/each}
+			{#if rate >= 0}
+				{#each rateList as r, index}
+					<button
+						on:click={() => {
+							rateStore(index + 1);
+						}}
+					>
+						{#if r}
+							<img src={Star} alt="" class="h-7 w-7" />
+						{:else}
+							<img src={noStar} alt="" class="h-7 w-7" />
+						{/if}
+					</button>
+				{/each}
+			{/if}
 		</div>
 	</div>
 	<div class="flex items-center justify-center">

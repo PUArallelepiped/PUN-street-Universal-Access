@@ -888,6 +888,10 @@ paths:
       responses:
         "200":
           description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShippingDiscount'
         "400":
           description: bad request
         "500":

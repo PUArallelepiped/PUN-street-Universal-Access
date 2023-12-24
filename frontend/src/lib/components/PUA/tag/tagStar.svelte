@@ -9,5 +9,3 @@
 	<img src={start} alt="" />
 	{text}
 </div>
-
-<!-- <p>{text}</p> -->

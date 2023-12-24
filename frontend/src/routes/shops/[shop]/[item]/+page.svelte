@@ -4,7 +4,9 @@
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
 	import { backendPath } from '$lib/components/PUA/env';
+	import { goto } from '$app/navigation';
 	export let data: PageData;
+	let shop_id = data.shop;
 	let item_id = data.item;
 	let userID = '1';
 	let get_event_discount_id = 1;
@@ -129,7 +131,7 @@
 			body: JSON.stringify(productCartPost)
 		});
 		if ((await post).status == 200) {
-			window.history.back();
+			goto('/shops/' + shop_id);
 		}
 	}
 	onMount(async () => {

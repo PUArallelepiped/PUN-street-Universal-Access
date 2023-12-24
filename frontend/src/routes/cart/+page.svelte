@@ -98,16 +98,18 @@
 						></ShippingCoupon>
 					{/each}
 					{#if data.cartInfos.store_order_info_array.length != 0}
-						<SeasoningCoupon
-							name={data.cartInfos.store_order_info_array[0].seasoning_discount.discount_name}
-							percentage={data.cartInfos.store_order_info_array[0].seasoning_discount
-								.discount_percentage}
-							discount_start_date={data.cartInfos.store_order_info_array[0].seasoning_discount
-								.discount_start_date}
-							discount_end_date={data.cartInfos.store_order_info_array[0].seasoning_discount
-								.discount_end_date}
-							used={data.cartInfos.store_order_info_array[0].seasoning_discount_bool}
-						/>
+						{#if data.cartInfos.store_order_info_array[0].seasoning_discount.discount_id != 1}
+							<SeasoningCoupon
+								name={data.cartInfos.store_order_info_array[0].seasoning_discount.discount_name}
+								percentage={data.cartInfos.store_order_info_array[0].seasoning_discount
+									.discount_percentage}
+								discount_start_date={data.cartInfos.store_order_info_array[0].seasoning_discount
+									.discount_start_date}
+								discount_end_date={data.cartInfos.store_order_info_array[0].seasoning_discount
+									.discount_end_date}
+								used={data.cartInfos.store_order_info_array[0].seasoning_discount_bool}
+							/>
+						{/if}
 					{/if}
 				{:else}
 					<div class=" w-full text-center text-5xl font-bold text-PUA-dark-red">

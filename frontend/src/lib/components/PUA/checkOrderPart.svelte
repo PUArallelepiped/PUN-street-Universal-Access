@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { invalidateAll } from '$app/navigation';
 	import { PUALabel } from '$lib';
 	import drone from '$lib/assets/drone.png';
 	import OkButton from './OkButton.svelte';
@@ -11,10 +12,10 @@
 	export let cartID: number;
 	export let storeID: number;
 	let context: { text: string; status: boolean }[] = [
-		{ text: 'Accept order', status: 0 <= status },
-		{ text: 'Making order', status: 1 <= status },
-		{ text: 'Deliver Order', status: 2 <= status },
-		{ text: 'Arrival Address', status: 3 <= status }
+		{ text: 'Accept order', status: 2 <= status },
+		{ text: 'Making order', status: 3 <= status },
+		{ text: 'Deliver Order', status: 4 <= status },
+		{ text: 'Arrival Address', status: 5 <= status }
 	];
 </script>
 
@@ -53,6 +54,7 @@
 									})
 								}
 							);
+							invalidateAll();
 							return null;
 						}}
 					></OkButton>

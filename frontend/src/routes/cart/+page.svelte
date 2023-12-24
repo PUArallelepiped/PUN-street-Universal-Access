@@ -14,9 +14,9 @@
 
 	let showDetail = false;
 
-	function checkout() {
+	async function checkout() {
 		//TODO customer id need to change
-		fetch(backendPath + '/customer/1/cart/1/store/1/checkout', {
+		await fetch(backendPath + '/customer/1/checkout', {
 			method: 'POST',
 			body: JSON.stringify({
 				seasoning_discount_id: 1,
@@ -24,6 +24,7 @@
 				taking_method: 1
 			})
 		});
+		invalidateAll();
 		return null;
 	}
 </script>

@@ -52,24 +52,24 @@
 						<hr class="my-3 border-orange-950" />
 						<div class="flex flex-wrap gap-3">
 							{#each storeInfo.product_order as productInfo}
-								<a href={'/shops/' + storeInfo.store_id + '/' + productInfo.product_id}>
-									<CartItemCard
-										product_picture={productInfo.product_picture}
-										description={'null'}
-										product_name={productInfo.product_name}
-										product_quantity={productInfo.product_quantity}
-										product_price={productInfo.product_price}
-										discountId={productInfo.event_discount_id}
-										discountQuantity={productInfo.event_discount_max_quantity}
-										on:clickDelete={async () => {
-											await fetch(
-												backendPath + '/customer/1/delete/product/' + productInfo.product_id,
-												{ method: 'DELETE' }
-											);
-											invalidateAll();
-										}}
-									></CartItemCard>
-								</a>
+								<CartItemCard
+									product_id={productInfo.product_id}
+									store_id={storeInfo.store_id}
+									product_picture={productInfo.product_picture}
+									description={'null'}
+									product_name={productInfo.product_name}
+									product_quantity={productInfo.product_quantity}
+									product_price={productInfo.product_price}
+									discountId={productInfo.event_discount_id}
+									discountQuantity={productInfo.event_discount_max_quantity}
+									on:clickDelete={async () => {
+										await fetch(
+											backendPath + '/customer/1/delete/product/' + productInfo.product_id,
+											{ method: 'DELETE' }
+										);
+										invalidateAll();
+									}}
+								></CartItemCard>
 							{/each}
 							<CartMoreItemCard
 								on:click={() => {

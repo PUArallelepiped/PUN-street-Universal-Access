@@ -9,23 +9,27 @@
 	export let product_quantity: number = 1;
 	export let discountQuantity: number;
 	export let discountId: number;
+	export let store_id: number;
+	export let product_id: number;
 	const dispatch = createEventDispatcher();
 </script>
 
 <div class="flex h-32 w-96 flex-col rounded-xl bg-white p-2.5">
-	<div class="flex gap-4">
-		<img
-			class="flex h-20 w-20 rounded-xl object-cover shadow-inner"
-			src={product_picture}
-			alt="img"
-		/>
-		<div class="flex flex-col gap-3">
-			<div class="text-2xl font-bold text-orange-950">{product_name}</div>
-			<div class="text-sm font-normal text-neutral-400">
-				{description}
+	<a href={'/shops/' + store_id + '/' + product_id}>
+		<div class="flex gap-4">
+			<img
+				class="flex h-20 w-20 rounded-xl object-cover shadow-inner"
+				src={product_picture}
+				alt="img"
+			/>
+			<div class="flex flex-col gap-3">
+				<div class="text-2xl font-bold text-orange-950">{product_name}</div>
+				<div class="text-sm font-normal text-neutral-400">
+					{description}
+				</div>
 			</div>
 		</div>
-	</div>
+	</a>
 	<div class="flex items-center justify-between">
 		<div class="flex items-center gap-4 px-3">
 			<button

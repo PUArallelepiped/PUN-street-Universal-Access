@@ -101,29 +101,5 @@
 	{#each statusCardContent as sub, index}
 		<OrderStatusCard on:click={() => postAndChangeStatus(index)} statusCardContent={sub}
 		></OrderStatusCard>
-		<OrderStatusCard on:click={() => postAndChangeStatus(index)} statusCardContent={sub}
-		></OrderStatusCard>
-		<OrderStatusCard on:click={() => postAndChangeStatus(index)} statusCardContent={sub}
-		></OrderStatusCard>
-		<OrderStatusCard on:click={() => postAndChangeStatus(index)} statusCardContent={sub}
-		></OrderStatusCard>
-		<OrderStatusCard on:click={() => postAndChangeStatus(index)} statusCardContent={sub}
-		></OrderStatusCard>
-		<OrderStatusCard on:click={() => postAndChangeStatus(index)} statusCardContent={sub}
-		></OrderStatusCard>
-		<OrderStatusCard on:click={() => postAndChangeStatus(index)} statusCardContent={sub}
-		></OrderStatusCard>
-		<OrderStatusCard on:click={() => postAndChangeStatus(index)} statusCardContent={sub}
-		></OrderStatusCard>
-		<OrderStatusCard on:click={() => postAndChangeStatus(index)} statusCardContent={sub}
-		></OrderStatusCard>
-		<OrderStatusCard on:click={() => postAndChangeStatus(index)} statusCardContent={sub}
-		></OrderStatusCard>
-		<OrderStatusCard on:click={() => postAndChangeStatus(index)} statusCardContent={sub}
-		></OrderStatusCard>
-		<OrderStatusCard on:click={() => postAndChangeStatus(index)} statusCardContent={sub}
-		></OrderStatusCard>
-		<OrderStatusCard on:click={() => postAndChangeStatus(index)} statusCardContent={sub}
-		></OrderStatusCard>
 	{/each}
 </div>

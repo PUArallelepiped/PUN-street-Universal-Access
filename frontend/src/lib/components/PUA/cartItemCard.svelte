@@ -1,27 +1,43 @@
 <script lang="ts">
-	import watermelon from '$lib/assets/watermelon.png';
 	import BuyNforMFree from '$lib/components/PUA/buyNforMFree.svelte';
-	// export let product_id: number = 1;
+	import { createEventDispatcher } from 'svelte';
+	export let product_picture: string;
 	export let product_price: number = 160;
 	export let product_name: string = '茶碗蒸';
 	export let description: string =
 		'鮮甜柴魚高湯配上香菇、雞腿肉，口感滑潤好滋味。可能不太適合拿來...';
 	export let product_quantity: number = 1;
+	export let discountQuantity: number;
+	export let discountId: number;
+	export let store_id: number;
+	export let product_id: number;
+	const dispatch = createEventDispatcher();
 </script>
 
 <div class="flex h-32 w-96 flex-col rounded-xl bg-white p-2.5">
-	<div class="flex gap-4">
-		<img class="h-20 w-20 rounded-xl shadow-inner" src={watermelon} alt="img" />
-		<div class="flex flex-col gap-3">
-			<div class="text-2xl font-normal text-orange-950">{product_name}</div>
-			<div class="text-sm font-normal text-neutral-400">
-				{description}
+	<a href={'/shops/' + store_id + '/' + product_id}>
+		<div class="flex gap-4">
+			<img
+				class="flex h-20 w-20 rounded-xl object-cover shadow-inner"
+				src={product_picture}
+				alt="img"
+			/>
+			<div class="flex flex-col gap-3">
+				<div class="text-2xl font-bold text-orange-950">{product_name}</div>
+				<div class="text-sm font-normal text-neutral-400">
+					{description}
+				</div>
 			</div>
 		</div>
-	</div>
+	</a>
 	<div class="flex items-center justify-between">
 		<div class="flex items-center gap-4 px-3">
-			<div class="">
+			<button
+				class="p-2"
+				on:click={() => {
+					dispatch('clickDelete', {});
+				}}
+			>
 				<svg width="16" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path
 						id="Vector"
@@ -29,13 +45,15 @@
 						fill="#755555"
 					/>
 				</svg>
-			</div>
+			</button>
 			<div class="flex items-end gap-4">
 				<span class=" text-base font-semibold text-red-900">NT$ </span>
 				<span class=" text-xl font-semibold text-red-900">{product_price}</span>
 				<span class=" text-xl font-semibold text-red-900">x{product_quantity}</span>
 			</div>
 		</div>
-		<BuyNforMFree></BuyNforMFree>
+		{#if discountId !== 0}
+			<BuyNforMFree quantity={discountQuantity}></BuyNforMFree>
+		{/if}
 	</div>
 </div>

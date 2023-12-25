@@ -17,7 +17,7 @@
 	class:bg-gray-300={status == 2}
 	class:pointer-events-none={status == 2}
 	class:bg-white={status != 2}
-	class:hover:scale-105={status != 2}
+	class:hover:scale-[1.02]={status != 2}
 	class="flex items-center justify-between rounded-3xl duration-150"
 >
 	<div class="m-4 flex h-24 items-center">

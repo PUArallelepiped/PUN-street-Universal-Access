@@ -37,11 +37,11 @@ func (du *discountUsecase) AddSeasoning(ctx context.Context, seasoning *swagger.
 	return nil
 }
 
-func (du *discountUsecase) AddShipping(ctx context.Context, shipping *swagger.ShippingDiscount, id int64) error {
+func (du *discountUsecase) AddShipping(ctx context.Context, shipping *swagger.ShippingDiscount, id int64) (*swagger.ShippingDiscount, error) {
 	exist, err := du.discountRepo.IsExistShippingDiscountByStoreID(ctx, id)
 	if err != nil {
 		logrus.Error(err)
-		return err
+		return nil, err
 	}
 
 	// check exist then shipping discount change status = 0
@@ -49,12 +49,12 @@ func (du *discountUsecase) AddShipping(ctx context.Context, shipping *swagger.Sh
 		discount, err := du.discountRepo.GetShippingByStoreID(ctx, id)
 		if err != nil {
 			logrus.Error(err)
-			return err
+			return nil, err
 		}
 		err = du.discountRepo.DisableDiscountByDiscountID(ctx, discount.DiscountId)
 		if err != nil {
 			logrus.Error(err)
-			return err
+			return nil, err
 		}
 	}
 
@@ -62,9 +62,15 @@ func (du *discountUsecase) AddShipping(ctx context.Context, shipping *swagger.Sh
 	err = du.discountRepo.AddShipping(ctx, shipping, id)
 	if err != nil {
 		logrus.Error(err)
-		return err
+		return nil, err
 	}
-	return nil
+	discount, err := du.discountRepo.GetShippingByStoreID(ctx, id)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	return discount, nil
 }
 
 func (du *discountUsecase) AddEvent(ctx context.Context, event *swagger.EventDiscount, id int64) error {

@@ -55,7 +55,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	try {
 		const jwttoken: string = cookies.get('jwttoken') || '';
 		const user_id = await getIdByToken(jwttoken);
-		console.log('user_id: ' + user_id);
+		// console.log('user_id: ' + user_id);
 		if (user_id == '1') {
 			throw 'Admin';
 		}

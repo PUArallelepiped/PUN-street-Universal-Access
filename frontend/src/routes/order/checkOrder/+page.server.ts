@@ -1,7 +1,5 @@
 import { backendPath } from '$lib/components/PUA/env.js';
 import type { PageServerLoad } from './$types';
-import { CreditCard } from 'lucide-svelte';
-import { goto } from '$app/navigation';
 import { redirect } from '@sveltejs/kit';
 import { getIdByToken } from '$lib/components/PUA/getId';
 type orderInfoType = {

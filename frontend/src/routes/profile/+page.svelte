@@ -6,12 +6,9 @@
 	import { onMount } from 'svelte';
 	import { deserialize } from '$app/forms';
 	import type { ActionResult } from '@sveltejs/kit';
-	import { backendPath } from '$lib/components/PUA/env';
-	import { getId } from '$lib/components/PUA/getId';
 	import type { PageData } from './$types';
 	export let data: PageData;
 	console.log(data);
-	import { goto } from '$app/navigation';
 
 	let choosingMonth = 1;
 	let choosingYear = 2020;

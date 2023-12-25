@@ -14,19 +14,18 @@ type historyInfoType = {
 	store_picture: string;
 	status: number;
 };
-export const load: PageServerLoad = async ({cookies}) => {
+export const load: PageServerLoad = async ({ cookies }) => {
 	try {
-		const jwttoken:string = cookies.get('jwttoken') || '';
+		const jwttoken: string = cookies.get('jwttoken') || '';
 		const user_id = await getIdByToken(jwttoken);
 		return {
 			history: await getHistory(user_id)
 		};
-	}
-	catch (e) {
+	} catch (e) {
 		throw redirect(307, '/login');
 	}
 };
-async function getHistory(id :string) {
+async function getHistory(id: string) {
 	try {
 		const resp = await fetch(backendPath + '/customer/' + id + '/get-history');
 		return (await resp.json()) as historyInfoType[];

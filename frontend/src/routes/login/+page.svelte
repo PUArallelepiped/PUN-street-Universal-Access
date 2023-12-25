@@ -27,13 +27,13 @@
 			})
 		});
 		if (res.status == 200) {
-			await res.json().then((data) => document.cookie = 
-			'jwttoken=' + 
-			data +
-			'; path=/' +
-			'; max-age=60*60*24' +
-			'; samesite=strict'
-			);
+			await res
+				.json()
+				.then(
+					(data) =>
+						(document.cookie =
+							'jwttoken=' + data + '; path=/' + '; max-age=60*60*24' + '; samesite=strict')
+				);
 			// console.log((await getId()).valueOf());
 			goto('/shops');
 		} else if (res.status == 403) {

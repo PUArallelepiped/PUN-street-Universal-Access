@@ -8,6 +8,9 @@
 	import type { ActionResult } from '@sveltejs/kit';
 	import { backendPath } from '$lib/components/PUA/env';
 	import { getId } from '$lib/components/PUA/getId';
+	import type { PageData } from './$types';
+	export let data: PageData;
+	console.log(data);
 	import { goto } from '$app/navigation';
 
 	let choosingMonth = 1;
@@ -149,31 +152,11 @@
 		authority: 'customer'
 	};
 
-	async function getUserInfo() {
-		let userId = (await getId()).valueOf();
-		const resp = await fetch(backendPath + '/user/get-info/' + userId);
-		const json = await resp.json();
-		userInfo = json;
-	}
-
-	let isAdmin = false;
-
 	onMount(async () => {
-		try {
-			isAdmin = (await getId()).valueOf() == '1';
-		}
-		catch (e) {
-			goto('/login');
-		}
-		if (isAdmin) {
-			goto('/admin');
-		}
-		else {
-			initChart();
-			UpdateMonthData();
-			UpdateYearData();
-			getUserInfo();
-		}
+		userInfo = data.userInfo;
+		initChart();
+		UpdateMonthData();
+		UpdateYearData();
 	});
 </script>
 

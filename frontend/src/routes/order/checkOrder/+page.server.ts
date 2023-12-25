@@ -12,23 +12,22 @@ type orderInfoType = {
 	store_name: string;
 	store_picture: string;
 };
-export const load: PageServerLoad = async ({cookies}) => {
+export const load: PageServerLoad = async ({ cookies }) => {
 	try {
-		const jwttoken:string = cookies.get('jwttoken') || '';
+		const jwttoken: string = cookies.get('jwttoken') || '';
 		const user_id = await getIdByToken(jwttoken);
 		return {
 			orderInfoList: await getOrder(user_id)
 		};
-	}
-	catch (e) {
+	} catch (e) {
 		throw redirect(307, '/login');
 	}
 };
 
 // todo custumer id
-async function getOrder(id :string) {
+async function getOrder(id: string) {
 	try {
-		const resp = await fetch(backendPath + '/customer/' + id+ '/order-status');
+		const resp = await fetch(backendPath + '/customer/' + id + '/order-status');
 		return (await resp.json()) as orderInfoType[];
 	} catch {
 		return [];

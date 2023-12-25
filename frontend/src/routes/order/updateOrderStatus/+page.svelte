@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { invalidateAll } from '$app/navigation';
 	import { backendPath } from '$lib/components/PUA/env';
 	import OrderStatusCard from '$lib/components/PUA/orderStatusCard.svelte';
 	import { onMount } from 'svelte';
@@ -65,6 +66,8 @@
 		} else {
 			statusCardContent = statusCardContent.filter((_, i) => i !== index);
 		}
+
+		invalidateAll();
 
 		return;
 	}

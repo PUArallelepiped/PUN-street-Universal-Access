@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+
 	export let statusCardContent: {
 		time: string;
 		price: string;
@@ -7,7 +9,6 @@
 		user: string;
 		status: number;
 	};
-	export let href = './';
 
 	let viewBoxValue = '';
 
@@ -30,12 +31,15 @@
 				viewBoxValue = '0 0 640 600';
 		}
 	}
+	function gotoPage() {
+		goto('./');
+	}
 </script>
 
 <div class=" w-3/7">
 	<div class=" flex flex-wrap items-center justify-center gap-8">
-		<a
-			{href}
+		<button
+			on:click={gotoPage}
 			class=" group flex items-center gap-5 rounded-xl bg-white p-4 shadow transition-all duration-300 hover:-translate-y-6 hover:transform hover:shadow-2xl hover:shadow-zinc-600"
 		>
 			<svg
@@ -61,11 +65,11 @@
 			</div>
 
 			<button
-				on:click
+				on:click|stopPropagation
 				class=" flex h-20 w-40 items-center justify-center rounded-2xl bg-PUA-stone p-2 text-center font-bold leading-relaxed text-white hover:border-[3px] hover:border-PUA-stone hover:bg-white hover:text-PUA-stone"
 			>
 				{statusCardContent.text}
 			</button>
-		</a>
+		</button>
 	</div>
 </div>

@@ -1,5 +1,7 @@
 import { backendPath } from '$lib/components/PUA/env.js';
+import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
+import { getIdByToken } from '$lib/components/PUA/getId';
 
 type historyInfoType = {
 	customer_id: number;
@@ -12,14 +14,21 @@ type historyInfoType = {
 	store_picture: string;
 	status: number;
 };
-export const load: PageServerLoad = async () => {
-	return {
-		history: await getHistory()
-	};
-};
-async function getHistory() {
+export const load: PageServerLoad = async ({cookies}) => {
 	try {
-		const resp = await fetch(backendPath + '/customer/1/get-history');
+		const jwttoken:string = cookies.get('jwttoken') || '';
+		const user_id = await getIdByToken(jwttoken);
+		return {
+			history: await getHistory(user_id)
+		};
+	}
+	catch (e) {
+		throw redirect(307, '/login');
+	}
+};
+async function getHistory(id :string) {
+	try {
+		const resp = await fetch(backendPath + '/customer/' + id + '/get-history');
 		return (await resp.json()) as historyInfoType[];
 	} catch {
 		return [] as historyInfoType[];

@@ -5,7 +5,11 @@
 	import { Textarea, DisCountArea, OkButton, StatusButton, ErrorMsg } from '$lib/index';
 	import AddCategoryAndItemArea from '$lib/components/PUA/addCategoryAndItemArea.svelte';
 	import ChangeDiscountPage from '$lib/components/PUA/changeDiscountPage.svelte';
-	let store_id = 1;
+	import type { PageData } from './$types';
+	import { goto } from '$app/navigation';
+	export let data: PageData;
+	let shop_id = data.shop;
+	let item_id = data.item;
 	type productRespType = {
 		store_id: number;
 		product_label_array: {
@@ -33,7 +37,7 @@
 		status: number;
 	};
 	let product_data: productRespType = {
-		store_id: store_id,
+		store_id: Number(shop_id),
 		product_label_array: [
 			{
 				item_array: [{ name: '' }],
@@ -48,7 +52,7 @@
 		description: '',
 		stock: 0,
 		event_discount_array: [],
-		picture: '',
+		picture: 'https://i.imgur.com/3i3tyXJ.gif',
 		status: 1
 	};
 	let current_discount_array = {
@@ -101,21 +105,23 @@
 	}
 
 	async function getProductResp() {
-		const res = await fetch(backendPath + `/product/1`);
+		if (item_id != '0') {
+			const res = await fetch(backendPath + `/product/` + item_id);
 
-		if (res.status == 200) {
-			product_data = await res.json();
+			if (res.status == 200) {
+				product_data = await res.json();
+			}
+			console.log(product_data);
 		}
-		console.log(product_data);
 		return;
 	}
 
 	async function PostProductResp() {
-		console.log(product_data);
-		let post_status = fetch(backendPath + `/store/` + store_id + `/add-product`, {
+		let post_status = await fetch(backendPath + `/store/` + shop_id + `/add-product`, {
 			method: 'POST',
 			body: JSON.stringify(product_data)
 		});
+		goto('/shops/' + shop_id + '/store_page_seller');
 		console.log(post_status);
 	}
 
@@ -128,21 +134,21 @@
 	<form on:submit={PostProductResp}>
 		<div class="flex h-fit justify-start">
 			<div class="relative left-1/2 mt-6 h-full w-4/5 -translate-x-1/2 transform">
-				<div class="h-100 text-33 flex w-full flex-col justify-center text-PUA-dark-red">
+				<div class="h-100 flex w-full flex-col justify-center text-PUA-dark-red">
 					<Input
 						required
 						bind:value={product_data.name}
 						type="text"
 						placeholder="Enter Product Name"
-						class="max-wxs peer w-full rounded-[0] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-3xl"
+						class="max-wxs peer w-full rounded-[0] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-4xl"
 					/>
 					<div class="invisible py-4 peer-invalid:visible">
-						<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
+						<ErrorMsg width={'30'} height={'30'} text={`CANNOT BE EMPTY`}></ErrorMsg>
 					</div>
 				</div>
-				<div class="flex h-full w-full">
-					<div class="relative h-full w-[500px]">
-						<div class=" flex h-[250px] w-[250px] rounded-lg bg-gray-300 shadow-inner">
+				<div class="flex h-full w-full gap-16">
+					<div class="relative h-full">
+						<div class=" flex h-60 w-60 rounded-lg bg-gray-300 shadow-inner">
 							{#if !product_data.picture}
 								<div class="flex h-full w-full items-center justify-center">
 									<label
@@ -175,8 +181,8 @@
 								/>
 							{/if}
 						</div>
-						<div class="flex w-64 flex-wrap items-center">
-							<div class="gap-3 py-[20px] text-3xl font-bold">NT$</div>
+						<div class="flex w-64 flex-wrap items-baseline gap-3 pt-5 font-bold text-PUA-dark-red">
+							<div class="text-2xl">NT$</div>
 							<input
 								required
 								bind:value={product_data.price}
@@ -184,13 +190,17 @@
 								min="0"
 								max="999999999"
 								placeholder="Enter price"
-								class="peer ml-[10px] w-[180px] max-w-xs rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400 bg-transparent text-[30px]"
+								class=" peer w-48 rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400 bg-transparent text-4xl placeholder:text-3xl"
 							/>
-							<div class="invisible w-64 peer-invalid:visible">
-								<ErrorMsg width={'30'} height={'30'}></ErrorMsg>
+							<div class="invisible h-8 w-64 peer-invalid:visible">
+								{#if !product_data.price}
+									<ErrorMsg width={'30'} height={'30'} text={'CANNOT BE EMPTY'}></ErrorMsg>
+								{:else if product_data.price > 999999999 || product_data.price < 0}
+									<ErrorMsg width={'30'} height={'30'} text={'EXCEEDS LIMIT'}></ErrorMsg>
+								{/if}
 							</div>
 						</div>
-						<div class="w-[250px] text-base text-gray-600">
+						<div class=" text-base text-gray-600">
 							<Textarea width="64" bind:value={product_data.description} required={true} />
 						</div>
 					</div>
@@ -242,7 +252,7 @@
 								onclick={() => {
 									return null;
 								}}
-								text="Add Product"
+								text="Save"
 								type={'submit'}
 							></OkButton>
 						</div>
@@ -255,7 +265,6 @@
 		bind:changePageData={current_discount_array}
 		{discountData}
 		bind:showModel
-		dis_haved={false}
 		add_Discount={addDiscountButton}
 		{delete_Discount}
 	></ChangeDiscountPage>

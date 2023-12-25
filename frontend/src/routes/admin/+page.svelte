@@ -56,7 +56,7 @@
 
 	onMount(async () => {
 		let userId = (await getId()).valueOf();
-		console.log(userId);
+		// console.log(userId);
 		if (userId != "1") {
 			goto('/')
 		}

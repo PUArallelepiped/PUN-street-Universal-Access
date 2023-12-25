@@ -159,7 +159,12 @@
 	let isAdmin = false;
 
 	onMount(async () => {
-		isAdmin = (await getId()).valueOf() == '1';
+		try {
+			isAdmin = (await getId()).valueOf() == '1';
+		}
+		catch (e) {
+			goto('/login');
+		}
 		if (isAdmin) {
 			goto('/admin');
 		}

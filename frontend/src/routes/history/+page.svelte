@@ -17,6 +17,7 @@
 			date={history.order_date}
 			shopName={history.store_name}
 			img={history.store_picture}
+			cartId={history.cart_id}
 		></HistoryCard>
 	{/each}
 </div>

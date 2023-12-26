@@ -4,12 +4,14 @@
 	import noStar from '$lib/assets/noStar.svg';
 	import { onMount } from 'svelte';
 	import { backendPath } from './env';
+	import { goto } from '$app/navigation';
 	export let avgRate: number = 4.87;
 	export let shopName: string;
 	export let date: string;
 	export let cost: number;
 	export let img: string;
 	export let storeId: number;
+	export let cartId: number;
 	let rate = 2;
 	let rateList: boolean[] = [];
 	onMount(() => {
@@ -99,6 +101,7 @@
 		</div>
 	</div>
 	<div class="flex items-center justify-center">
-		<OkButton onclick={() => null} text="Detail"></OkButton>
+		<OkButton onclick={() => goto('/history/detail/' + storeId + '/' + cartId)} text="Detail"
+		></OkButton>
 	</div>
 </div>

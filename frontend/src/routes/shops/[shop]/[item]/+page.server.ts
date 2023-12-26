@@ -10,8 +10,7 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
 			shop: params.shop,
 			item: params.item
 		};
-	}
-	catch (e) {
+	} catch (e) {
 		throw redirect(307, '/login');
 	}
 };

@@ -37,10 +37,9 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
 			shopInfo: await getShopInfo(params.shop),
 			productList: await getProductList(params.shop)
 		};
-	}
-	catch (e) {
+	} catch (e) {
 		throw redirect(307, '/login');
-	}	
+	}
 };
 async function getShopInfo(shop: string) {
 	try {

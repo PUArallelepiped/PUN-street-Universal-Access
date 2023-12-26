@@ -1,4 +1,6 @@
 import { backendPath } from '$lib/components/PUA/env';
+import { getIdByToken } from '$lib/components/PUA/getId';
+import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 type shopInfoType = {
@@ -26,12 +28,19 @@ type ProductInfoType = {
 		discount_max_quantity: number;
 	}[];
 };
-export const load: PageServerLoad = async ({ params }) => {
-	return {
-		shop: params.shop,
-		shopInfo: await getShopInfo(params.shop),
-		productList: await getProductList(params.shop)
-	};
+export const load: PageServerLoad = async ({ params, cookies }) => {
+	try {
+		const jwttoken: string = cookies.get('jwttoken') || '';
+		await getIdByToken(jwttoken);
+		return {
+			shop: params.shop,
+			shopInfo: await getShopInfo(params.shop),
+			productList: await getProductList(params.shop)
+		};
+	}
+	catch (e) {
+		throw redirect(307, '/login');
+	}	
 };
 async function getShopInfo(shop: string) {
 	try {

@@ -10,22 +10,27 @@
 	} from '$lib/index';
 	import type { PageData } from './$types';
 	import { goto, invalidateAll } from '$app/navigation';
+	import { getId } from '$lib/components/PUA/getId';
 	export let data: PageData;
 
 	let showDetail = false;
 
 	async function checkout() {
-		//TODO customer id need to change
-		await fetch(backendPath + '/customer/1/checkout', {
-			method: 'POST',
-			body: JSON.stringify({
-				seasoning_discount_id: 1,
-				shipping_discount_id: 1,
-				taking_method: 1
-			})
-		});
-		invalidateAll();
-		return null;
+		try {
+			const user_id = (await getId()).valueOf();
+			await fetch(backendPath + '/customer/' + user_id + '/checkout', {
+				method: 'POST',
+				body: JSON.stringify({
+					seasoning_discount_id: 1,
+					shipping_discount_id: 1,
+					taking_method: 1
+				})
+			});
+			invalidateAll();
+			return null;
+		} catch (e) {
+			goto('/login');
+		}
 	}
 </script>
 
@@ -63,8 +68,13 @@
 									discountId={productInfo.event_discount_id}
 									discountQuantity={productInfo.event_discount_max_quantity}
 									on:clickDelete={async () => {
+										const user_id = (await getId()).valueOf();
 										await fetch(
-											backendPath + '/customer/1/delete/product/' + productInfo.product_id,
+											backendPath +
+												'/customer/' +
+												user_id +
+												'/delete/product/' +
+												productInfo.product_id,
 											{ method: 'DELETE' }
 										);
 										invalidateAll();

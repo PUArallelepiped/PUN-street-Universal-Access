@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
 	export let statusCardContent: {
 		time: string;
 		price: string;
@@ -9,6 +11,8 @@
 		user: string;
 		status: number;
 	};
+	export let storeId: number;
+	export let cartId: number;
 
 	let viewBoxValue = '';
 
@@ -32,7 +36,7 @@
 		}
 	}
 	function gotoPage() {
-		goto('./');
+		dispatch('gotoPage', { storeId: storeId, cartId: cartId });
 	}
 </script>
 

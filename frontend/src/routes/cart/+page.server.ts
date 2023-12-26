@@ -1,10 +1,18 @@
 import { backendPath } from '$lib/components/PUA/env';
+import { getIdByToken } from '$lib/components/PUA/getId.js';
+import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types.js';
 
-export const load: PageServerLoad = async () => {
-	return {
-		cartInfos: await getCart()
-	};
+export const load: PageServerLoad = async ({ cookies }) => {
+	try {
+		const jwttoken: string = cookies.get('jwttoken') || '';
+		const user_id = await getIdByToken(jwttoken);
+		return {
+			cartInfos: await getCart(user_id)
+		};
+	} catch (e) {
+		throw redirect(307, '/login');
+	}
 };
 type product_order = {
 	event_discount_max_quantity: number;
@@ -46,9 +54,9 @@ type cartInfo = {
 	real_total_price: number;
 	store_order_info_array: storeOrderInfo[];
 };
-async function getCart() {
+async function getCart(id: string) {
 	try {
-		const resp = await fetch(backendPath + '/customer/1/carts');
+		const resp = await fetch(backendPath + '/customer/' + id + '/carts');
 		if (resp.ok) {
 			return (await resp.json()) as cartInfo;
 		}

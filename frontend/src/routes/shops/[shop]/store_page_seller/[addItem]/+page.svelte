@@ -137,12 +137,12 @@
 				<div
 					class=" text-PUA-dark-red flex w-full flex-col justify-center rounded-lg bg-white px-4 pb-0 pt-4 shadow duration-150 hover:scale-105 hover:shadow-xl hover:shadow-zinc-400"
 				>
-					<Input
+					<input
 						required
 						bind:value={product_data.name}
 						type="text"
 						placeholder="Enter Product Name"
-						class="max-wxs peer w-full rounded-[0] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-4xl"
+						class="max-wxs peer w-full rounded-[0] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-4xl outline-none"
 					/>
 					<div class="invisible py-4 peer-invalid:visible">
 						<ErrorMsg width={'28'} height={'28'} text={`CANNOT BE EMPTY`}></ErrorMsg>
@@ -194,7 +194,7 @@
 								min="0"
 								max="999999999"
 								placeholder="Enter price"
-								class=" peer w-48 rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400 bg-transparent text-4xl placeholder:text-3xl"
+								class="peer w-48 rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400 bg-transparent text-4xl outline-none placeholder:text-3xl"
 							/>
 							<div class="invisible h-8 w-64 peer-invalid:visible">
 								{#if !product_data.price}

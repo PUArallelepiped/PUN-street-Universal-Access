@@ -407,7 +407,7 @@ func (p *postgresqlCartRepo) GetSellerOrders(ctx context.Context, id int64) (*[]
 		orders.user_id, 
 		orders.status 
 		FROM orders LEFT JOIN user_data ON orders.user_id = user_data.user_id
-		WHERE orders.store_id = $1 AND orders.status != 0 AND orders.status != 6
+		WHERE orders.store_id = $1 AND orders.status != 0 AND orders.status <5
 	`
 
 	rows, err := p.db.Query(sqlStatement, id)

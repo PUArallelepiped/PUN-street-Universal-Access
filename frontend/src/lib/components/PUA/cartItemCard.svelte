@@ -19,13 +19,13 @@
 	<a href={'/shops/' + store_id + '/' + product_id}>
 		<div class="flex gap-4">
 			<img
-				class="flex h-20 w-20 rounded-xl object-cover shadow-inner"
+				class="flex h-20 w-20 truncate rounded-xl object-cover shadow-inner"
 				src={product_picture}
 				alt="img"
 			/>
 			<div class="flex flex-col gap-3">
 				<div class="text-2xl font-bold text-orange-950">{product_name}</div>
-				<div class="text-sm font-normal text-neutral-400">
+				<div class="truncate text-sm font-normal text-neutral-400">
 					{description}
 				</div>
 			</div>

@@ -152,7 +152,7 @@
 
 			<div class="flex gap-16">
 				<div
-					class="flex items-center justify-center rounded-lg bg-white p-4 shadow duration-150 hover:scale-105 hover:shadow-xl hover:shadow-zinc-400"
+					class="flex justify-center rounded-lg bg-white p-4 shadow duration-150 hover:scale-105 hover:shadow-xl hover:shadow-zinc-400"
 				>
 					<div>
 						<img
@@ -181,7 +181,7 @@
 										<NeedChooseLabel></NeedChooseLabel>
 									{/if}
 								</div>
-								<div class="bg-PUA-dark-red h-[1px]"></div>
+								<div class="bg-PUA-dark-red h-[0.04rem]"></div>
 								<div class="flex flex-col">
 									{#each item_array as { name }}
 										<Checkcontainer category={label_name} subcategory={name}></Checkcontainer>

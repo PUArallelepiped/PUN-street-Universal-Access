@@ -2,6 +2,7 @@
 	import watermelon from '$lib/assets/watermelon.png';
 </script>
 
+<!-- <img src={watermelon} alt="" /> -->
 <div class="flex justify-items-start">
 	<div class="flex w-full justify-center">
 		<div class="flex w-2/3 pb-32">

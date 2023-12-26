@@ -132,9 +132,11 @@
 
 {#await getProductResp() then}
 	<form on:submit={PostProductResp}>
-		<div class="flex h-fit justify-start">
-			<div class="relative left-1/2 mt-6 h-full w-4/5 -translate-x-1/2 transform">
-				<div class="h-100 flex w-full flex-col justify-center text-PUA-dark-red">
+		<div class="flex h-fit justify-start pb-10">
+			<div class="relative left-1/2 mt-6 h-full w-4/5 -translate-x-1/2 transform space-y-8">
+				<div
+					class=" text-PUA-dark-red flex w-full flex-col justify-center rounded-lg bg-white px-4 pb-0 pt-4 shadow duration-150 hover:scale-105 hover:shadow-xl hover:shadow-zinc-400"
+				>
 					<Input
 						required
 						bind:value={product_data.name}
@@ -143,11 +145,13 @@
 						class="max-wxs peer w-full rounded-[0] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-4xl"
 					/>
 					<div class="invisible py-4 peer-invalid:visible">
-						<ErrorMsg width={'30'} height={'30'} text={`CANNOT BE EMPTY`}></ErrorMsg>
+						<ErrorMsg width={'28'} height={'28'} text={`CANNOT BE EMPTY`}></ErrorMsg>
 					</div>
 				</div>
 				<div class="flex h-full w-full gap-16">
-					<div class="relative h-full">
+					<div
+						class="relative h-full rounded-lg bg-white p-4 shadow duration-150 hover:scale-105 hover:shadow-xl hover:shadow-zinc-400"
+					>
 						<div class=" flex h-60 w-60 rounded-lg bg-gray-300 shadow-inner">
 							{#if !product_data.picture}
 								<div class="flex h-full w-full items-center justify-center">
@@ -181,7 +185,7 @@
 								/>
 							{/if}
 						</div>
-						<div class="flex w-64 flex-wrap items-baseline gap-3 pt-5 font-bold text-PUA-dark-red">
+						<div class="text-PUA-dark-red flex w-64 flex-wrap items-baseline gap-3 pt-5 font-bold">
 							<div class="text-2xl">NT$</div>
 							<input
 								required
@@ -204,7 +208,9 @@
 							<Textarea width="64" bind:value={product_data.description} required={true} />
 						</div>
 					</div>
-					<div class="relative h-fit w-full">
+					<div
+						class="relative h-fit w-full rounded-lg bg-white p-4 shadow duration-150 hover:scale-105 hover:shadow-xl hover:shadow-zinc-400"
+					>
 						<AddCategoryAndItemArea
 							bind:category_item={product_data.product_label_array}
 							bind:product_id={product_data.product_id}
@@ -221,9 +227,9 @@
 						></DisCountArea>
 
 						<div
-							class="flex h-[30px] w-full items-center border-b-[1px] border-solid border-PUA-stone"
+							class="border-PUA-stone flex h-[30px] w-full items-center border-b-[1px] border-solid"
 						>
-							<div class="font-bold text-PUA-stone">Set Status</div>
+							<div class="text-PUA-stone font-bold">Set Status</div>
 						</div>
 						<div class="m-4 flex justify-center gap-10">
 							{#each Status as { label }, index}

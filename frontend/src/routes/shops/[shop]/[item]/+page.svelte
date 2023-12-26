@@ -141,33 +141,47 @@
 
 {#await getProductResp() then}
 	<div class="flex justify-center">
-		<div class="my-6 flex h-full w-4/5 flex-col gap-8">
-			<div class=" flex w-full items-center text-4xl text-PUA-dark-red">
-				{product.name}
+		<div class="my-6 mb-10 flex h-full w-4/5 flex-col gap-8">
+			<div
+				class="rounded-lg bg-white p-4 shadow duration-150 hover:scale-105 hover:shadow-xl hover:shadow-zinc-400"
+			>
+				<div class=" text-PUA-dark-red flex w-full items-center text-4xl">
+					{product.name}
+				</div>
 			</div>
 
 			<div class="flex gap-16">
-				<div class="">
-					<img src={product.picture} alt="" class="mt-100 flex h-60 w-60 rounded-lg object-cover" />
-					<div class="flex items-baseline gap-3 py-5 font-bold text-PUA-dark-red">
-						<p class="text-2xl">NT$</p>
-						<p class="text-4xl">{product.price}</p>
-					</div>
-					<div class="w-[250px] text-justify text-base text-gray-600">
-						{product.description}
+				<div
+					class="flex items-center justify-center rounded-lg bg-white p-4 shadow duration-150 hover:scale-105 hover:shadow-xl hover:shadow-zinc-400"
+				>
+					<div>
+						<img
+							src={product.picture}
+							alt=""
+							class="mt-100 flex h-60 w-60 rounded-lg object-cover"
+						/>
+						<div class="text-PUA-dark-red flex items-baseline gap-3 py-5 font-bold">
+							<p class="text-2xl">NT$</p>
+							<p class="text-4xl">{product.price}</p>
+						</div>
+						<div class="w-[250px] text-justify text-base text-gray-600">
+							{product.description}
+						</div>
 					</div>
 				</div>
-				<div class=" flex w-full flex-col gap-4">
+				<div
+					class=" flex w-full flex-col gap-4 rounded-lg bg-white p-4 shadow duration-150 hover:scale-105 hover:shadow-xl hover:shadow-zinc-400"
+				>
 					<div class=" flex w-full flex-col gap-4">
 						{#each product.product_label_array as { required, label_name, item_array }}
 							<div class="">
 								<div class="flex items-center">
-									<div class="font-bold text-PUA-stone">{label_name}</div>
+									<div class="text-PUA-stone font-bold">{label_name}</div>
 									{#if required}
 										<NeedChooseLabel></NeedChooseLabel>
 									{/if}
 								</div>
-								<div class="h-[1px] bg-PUA-dark-red"></div>
+								<div class="bg-PUA-dark-red h-[1px]"></div>
 								<div class="flex flex-col">
 									{#each item_array as { name }}
 										<Checkcontainer category={label_name} subcategory={name}></Checkcontainer>

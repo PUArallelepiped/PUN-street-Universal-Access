@@ -20,12 +20,12 @@
 </script>
 
 <div class="relative h-full w-full">
-	<div class="flex h-7 w-full items-center border-b-[1px] border-solid border-PUA-stone">
-		<div class=" font-bold text-PUA-stone">Add Discount</div>
+	<div class="border-PUA-stone flex h-7 w-full items-center border-b-[1px] border-solid">
+		<div class=" text-PUA-stone font-bold">Add Discount</div>
 	</div>
 	{#if discount.length === 0 && type}
 		<div class=" my-4 flex w-full animate-pulse items-center justify-center">
-			<p class=" rounded-lg border-2 border-PUA-stone px-4 text-base font-bold text-PUA-stone">
+			<p class=" border-PUA-stone text-PUA-stone rounded-lg border-2 px-4 text-base font-bold">
 				No Event Discount
 			</p>
 		</div>
@@ -64,7 +64,7 @@
 						type="button"
 						on:click={addDiscountButton(last_index)}
 						on:click={toggleModel}
-						class="h-5 w-5 rounded-[10px] bg-lime-800 text-center text-[13px] font-bold text-white"
+						class="flex h-5 w-5 items-center justify-center rounded-full bg-lime-800 text-center text-[13px] text-xs font-bold text-white duration-150 hover:scale-125 hover:border-2 hover:border-lime-800 hover:bg-transparent hover:text-lime-800"
 						>+</button
 					>
 				</div>

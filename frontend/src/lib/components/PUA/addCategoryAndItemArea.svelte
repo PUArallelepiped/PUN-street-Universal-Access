@@ -75,7 +75,11 @@
 					></RequiredArea>
 				</div>
 				<div class="flex items-center justify-end">
-					<button on:click={() => removeCategory(index)} class="flex" type="button">
+					<button
+						on:click={() => removeCategory(index)}
+						class="flex duration-150 hover:scale-125"
+						type="button"
+					>
 						<img src={transhcan} alt="Trash Can" class="object-cover" />
 					</button>
 				</div>
@@ -97,17 +101,17 @@
 						</div>
 					</div>
 				{/each}
-				<div class="flex h-[30px] w-full items-center justify-end">
+				<div class="flex h-[30px] w-full items-center justify-end gap-2">
 					<button
 						type="button"
 						on:click={() => removeNewSubcategory(index)}
-						class="m-[3px] h-[20x] w-[20px] rounded-[10px] bg-red-900 px-[0px] py-[0px] text-sm font-bold text-white"
+						class="hover:text-PUA-dark-red hover:border-PUA-dark-red m-[3px] flex h-[20px] w-[20px] items-center justify-center rounded-[10px] bg-red-900 px-[0px] py-[0px] text-sm font-bold text-white duration-150 hover:scale-125 hover:border-2 hover:bg-transparent"
 						>-</button
 					>
 					<button
 						type="button"
 						on:click={() => addNewSubcategory(index)}
-						class="m-[3px] h-[20x] w-[20px] rounded-[10px] bg-red-900 px-[0px] py-[0px] text-sm font-bold text-white"
+						class="hover:text-PUA-dark-red hover:border-PUA-dark-red m-[3px] flex h-[20px] w-[20px] items-center justify-center rounded-[10px] bg-red-900 px-[0px] py-[0px] text-sm font-bold text-white duration-150 hover:scale-125 hover:border-2 hover:bg-transparent"
 						>+</button
 					>
 				</div>
@@ -119,6 +123,7 @@
 	<button
 		type="button"
 		on:click={addNewCategory}
-		class="h-[30px] w-[30px] rounded-[15px] bg-red-900 font-bold text-white">+</button
+		class="hover:border-PUA-dark-red hover:text-PUA-dark-red h-[30px] w-[30px] rounded-[15px] bg-red-900 font-bold text-white duration-150 hover:scale-125 hover:border-2 hover:bg-transparent"
+		>+</button
 	>
 </div>

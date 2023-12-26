@@ -65,6 +65,7 @@
 									product_price={productInfo.product_price}
 									discountId={productInfo.event_discount_id}
 									discountQuantity={productInfo.event_discount_max_quantity}
+									canDelete={type == 'cart'}
 									on:clickDelete={async () => {
 										await fetch(
 											backendPath + '/customer/1/delete/product/' + productInfo.product_id,
@@ -74,11 +75,13 @@
 									}}
 								></CartItemCard>
 							{/each}
-							<CartMoreItemCard
-								on:click={() => {
-									goto('/shops/' + storeInfo.store_id);
-								}}
-							></CartMoreItemCard>
+							{#if type == 'cart'}
+								<CartMoreItemCard
+									on:click={() => {
+										goto('/shops/' + storeInfo.store_id);
+									}}
+								></CartMoreItemCard>
+							{/if}
 						</div>
 					</div>
 				{/each}
@@ -138,14 +141,6 @@
 			</div>
 			{#if type == 'cart'}
 				<OkButton onclick={checkout} text="Check Out"></OkButton>
-			{:else if type == 'checkOrder'}
-				<!-- todo connect backend -->
-				<OkButton
-					onclick={() => {
-						return null;
-					}}
-					text="Next step"
-				></OkButton>
 			{/if}
 		</div>
 	</div>

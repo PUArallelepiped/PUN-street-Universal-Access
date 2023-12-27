@@ -135,7 +135,7 @@
 		<div class="flex h-fit justify-start pb-10">
 			<div class="relative left-1/2 mt-6 h-full w-4/5 -translate-x-1/2 transform space-y-8">
 				<div
-					class=" text-PUA-dark-red flex w-full flex-col justify-center rounded-lg bg-white px-4 pb-0 pt-4 shadow duration-150 hover:scale-105 hover:shadow-xl hover:shadow-zinc-400"
+					class=" text-PUA-dark-red flex w-full flex-col justify-center rounded-lg bg-white px-4 pb-0 pt-4 shadow"
 				>
 					<input
 						required
@@ -149,9 +149,7 @@
 					</div>
 				</div>
 				<div class="flex h-full w-full gap-16">
-					<div
-						class="relative h-full rounded-lg bg-white p-4 shadow duration-150 hover:scale-105 hover:shadow-xl hover:shadow-zinc-400"
-					>
+					<div class="relative h-full rounded-lg bg-white p-4 shadow">
 						<div class=" flex h-60 w-60 rounded-lg bg-gray-300 shadow-inner">
 							{#if !product_data.picture}
 								<div class="flex h-full w-full items-center justify-center">
@@ -208,9 +206,7 @@
 							<Textarea width="64" bind:value={product_data.description} required={true} />
 						</div>
 					</div>
-					<div
-						class="relative h-fit w-full rounded-lg bg-white p-4 shadow duration-150 hover:scale-105 hover:shadow-xl hover:shadow-zinc-400"
-					>
+					<div class="relative h-fit w-full rounded-lg bg-white p-4 shadow">
 						<AddCategoryAndItemArea
 							bind:category_item={product_data.product_label_array}
 							bind:product_id={product_data.product_id}

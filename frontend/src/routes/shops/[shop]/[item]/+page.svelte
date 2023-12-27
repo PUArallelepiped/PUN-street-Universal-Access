@@ -142,18 +142,14 @@
 {#await getProductResp() then}
 	<div class="flex justify-center">
 		<div class="my-6 mb-10 flex h-full w-4/5 flex-col gap-8">
-			<div
-				class="rounded-lg bg-white p-4 shadow duration-150 hover:scale-105 hover:shadow-xl hover:shadow-zinc-400"
-			>
+			<div class="rounded-lg bg-white p-4 shadow">
 				<div class=" text-PUA-dark-red flex w-full items-center text-4xl">
 					{product.name}
 				</div>
 			</div>
 
 			<div class="flex gap-16">
-				<div
-					class="flex justify-center rounded-lg bg-white p-4 shadow duration-150 hover:scale-105 hover:shadow-xl hover:shadow-zinc-400"
-				>
+				<div class="flex justify-center rounded-lg bg-white p-4 shadow">
 					<div>
 						<img
 							src={product.picture}
@@ -169,9 +165,7 @@
 						</div>
 					</div>
 				</div>
-				<div
-					class=" flex w-full flex-col gap-4 rounded-lg bg-white p-4 shadow duration-150 hover:scale-105 hover:shadow-xl hover:shadow-zinc-400"
-				>
+				<div class=" flex w-full flex-col gap-4 rounded-lg bg-white p-4 shadow">
 					<div class=" flex w-full flex-col gap-4">
 						{#each product.product_label_array as { required, label_name, item_array }}
 							<div class="">

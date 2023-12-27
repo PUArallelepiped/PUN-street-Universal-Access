@@ -12,4 +12,5 @@ INSERT INTO discounts (discount_type, description, name, status) VALUES
     (3, 'buy 2 get 1 free', 'halloween', 1),
     (3, 'buy 1 get 1 free', 'halloween', 1),
     (3, 'buy 6 get 1 free', 'halloween', 1),
-    (3, 'buy 7 get 1 free', 'halloween', 1)
+    (3, 'buy 7 get 1 free', 'halloween', 1),
+    (1, 'all products 95% off', 'year discount', 1)

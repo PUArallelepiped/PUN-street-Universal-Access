@@ -1,5 +1,13 @@
 INSERT INTO stores (store_id, name, rate, rate_count, address, picture, description, shipping_fee, status) VALUES 
-    (1, 'im pasta', 4, 100, 'pun street', 'https://i.imgur.com/3i3tyXJ.gif', 'you are not pasta', 35, 1),
-    (3, 'number five',3.5, 5, 'pun street', 'https://i.imgur.com/3i3tyXJ.gif', 'special meal', 15, 1),
-    (2, 'mos burger',4, 123, 'NTUT', 'https://i.imgur.com/3i3tyXJ.gif', 'moooooooooooooos', 55, 1),
-    (7, 'trash noodle',4.9, 9876, 'pun street', 'https://i.imgur.com/3i3tyXJ.gif', 'trash', 192, 1)
+    (1, 'im pasta', 4, 1900, '100台灣台北市中正區八德路一段82巷9弄7號', 'https://cdn.discordapp.com/attachments/1140328660126138562/1188093856412074004/image.png?ex=659945a1&is=6586d0a1&hm=1ffab98f2cfc3b405617e20c54dca51af5b863efd0bf1dd90073e00ac031e0c6&', 'you are not pasta', 40, 1),
+    (3, '五號料理 no.5 cuisine',4.4, 100, '100台灣台北市中正區八德路一段82巷9弄5號2樓', 'https://cdn.discordapp.com/attachments/1140328660126138562/1188511774564159549/image.png?ex=659acad8&is=658855d8&hm=0d028eea97a9771300816ca073646c605e285cb671ab0487d8aa53f3e4b576c4&', 'special meal', 15, 1),
+    (2, 'mos burger',4, 123, 'NTUT', 'https://cdn.discordapp.com/attachments/1140328660126138562/1188109483688329277/image.png?ex=6599542e&is=6586df2e&hm=4fb8a3546cce8e75854d3779ee1f38ae4e8fe9c25f4c19a2209d6eeb788933fb&', 'moooooooooooooos', 55, 1),
+    (7, 'trash noodle',4.9, 9876, 'pun street', 'https://i.imgur.com/3i3tyXJ.gif', 'trash', 192, 1),
+    (10, '玖伍牛肉麵',4.0, 2381, '100台灣台北市中正區八德路一段82巷8號', 'https://cdn.discordapp.com/attachments/1140328660126138562/1188085147095015495/image.png?ex=65993d84&is=6586c884&hm=c22f278144cabd34458bfdc7f70218e99f897941d5d5d2d091f74f1afd1ffcc4&', 'cow men', 66, 1),
+    (9, '雞肉本家',3.8, 210, '100台灣台北市中正區八德路一段82巷9弄22號', 'https://iili.io/JADCTGt.png', 'fork cheken', 44, 1),
+    (11, '佐藤精肉店 豚丼專門',4.7, 116131, '100台灣台北市中正區八德路一段82巷9弄8號2樓', 'https://cdn.discordapp.com/attachments/1140328660126138562/1188181899164790824/image.png?ex=659997a0&is=658722a0&hm=9c4eb7e05f58725d1661900c548205f857af4254b1a8491af1d0e0510410b43b&', 'sato niku ya', 30, 1),
+    (12, '咖食堂',4.1, 2000, '100台灣台北市中正區八德路一段82巷9弄13號', 'https://cdn.discordapp.com/attachments/1140328660126138562/1188190485974634516/image.png?ex=65999f9f&is=65872a9f&hm=95c4501b7e87b4540c467972e0239fbdd34bef5c7f1b034d4796b305d7d34a18&', 'ka', 25, 1),
+    (13, '金湘',4.3, 1000, '100台灣台北市中正區新生南路一段14號', 'https://cdn.discordapp.com/attachments/1140328660126138562/1188193351758004384/image.png?ex=6599a24a&is=65872d4a&hm=bb0e85592e3620829749a82c269378c4a7b50c44aabd19af7269e5f789cdb9f7&', 'duck', 25, 1),
+    (14, '楽坡BonBox',4.3, 600, '10058台灣台北市中正區八德路一段82巷12號1樓', 'https://cdn.discordapp.com/attachments/1140328660126138562/1188197241878499328/image.png?ex=6599a5ea&is=658730ea&hm=617ecfafd58f699567eb7cabaf4ea538e4455145892df64c50105e2867a30411&', 'bonbox', 25, 1),
+    (15, '山本軒YAMAMOTOKEN丼飯',4.7, 200, '100台灣台北市中正區新生南路一段6-11號', 'https://cdn.discordapp.com/attachments/1140328660126138562/1188201361779736656/image.png?ex=6599a9c0&is=658734c0&hm=e277d8e06aa257fceb46be5fddee1d006eae152aebdb5c5767324a7d32c09e82&', 'yama', 25, 1),
+    (16, '樂法 Le Phare',4.1, 400, '100台灣台北市中正區八德路一段82巷7號', 'https://cdn.discordapp.com/attachments/1140328660126138562/1188205000707559514/image.png?ex=6599ad23&is=65873823&hm=5d005e20a79da4393d069aa4b3eec0e1e32a4b2727d17a5a22c052dc4ea5f91a&', 'drink', 25, 1)

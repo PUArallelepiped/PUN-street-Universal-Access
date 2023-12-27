@@ -44,7 +44,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StoreInfoWithCategoryArray'
+                $ref: '#/components/schemas/OneStoreListInfoArray'
         "500":
           description: Unexpected error
   /store/{storeID}/get-statistics/{year}:
@@ -2576,3 +2576,41 @@ components:
         user_email:
           type: string
           example: a@gmail.com
+    OneStoreListInfo:
+      required:
+      - category_array
+      - name
+      - picture
+      - rate
+      - store_id
+      type: object
+      properties:
+        name:
+          type: string
+          example: i'm pasta
+        rate:
+          type: number
+          format: float
+          example: 5
+        picture:
+          type: string
+          example: https://i.imgur.com/1.jpg
+        category_array:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+      example:
+        store_id: 1
+        rate: 5
+        category_array:
+        - category_name: drink
+          category_id: 1
+        - category_name: drink
+          category_id: 1
+        name: i'm pasta
+        picture: https://i.imgur.com/1.jpg
+    OneStoreListInfoArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/OneStoreListInfo'
+      x-schema-name: OneStoreListInfoArray

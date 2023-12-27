@@ -1,7 +1,7 @@
 INSERT INTO stores (store_id, name, rate, rate_count, address, picture, description, shipping_fee, status) VALUES 
     (1, 'im pasta', 4, 1900, '100台灣台北市中正區八德路一段82巷9弄7號', 'https://cdn.discordapp.com/attachments/1140328660126138562/1188093856412074004/image.png?ex=659945a1&is=6586d0a1&hm=1ffab98f2cfc3b405617e20c54dca51af5b863efd0bf1dd90073e00ac031e0c6&', 'you are not pasta', 40, 1),
     (3, '五號料理 no.5 cuisine',4.4, 100, '100台灣台北市中正區八德路一段82巷9弄5號2樓', 'https://cdn.discordapp.com/attachments/1140328660126138562/1188511774564159549/image.png?ex=659acad8&is=658855d8&hm=0d028eea97a9771300816ca073646c605e285cb671ab0487d8aa53f3e4b576c4&', 'special meal', 15, 1),
-    (2, 'mos burger',4, 123, 'NTUT', 'https://cdn.discordapp.com/attachments/1140328660126138562/1188109483688329277/image.png?ex=6599542e&is=6586df2e&hm=4fb8a3546cce8e75854d3779ee1f38ae4e8fe9c25f4c19a2209d6eeb788933fb&', 'moooooooooooooos', 55, 1),
+    (2, 'mos burger',4, 123, 'NTUT', 'https://cdn.discordapp.com/attachments/1153679804877508668/1189422908636930218/P_20231227_122121.jpg?ex=659e1b67&is=658ba667&hm=b38f651f315560c9af389326d68a3529c3a19f7b61483199ba38a28831a1a8fe&', 'moooooooooooooos', 55, 1),
     (7, 'trash noodle',4.9, 9876, 'pun street', 'https://i.imgur.com/3i3tyXJ.gif', 'trash', 192, 1),
     (10, '玖伍牛肉麵',4.0, 2381, '100台灣台北市中正區八德路一段82巷8號', 'https://cdn.discordapp.com/attachments/1140328660126138562/1188085147095015495/image.png?ex=65993d84&is=6586c884&hm=c22f278144cabd34458bfdc7f70218e99f897941d5d5d2d091f74f1afd1ffcc4&', 'cow men', 66, 1),
     (9, '雞肉本家',3.8, 210, '100台灣台北市中正區八德路一段82巷9弄22號', 'https://iili.io/JADCTGt.png', 'fork cheken', 44, 1),

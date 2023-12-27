@@ -33,11 +33,17 @@ paths:
         "500":
           description: Unexpected error
   /stores:
-    get:
+    post:
       tags:
       - customer
       - store
       summary: get all store
+      requestBody:
+        description: search info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/searchInfo'
       responses:
         "200":
           description: return store array
@@ -2614,3 +2620,35 @@ components:
       items:
         $ref: '#/components/schemas/OneStoreListInfo'
       x-schema-name: OneStoreListInfoArray
+    searchInfo:
+      required:
+      - category_array
+      - price_high
+      - price_low
+      - search_string
+      type: object
+      properties:
+        category_array:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        search_string:
+          type: string
+          example: pasta
+        price_high:
+          type: number
+          format: float
+          example: 1000
+        price_low:
+          type: number
+          format: float
+          example: 0
+      example:
+        category_array:
+        - category_name: Spices
+          category_id: 1
+        - category_name: Sustainable
+          category_id: 2
+        price_high: 1000
+        price_low: 0
+        search_string: pasta

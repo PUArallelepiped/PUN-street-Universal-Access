@@ -149,7 +149,7 @@
 			</div>
 
 			<div class="flex gap-16">
-				<div class="flex justify-center rounded-lg bg-white p-4 shadow">
+				<div class="flex h-fit justify-center rounded-lg bg-white p-4 shadow">
 					<div>
 						<img
 							src={product.picture}

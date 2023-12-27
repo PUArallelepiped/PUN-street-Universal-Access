@@ -2,7 +2,13 @@ package usecase
 
 import (
 	"context"
+	b64 "encoding/base64"
+	"encoding/json"
 	"errors"
+	"io"
+	"mime/multipart"
+	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
@@ -183,4 +189,40 @@ func (su *UserUsecase) RegisterUser(ctx context.Context, user *swagger.RegisterI
 
 func (su *UserUsecase) CheckEmail(ctx context.Context, email string) (bool, error) {
 	return su.userRepo.CheckEmail(ctx, email)
+}
+
+func (su *UserUsecase) UploadImage(ctx context.Context, file *multipart.FileHeader) (string, error) {
+	httpposturl := "https://freeimage.host/api/1/upload"
+	f, _ := file.Open()
+	content := make([]byte, file.Size)
+	f.Read(content)
+	byteImg := b64.StdEncoding.EncodeToString(content)
+	s := domain.PostInfo{
+		Key:    "6d207e02198a847aa98d0a2a901485a5",
+		Action: "upload",
+		Source: byteImg,
+		Format: "json"}
+	v := map[string][]string{
+		"key":    {s.Key},
+		"action": {s.Action},
+		"source": {s.Source},
+		"format": {s.Format},
+	}
+
+	qs := url.Values(v)
+	response, err := http.PostForm(httpposturl, qs)
+	if err != nil {
+		logrus.Error(err)
+		return "", err
+	}
+	body, _ := io.ReadAll(response.Body)
+
+	var responseInfo domain.ResponseInfo
+	err = json.Unmarshal([]byte(string(body)), &responseInfo)
+	if err != nil {
+		logrus.Error(err)
+		return "", err
+	}
+
+	return responseInfo.Image.Url, err
 }

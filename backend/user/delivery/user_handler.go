@@ -31,6 +31,7 @@ func NewUserHandler(e *gin.Engine, userUsecase domain.UserUsecase) {
 		v1.GET("/admin/get-all-orders", handler.GetOrders)
 		v1.PUT("/admin/ban-user/:userID", handler.BanUser)
 		v1.PUT("/admin/unban-user/:userID", handler.UnBanUser)
+		v1.POST("/upload", handler.UploadImage)
 	}
 }
 
@@ -190,4 +191,22 @@ func (u *UserHandler) CheckEmail(c *gin.Context) {
 	}
 
 	c.JSON(200, isExist)
+}
+
+func (u *UserHandler) UploadImage(c *gin.Context) {
+	file, err := c.FormFile("file")
+	if err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
+	url, err := u.UserUsecase.UploadImage(c, file)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, url)
 }

@@ -105,13 +105,13 @@
 					<button
 						type="button"
 						on:click={() => removeNewSubcategory(index)}
-						class="hover:text-PUA-dark-red hover:border-PUA-dark-red m-[3px] flex h-[20px] w-[20px] items-center justify-center rounded-[10px] bg-red-900 px-[0px] py-[0px] text-sm font-bold text-white duration-150 hover:scale-125 hover:border-2 hover:bg-transparent"
+						class="m-[3px] flex h-[20px] w-[20px] items-center justify-center rounded-[10px] bg-red-900 px-[0px] py-[0px] text-sm font-bold text-white duration-150 hover:scale-125 hover:border-2 hover:border-PUA-dark-red hover:bg-transparent hover:text-PUA-dark-red"
 						>-</button
 					>
 					<button
 						type="button"
 						on:click={() => addNewSubcategory(index)}
-						class="hover:text-PUA-dark-red hover:border-PUA-dark-red m-[3px] flex h-[20px] w-[20px] items-center justify-center rounded-[10px] bg-red-900 px-[0px] py-[0px] text-sm font-bold text-white duration-150 hover:scale-125 hover:border-2 hover:bg-transparent"
+						class="m-[3px] flex h-[20px] w-[20px] items-center justify-center rounded-[10px] bg-red-900 px-[0px] py-[0px] text-sm font-bold text-white duration-150 hover:scale-125 hover:border-2 hover:border-PUA-dark-red hover:bg-transparent hover:text-PUA-dark-red"
 						>+</button
 					>
 				</div>
@@ -123,7 +123,7 @@
 	<button
 		type="button"
 		on:click={addNewCategory}
-		class="hover:border-PUA-dark-red hover:text-PUA-dark-red h-[30px] w-[30px] rounded-[15px] bg-red-900 font-bold text-white duration-150 hover:scale-125 hover:border-2 hover:bg-transparent"
+		class="h-[30px] w-[30px] rounded-[15px] bg-red-900 font-bold text-white duration-150 hover:scale-125 hover:border-2 hover:border-PUA-dark-red hover:bg-transparent hover:text-PUA-dark-red"
 		>+</button
 	>
 </div>

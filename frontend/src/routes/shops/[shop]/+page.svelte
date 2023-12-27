@@ -12,7 +12,7 @@
 </div>
 <div class="mx-5 mt-10 lg:px-40">
 	<div class="mx-5 space-y-2">
-		<div class="text-PUA-stone text-5xl font-bold">{data.shopInfo.name}</div>
+		<div class="text-5xl font-bold text-PUA-stone">{data.shopInfo.name}</div>
 		<div class="font-bold text-red-950">{data.shopInfo.address}</div>
 		<div class="flex w-full justify-start gap-6">
 			<TagLabelAreaForShow

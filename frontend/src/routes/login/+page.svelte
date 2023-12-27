@@ -47,9 +47,9 @@
 	<h1 class="mx-20 my-10 p-12 text-5xl font-medium leading-10 text-red-900">| Sign in to PUA</h1>
 
 	<div>
-		<img class="absolute left-44 top-80 scale-125" src={NisePanda} alt="panda" />
-		<img class="absolute left-108 top-96 scale-125" src={NisePanda} alt="panda" />
-		<img class="absolute left-172 top-112 scale-125" src={NisePanda} alt="panda" />
+		<img class="absolute left-44 bottom-64  scale-125" src={NisePanda} alt="panda" />
+		<img class="absolute left-108 bottom-48 scale-125" src={NisePanda} alt="panda" />
+		<img class="absolute left-172 bottom-32 scale-125" src={NisePanda} alt="panda" />
 	</div>
 	<div class="absolute inset-x-0 bottom-0 h-60 bg-red-900"></div>
 	<div class="absolute right-1">

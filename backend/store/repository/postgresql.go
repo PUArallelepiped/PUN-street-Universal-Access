@@ -97,7 +97,7 @@ func (p *postgresqlStoreRepo) GetMonthTotalPriceById(ctx context.Context, id int
 	sqlStatement := `
 	SELECT COALESCE(SUM(total_price), 0)
 	FROM orders 
-	WHERE store_id = $1 AND 
+	WHERE store_id = $1 AND orders.status >= 6 AND 
 	EXTRACT(year FROM order_date) = $2 AND 
 	EXTRACT(month FROM order_date) = $3;
 	`
@@ -116,10 +116,11 @@ func (p *postgresqlStoreRepo) GetMonthTotalPriceById(ctx context.Context, id int
 
 func (p *postgresqlStoreRepo) GetAllProductSellingById(ctx context.Context, id int64, year int64, month int64) (*[]swagger.ProductStatistic, error) {
 	sqlStatement := `
-	SELECT carts.product_id, products.name, SUM(carts.product_quantity) 
-	FROM orders, carts, products 
-	WHERE orders.store_id = $1 AND 
-	orders.cart_id = carts.cart_id AND customer_id = user_id AND carts.product_id = products.product_id AND 
+	SELECT carts.product_id, products.name, SUM(carts.product_quantity)
+	FROM carts 
+	LEFT JOIN products ON carts.product_id = products.product_id 
+	LEFT JOIN orders ON carts.store_id = orders.store_id AND carts.cart_id = orders.cart_id AND carts.customer_id = orders.user_id
+	WHERE orders.store_id = $1 AND orders.status >= 6  AND
 	EXTRACT(year FROM order_date) = $2 AND EXTRACT(month FROM order_date) = $3
 	GROUP BY carts.product_id, products.name
 	`

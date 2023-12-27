@@ -119,7 +119,7 @@ func (p *postgresqlStoreRepo) GetAllProductSellingById(ctx context.Context, id i
 	SELECT carts.product_id, products.name, SUM(carts.product_quantity)
 	FROM carts 
 	LEFT JOIN products ON carts.product_id = products.product_id 
-	LEFT JOIN orders ON carts.store_id = orders.store_id AND carts.cart_id = orders.cart_id
+	LEFT JOIN orders ON carts.store_id = orders.store_id AND carts.cart_id = orders.cart_id AND carts.customer_id = orders.user_id
 	WHERE orders.store_id = $1 AND orders.status >= 6  AND
 	EXTRACT(year FROM order_date) = $2 AND EXTRACT(month FROM order_date) = $3
 	GROUP BY carts.product_id, products.name

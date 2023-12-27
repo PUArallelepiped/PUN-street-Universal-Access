@@ -27,4 +27,6 @@ INSERT INTO carts (customer_id, cart_id, store_id, product_id, product_quantity,
     (1, 6, 10, 21, 5, 1),
     (4, 1, 2, 40, 10, 1),
     (4, 1, 16, 86, 2, 1),
-    (4, 1, 14, 74, 2, 1)
+    (4, 1, 14, 74, 2, 1),
+    (4, 1, 1, 28, 10, 1),
+    (4, 1, 1, 29, 8, 1)

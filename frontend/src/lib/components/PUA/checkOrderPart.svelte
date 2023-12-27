@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { invalidateAll } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import { PUALabel } from '$lib';
 	import drone from '$lib/assets/drone.png';
 	import OkButton from './OkButton.svelte';
 	import { backendPath } from './env';
+	import { getId } from './getId';
 	import ProgressBar from './progressBar.svelte';
 
 	export let status: number;
@@ -17,6 +18,34 @@
 		{ text: 'Deliver Order', status: 4 <= status },
 		{ text: 'Arrival Address', status: 5 <= status }
 	];
+
+	async function updateStatus() {
+		try {
+			const userId = (await getId()).valueOf();
+			await fetch(
+				backendPath +
+					'/seller/update-order-status/customer/' +
+					userId +
+					'/cart/' +
+					cartID +
+					'/store/' +
+					storeID,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						status: 6
+					})
+				}
+			);
+			invalidateAll();
+			return null;
+		} catch (e) {
+			goto('/login');
+		}
+	}
 </script>
 
 <div class="flex flex-col items-center justify-center gap-8">
@@ -35,27 +64,7 @@
 					<OkButton
 						text="Check Order"
 						onclick={async () => {
-							let userId = 1;
-							await fetch(
-								backendPath +
-									'/seller/update-order-status/customer/' +
-									userId +
-									'/cart/' +
-									cartID +
-									'/store/' +
-									storeID,
-								{
-									method: 'PUT',
-									headers: {
-										'Content-Type': 'application/json'
-									},
-									body: JSON.stringify({
-										status: 6
-									})
-								}
-							);
-							invalidateAll();
-							return null;
+							updateStatus();
 						}}
 					></OkButton>
 				{/if}

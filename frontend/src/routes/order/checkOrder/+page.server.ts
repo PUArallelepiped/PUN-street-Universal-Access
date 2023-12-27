@@ -1,5 +1,7 @@
 import { backendPath } from '$lib/components/PUA/env.js';
 import type { PageServerLoad } from './$types';
+import { redirect } from '@sveltejs/kit';
+import { getIdByToken } from '$lib/components/PUA/getId';
 type orderInfoType = {
 	user_id: number;
 	cart_id: number;
@@ -8,17 +10,22 @@ type orderInfoType = {
 	store_name: string;
 	store_picture: string;
 };
-export const load: PageServerLoad = async () => {
-	return {
-		orderInfoList: await getOrder()
-	};
+export const load: PageServerLoad = async ({ cookies }) => {
+	try {
+		const jwttoken: string = cookies.get('jwttoken') || '';
+		const user_id = await getIdByToken(jwttoken);
+		return {
+			orderInfoList: await getOrder(user_id)
+		};
+	} catch (e) {
+		throw redirect(307, '/login');
+	}
 };
 
 // todo custumer id
-async function getOrder() {
+async function getOrder(id: string) {
 	try {
-		const customerId = 1;
-		const resp = await fetch(backendPath + '/customer/' + customerId + '/order-status');
+		const resp = await fetch(backendPath + '/customer/' + id + '/order-status');
 		return (await resp.json()) as orderInfoType[];
 	} catch {
 		return [];

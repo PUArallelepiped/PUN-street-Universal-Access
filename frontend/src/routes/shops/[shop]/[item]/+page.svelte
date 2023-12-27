@@ -5,10 +5,10 @@
 	import { onMount } from 'svelte';
 	import { backendPath } from '$lib/components/PUA/env';
 	import { goto } from '$app/navigation';
+	import { getId } from '$lib/components/PUA/getId';
 	export let data: PageData;
 	let shop_id = data.shop;
 	let item_id = data.item;
-	let userID = '1';
 	let get_event_discount_id = 1;
 	type productRespType = {
 		store_id: number;
@@ -118,20 +118,25 @@
 		return;
 	}
 	async function PostProductResp() {
-		productCartPost = {
-			cart_id: 0,
-			product_id: product.product_id,
-			customer_id: Number(userID),
-			product_quantity: Number(productCartPost.product_quantity),
-			discount_id: get_event_discount_id,
-			store_id: product.store_id
-		};
-		let post = fetch(backendPath + `/customer/` + userID + `/cart`, {
-			method: 'POST',
-			body: JSON.stringify(productCartPost)
-		});
-		if ((await post).status == 200) {
-			goto('/shops/' + shop_id);
+		try {
+			const user_id = (await getId()).valueOf();
+			productCartPost = {
+				cart_id: 0,
+				product_id: product.product_id,
+				customer_id: Number(user_id),
+				product_quantity: Number(productCartPost.product_quantity),
+				discount_id: get_event_discount_id,
+				store_id: product.store_id
+			};
+			let post = fetch(backendPath + `/customer/` + user_id + `/cart`, {
+				method: 'POST',
+				body: JSON.stringify(productCartPost)
+			});
+			if ((await post).status == 200) {
+				goto('/shops/' + shop_id);
+			}
+		} catch (e) {
+			goto('/login');
 		}
 	}
 	onMount(async () => {

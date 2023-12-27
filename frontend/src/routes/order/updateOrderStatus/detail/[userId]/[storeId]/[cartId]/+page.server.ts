@@ -7,7 +7,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		cartInfos: await getCart(params.userId, params.cartId, params.storeId)
 	};
 };
-async function getCart(userId:string, cartId: string, storeId: string) {
+async function getCart(userId: string, cartId: string, storeId: string) {
 	try {
 		const resp = await fetch(
 			backendPath + '/customer/' + userId + '/cart/' + cartId + '/store/' + storeId + '/carts'

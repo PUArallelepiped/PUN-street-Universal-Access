@@ -4,14 +4,13 @@ import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ cookies }) => {
-	try{
+	try {
 		const jwttoken: string = cookies.get('jwttoken') || '';
 		const user_id = await getIdByToken(jwttoken);
 		return {
 			orderRespList: await getCart(user_id)
 		};
-	}
-	catch(e){
+	} catch (e) {
 		throw redirect(307, '/login');
 	}
 };
@@ -29,7 +28,7 @@ type orderRespTye = {
 async function getCart(storeId: string) {
 	const Resp = await fetch(backendPath + '/seller/store/' + storeId + '/orders');
 	if (Resp.status == 200) {
-		let orderRespList = await Resp.json();
+		const orderRespList = await Resp.json();
 
 		console.log(orderRespList);
 		return orderRespList as orderRespTye[];

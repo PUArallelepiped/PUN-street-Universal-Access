@@ -102,7 +102,9 @@
 		</div>
 	</div>
 	<div class="flex items-center justify-center">
-		<OkButton onclick={() => goto('/history/detail/' + userID + '/' + storeId + '/' + cartId)} text="Detail"
+		<OkButton
+			onclick={() => goto('/history/detail/' + userID + '/' + storeId + '/' + cartId)}
+			text="Detail"
 		></OkButton>
 	</div>
 </div>

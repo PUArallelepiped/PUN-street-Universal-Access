@@ -20,7 +20,7 @@
 	];
 
 	async function updateStatus() {
-		try{
+		try {
 			const userId = (await getId()).valueOf();
 			await fetch(
 				backendPath +
@@ -42,8 +42,7 @@
 			);
 			invalidateAll();
 			return null;
-		}
-		catch(e){
+		} catch (e) {
 			goto('/login');
 		}
 	}

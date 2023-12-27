@@ -78,7 +78,15 @@
 		<OrderStatusCard
 			on:click={() => postAndChangeStatus(index)}
 			on:gotoPage={(event) => {
-				goto($page.route.id + '/detail/' + event.detail.userId + '/' + event.detail.storeId + '/' + event.detail.cartId);
+				goto(
+					$page.route.id +
+						'/detail/' +
+						event.detail.userId +
+						'/' +
+						event.detail.storeId +
+						'/' +
+						event.detail.cartId
+				);
 			}}
 			storeId={data.orderRespList[index].store_id}
 			cartId={data.orderRespList[index].cart_id}

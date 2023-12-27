@@ -53,30 +53,39 @@ func (p *postgresqlStoreRepo) GetByID(ctx context.Context, id int64) (*swagger.S
 	return s, nil
 }
 
-func (p *postgresqlStoreRepo) GetAllStore(ctx context.Context) ([]swagger.StoreInfoWithCategory, error) {
+func (p *postgresqlStoreRepo) GetAllStoreByPrice(ctx context.Context, searchInfo *swagger.SearchInfo) (*[]swagger.OneStoreListInfo, error) {
 	sqlStatement := `
-	SELECT store_id, name, rate, rate_count, address, picture, description, shipping_fee, status, 
-	(SELECT 
-		jsonb_agg(jsonb_build_object('category_id', categories.category_id,'category_name', categories.name)) AS categories_item 
-		FROM categories NATURAL JOIN 
-		(SELECT labels.category_id FROM labels WHERE labels.store_id = stores.store_id) AS label
-	) AS category_array
-	FROM stores;
+	SELECT store_id, name, rate, picture, category_array FROM
+	(SELECT store_id, name, rate, picture,
+		(SELECT 
+			jsonb_agg(jsonb_build_object(
+			'category_id', categories.category_id,
+			'category_name', categories.name))
+			as categories_item FROM categories NATURAL JOIN 
+			(SELECT labels.category_id FROM labels 
+			WHERE labels.store_id = stores.store_id) AS labels
+		) AS category_array,
+		(SELECT COUNT(*) > 0 FROM products
+		WHERE products.store_id = stores.store_id
+		AND price <= $1 AND price >= $2) AS is_in_price_range
+	FROM stores) AS store_info
+	WHERE is_in_price_range = true
 	`
 
-	rows, err := p.db.Query(sqlStatement)
-
+	rows, err := p.db.Query(sqlStatement, searchInfo.PriceHigh, searchInfo.PriceLow)
 	if err != nil {
 		logrus.Error(err)
+		return nil, err
 	}
-	l := []swagger.StoreInfoWithCategory{}
+
+	stores := &[]swagger.OneStoreListInfo{}
+	var categoryString sql.NullString
 	for rows.Next() {
-		s := swagger.StoreInfoWithCategory{}
-		var categoryString sql.NullString
-		err := rows.Scan(&s.StoreId, &s.Name, &s.Rate, &s.RateCount, &s.Address, &s.Picture, &s.Description, &s.ShippingFee, &s.Status,
-			&categoryString)
+		store := &swagger.OneStoreListInfo{}
+		err := rows.Scan(&store.StoreId, &store.Name, &store.Rate, &store.Picture, &categoryString)
 		if err != nil {
 			logrus.Error(err)
+			return nil, err
 		}
 
 		if categoryString.Valid {
@@ -85,12 +94,116 @@ func (p *postgresqlStoreRepo) GetAllStore(ctx context.Context) ([]swagger.StoreI
 			if err != nil {
 				logrus.Error(err)
 			}
-			s.CategoryArray = categoryArray
+			store.CategoryArray = categoryArray
 		}
 
-		l = append(l, s)
+		*stores = append(*stores, *store)
 	}
-	return l, nil
+
+	return stores, nil
+}
+
+func (p *postgresqlStoreRepo) GetAllStoreByCategoryId(ctx context.Context, id int64) (*[]swagger.OneStoreListInfo, error) {
+	sqlStatement := `
+	SELECT store_id, name, rate, picture, category_array FROM
+	(SELECT store_id, name, rate, picture,
+		(SELECT 
+			jsonb_agg(jsonb_build_object(
+			'category_id', categories.category_id,
+			'category_name', categories.name))
+			as categories_item FROM categories NATURAL JOIN 
+			(SELECT labels.category_id FROM labels 
+			WHERE labels.store_id = stores.store_id) AS labels
+		) AS category_array,
+		(SELECT COUNT(*)>0 FROM labels
+			WHERE category_id = $1 AND labels.store_id = stores.store_id
+		) AS is_category_exits
+	FROM stores) AS store_info
+	WHERE is_category_exits = true
+	`
+	rows, err := p.db.Query(sqlStatement, id)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	stores := &[]swagger.OneStoreListInfo{}
+	var categoryString sql.NullString
+	for rows.Next() {
+		store := &swagger.OneStoreListInfo{}
+		err := rows.Scan(&store.StoreId, &store.Name, &store.Rate, &store.Picture, &categoryString)
+		if err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+
+		if categoryString.Valid {
+			var categoryArray []swagger.Category
+			err := json.Unmarshal([]byte(categoryString.String), &categoryArray)
+			if err != nil {
+				logrus.Error(err)
+			}
+			store.CategoryArray = categoryArray
+		}
+
+		*stores = append(*stores, *store)
+	}
+
+	return stores, nil
+}
+
+func (p *postgresqlStoreRepo) GetAllStoreByString(ctx context.Context, searchInfo *swagger.SearchInfo) (*[]swagger.OneStoreListInfo, error) {
+	sqlStatement := `
+	SELECT store_id, name, rate, picture, category_array FROM
+		(SELECT store_id, name, rate, picture,
+			(SELECT 
+				jsonb_agg(jsonb_build_object(
+				'category_id', categories.category_id,
+				'category_name', categories.name))
+				as categories_item FROM categories NATURAL JOIN 
+				(SELECT labels.category_id FROM labels 
+				WHERE labels.store_id = stores.store_id) AS labels
+			) AS category_array,
+			(SELECT COUNT(*) > 0
+				FROM products LEFT JOIN stores as s ON products.store_id = stores.store_id
+				WHERE products.store_id = stores.store_id AND(
+				products.name LIKE '%' || $1 || '%' OR
+				stores.name LIKE '%' || $1 || '%' OR
+				products.description LIKE '%' || $1 || '%'
+			)) AS is_string_exits
+		FROM stores) as store
+	WHERE is_string_exits = true
+	`
+
+	rows, err := p.db.Query(sqlStatement, searchInfo.SearchString)
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	stores := &[]swagger.OneStoreListInfo{}
+	var categoryString sql.NullString
+	for rows.Next() {
+		store := &swagger.OneStoreListInfo{}
+		err := rows.Scan(&store.StoreId, &store.Name, &store.Rate, &store.Picture, &categoryString)
+		if err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+
+		if categoryString.Valid {
+			var categoryArray []swagger.Category
+			err := json.Unmarshal([]byte(categoryString.String), &categoryArray)
+			if err != nil {
+				logrus.Error(err)
+			}
+			store.CategoryArray = categoryArray
+		}
+
+		*stores = append(*stores, *store)
+	}
+
+	return stores, nil
 }
 
 func (p *postgresqlStoreRepo) GetMonthTotalPriceById(ctx context.Context, id int64, year int64, month int64) (*swagger.InlineResponse200, error) {

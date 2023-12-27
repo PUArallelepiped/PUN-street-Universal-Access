@@ -9,6 +9,8 @@
 package swagger
 
 type OneStoreListInfo struct {
+	StoreId float64 `json:"store_id"`
+
 	Name string `json:"name"`
 
 	Rate float32 `json:"rate"`

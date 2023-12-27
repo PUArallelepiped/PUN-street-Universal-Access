@@ -2591,6 +2591,9 @@ components:
       - store_id
       type: object
       properties:
+        store_id:
+          type: number
+          example: 1
         name:
           type: string
           example: i'm pasta

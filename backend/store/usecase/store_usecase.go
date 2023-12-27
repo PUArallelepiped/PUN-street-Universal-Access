@@ -2,9 +2,11 @@ package usecase
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
+	"github.com/google/go-cmp/cmp"
 
 	"github.com/sirupsen/logrus"
 )
@@ -28,13 +30,57 @@ func (su *storeUsecase) GetByID(ctx context.Context, id int64) (*swagger.StoreIn
 	return s, nil
 }
 
-func (su *storeUsecase) GetAllStore(ctx context.Context) ([]swagger.StoreInfoWithCategory, error) {
-	s, err := su.storeRepo.GetAllStore(ctx)
+func (su *storeUsecase) GetAllStore(ctx context.Context, searchInfo *swagger.SearchInfo) (*[]swagger.OneStoreListInfo, error) {
+	//search by price
+	store, err := su.storeRepo.GetAllStoreByPrice(ctx, searchInfo)
 	if err != nil {
 		logrus.Error(err)
 		return nil, err
 	}
-	return s, nil
+
+	fmt.Println(store)
+
+	//if user search by category
+	if len(searchInfo.CategoryArray) != 0 {
+		for _, category := range searchInfo.CategoryArray {
+			storeByCategory, err := su.storeRepo.GetAllStoreByCategoryId(ctx, category.CategoryId)
+			if err != nil {
+				logrus.Error(err)
+				return nil, err
+			}
+			fmt.Println(storeByCategory)
+			*store = findIntersection(*store, *storeByCategory)
+		}
+
+	}
+	//if user search by string
+	if searchInfo.SearchString != "" {
+		storeByString, err := su.storeRepo.GetAllStoreByString(ctx, searchInfo)
+		if err != nil {
+			logrus.Error(err)
+			return nil, err
+		}
+		fmt.Println(storeByString)
+		*store = findIntersection(*store, *storeByString)
+	}
+
+	return store, nil
+}
+
+func findIntersection(arr1 []swagger.OneStoreListInfo, arr2 []swagger.OneStoreListInfo) []swagger.OneStoreListInfo {
+	stores := []swagger.OneStoreListInfo{}
+
+	for _, num1 := range arr1 {
+		// Check if num1 exists in arr2
+		for _, num2 := range arr2 {
+			if cmp.Equal(num1, num2) {
+				stores = append(stores, num1)
+				break
+			}
+		}
+	}
+
+	return stores
 }
 
 func (su *storeUsecase) GetStatisticsById(ctx context.Context, id int64, year int64) (*[]swagger.InlineResponse200, error) {

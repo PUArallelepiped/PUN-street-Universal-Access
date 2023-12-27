@@ -21,7 +21,7 @@
 	async function checkout() {
 		try {
 			const user_id = (await getId()).valueOf();
-			await fetch(backendPath + '/customer/'+user_id+'/checkout', {
+			await fetch(backendPath + '/customer/' + user_id + '/checkout', {
 				method: 'POST',
 				body: JSON.stringify({
 					seasoning_discount_id: 1,
@@ -31,8 +31,7 @@
 			});
 			invalidateAll();
 			return null;
-		}
-		catch (e) {
+		} catch (e) {
 			goto('/login');
 		}
 	}
@@ -73,15 +72,18 @@
 									discountQuantity={productInfo.event_discount_max_quantity}
 									canDelete={type == 'cart'}
 									on:clickDelete={async () => {
-										try{
+										try {
 											const user_id = (await getId()).valueOf();
 											await fetch(
-												backendPath + '/customer/'+user_id+'/delete/product/' + productInfo.product_id,
+												backendPath +
+													'/customer/' +
+													user_id +
+													'/delete/product/' +
+													productInfo.product_id,
 												{ method: 'DELETE' }
 											);
 											invalidateAll();
-										}
-										catch(e){
+										} catch (e) {
 											goto('/login');
 										}
 									}}

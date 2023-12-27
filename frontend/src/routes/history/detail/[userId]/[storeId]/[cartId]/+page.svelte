@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Order from '$lib/components/PUA/order.svelte';
-	import type { PageData } from './$types';
+		import type { PageData } from './$types';
 
 	export let data: PageData;
 </script>

@@ -4,13 +4,13 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }) => {
 	return {
-		cartInfos: await getCart(params.cartId, params.storeId)
+		cartInfos: await getCart(params.userId, params.cartId, params.storeId)
 	};
 };
-async function getCart(cartId: string, storeId: string) {
+async function getCart(userId:string, cartId: string, storeId: string) {
 	try {
 		const resp = await fetch(
-			backendPath + '/customer/1/cart/' + cartId + '/store/' + storeId + '/carts'
+			backendPath + '/customer/' + userId + '/cart/' + cartId + '/store/' + storeId + '/carts'
 		);
 		if (resp.ok) {
 			return (await resp.json()) as storeOrderInfo;

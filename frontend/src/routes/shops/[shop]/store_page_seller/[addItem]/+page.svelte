@@ -117,6 +117,15 @@
 	}
 
 	async function PostProductResp() {
+		if (imageFile) {
+			const formData = new FormData();
+			formData.append('file', imageFile[0]);
+			let url = await fetch(backendPath + `/upload`, {
+				method: 'POST',
+				body: formData
+			});
+			product_data.picture = await url.json();
+		}
 		let post_status = await fetch(backendPath + `/store/` + shop_id + `/add-product`, {
 			method: 'POST',
 			body: JSON.stringify(product_data)
@@ -124,6 +133,20 @@
 		goto('/shops/' + shop_id + '/store_page_seller');
 		console.log(post_status);
 	}
+
+	const onFileSelected = (e: Event) => {
+		// ts too hard i give up
+		if (e.target == null) return;
+		let image = (e.target as HTMLInputElement).files[0];
+		let reader = new FileReader();
+		reader.readAsDataURL(image);
+		reader.onload = (e) => {
+			avatar = e.target.result;
+		};
+	};
+
+	let imageFile: FileList;
+	let avatar: string;
 
 	onMount(async () => {
 		getProductResp();
@@ -149,31 +172,23 @@
 				<div class="flex h-full w-full gap-16">
 					<div class="relative h-full">
 						<div class=" flex h-60 w-60 rounded-lg bg-gray-300 shadow-inner">
-							{#if !product_data.picture}
-								<div class="flex h-full w-full items-center justify-center">
-									<label
-										for="fileInput"
-										class="h-11 cursor-pointer rounded-[20px] bg-gray-400 px-12 py-2 text-white shadow-md"
-										>Upload Image</label
-									>
-									<input
-										type="file"
-										id="fileInput"
-										accept="image/png, image/jpeg"
-										class="absolute right-0 top-0 cursor-pointer font-bold opacity-0"
-									/>
-								</div>
+							<div class="absolute z-10 h-[250px] w-[250px] bg-opacity-0">
+								<label for="fileInput" class=" block h-full w-full cursor-pointer bg-opacity-0"
+								></label>
+								<input
+									type="file"
+									id="fileInput"
+									accept="image/png, image/jpeg, image/jpg, image/gif"
+									bind:files={imageFile}
+									on:change={(e) => {
+										onFileSelected(e);
+									}}
+									class="absolute right-0 top-0 cursor-pointer font-bold opacity-0"
+								/>
+							</div>
+							{#if avatar}
+								<img src={avatar} alt="" class="flex h-full w-full rounded-lg object-cover" />
 							{:else}
-								<div class="absolute z-10 h-[250px] w-[250px] bg-opacity-0">
-									<label for="fileInput" class=" block h-full w-full cursor-pointer bg-opacity-0"
-									></label>
-									<input
-										type="file"
-										id="fileInput"
-										accept="image/png, image/jpeg"
-										class="absolute right-0 top-0 cursor-pointer font-bold opacity-0"
-									/>
-								</div>
 								<img
 									src={product_data.picture}
 									alt=""

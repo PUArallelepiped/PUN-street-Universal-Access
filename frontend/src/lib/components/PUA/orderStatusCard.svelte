@@ -11,6 +11,7 @@
 	};
 	export let storeId: number;
 	export let cartId: number;
+	export let userId: number;
 
 	let viewBoxValue = '';
 
@@ -34,7 +35,7 @@
 		}
 	}
 	function gotoPage() {
-		dispatch('gotoPage', { storeId: storeId, cartId: cartId });
+		dispatch('gotoPage', { userId: userId, storeId: storeId, cartId: cartId });
 	}
 </script>
 

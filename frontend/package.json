@@ -37,6 +37,7 @@
 		"bits-ui": "^0.6.3",
 		"chart.js": "^4.4.1",
 		"clsx": "^2.0.0",
+		"jwt-decode": "^4.0.0",
 		"lucide-svelte": "^0.288.0",
 		"svelte-routing": "^2.7.0",
 		"tailwind-merge": "^1.14.0",

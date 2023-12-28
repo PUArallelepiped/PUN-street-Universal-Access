@@ -1,12 +1,20 @@
 import { backendPath } from '$lib/components/PUA/env';
 import type { shopListResponse } from '$lib';
 import type { PageServerLoad } from './$types.js';
+import { redirect } from '@sveltejs/kit';
+import { getIdByToken } from '$lib/components/PUA/getId.js';
 
-export const load: PageServerLoad = async () => {
-	return {
-		shopListResponses: await shopListResponses(),
-		categories: await getCategory()
-	};
+export const load: PageServerLoad = async ({ cookies }) => {
+	try {
+		const jwttoken: string = cookies.get('jwttoken') || '';
+		await getIdByToken(jwttoken);
+		return {
+			shopListResponses: await shopListResponses(),
+			categories: await getCategory()
+		};
+	} catch (e) {
+		throw redirect(307, '/login');
+	}
 };
 type category = {
 	category_id: number;

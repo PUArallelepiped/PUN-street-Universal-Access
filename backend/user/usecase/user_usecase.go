@@ -30,6 +30,7 @@ func NewUserUsecase(userRepo domain.UserRepo) domain.UserUsecase {
 
 type Claims struct {
 	Email     string `json:"email"`
+	Id        int64  `json:"id"`
 	Authority string `json:"authority"`
 	jwt.StandardClaims
 }
@@ -42,7 +43,7 @@ func init() {
 	}
 }
 
-func CreateToken(email string, authority string) (string, error) {
+func CreateToken(email string, authority string, id int64) (string, error) {
 	expiresAt := time.Now().Add(24 * time.Hour).Unix()
 	issuedAt := time.Now().Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, Claims{
@@ -52,6 +53,7 @@ func CreateToken(email string, authority string) (string, error) {
 		},
 		Email:     email,
 		Authority: authority,
+		Id:        id,
 	})
 	jwtSecret := []byte(viper.GetString("JWT_SECRET"))
 	tokenString, err := token.SignedString(jwtSecret)
@@ -63,7 +65,7 @@ func CreateToken(email string, authority string) (string, error) {
 
 func (uu *UserUsecase) Login(ctx context.Context, email string, password string) (string, error) {
 	// check if user password is correct
-	authority, err := uu.userRepo.Login(ctx, email, password)
+	authority, id, err := uu.userRepo.Login(ctx, email, password)
 	if err != nil {
 		return "", err
 	}
@@ -75,7 +77,7 @@ func (uu *UserUsecase) Login(ctx context.Context, email string, password string)
 	if isBanned {
 		return "", errors.New("banned")
 	}
-	token, err := CreateToken(email, authority)
+	token, err := CreateToken(email, authority, id)
 	if err != nil {
 		return "", err
 	}
@@ -225,4 +227,14 @@ func (su *UserUsecase) UploadImage(ctx context.Context, file *multipart.FileHead
 	}
 
 	return responseInfo.Image.Url, err
+func (su *UserUsecase) GetUserIdByCookie(ctx context.Context, token string) (int64, error) {
+	jwtSecret := []byte(viper.GetString("JWT_SECRET"))
+	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
+		return jwtSecret, nil
+	})
+	if err != nil {
+		return 0, err
+	}
+	id := tokenClaims.Claims.(*Claims).Id
+	return id, nil
 }

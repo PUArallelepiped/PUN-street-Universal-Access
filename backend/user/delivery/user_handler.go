@@ -211,6 +211,8 @@ func (u *UserHandler) UploadImage(c *gin.Context) {
 	}
 
 	c.JSON(200, url)
+}
+
 func (u *UserHandler) GetUserIdByCookie(c *gin.Context) {
 	token, err := c.Cookie("jwttoken")
 	if err != nil {

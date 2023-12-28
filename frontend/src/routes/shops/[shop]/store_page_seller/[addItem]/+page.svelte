@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Input } from '$lib/components/ui/input';
 	import { onMount } from 'svelte';
 	import { backendPath } from '$lib/components/PUA/env';
 	import { Textarea, DisCountArea, OkButton, StatusButton, ErrorMsg } from '$lib/index';
@@ -132,22 +131,24 @@
 
 {#await getProductResp() then}
 	<form on:submit={PostProductResp}>
-		<div class="flex h-fit justify-start">
-			<div class="relative left-1/2 mt-6 h-full w-4/5 -translate-x-1/2 transform">
-				<div class="h-100 flex w-full flex-col justify-center text-PUA-dark-red">
-					<Input
+		<div class="flex h-fit justify-start pb-10">
+			<div class="relative left-1/2 mt-6 h-full w-4/5 -translate-x-1/2 transform space-y-8">
+				<div
+					class=" flex w-full flex-col justify-center rounded-lg bg-white px-4 pb-0 pt-4 text-PUA-dark-red shadow"
+				>
+					<input
 						required
 						bind:value={product_data.name}
 						type="text"
 						placeholder="Enter Product Name"
-						class="max-wxs peer w-full rounded-[0] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-4xl"
+						class="max-wxs peer w-full rounded-[0] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-4xl outline-none"
 					/>
 					<div class="invisible py-4 peer-invalid:visible">
-						<ErrorMsg width={'30'} height={'30'} text={`CANNOT BE EMPTY`}></ErrorMsg>
+						<ErrorMsg width={'28'} height={'28'} text={`CANNOT BE EMPTY`}></ErrorMsg>
 					</div>
 				</div>
 				<div class="flex h-full w-full gap-16">
-					<div class="relative h-full">
+					<div class="relative h-full rounded-lg bg-white p-4 shadow">
 						<div class=" flex h-60 w-60 rounded-lg bg-gray-300 shadow-inner">
 							{#if !product_data.picture}
 								<div class="flex h-full w-full items-center justify-center">
@@ -190,7 +191,7 @@
 								min="0"
 								max="999999999"
 								placeholder="Enter price"
-								class=" peer w-48 rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400 bg-transparent text-4xl placeholder:text-3xl"
+								class="peer w-48 rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400 bg-transparent text-4xl outline-none placeholder:text-3xl"
 							/>
 							<div class="invisible h-8 w-64 peer-invalid:visible">
 								{#if !product_data.price}
@@ -204,7 +205,7 @@
 							<Textarea width="64" bind:value={product_data.description} required={true} />
 						</div>
 					</div>
-					<div class="relative h-fit w-full">
+					<div class="relative h-fit w-full rounded-lg bg-white p-4 shadow">
 						<AddCategoryAndItemArea
 							bind:category_item={product_data.product_label_array}
 							bind:product_id={product_data.product_id}

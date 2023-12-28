@@ -64,7 +64,7 @@
 						type="button"
 						on:click={addDiscountButton(last_index)}
 						on:click={toggleModel}
-						class="h-5 w-5 rounded-[10px] bg-lime-800 text-center text-[13px] font-bold text-white"
+						class="flex h-5 w-5 items-center justify-center rounded-full bg-lime-800 text-center text-[13px] text-xs font-bold text-white duration-150 hover:scale-125 hover:border-2 hover:border-lime-800 hover:bg-transparent hover:text-lime-800"
 						>+</button
 					>
 				</div>

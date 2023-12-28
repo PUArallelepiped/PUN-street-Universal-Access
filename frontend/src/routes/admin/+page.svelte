@@ -4,6 +4,8 @@
 	import admin_icon from '$lib/assets/admin_icon.svg';
 	import AdminDataCard from '$lib/components/PUA/adminDataCard.svelte';
 	import { onMount } from 'svelte';
+	import { DenyButton } from '$lib';
+	import { goto } from '$app/navigation';
 
 	type userShort = {
 		user_id: number;
@@ -83,14 +85,35 @@
 
 <div class="flex justify-center font-bold">
 	<div class="flex w-3/5 flex-col">
-		<div class="flex bg-PUA-stone">
+		<div class="bg-PUA-stone flex">
 			<img src={admin_icon} alt="" class="my-6 ml-10 flex h-28 w-28" />
+
 			<div class="m-7 flex flex-col justify-between">
 				<div>
-					<div class="text-2xl text-PUA-gray">{userInfo.user_name}</div>
+					<div class="text-PUA-gray text-2xl">{userInfo.user_name}</div>
 					<div class="text-gray-300">{userInfo.user_email}</div>
 				</div>
-				<div class="text-xl text-PUA-gray">{userInfo.address}</div>
+				<div class="text-PUA-gray text-xl">{userInfo.address}</div>
+			</div>
+			<div class=" mr-7 flex w-full items-center justify-end gap-2">
+				<div class="bg-PUA-gray h-fit w-fit rounded-full">
+					<DenyButton
+						onclick={() => {
+							goto('/order/updateOrderStatus');
+
+							return null;
+						}}>process order</DenyButton
+					>
+				</div>
+
+				<div class="bg-PUA-gray h-fit w-fit rounded-full">
+					<DenyButton
+						onclick={() => {
+							goto('/shops/1/store_page_seller');
+							return null;
+						}}>go my store</DenyButton
+					>
+				</div>
 			</div>
 		</div>
 		<div class="flex h-10">
@@ -101,7 +124,7 @@
 				on:click={() => {
 					switchProfileTab(0);
 				}}
-				class="w-full border-PUA-dark-red text-xl text-PUA-dark-red">User List</button
+				class="border-PUA-dark-red text-PUA-dark-red w-full text-xl">User List</button
 			>
 			<button
 				class:bg-white={profileTab == 1}
@@ -110,7 +133,7 @@
 				on:click={() => {
 					switchProfileTab(1);
 				}}
-				class="w-full border-PUA-dark-red bg-gray-200 text-xl text-PUA-dark-red">Order List</button
+				class="border-PUA-dark-red text-PUA-dark-red w-full bg-gray-200 text-xl">Order List</button
 			>
 		</div>
 		<div class:hidden={profileTab != 0} class="bg-white">
@@ -126,7 +149,13 @@
 		</div>
 		<div class:hidden={profileTab != 1} class="hidden bg-white">
 			{#each orders as order}
-				<AdminDataCard firstCol={order.order_date} secondCol={order.user_name} type="order"
+				<AdminDataCard
+					firstCol={order.order_date}
+					secondCol={order.user_name}
+					type="order"
+					user_id={order.user_id}
+					store_id={order.store_id}
+					cart_id={order.cart_id}
 				></AdminDataCard>
 			{/each}
 		</div>

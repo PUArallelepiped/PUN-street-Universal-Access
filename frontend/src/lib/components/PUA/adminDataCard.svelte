@@ -4,6 +4,7 @@
 	import order_icon from '$lib/assets/order_icon.svg';
 	import customer_icon from '$lib/assets/customer_icon.svg';
 	import seller_icon from '$lib/assets/seller_icon.svg';
+	import { goto } from '$app/navigation';
 
 	export let firstCol: string;
 	export let secondCol: string;
@@ -11,6 +12,10 @@
 	export let userID: number = 0;
 
 	export let ban: boolean = true;
+
+	export let store_id = 1;
+	export let cart_id = 1;
+	export let user_id = 1;
 
 	async function banUserById(userID: number) {
 		const resp = await fetch(backendPath + '/admin/ban-user/' + userID.toString(), {
@@ -42,7 +47,7 @@
 	class:border-PUA-red={!ban}
 	class="mx-12 my-3 flex justify-between rounded-2xl border-2 hover:bg-slate-200"
 >
-	<button class="w-full">
+	<div class="w-full">
 		<div class="flex items-center justify-between">
 			<div class="flex items-center">
 				{#if type === 'customer'}
@@ -52,7 +57,7 @@
 				{:else}
 					<img src={order_icon} alt="" class="my-4 ml-6 flex h-16 w-16" />
 				{/if}
-				<div class="m-4 flex text-left text-PUA-dark-red">
+				<div class="text-PUA-dark-red m-4 flex text-left">
 					{firstCol}<br />
 					Order user : {secondCol}
 				</div>
@@ -60,22 +65,25 @@
 			<div class="m-6">
 				{#if type === 'order'}
 					<button
-						class="border-2 border-PUA-dark-red px-7 py-0 text-PUA-dark-red hover:bg-PUA-dark-red hover:text-white"
+						on:click={() => {
+							goto('history/detail/' + user_id + '/' + store_id + '/' + cart_id);
+						}}
+						class="border-PUA-dark-red text-PUA-dark-red hover:bg-PUA-dark-red border-2 px-7 py-0 hover:text-white"
 						>Detail</button
 					>
 				{:else if ban}
 					<button
 						on:click={changeButtonStatus}
-						class="w-24 border-2 border-PUA-dark-red px-7 py-0 text-PUA-dark-red">Ban</button
+						class="border-PUA-dark-red text-PUA-dark-red w-24 border-2 px-7 py-0">Ban</button
 					>
 				{:else}
 					<button
 						on:click={changeButtonStatus}
-						class="flex w-24 justify-center border-2 border-PUA-dark-red bg-PUA-dark-red px-7 py-0 text-white"
+						class="border-PUA-dark-red bg-PUA-dark-red flex w-24 justify-center border-2 px-7 py-0 text-white"
 						>UnBan</button
 					>
 				{/if}
 			</div>
 		</div>
-	</button>
+	</div>
 </div>

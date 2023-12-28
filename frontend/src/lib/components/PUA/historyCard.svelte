@@ -53,12 +53,12 @@
 		</div>
 	</div>
 	<div class="flex w-96 flex-col">
-		<div class=" text-PUA-dark-orange text-2xl font-bold leading-relaxed">{shopName}</div>
-		<div class=" text-PUA-dark-orange text-base font-bold leading-relaxed">{date}</div>
-		<div class=" text-PUA-dark-orange text-base font-bold leading-relaxed">NT${cost}</div>
+		<div class=" text-2xl font-bold leading-relaxed text-PUA-dark-orange">{shopName}</div>
+		<div class=" text-base font-bold leading-relaxed text-PUA-dark-orange">{date}</div>
+		<div class=" text-base font-bold leading-relaxed text-PUA-dark-orange">NT${cost}</div>
 
 		<div class="flex gap-2">
-			<div class="text-PUA-dark-red text-2xl font-semibold leading-normal">Rate store</div>
+			<div class="text-2xl font-semibold leading-normal text-PUA-dark-red">Rate store</div>
 			{#if rate >= 0}
 				{#each rateList as r, index}
 					<button

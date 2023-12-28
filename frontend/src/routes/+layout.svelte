@@ -1,8 +1,6 @@
 <script lang="ts">
 	import '../app.css';
 	import Navbar from '$lib/navbar.svelte';
-	import type { PageData } from './$types';
-	export let data: PageData;
 	const routes = [
 		{ path: '/profile', title: 'My profile' }, // TODO
 		{ path: '/shops', title: 'ShopList' },

@@ -57,7 +57,7 @@
 				{:else}
 					<img src={order_icon} alt="" class="my-4 ml-6 flex h-16 w-16" />
 				{/if}
-				<div class="text-PUA-dark-red m-4 flex text-left">
+				<div class="m-4 flex text-left text-PUA-dark-red">
 					{firstCol}<br />
 					Order user : {secondCol}
 				</div>
@@ -68,18 +68,18 @@
 						on:click={() => {
 							goto('history/detail/' + user_id + '/' + store_id + '/' + cart_id);
 						}}
-						class="border-PUA-dark-red text-PUA-dark-red hover:bg-PUA-dark-red border-2 px-7 py-0 hover:text-white"
+						class="border-2 border-PUA-dark-red px-7 py-0 text-PUA-dark-red hover:bg-PUA-dark-red hover:text-white"
 						>Detail</button
 					>
 				{:else if ban}
 					<button
 						on:click={changeButtonStatus}
-						class="border-PUA-dark-red text-PUA-dark-red w-24 border-2 px-7 py-0">Ban</button
+						class="w-24 border-2 border-PUA-dark-red px-7 py-0 text-PUA-dark-red">Ban</button
 					>
 				{:else}
 					<button
 						on:click={changeButtonStatus}
-						class="border-PUA-dark-red bg-PUA-dark-red flex w-24 justify-center border-2 px-7 py-0 text-white"
+						class="flex w-24 justify-center border-2 border-PUA-dark-red bg-PUA-dark-red px-7 py-0 text-white"
 						>UnBan</button
 					>
 				{/if}

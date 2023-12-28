@@ -9,5 +9,4 @@ declare global {
 	}
 }
 
-
 export {};

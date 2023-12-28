@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Casher from '$lib/assets/picturecasher_head.svg';
 	import wallet from '$lib/assets/profile_wallet.svg';
-	import OkButton from '$lib/components/PUA/OkButton.svelte';
 	import DenyButton from '$lib/components/PUA/denyButton.svelte';
 	import Chart, { type ChartItem } from 'chart.js/auto';
 	import { onMount } from 'svelte';
@@ -161,7 +160,7 @@
 
 <div class="flex justify-center">
 	<div class="flex min-h-screen w-full flex-col lg:w-3/5">
-		<div class=" bg-PUA-stone flex items-center gap-7 px-11 py-6">
+		<div class=" flex items-center gap-7 bg-PUA-stone px-11 py-6">
 			{#if userInfo.authority === 'store'}
 				<img src={Casher} alt="" class="" />
 			{:else if userInfo.authority === 'customer'}
@@ -169,14 +168,14 @@
 			{/if}
 			<div class=" flex grow flex-col gap-6">
 				<div class="flex flex-col">
-					<div class=" text-PUA-gray text-2xl font-bold">{userInfo.user_name}</div>
-					<div class=" text-PUA-dark-gray text-base font-bold">{userInfo.user_email}</div>
+					<div class=" text-2xl font-bold text-PUA-gray">{userInfo.user_name}</div>
+					<div class=" text-base font-bold text-PUA-dark-gray">{userInfo.user_email}</div>
 				</div>
-				<div class=" text-PUA-gray text-xl font-bold">{userInfo.address}</div>
+				<div class=" text-xl font-bold text-PUA-gray">{userInfo.address}</div>
 			</div>
 			<div class="flex gap-2">
 				{#if userInfo.authority === 'store'}
-					<div class="bg-PUA-gray h-fit w-fit rounded-full">
+					<div class="h-fit w-fit rounded-full bg-PUA-gray">
 						<DenyButton
 							onclick={() => {
 								goto('/order/updateOrderStatus');
@@ -186,7 +185,7 @@
 						>
 					</div>
 
-					<div class="bg-PUA-gray h-fit w-fit rounded-full">
+					<div class="h-fit w-fit rounded-full bg-PUA-gray">
 						<DenyButton
 							onclick={() => {
 								goto('/shops/' + userInfo.user_id.toString() + '/store_page_seller');
@@ -204,7 +203,7 @@
 					<button
 						class:bg-white={currentTab == 0}
 						class:bg-gray-300={currentTab != 0}
-						class=" text-PUA-dark-red w-full bg-white py-3 text-center text-2xl font-bold"
+						class=" w-full bg-white py-3 text-center text-2xl font-bold text-PUA-dark-red"
 						on:click={switchProfile}>Profile</button
 					>
 					<div
@@ -217,7 +216,7 @@
 					<button
 						class:bg-white={currentTab == 1}
 						class:bg-gray-300={currentTab != 1}
-						class="text-PUA-dark-red w-full bg-gray-300 py-3 text-center text-2xl font-bold"
+						class="w-full bg-gray-300 py-3 text-center text-2xl font-bold text-PUA-dark-red"
 						on:click={switchAccount}>Account</button
 					>
 					<div
@@ -231,7 +230,7 @@
 						<button
 							class:bg-white={currentTab == 2}
 							class:bg-gray-300={currentTab != 2}
-							class="text-PUA-dark-red w-full bg-gray-300 py-3 text-center text-2xl font-bold"
+							class="w-full bg-gray-300 py-3 text-center text-2xl font-bold text-PUA-dark-red"
 							on:click={() => {
 								currentTab = 2;
 							}}>Statistic</button
@@ -250,29 +249,29 @@
 			<div class:hidden={currentTab != 0} class="flex w-full flex-col gap-7 px-24 py-10">
 				<div class="">
 					<div class="inline-flex items-center justify-center rounded-full bg-gray-300 px-5">
-						<div class="text-PUA-dark-orange text-base font-bold leading-tight">User Name</div>
+						<div class="text-base font-bold leading-tight text-PUA-dark-orange">User Name</div>
 					</div>
-					<div class="text-PUA-dark-orange flex font-['Inter'] text-2xl font-bold">
+					<div class="flex font-['Inter'] text-2xl font-bold text-PUA-dark-orange">
 						{userInfo.user_name}
 					</div>
 				</div>
 				<div class="">
 					<div class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5">
-						<div class=" text-PUA-dark-orange font-['Inter'] text-base font-bold leading-tight">
+						<div class=" font-['Inter'] text-base font-bold leading-tight text-PUA-dark-orange">
 							Phone
 						</div>
 					</div>
-					<div class="text-PUA-dark-orange flex bg-inherit font-['Inter'] text-2xl font-bold">
+					<div class="flex bg-inherit font-['Inter'] text-2xl font-bold text-PUA-dark-orange">
 						userInfo.phone
 					</div>
 				</div>
 				<div class="">
 					<div class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5">
-						<div class=" text-PUA-dark-orange font-['Inter'] text-base font-bold leading-tight">
+						<div class=" font-['Inter'] text-base font-bold leading-tight text-PUA-dark-orange">
 							Birthday
 						</div>
 					</div>
-					<div class="text-PUA-dark-orange flex bg-inherit font-['Inter'] text-2xl font-bold">
+					<div class="flex bg-inherit font-['Inter'] text-2xl font-bold text-PUA-dark-orange">
 						{userInfo.birthday}
 					</div>
 				</div>
@@ -281,19 +280,19 @@
 			<div class:hidden={currentTab != 1} class="flex w-full flex-col gap-7 px-24 py-10">
 				<div class="py-5">
 					<div class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5">
-						<div class="  text-PUA-dark-orange text-base font-bold leading-tight">Email</div>
+						<div class="  text-base font-bold leading-tight text-PUA-dark-orange">Email</div>
 					</div>
-					<div class="text-PUA-dark-orange flex bg-inherit font-['Inter'] text-2xl font-bold">
+					<div class="flex bg-inherit font-['Inter'] text-2xl font-bold text-PUA-dark-orange">
 						{userInfo.user_email}
 					</div>
 				</div>
 				<div class="py-5">
 					<div class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5">
-						<div class=" text-PUA-dark-orange font-['Inter'] text-base font-bold leading-tight">
+						<div class=" font-['Inter'] text-base font-bold leading-tight text-PUA-dark-orange">
 							Password
 						</div>
 					</div>
-					<div class="text-PUA-dark-orange flex bg-inherit font-['Inter'] text-2xl font-bold">
+					<div class="flex bg-inherit font-['Inter'] text-2xl font-bold text-PUA-dark-orange">
 						{userInfo.password}
 					</div>
 				</div>
@@ -323,7 +322,7 @@
 								class:bg-gray-100={!(choosingYear === key)}
 								class:text-white={choosingYear === key}
 								class:text-PUA-dark-red={!(choosingYear === key)}
-								class="leading-relaxe border-PUA-dark-red h-10 rounded-full border-2 px-6 text-2xl font-bold"
+								class="leading-relaxe h-10 rounded-full border-2 border-PUA-dark-red px-6 text-2xl font-bold"
 							>
 								{key}</label
 							>
@@ -346,7 +345,7 @@
 								class:bg-gray-100={!(choosingMonth === key)}
 								class:text-white={choosingMonth === key}
 								class:text-PUA-dark-red={!(choosingMonth === key)}
-								class="leading-relaxe border-PUA-dark-red h-10 rounded-full border-2 px-3 text-2xl font-bold"
+								class="leading-relaxe h-10 rounded-full border-2 border-PUA-dark-red px-3 text-2xl font-bold"
 							>
 								{monthText[key - 1]}</label
 							>

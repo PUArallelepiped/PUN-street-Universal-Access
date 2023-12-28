@@ -1,30 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-
 	export let routes: { path: string; title: string }[];
-	// 监听 URL 变化
-	// $: currentUrl = window.location.href;
-	// console.log(currentUrl);
-	let currentUrl = ' ';
-	onMount(() => {
-		if (typeof window !== 'undefined') {
-			// 只有在浏览器环境下才执行
-			currentUrl = window.location.href;
-
-			const handleUrlChange = () => {
-				currentUrl = window.location.href;
-			};
-
-			// 监听 popstate 事件以捕获 URL 变化
-			window.addEventListener('popstate', handleUrlChange);
-
-			// 在组件销毁时移除事件监听器，以防止内存泄漏
-			return () => {
-				window.removeEventListener('popstate', handleUrlChange);
-			};
-		}
-	});
-	console.log('url', currentUrl);
 </script>
 
 <div class="flex h-20 place-content-between bg-white shadow-md">

@@ -68,15 +68,14 @@ const shopListResponses = async () => {
 	];
 
 	try {
-		const resp = await fetch(backendPath + '/stores',
-		{
+		const resp = await fetch(backendPath + '/stores', {
 			method: 'POST',
 			body: JSON.stringify({
-					"category_array" : [],
-					"price_low": 0,
-					"price_high": 1000,
-					"search_string": ""
-				})
+				category_array: [],
+				price_low: 0,
+				price_high: 1000,
+				search_string: ''
+			})
 		});
 		if (resp.status === 200) {
 			result = (await resp.json()) as shopListResponse[];

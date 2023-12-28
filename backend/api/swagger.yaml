@@ -33,18 +33,24 @@ paths:
         "500":
           description: Unexpected error
   /stores:
-    get:
+    post:
       tags:
       - customer
       - store
       summary: get all store
+      requestBody:
+        description: search info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/searchInfo'
       responses:
         "200":
           description: return store array
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StoreInfoWithCategoryArray'
+                $ref: '#/components/schemas/OneStoreListInfoArray'
         "500":
           description: Unexpected error
   /store/{storeID}/get-statistics/{year}:
@@ -2615,3 +2621,76 @@ components:
           example: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFAZ21haWwuY29tIiwiaWQiOjIsImF1dGhvcml0eSI6InN0b3JlIiwiZXhwIjoxNzAzMjA2ODcwLCJpYXQiOjE3MDMxMjA0NzB9.G64JkqpwZmf-qPYa9WozPeJmzu3aCsn7REh-E2SDgCAtPGZC_7u372y1NyXANSGoIA822GbFwUQNLjaP2ofMqg
       example:
         token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFAZ21haWwuY29tIiwiaWQiOjIsImF1dGhvcml0eSI6InN0b3JlIiwiZXhwIjoxNzAzMjA2ODcwLCJpYXQiOjE3MDMxMjA0NzB9.G64JkqpwZmf-qPYa9WozPeJmzu3aCsn7REh-E2SDgCAtPGZC_7u372y1NyXANSGoIA822GbFwUQNLjaP2ofMqg
+    OneStoreListInfo:
+      required:
+      - category_array
+      - name
+      - picture
+      - rate
+      - store_id
+      type: object
+      properties:
+        store_id:
+          type: number
+          example: 1
+        name:
+          type: string
+          example: i'm pasta
+        rate:
+          type: number
+          format: float
+          example: 5
+        picture:
+          type: string
+          example: https://i.imgur.com/1.jpg
+        category_array:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+      example:
+        store_id: 1
+        rate: 5
+        category_array:
+        - category_name: drink
+          category_id: 1
+        - category_name: drink
+          category_id: 1
+        name: i'm pasta
+        picture: https://i.imgur.com/1.jpg
+    OneStoreListInfoArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/OneStoreListInfo'
+      x-schema-name: OneStoreListInfoArray
+    searchInfo:
+      required:
+      - category_array
+      - price_high
+      - price_low
+      - search_string
+      type: object
+      properties:
+        category_array:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        search_string:
+          type: string
+          example: pasta
+        price_high:
+          type: number
+          format: float
+          example: 1000
+        price_low:
+          type: number
+          format: float
+          example: 0
+      example:
+        category_array:
+        - category_name: Spices
+          category_id: 1
+        - category_name: Sustainable
+          category_id: 2
+        price_high: 1000
+        price_low: 0
+        search_string: pasta

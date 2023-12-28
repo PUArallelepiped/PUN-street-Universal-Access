@@ -1263,6 +1263,30 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
+  /upload:
+    post:
+      tags:
+      - upload
+      summary: upload image
+      requestBody:
+        description: image
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/upload_body'
+      responses:
+        "200":
+          description: url
+          content:
+            string:
+              schema:
+                type: string
+                x-content-type: string
+              example: https://i.imgur.com/3i3tyXJ.gif
+        "400":
+          description: bad request
+        "500":
+          description: Unexpected error
 components:
   schemas:
     StoreInfo:
@@ -2602,6 +2626,12 @@ components:
         user_email:
           type: string
           example: a@gmail.com
+    upload_body:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
     IdInfo:
       required:
       - user_id

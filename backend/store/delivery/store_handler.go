@@ -21,7 +21,7 @@ func NewStoreHandler(e *gin.Engine, storeUsecase domain.StoreUsecase) {
 	v1 := e.Group("api/v1")
 	{
 		v1.GET("/store/:storeID", handler.GetStoreById)
-		v1.GET("/stores", handler.GetStores)
+		v1.POST("/stores", handler.GetStores)
 		v1.GET("/store/:storeID/get-statistics/:year", handler.GetStatistics)
 		v1.GET("/store/:storeID/get-selling/:year/:month", handler.GetSelling)
 		v1.POST("/store/:storeID/rate", handler.PostRate)
@@ -47,7 +47,14 @@ func (s *StoreHandler) GetStoreById(c *gin.Context) {
 }
 
 func (s *StoreHandler) GetStores(c *gin.Context) {
-	stores, err := s.StoreUsecase.GetAllStore(c)
+	var searchInfo swagger.SearchInfo
+	if err := c.BindJSON(&searchInfo); err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
+	stores, err := s.StoreUsecase.GetAllStore(c, &searchInfo)
 	if err != nil {
 		logrus.Error(err)
 		c.Status(500)

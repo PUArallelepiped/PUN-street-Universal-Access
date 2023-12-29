@@ -262,7 +262,7 @@
 </script>
 
 {#await getData() then}
-	<div class="h-48 w-full overflow-hidden">
+	<div class="h-48 w-full overflow-hidden shadow">
 		<img src={shopDataList.picture} alt="" class="w-full object-cover" />
 	</div>
 

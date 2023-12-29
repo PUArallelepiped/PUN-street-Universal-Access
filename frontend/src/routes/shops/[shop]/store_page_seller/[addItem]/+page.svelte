@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Input } from '$lib/components/ui/input';
 	import { onMount } from 'svelte';
 	import { backendPath } from '$lib/components/PUA/env';
 	import { Textarea, DisCountArea, OkButton, StatusButton, ErrorMsg } from '$lib/index';
@@ -117,6 +116,15 @@
 	}
 
 	async function PostProductResp() {
+		if (imageFile) {
+			const formData = new FormData();
+			formData.append('file', imageFile[0]);
+			let url = await fetch(backendPath + `/upload`, {
+				method: 'POST',
+				body: formData
+			});
+			product_data.picture = await url.json();
+		}
 		let post_status = await fetch(backendPath + `/store/` + shop_id + `/add-product`, {
 			method: 'POST',
 			body: JSON.stringify(product_data)
@@ -125,6 +133,20 @@
 		console.log(post_status);
 	}
 
+	const onFileSelected = (e: Event) => {
+		// ts too hard i give up
+		if (e.target == null) return;
+		let image = (e.target as HTMLInputElement).files[0];
+		let reader = new FileReader();
+		reader.readAsDataURL(image);
+		reader.onload = (e) => {
+			avatar = e.target.result;
+		};
+	};
+
+	let imageFile: FileList;
+	let avatar: string;
+
 	onMount(async () => {
 		getProductResp();
 	});
@@ -132,48 +154,42 @@
 
 {#await getProductResp() then}
 	<form on:submit={PostProductResp}>
-		<div class="flex h-fit justify-start">
-			<div class="relative left-1/2 mt-6 h-full w-4/5 -translate-x-1/2 transform">
-				<div class="h-100 flex w-full flex-col justify-center text-PUA-dark-red">
-					<Input
+		<div class="flex h-fit justify-start pb-10">
+			<div class="relative left-1/2 mt-6 h-full w-4/5 -translate-x-1/2 transform space-y-8">
+				<div
+					class=" flex w-full flex-col justify-center rounded-lg bg-white px-4 pb-0 pt-4 text-PUA-dark-red shadow"
+				>
+					<input
 						required
 						bind:value={product_data.name}
 						type="text"
 						placeholder="Enter Product Name"
-						class="max-wxs peer w-full rounded-[0] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-4xl"
+						class="max-wxs peer w-full rounded-[0] border-b border-l-0 border-r-0 border-t-0 border-gray-400 text-4xl outline-none"
 					/>
 					<div class="invisible py-4 peer-invalid:visible">
-						<ErrorMsg width={'30'} height={'30'} text={`CANNOT BE EMPTY`}></ErrorMsg>
+						<ErrorMsg width={'28'} height={'28'} text={`CANNOT BE EMPTY`}></ErrorMsg>
 					</div>
 				</div>
 				<div class="flex h-full w-full gap-16">
-					<div class="relative h-full">
+					<div class="relative h-full rounded-lg bg-white p-4 shadow">
 						<div class=" flex h-60 w-60 rounded-lg bg-gray-300 shadow-inner">
-							{#if !product_data.picture}
-								<div class="flex h-full w-full items-center justify-center">
-									<label
-										for="fileInput"
-										class="h-11 cursor-pointer rounded-[20px] bg-gray-400 px-12 py-2 text-white shadow-md"
-										>Upload Image</label
-									>
-									<input
-										type="file"
-										id="fileInput"
-										accept="image/png, image/jpeg"
-										class="absolute right-0 top-0 cursor-pointer font-bold opacity-0"
-									/>
-								</div>
+							<div class="absolute z-10 h-[250px] w-[250px] bg-opacity-0">
+								<label for="fileInput" class=" block h-full w-full cursor-pointer bg-opacity-0"
+								></label>
+								<input
+									type="file"
+									id="fileInput"
+									accept="image/png, image/jpeg, image/jpg, image/gif"
+									bind:files={imageFile}
+									on:change={(e) => {
+										onFileSelected(e);
+									}}
+									class="absolute right-0 top-0 cursor-pointer font-bold opacity-0"
+								/>
+							</div>
+							{#if avatar}
+								<img src={avatar} alt="" class="flex h-full w-full rounded-lg object-cover" />
 							{:else}
-								<div class="absolute z-10 h-[250px] w-[250px] bg-opacity-0">
-									<label for="fileInput" class=" block h-full w-full cursor-pointer bg-opacity-0"
-									></label>
-									<input
-										type="file"
-										id="fileInput"
-										accept="image/png, image/jpeg"
-										class="absolute right-0 top-0 cursor-pointer font-bold opacity-0"
-									/>
-								</div>
 								<img
 									src={product_data.picture}
 									alt=""
@@ -190,7 +206,7 @@
 								min="0"
 								max="999999999"
 								placeholder="Enter price"
-								class=" peer w-48 rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400 bg-transparent text-4xl placeholder:text-3xl"
+								class="peer w-48 rounded-[0px] border-b border-l-0 border-r-0 border-t-0 border-gray-400 bg-transparent text-4xl outline-none placeholder:text-3xl"
 							/>
 							<div class="invisible h-8 w-64 peer-invalid:visible">
 								{#if !product_data.price}
@@ -204,7 +220,7 @@
 							<Textarea width="64" bind:value={product_data.description} required={true} />
 						</div>
 					</div>
-					<div class="relative h-fit w-full">
+					<div class="relative h-fit w-full rounded-lg bg-white p-4 shadow">
 						<AddCategoryAndItemArea
 							bind:category_item={product_data.product_label_array}
 							bind:product_id={product_data.product_id}

@@ -173,7 +173,7 @@
 				</div>
 				<div class=" text-xl font-bold text-PUA-gray">{userInfo.address}</div>
 			</div>
-			<div class="flex gap-2">
+			<div class="flex h-full w-full flex-wrap items-center justify-end gap-2">
 				{#if userInfo.authority === 'store'}
 					<div class="h-fit w-fit rounded-full bg-PUA-gray">
 						<DenyButton

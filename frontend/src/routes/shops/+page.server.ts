@@ -93,12 +93,17 @@ export const actions = {
 			await getIdByToken(jwttoken);
 			const data = await request.formData();
 			console.log(data);
+			const start = data.get('start') as string;
+			const end = data.get('end') as string;
+			const startInt = Math.floor(parseFloat(start) * 1000);
+			const endInt = Math.floor(parseFloat(end) * 1000);
+			console.log(startInt, endInt);
 			const resp = await fetch(backendPath + '/stores', {
 				method: 'POST',
 				body: JSON.stringify({
 					category_array: [],
-					price_low: 0,
-					price_high: 1000,
+					price_low: startInt,
+					price_high: endInt,
 					search_string: data.get('search')
 				})
 			});

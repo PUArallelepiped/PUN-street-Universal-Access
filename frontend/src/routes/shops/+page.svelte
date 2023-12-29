@@ -16,7 +16,7 @@
 	export let data: PageData;
 	let timer: number;
 	let shopInfos = data.shopListResponses;
-	async function handleSearchForm(event: Event) {
+	async function handleSearchForm() {
 		if (timer) clearTimeout(timer);
 		timer = setTimeout(async () => {
 			const form = document.getElementById('searchForm') as HTMLFormElement;

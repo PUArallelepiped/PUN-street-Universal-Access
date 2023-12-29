@@ -98,10 +98,8 @@ export const actions = {
 			const endInt = Math.floor(parseFloat(end) * 1000);
 			const checkedTagString = data.get('checkedTag') as string;
 			const checkedTagStringList = checkedTagString.split(',');
-			const checkedTagList: {
-				category_name: string;
-				category_id: number;
-			}[] = [];
+			const checkedTagList: { category_name: string; category_id: number }[] = [];
+
 			checkedTagStringList.forEach((element) => {
 				const context = element.split(':');
 				if (context[0] === '') {
@@ -113,7 +111,6 @@ export const actions = {
 				});
 			});
 
-			console.log(checkedTagList);
 			const resp = await fetch(backendPath + '/stores', {
 				method: 'POST',
 				body: JSON.stringify({

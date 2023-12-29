@@ -85,18 +85,18 @@
 
 <div class="flex justify-center font-bold">
 	<div class="flex w-3/5 flex-col">
-		<div class="bg-PUA-stone flex">
+		<div class="flex bg-PUA-stone">
 			<img src={admin_icon} alt="" class="my-6 ml-10 flex h-28 w-28" />
 
 			<div class="m-7 flex flex-col justify-between">
 				<div>
-					<div class="text-PUA-gray text-2xl">{userInfo.user_name}</div>
+					<div class="text-2xl text-PUA-gray">{userInfo.user_name}</div>
 					<div class="text-gray-300">{userInfo.user_email}</div>
 				</div>
-				<div class="text-PUA-gray text-xl">{userInfo.address}</div>
+				<div class="text-xl text-PUA-gray">{userInfo.address}</div>
 			</div>
 			<div class=" mr-7 flex w-full flex-wrap items-center justify-end gap-2">
-				<div class="bg-PUA-gray h-fit w-fit rounded-full">
+				<div class="h-fit w-fit rounded-full bg-PUA-gray">
 					<DenyButton
 						onclick={() => {
 							goto('/order/updateOrderStatus');
@@ -106,7 +106,7 @@
 					>
 				</div>
 
-				<div class="bg-PUA-gray h-fit w-fit rounded-full">
+				<div class="h-fit w-fit rounded-full bg-PUA-gray">
 					<DenyButton
 						onclick={() => {
 							goto('/shops/1/store_page_seller');
@@ -124,7 +124,7 @@
 				on:click={() => {
 					switchProfileTab(0);
 				}}
-				class="border-PUA-dark-red text-PUA-dark-red w-full text-xl">User List</button
+				class="w-full border-PUA-dark-red text-xl text-PUA-dark-red">User List</button
 			>
 			<button
 				class:bg-white={profileTab == 1}
@@ -133,7 +133,7 @@
 				on:click={() => {
 					switchProfileTab(1);
 				}}
-				class="border-PUA-dark-red text-PUA-dark-red w-full bg-gray-200 text-xl">Order List</button
+				class="w-full border-PUA-dark-red bg-gray-200 text-xl text-PUA-dark-red">Order List</button
 			>
 		</div>
 		<div class:hidden={profileTab != 0} class="bg-white">

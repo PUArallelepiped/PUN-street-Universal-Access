@@ -77,21 +77,6 @@ const shopListResponses = async () => {
 				search_string: ''
 			})
 		});
-		// {
-		//   "category_array": [
-		//     {
-		//       "category_name": "Spices",
-		//       "category_id": 1
-		//     },
-		//     {
-		//       "category_name": "Sustainable",
-		//       "category_id": 2
-		//     }
-		//   ],
-		//   "price_high": 1000,
-		//   "price_low": 0,
-		//   "search_string": "pasta"
-		// }
 		if (resp.status === 200) {
 			result = (await resp.json()) as shopListResponse[];
 		}
@@ -107,6 +92,7 @@ export const actions = {
 			const jwttoken: string = cookies.get('jwttoken') || '';
 			await getIdByToken(jwttoken);
 			const data = await request.formData();
+			console.log(data);
 			const resp = await fetch(backendPath + '/stores', {
 				method: 'POST',
 				body: JSON.stringify({
@@ -116,6 +102,21 @@ export const actions = {
 					search_string: data.get('search')
 				})
 			});
+			// {
+			//   "category_array": [
+			//     {
+			//       "category_name": "Spices",
+			//       "category_id": 1
+			//     },
+			//     {
+			//       "category_name": "Sustainable",
+			//       "category_id": 2
+			//     }
+			//   ],
+			//   "price_high": 1000,
+			//   "price_low": 0,
+			//   "search_string": "pasta"
+			// }
 			return await resp.json();
 		} catch (e) {
 			throw redirect(307, '/login');

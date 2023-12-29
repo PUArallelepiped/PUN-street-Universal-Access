@@ -5,13 +5,15 @@
 
 	import StoreCard from '$lib/components/PUA/storeCard.svelte';
 	import SortTag from '$lib/components/PUA/sortTag.svelte';
-	import { CheckBox, type shopListResponse } from '$lib';
+	import type { shopListResponse } from '$lib';
 	import type { PageData } from './$types';
 	import DualRangeSlider from '$lib/components/PUA/dualRangeSlider.svelte';
 	import { deserialize } from '$app/forms';
 	import type { ActionResult } from '@sveltejs/kit';
 	let start = 0;
 	let end = 1;
+	let checkedTag: string[] = [];
+	let searchString: string = '';
 
 	export let data: PageData;
 	let timer: number;
@@ -20,7 +22,11 @@
 		if (timer) clearTimeout(timer);
 		timer = setTimeout(async () => {
 			const form = document.getElementById('searchForm') as HTMLFormElement;
-			const formData = new FormData(form);
+			let formData = new FormData(form);
+			formData.append('start', start.toString());
+			formData.append('end', end.toString());
+			formData.append('checkedTag', checkedTag.toString());
+			formData.append('searchString', searchString.toString());
 			const resp = await fetch('?/search', {
 				method: 'POST',
 				body: formData
@@ -43,6 +49,7 @@
 				type="text"
 				placeholder="QQㄋㄟㄋㄟ好喝到咩噗茶"
 				class="m-5  max-w-xs bg-white"
+				bind:value={searchString}
 			/>
 			<div class="flex w-96 flex-col justify-center gap-10 rounded-lg bg-white p-10">
 				<div class="flex flex-col items-center gap-5">
@@ -71,12 +78,24 @@
 					<SortTag value="Tag"></SortTag>
 					<div class="flex w-full max-w-xs flex-col justify-start gap-1 px-4">
 						{#each data.categories as { category_id, category_name }}
-							<CheckBox
-								id={category_id.toString()}
-								text={category_name}
-								value={category_name}
-								on:click={handleSearchForm}
-							></CheckBox>
+							<div class="flex gap-3">
+								<input
+									bind:group={checkedTag}
+									on:click={handleSearchForm}
+									type="checkbox"
+									id={category_id.toString()}
+									name=""
+									value={category_name}
+									class="h-7 w-7 accent-PUA-dark-orange"
+								/>
+								<label for={category_id.toString()}>
+									<div
+										class="truncate text-center text-xl font-bold leading-relaxed text-PUA-dark-red"
+									>
+										{category_name}
+									</div>
+								</label>
+							</div>
 						{/each}
 					</div>
 				</div>

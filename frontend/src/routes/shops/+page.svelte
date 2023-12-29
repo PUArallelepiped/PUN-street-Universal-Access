@@ -32,7 +32,6 @@
 			const actionResult: ActionResult = deserialize(await resp.text());
 			if (actionResult.type === 'success') {
 				shopInfos = actionResult.data as shopListResponse[];
-				console.log(actionResult);
 			}
 		}, 500);
 	}
@@ -43,7 +42,7 @@
 	<form action="?/search" id="searchForm" method="post" on:submit|preventDefault={handleSearchForm}>
 		<div class="float-left m-5 flex flex-col items-center">
 			<Input
-				on:change={handleSearchForm}
+				on:input={handleSearchForm}
 				type="text"
 				placeholder="QQㄋㄟㄋㄟ好喝到咩噗茶"
 				class="m-5  max-w-xs bg-white"

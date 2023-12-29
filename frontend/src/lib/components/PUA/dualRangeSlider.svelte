@@ -52,6 +52,7 @@
 			window.removeEventListener('mouseup', handleMouseup);
 			window.removeEventListener('touchmove', handleMousemove);
 			window.removeEventListener('touchend', handleMouseup);
+			dispatch('changed', { });
 		}
 		node.addEventListener('mousedown', handleMousedown);
 		node.addEventListener('touchstart', handleMousedown);
@@ -87,7 +88,6 @@
 		const pEnd = pxEnd / parentWidth;
 		start = pStart;
 		end = pEnd;
-		dispatch('changed', { });
 	}
 </script>
 

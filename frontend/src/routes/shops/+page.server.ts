@@ -77,11 +77,48 @@ const shopListResponses = async () => {
 				search_string: ''
 			})
 		});
+		// {
+		//   "category_array": [
+		//     {
+		//       "category_name": "Spices",
+		//       "category_id": 1
+		//     },
+		//     {
+		//       "category_name": "Sustainable",
+		//       "category_id": 2
+		//     }
+		//   ],
+		//   "price_high": 1000,
+		//   "price_low": 0,
+		//   "search_string": "pasta"
+		// }
 		if (resp.status === 200) {
 			result = (await resp.json()) as shopListResponse[];
 		}
 		return result;
 	} catch {
 		return result;
+	}
+};
+
+export const actions = {
+	search: async ({ request, cookies }) => {
+		try {
+			const jwttoken: string = cookies.get('jwttoken') || '';
+			await getIdByToken(jwttoken);
+			const data = await request.formData();
+			const resp = await fetch(backendPath + '/stores', {
+				method: 'POST',
+				body: JSON.stringify({
+					category_array: [],
+					price_low: 0,
+					price_high: 1000,
+					search_string: data.get('search')
+				})
+			});
+			return await resp.json();
+		} catch (e) {
+			throw redirect(307, '/login');
+		}
 	}
 };

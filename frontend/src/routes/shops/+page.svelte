@@ -1,6 +1,4 @@
 <script lang="ts">
-	// import { page } from '$app/stores';
-
 	import { Input } from '$lib/components/ui/input';
 
 	import StoreCard from '$lib/components/PUA/storeCard.svelte';
@@ -85,7 +83,7 @@
 									type="checkbox"
 									id={category_id.toString()}
 									name=""
-									value={category_name}
+									value={category_name + ':' + category_id.toString()}
 									class="h-7 w-7 accent-PUA-dark-orange"
 								/>
 								<label for={category_id.toString()}>

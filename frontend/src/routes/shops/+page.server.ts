@@ -97,14 +97,14 @@ export const actions = {
 			const end = data.get('end') as string;
 			const startInt = Math.floor(parseFloat(start) * 1000);
 			const endInt = Math.floor(parseFloat(end) * 1000);
-			console.log(startInt, endInt);
+			console.log(data.get('searchString'));
 			const resp = await fetch(backendPath + '/stores', {
 				method: 'POST',
 				body: JSON.stringify({
 					category_array: [],
 					price_low: startInt,
 					price_high: endInt,
-					search_string: data.get('search')
+					search_string: data.get('searchString')
 				})
 			});
 			// {

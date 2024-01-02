@@ -4,10 +4,11 @@
 	import Casher from '$lib/assets/casher.svg';
 	import InputBox from '$lib/components/PUA/InputBox.svelte';
 	import OkButton from '$lib/components/PUA/OkButton.svelte';
-	import CheckBox from '$lib/components/PUA/CheckBox.svelte';
 	import { backendPath } from '$lib/components/PUA/env';
 	import ErrorMessage from '$lib/components/PUA/ErrorMessage.svelte';
 	import { goto } from '$app/navigation';
+	import { CheckBox } from '$lib';
+
 	let context: { text: string; status: boolean }[] = [
 		{ text: 'Choose User Type', status: true },
 		{ text: 'Complete basic information', status: false },
@@ -247,7 +248,7 @@
 				<InputBox onInput={HandleInput} bind:value={userInfo.phone} type="" label="Phone Number" />
 				<!-- <InputBox bind:value={userInfo.birthday} type="" label="Birthday" /> -->
 				<InputBox onInput={HandleInput} bind:value={userInfo.address} type="" label="Address" />
-				<CheckBox onclick={CheckGoodPUA} value="si" id="goodPUA" text="Do you be a good PUA user?"
+				<CheckBox on:click={CheckGoodPUA} value="si" id="goodPUA" text="Do you be a good PUA user?"
 				></CheckBox>
 				<ErrorMessage {errorMsgVisible} {errorMsg}></ErrorMessage>
 				<OkButton onclick={NextStep} text="Next Step" disabled={!goodPUA}></OkButton>
@@ -294,7 +295,7 @@
 					type=""
 					label="Shipping Fee"
 				/>
-				<CheckBox onclick={CheckGoodPUAStore} value="si" id="id" text="Do you be a good PUA store?"
+				<CheckBox on:click={CheckGoodPUAStore} value="si" id="id" text="Do you be a good PUA store?"
 				></CheckBox>
 				<ErrorMessage {errorMsgVisible} {errorMsg}></ErrorMessage>
 				<OkButton onclick={NextStep} text="Next Step" disabled={!goodPUAStore}></OkButton>

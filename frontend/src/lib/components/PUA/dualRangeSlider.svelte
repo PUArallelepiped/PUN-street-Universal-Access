@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import { clamp } from 'yootils';
 	export let start = 0;
 	export let end = 1;
 	let leftHandle;
 	let body;
 	let slider;
+	const dispatch = createEventDispatcher();
 	function draggable(node) {
 		let x;
 		let y;
@@ -50,6 +52,7 @@
 			window.removeEventListener('mouseup', handleMouseup);
 			window.removeEventListener('touchmove', handleMousemove);
 			window.removeEventListener('touchend', handleMouseup);
+			dispatch('changed', { });
 		}
 		node.addEventListener('mousedown', handleMousedown);
 		node.addEventListener('touchstart', handleMousedown);

@@ -23,8 +23,10 @@
 					alt="img"
 				/>
 			</div>
-			<div class="flex flex-col gap-3 truncate">
-				<div class="text-2xl font-bold text-orange-950">{product_name}</div>
+			<div class="flex w-3/4 flex-col gap-3">
+				<div class="line-clamp-2 text-ellipsis break-words text-2xl font-bold text-orange-950">
+					{product_name}
+				</div>
 			</div>
 		</div>
 	</a>

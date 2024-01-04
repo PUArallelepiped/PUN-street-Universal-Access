@@ -3,7 +3,6 @@ package delivery
 import (
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
@@ -28,9 +27,11 @@ func NewUserHandler(e *gin.Engine, userUsecase domain.UserUsecase) {
 		v1.GET("/validate", handler.ValidateToken)
 		v1.POST("/register", handler.RegisterUser)
 		v1.POST("/check-email", handler.CheckEmail)
+		v1.GET("/userID", handler.GetUserIdByCookie)
 		v1.GET("/admin/get-all-orders", handler.GetOrders)
 		v1.PUT("/admin/ban-user/:userID", handler.BanUser)
 		v1.PUT("/admin/unban-user/:userID", handler.UnBanUser)
+		v1.POST("/upload", handler.UploadImage)
 	}
 }
 
@@ -129,10 +130,12 @@ func (u *UserHandler) Login(c *gin.Context) {
 		c.Status(500)
 		return
 	}
-	c.SetSameSite(http.SameSiteStrictMode)
-	c.SetCookie("jwttoken", token, (int)(24*time.Hour), "/", "localhost", false, true)
+	// fmt.Println(c.Cookie("jwttoken"))
+	// c.SetSameSite(http.SameSiteStrictMode)
+	// c.SetCookie("jwttoken", token, (int)(24*time.Hour), "/", "localhost", false, true)
 
-	c.JSON(200, "Login Success")
+	// c.JSON(200, "Login Success")
+	c.JSON(200, token)
 }
 
 func (u *UserHandler) ValidateToken(c *gin.Context) {
@@ -190,4 +193,39 @@ func (u *UserHandler) CheckEmail(c *gin.Context) {
 	}
 
 	c.JSON(200, isExist)
+}
+
+func (u *UserHandler) UploadImage(c *gin.Context) {
+	file, err := c.FormFile("file")
+	if err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
+	url, err := u.UserUsecase.UploadImage(c, file)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, url)
+}
+
+func (u *UserHandler) GetUserIdByCookie(c *gin.Context) {
+	token, err := c.Cookie("jwttoken")
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+	}
+	id, err := u.UserUsecase.GetUserIdByCookie(c, token)
+	idInfo := swagger.IdInfo{
+		UserId: id,
+	}
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+	}
+	c.JSON(200, idInfo)
 }

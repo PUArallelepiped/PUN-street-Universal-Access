@@ -5,10 +5,10 @@
 	import { onMount } from 'svelte';
 	import { backendPath } from '$lib/components/PUA/env';
 	import { goto } from '$app/navigation';
+	import { getId } from '$lib/components/PUA/getId';
 	export let data: PageData;
 	let shop_id = data.shop;
 	let item_id = data.item;
-	let userID = '1';
 	let get_event_discount_id = 1;
 	type productRespType = {
 		store_id: number;
@@ -118,20 +118,25 @@
 		return;
 	}
 	async function PostProductResp() {
-		productCartPost = {
-			cart_id: 0,
-			product_id: product.product_id,
-			customer_id: Number(userID),
-			product_quantity: Number(productCartPost.product_quantity),
-			discount_id: get_event_discount_id,
-			store_id: product.store_id
-		};
-		let post = fetch(backendPath + `/customer/` + userID + `/cart`, {
-			method: 'POST',
-			body: JSON.stringify(productCartPost)
-		});
-		if ((await post).status == 200) {
-			goto('/shops/' + shop_id);
+		try {
+			const user_id = (await getId()).valueOf();
+			productCartPost = {
+				cart_id: 0,
+				product_id: product.product_id,
+				customer_id: Number(user_id),
+				product_quantity: Number(productCartPost.product_quantity),
+				discount_id: get_event_discount_id,
+				store_id: product.store_id
+			};
+			let post = fetch(backendPath + `/customer/` + user_id + `/cart`, {
+				method: 'POST',
+				body: JSON.stringify(productCartPost)
+			});
+			if ((await post).status == 200) {
+				goto('/shops/' + shop_id);
+			}
+		} catch (e) {
+			goto('/login');
 		}
 	}
 	onMount(async () => {
@@ -141,23 +146,31 @@
 
 {#await getProductResp() then}
 	<div class="flex justify-center">
-		<div class="my-6 flex h-full w-4/5 flex-col gap-8">
-			<div class=" flex w-full items-center text-4xl text-PUA-dark-red">
-				{product.name}
+		<div class="my-6 mb-10 flex h-full w-4/5 flex-col gap-8">
+			<div class="rounded-lg bg-white p-4 shadow">
+				<div class=" flex w-full items-center text-4xl text-PUA-dark-red">
+					{product.name}
+				</div>
 			</div>
 
 			<div class="flex gap-16">
-				<div class="">
-					<img src={product.picture} alt="" class="mt-100 flex h-60 w-60 rounded-lg object-cover" />
-					<div class="flex items-baseline gap-3 py-5 font-bold text-PUA-dark-red">
-						<p class="text-2xl">NT$</p>
-						<p class="text-4xl">{product.price}</p>
-					</div>
-					<div class="w-[250px] text-justify text-base text-gray-600">
-						{product.description}
+				<div class="flex h-fit justify-center rounded-lg bg-white p-4 shadow">
+					<div>
+						<img
+							src={product.picture}
+							alt=""
+							class="mt-100 flex h-60 w-60 rounded-lg object-cover"
+						/>
+						<div class="flex items-baseline gap-3 py-5 font-bold text-PUA-dark-red">
+							<p class="text-2xl">NT$</p>
+							<p class="text-4xl">{product.price}</p>
+						</div>
+						<div class="w-[250px] text-justify text-base text-gray-600">
+							{product.description}
+						</div>
 					</div>
 				</div>
-				<div class=" flex w-full flex-col gap-4">
+				<div class=" flex w-full flex-col gap-4 rounded-lg bg-white p-4 shadow">
 					<div class=" flex w-full flex-col gap-4">
 						{#each product.product_label_array as { required, label_name, item_array }}
 							<div class="">
@@ -167,7 +180,7 @@
 										<NeedChooseLabel></NeedChooseLabel>
 									{/if}
 								</div>
-								<div class="h-[1px] bg-PUA-dark-red"></div>
+								<div class="h-[0.04rem] bg-PUA-dark-red"></div>
 								<div class="flex flex-col">
 									{#each item_array as { name }}
 										<Checkcontainer category={label_name} subcategory={name}></Checkcontainer>

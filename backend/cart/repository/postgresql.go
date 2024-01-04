@@ -54,7 +54,7 @@ func (p *postgresqlCartRepo) GetRunOrderByID(ctx context.Context, id int64) (*[]
 	stores.name AS store_name, stores.picture AS store_picture
 	FROM orders LEFT JOIN stores ON orders.store_id = stores.store_id 
 	WHERE orders.user_id = $1 AND 
-	orders.status != 0 AND orders.status != 1 AND orders.status != 6;
+	orders.status != 0 AND orders.status != 6;
 	`
 
 	rows, err := p.db.Query(sqlStatement, id)

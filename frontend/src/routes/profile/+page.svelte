@@ -6,7 +6,9 @@
 	import { onMount } from 'svelte';
 	import { deserialize } from '$app/forms';
 	import type { ActionResult } from '@sveltejs/kit';
-	import { backendPath } from '$lib/components/PUA/env';
+	import type { PageData } from './$types';
+	export let data: PageData;
+	console.log(data);
 
 	let choosingMonth = 1;
 	let choosingYear = 2020;
@@ -133,6 +135,7 @@
 		phone: string;
 		birthday: string;
 		password: string;
+		authority: string;
 	};
 
 	let userInfo: userShort = {
@@ -142,20 +145,15 @@
 		address: 'aaa',
 		phone: '0912345678',
 		birthday: '2021-05-01',
-		password: '123456'
+		password: '123456',
+		authority: 'customer'
 	};
 
-	async function getUserInfo() {
-		const resp = await fetch(backendPath + '/user/get-info/1');
-		const json = await resp.json();
-		userInfo = json;
-	}
-
-	onMount(() => {
+	onMount(async () => {
+		userInfo = data.userInfo;
 		initChart();
 		UpdateMonthData();
 		UpdateYearData();
-		getUserInfo();
 	});
 </script>
 

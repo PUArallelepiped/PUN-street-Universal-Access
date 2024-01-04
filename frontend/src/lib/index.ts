@@ -105,7 +105,7 @@ export type seasoning_discount = {
 	status: number;
 };
 export type storeOrderInfo = {
-	store_id: 1;
+	store_id: number;
 	store_name: string;
 	store_shipping_fee: number;
 	product_order: product_order[];

@@ -7,7 +7,7 @@
 	console.log(data);
 </script>
 
-<div class="h-48 w-full overflow-hidden">
+<div class="h-48 w-full overflow-hidden shadow">
 	<img src={data.shopInfo.picture} alt="" class="w-full object-cover" />
 </div>
 <div class="mx-5 mt-10 lg:px-40">

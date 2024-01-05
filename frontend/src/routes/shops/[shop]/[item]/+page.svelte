@@ -249,7 +249,8 @@
 								k = k - 144 - 8;
 							}
 						}}
-						class="flex h-full w-10 items-center justify-center bg-gray-300 shadow-lg shadow-zinc-400 hover:bg-zinc-400"
+						disabled={k - 144 - 8 <= -myElementWidth}
+						class="flex h-full w-10 items-center justify-center bg-gray-300 shadow-lg shadow-zinc-400 hover:bg-zinc-400 hover:disabled:bg-gray-300"
 					>
 						<img src={left_allow} alt="" class=" h-7 w-7" />
 					</button>
@@ -261,7 +262,8 @@
 							k = k + 144 + 8;
 						}
 					}}
-					class="flex h-full w-10 items-center justify-center bg-gray-300 shadow-lg shadow-zinc-400 hover:bg-zinc-400"
+					disabled={k === 0}
+					class="group flex h-full w-10 items-center justify-center bg-gray-300 shadow-lg shadow-zinc-400 hover:bg-zinc-400 hover:disabled:bg-gray-300"
 				>
 					<img src={right_allow} alt="" class=" h-7 w-7" />
 				</button>
@@ -275,6 +277,12 @@
 					style={`transform: translateX(${k}px);`}
 					bind:this={myElement}
 				>
+					<RecommandCard></RecommandCard>
+					<RecommandCard></RecommandCard>
+					<RecommandCard></RecommandCard>
+					<RecommandCard></RecommandCard>
+					<RecommandCard></RecommandCard>
+					<RecommandCard></RecommandCard>
 					<RecommandCard></RecommandCard>
 					<RecommandCard></RecommandCard>
 					<RecommandCard></RecommandCard>

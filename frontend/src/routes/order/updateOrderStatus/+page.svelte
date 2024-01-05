@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto, invalidateAll } from '$app/navigation';
 	import OrderStatusCard from '$lib/components/PUA/orderStatusCard.svelte';
-	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import type { PageData } from './$types';
 	import { backendPath } from '$lib/components/PUA/env';
@@ -9,32 +8,23 @@
 	export let data: PageData;
 
 	async function postAndChangeStatus(index: number) {
-		let orderRespList = data.orderRespList;
 		await fetch(
 			backendPath +
 				`/seller/update-order-status/customer/` +
-				orderRespList[index].user_id +
+				data.orderRespList[index].user_id +
 				`/cart/` +
-				orderRespList[index].cart_id +
+				data.orderRespList[index].cart_id +
 				`/store/` +
-				orderRespList[index].store_id,
+				data.orderRespList[index].store_id,
 			{
 				method: 'PUT'
 			}
 		);
 		await invalidateAll();
 
-		await refresh();
 		return;
 	}
-	let statusCardContent: {
-		time: string;
-		price: string;
-		src: string;
-		text: string;
-		user: string;
-		status: number;
-	}[] = [];
+
 	let Deliver: string =
 		'M48 0C21.5 0 0 21.5 0 48V368c0 26.5 21.5 48 48 48H64c0 53 43 96 96 96s96-43 96-96H384c0 53 43 96 96 96s96-43 96-96h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V288 256 237.3c0-17-6.7-33.3-18.7-45.3L512 114.7c-12-12-28.3-18.7-45.3-18.7H416V48c0-26.5-21.5-48-48-48H48zM416 160h50.7L544 237.3V256H416V160zM112 416a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm368-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z';
 	let Accept: string =
@@ -49,52 +39,26 @@
 		{ icon: Making, text: 'Deliver' },
 		{ icon: Deliver, text: 'Arrival' }
 	];
-	async function refresh() {
-		statusCardContent = [];
-		let orderRespList = data.orderRespList;
-		if (orderRespList) {
-			for (let i = 0; i < orderRespList.length; i++) {
-				statusCardContent = [
-					...statusCardContent,
-					{
-						time: orderRespList[i].order_date,
-						price: orderRespList[i].total_price.toString(),
-						src: icon_array[orderRespList[i].status - 1].icon,
-						text: icon_array[orderRespList[i].status - 1].text,
-						user: orderRespList[i].user_name,
-						status: orderRespList[i].status
-					}
-				];
-			}
-		}
-	}
-	onMount(async () => {
-		await refresh();
-		console.log(data.orderRespList);
-	});
 </script>
 
 <div class=" flex h-full flex-wrap items-center justify-center gap-10 py-12">
-	{#if data.orderRespList.length !== 0}
-		{#each statusCardContent as sub, index}
-			<OrderStatusCard
-				on:click={() => postAndChangeStatus(index)}
-				on:gotoPage={(event) => {
-					goto(
-						$page.route.id +
-							'/detail/' +
-							event.detail.userId +
-							'/' +
-							event.detail.storeId +
-							'/' +
-							event.detail.cartId
-					);
-				}}
-				storeId={data.orderRespList[index].store_id}
-				cartId={data.orderRespList[index].cart_id}
-				userId={data.orderRespList[index].user_id}
-				statusCardContent={sub}
-			></OrderStatusCard>
-		{/each}
-	{/if}
+	{#each data.orderRespList as sub, index}
+		<OrderStatusCard
+			on:click={() => postAndChangeStatus(index)}
+			on:gotoPage={(event) => {
+				goto(
+					$page.route.id +
+						'/detail/' +
+						event.detail.userId +
+						'/' +
+						event.detail.storeId +
+						'/' +
+						event.detail.cartId
+				);
+			}}
+			statusCardContent={sub}
+			src={icon_array[sub.status - 1].icon}
+			text={icon_array[sub.status - 1].text}
+		></OrderStatusCard>
+	{/each}
 </div>

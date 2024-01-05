@@ -2,17 +2,17 @@
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 	export let statusCardContent: {
-		time: string;
-		price: string;
-		src: string;
-		text: string;
-		user: string;
+		cart_id: number;
+		order_date: string;
 		status: number;
+		store_id: number;
+		total_price: number;
+		user_id: number;
+		user_name: string;
 	};
-	export let storeId: number;
-	export let cartId: number;
-	export let userId: number;
 
+	export let src: string;
+	export let text: string;
 	let viewBoxValue = '';
 
 	$: {
@@ -35,7 +35,11 @@
 		}
 	}
 	function gotoPage() {
-		dispatch('gotoPage', { userId: userId, storeId: storeId, cartId: cartId });
+		dispatch('gotoPage', {
+			userId: statusCardContent.user_id,
+			storeId: statusCardContent.store_id,
+			cartId: statusCardContent.cart_id
+		});
 	}
 </script>
 
@@ -50,28 +54,28 @@
 				height="80"
 				width="100"
 				viewBox={viewBoxValue}
-				class="fill-PUA-stone"><path d={statusCardContent.src} /></svg
+				class="fill-PUA-stone"><path d={src} /></svg
 			>
 			<div class="w-64 text-start font-bold">
-				<div class=" text-xl font-bold leading-relaxed text-PUA-dark-orange">
-					{statusCardContent.time}
+				<div class=" text-PUA-dark-orange text-xl font-bold leading-relaxed">
+					{statusCardContent.order_date}
 				</div>
 				<div
-					class=" flex items-baseline gap-1 text-xl font-bold leading-relaxed text-PUA-dark-orange"
+					class=" text-PUA-dark-orange flex items-baseline gap-1 text-xl font-bold leading-relaxed"
 				>
 					<p class=" text-base">NT$</p>
-					<p>{statusCardContent.price}</p>
+					<p>{statusCardContent.total_price}</p>
 				</div>
-				<div class=" text-xl font-bold leading-relaxed text-PUA-dark-orange">
-					Order user : {statusCardContent.user}
+				<div class=" text-PUA-dark-orange text-xl font-bold leading-relaxed">
+					Order user : {statusCardContent.user_name}
 				</div>
 			</div>
 
 			<button
 				on:click|stopPropagation
-				class=" flex h-20 w-40 items-center justify-center rounded-2xl bg-PUA-stone p-2 text-center font-bold leading-relaxed text-white hover:border-[3px] hover:border-PUA-stone hover:bg-white hover:text-PUA-stone"
+				class=" bg-PUA-stone hover:border-PUA-stone hover:text-PUA-stone flex h-20 w-40 items-center justify-center rounded-2xl p-2 text-center font-bold leading-relaxed text-white hover:border-[3px] hover:bg-white"
 			>
-				{statusCardContent.text}
+				{text}
 			</button>
 		</button>
 	</div>

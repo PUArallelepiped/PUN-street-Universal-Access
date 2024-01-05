@@ -8,7 +8,7 @@
 	<div class="flex h-full flex-col items-center gap-2">
 		<img src={watermelon} alt="" class="  h-28 w-28 rounded-lg" />
 		<div
-			class="text-PUA-dark-red line-clamp-2 w-full text-ellipsis break-words text-center font-bold"
+			class="line-clamp-2 w-full text-ellipsis break-words text-center font-bold text-PUA-dark-red"
 		>
 			查碗蒸
 		</div>

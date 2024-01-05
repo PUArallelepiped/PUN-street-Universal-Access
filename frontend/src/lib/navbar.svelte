@@ -1,5 +1,4 @@
 <script lang="ts">
-	// import{store} from "$app/stores"
 	export let routes: { path: string; title: string }[];
 </script>
 

@@ -165,7 +165,7 @@
 	<div class="flex justify-center">
 		<div class="my-6 mb-10 flex h-full w-4/5 flex-col gap-8">
 			<div class="rounded-lg bg-white p-4 shadow">
-				<div class=" text-PUA-dark-red flex w-full items-center text-4xl">
+				<div class=" flex w-full items-center text-4xl text-PUA-dark-red">
 					{product.name}
 				</div>
 			</div>
@@ -178,7 +178,7 @@
 							alt=""
 							class="mt-100 flex h-60 w-60 rounded-lg object-cover"
 						/>
-						<div class="text-PUA-dark-red flex items-baseline gap-3 py-5 font-bold">
+						<div class="flex items-baseline gap-3 py-5 font-bold text-PUA-dark-red">
 							<p class="text-2xl">NT$</p>
 							<p class="text-4xl">{product.price}</p>
 						</div>
@@ -192,12 +192,12 @@
 						{#each product.product_label_array as { required, label_name, item_array }}
 							<div class="">
 								<div class="flex items-center">
-									<div class="text-PUA-stone font-bold">{label_name}</div>
+									<div class="font-bold text-PUA-stone">{label_name}</div>
 									{#if required}
 										<NeedChooseLabel></NeedChooseLabel>
 									{/if}
 								</div>
-								<div class="bg-PUA-dark-red h-[0.04rem]"></div>
+								<div class="h-[0.04rem] bg-PUA-dark-red"></div>
 								<div class="flex flex-col">
 									{#each item_array as { name }}
 										<Checkcontainer category={label_name} subcategory={name}></Checkcontainer>
@@ -230,18 +230,18 @@
 		</div>
 	</div>
 
-	<p class="text-PUA-dark-red p-3 text-2xl font-bold">Recommand</p>
+	<p class="p-3 text-2xl font-bold text-PUA-dark-red">Recommand</p>
 	<div class=" flex h-60 w-full justify-center">
 		<div class=" absolute z-10 h-52 w-full">
 			<div class="flex h-full w-full justify-between">
 				<div>
 					<button
 						on:click={() => {
-							if (k - 144 - 8 >= -myElementWidth) {
-								k = k - 144 - 8;
+							if (k != 0) {
+								k = k + 144 + 8;
 							}
 						}}
-						disabled={k - 144 - 8 <= -myElementWidth}
+						disabled={k === 0}
 						class="flex h-full w-10 items-center justify-center bg-gray-300 shadow-lg shadow-zinc-400 hover:bg-zinc-400 hover:disabled:bg-gray-300"
 					>
 						<img src={left_allow} alt="" class=" h-7 w-7" />
@@ -250,11 +250,11 @@
 
 				<button
 					on:click={() => {
-						if (k != 0) {
-							k = k + 144 + 8;
+						if (k - 144 - 8 >= -myElementWidth) {
+							k = k - 144 - 8;
 						}
 					}}
-					disabled={k === 0}
+					disabled={k - 144 - 8 <= -myElementWidth}
 					class="group flex h-full w-10 items-center justify-center bg-gray-300 shadow-lg shadow-zinc-400 hover:bg-zinc-400 hover:disabled:bg-gray-300"
 				>
 					<img src={right_allow} alt="" class=" h-7 w-7" />

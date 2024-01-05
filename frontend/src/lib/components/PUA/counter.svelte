@@ -4,18 +4,20 @@
 	export let count = 1;
 	export let allowNegative: boolean = false;
 	function add() {
-		count += 1;
+		count = Number(count) + 1;
 		return null;
 	}
 	function sub() {
-		if (!allowNegative && count == 1) {
+		if (!allowNegative && Number(count) <= 1) {
+			count = 1;
 			return null;
 		}
-		count -= 1;
+		count = Number(count) - 1;
 		return null;
 	}
 	function handleInput() {
-		if (count < 0) {
+		count = Number(count.toString().replace(/\D/g, ''));
+		if (count < 1) {
 			count = 1;
 		}
 	}
@@ -28,9 +30,8 @@
 
 	<input
 		class="ml-[12px] mr-[12px] appearance-none rounded-[20px] border-[3px] border-red-900 bg-transparent text-center"
-		type="number"
+		type="text"
 		bind:value={count}
-		min="1"
 		on:input={handleInput}
 	/>
 
@@ -38,11 +39,3 @@
 		<img src={triangle_add} alt="" class="h-[25px] object-cover" />
 	</button>
 </div>
-
-<style>
-	input[type='number']::-webkit-inner-spin-button,
-	input[type='number']::-webkit-outer-spin-button {
-		-webkit-appearance: none;
-		margin: 0;
-	}
-</style>

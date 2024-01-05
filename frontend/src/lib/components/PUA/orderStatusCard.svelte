@@ -57,23 +57,23 @@
 				class="fill-PUA-stone"><path d={src} /></svg
 			>
 			<div class="w-64 text-start font-bold">
-				<div class=" text-PUA-dark-orange text-xl font-bold leading-relaxed">
+				<div class=" text-xl font-bold leading-relaxed text-PUA-dark-orange">
 					{statusCardContent.order_date}
 				</div>
 				<div
-					class=" text-PUA-dark-orange flex items-baseline gap-1 text-xl font-bold leading-relaxed"
+					class=" flex items-baseline gap-1 text-xl font-bold leading-relaxed text-PUA-dark-orange"
 				>
 					<p class=" text-base">NT$</p>
 					<p>{statusCardContent.total_price}</p>
 				</div>
-				<div class=" text-PUA-dark-orange text-xl font-bold leading-relaxed">
+				<div class=" text-xl font-bold leading-relaxed text-PUA-dark-orange">
 					Order user : {statusCardContent.user_name}
 				</div>
 			</div>
 
 			<button
 				on:click|stopPropagation
-				class=" bg-PUA-stone hover:border-PUA-stone hover:text-PUA-stone flex h-20 w-40 items-center justify-center rounded-2xl p-2 text-center font-bold leading-relaxed text-white hover:border-[3px] hover:bg-white"
+				class=" flex h-20 w-40 items-center justify-center rounded-2xl bg-PUA-stone p-2 text-center font-bold leading-relaxed text-white hover:border-[3px] hover:border-PUA-stone hover:bg-white hover:text-PUA-stone"
 			>
 				{text}
 			</button>

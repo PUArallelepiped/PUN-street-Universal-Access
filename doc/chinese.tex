@@ -12,6 +12,9 @@
 \usepackage{makecell}
 \usepackage{listings} % Maybe for code block
 \usepackage{underscore}
+% \renewcommand\familydefault{\sfdefault}
+\usepackage{tikz-dependency}
+\usepackage{amsmath}
 
 % If you don't like separate files, use this:
 % \usepackage{filecontents}
@@ -61,6 +64,30 @@
 \titleformat*{\subsubsection}{\NormalFont}
 
 \renewcommand{\arraystretch}{1.2} % table row height
+
+\depstyle{lvl}{%
+    edge height=2.5ex,
+    % edge unit distance=#1*2.5ex, % Another way of controlling the appearance of the edges.
+    edge below,
+    edge horizontal padding=0,
+    edge vertical padding=(#1-1)*3ex,
+    text only label, % No need for label for functional dependencies.
+    edge slant=0, % Right angles
+    rounded corners=0,
+    edge style={>=triangle 60} % Change the style of the arrowheads.
+}
+\tikzset{
+    matrix/.append style={column sep=0.4cm} % Adding some distance between the attributes.
+}
+\tikzstyle{TxtBook}=[% Style to mimic the textbook Fundamentals of Database Systems.
+    column sep=0cm, % No distance between two attributes.
+    nodes={%
+        fill=gray!20,
+        draw=black,
+        inner xsep=1ex,
+        inner ysep=1ex
+    }
+]
 
 %----------------------------------------------------------
 
@@ -115,7 +142,7 @@
     \vspace{2cm}
     {\SixteenTitle Department of Computer Science \& Information Engineering National Taipei University of Technology \par}
     \vspace{16pt}
-    {\SixteenTitle 10/11/2023 \par}
+    {\SixteenTitle 12/31/2023 \par}
 \end{center}
 \clearpage
 
@@ -201,7 +228,7 @@ SRMS)
 本系統採用前後端分離架構開發，以便團隊成員分工。我們採用svelte作為前端框架，後端利用golang撰寫，資料庫管理系統則使用postgreSQL。
 
 
-\subsection{符號描述 (Notation Description) (if any)}
+\subsection{符號描述 (Notation Description)}
 
 \newcommand{\notationDescTableCol}{ | p{6.5em} | p{32em} |}
 
@@ -722,7 +749,9 @@ WOS-B-007 & 資料庫初始狀態要有所有員工和系統管理員的資訊 \
   \hline
   total_price & INTEGER &  & Not Null & 總金額 \\
   \hline
-  discount_id & SERIAL & Foreign&Not Null &折扣ID\\
+  seasoning_discount_id & SERIAL & Foreign&Not Null &季節折扣ID\\
+  \hline
+  shipping_discount_id & SERIAL & Foreign&Not Null &運費折扣ID\\
   \hline
   cart_id& SERIAL & \makecell[l]{Primary \\ Foreign} &Not Null &購物車ID\\
   \hline
@@ -734,10 +763,7 @@ WOS-B-007 & 資料庫初始狀態要有所有員工和系統管理員的資訊 \
   \hline
   taking_address & VARCHAR &  & Not Null & 運送地址 \\
   \hline
-  status & INTEGER &  & Not Null & \makecell[l]{訂單狀態\\0=未結帳\\1=已結帳\\2=接受訂單\\3=製作訂單\\4=運送中\\5=已送達\\6＝確認訂單} \\
-  \hline
-  
-  name & VARCHAR &  &Not Null &折扣名稱\\
+  status & INTEGER &  & Not Null & \makecell[l]{訂單狀態\\0=未結帳\\1=已結帳\\2=接受訂單\\3=製作訂單\\4=運送中\\5=已送達\\6＝確認訂單\\7=已評分} \\
   \hline
 \end{tabular}
 
@@ -1274,27 +1300,541 @@ INSERT INTO label_item (product_id, label_name, item_name) VALUES
 
 \newpage
 
-\section{Implementation and Demonstration of the Database System }
+\section{The User Guide of the System}
 
-\subsection{Snapshots of GUI}
+\subsection{user}
+
+\text{user can register seller or customer}
 \begin{figure}[hp]
-    \centerline{\includegraphics[width=40em]{pic/login.png}}
-    \caption{login page}
+    \centerline{\includegraphics[width=40em]{gui-snapshot/user/register-customer-1.png}}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/user/register-customer-2.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newpage
+
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/user/register-seller.png}}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/user/register-customer-3.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newpage
+\text{user can login}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/user/login-page.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newpage
+
+\subsection{customer}
+\text{customer can browse and search shops}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/customer/shoplist.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newline
+\text{customer can browse products}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/customer/shop.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newline
+\newpage
+\text{customer can buy products}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/customer/item.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newline
+\text{customer can view cart}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/customer/cart.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newpage
+\text{customer can view order}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/customer/check-order.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newline
+\text{customer can view history}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/customer/history.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newline
+\newpage
+
+\subsection{seller}
+\text{seller can edit shop (edit tag)}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/seller/store-edit.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newline
+\text{seller can edit (create) products}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/seller/item.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newpage
+\text{seller can edit (create) discounts}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=20em]{gui-snapshot/seller/discount.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newline
+\text{seller can view and update order}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/seller/order-status.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newpage
+\text{seller can get statistics of the shop}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=30em]{gui-snapshot/seller/statistic.png}}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=30em]{gui-snapshot/seller/statistic-1.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newpage
+
+\subsection{admin}
+
+\text{admin can ban/unban users}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/admin/user.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newpage
+\text{admin can view all orders}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/admin/order.png}}
     \label{fig:enter-label}
 \end{figure}
 
+\newpage
+
+\section{Functional Dependencies and Database Normalization}
+\subsection{Functional Dependencies of the Database Schema}
+
+\text{User_data}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{User_id} \& name \& email \& address \& password \& authority \& phone \& cart_id \& status \& birthday \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{2}{}
+    \depedge[lvl=1]{1}{3}{}
+    \depedge[lvl=1]{1}{4}{}
+    \depedge[lvl=1]{1}{5}{}
+    \depedge[lvl=1]{1}{6}{}
+    \depedge[lvl=1]{1}{7}{}
+    \depedge[lvl=1]{1}{8}{}
+    \depedge[lvl=1]{1}{9}{}
+    \depedge[lvl=1]{1}{10}{}
+\end{dependency}
+
+\text{Products}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{product_id} \& name \& description \& store_id \& picture \& price \& stock \& status \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{2}{}
+    \depedge[lvl=1]{1}{3}{}
+    \depedge[lvl=1]{1}{4}{}
+    \depedge[lvl=1]{1}{5}{}
+    \depedge[lvl=1]{1}{6}{}
+    \depedge[lvl=1]{1}{7}{}
+    \depedge[lvl=1]{1}{8}{}
+\end{dependency}
+
+\text{Stores}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{store_id} \& name \& rate \& picture \& address \& description \& shipping_fee \&rate_count \& status \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{2}{}
+    \depedge[lvl=1]{1}{3}{}
+    \depedge[lvl=1]{1}{4}{}
+    \depedge[lvl=1]{1}{5}{}
+    \depedge[lvl=1]{1}{6}{}
+    \depedge[lvl=1]{1}{7}{}
+    \depedge[lvl=1]{1}{8}{}
+    \depedge[lvl=1]{1}{9}{}
+\end{dependency}
+
+\text{Carts}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{customer_id} \& \underline{product_id} \& \underline{cart_id} \& quantity \& event_discount_id \& store_id \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{4}{}
+    \depedge[lvl=1]{2}{4}{}
+    \depedge[lvl=1]{3}{4}{}
+    \depedge[lvl=1]{1}{5}{}
+    \depedge[lvl=1]{2}{5}{}
+    \depedge[lvl=1]{3}{5}{}
+    \depedge[lvl=1]{1}{6}{}
+    \depedge[lvl=1]{2}{6}{}
+    \depedge[lvl=1]{3}{6}{}
+    \depedge[lvl=2]{2}{6}{}
+\end{dependency}
+
+\text{Order}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{customer_id} \& \underline{store_id} \& \underline{cart_id} \& date \& price \& sea_dis \& ship_dis \& method \& address \& status \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{4}{}
+    \depedge[lvl=1]{1}{5}{}
+    \depedge[lvl=1]{1}{6}{}
+    \depedge[lvl=1]{1}{7}{}
+    \depedge[lvl=1]{1}{8}{}
+    \depedge[lvl=1]{1}{9}{}
+    \depedge[lvl=1]{1}{10}{}
+    \depedge[lvl=1]{2}{4}{}
+    \depedge[lvl=1]{2}{5}{}
+    \depedge[lvl=1]{2}{6}{}
+    \depedge[lvl=1]{2}{7}{}
+    \depedge[lvl=1]{2}{8}{}
+    \depedge[lvl=1]{2}{9}{}
+    \depedge[lvl=1]{2}{10}{}
+    \depedge[lvl=1]{3}{4}{}
+    \depedge[lvl=1]{3}{5}{}
+    \depedge[lvl=1]{3}{6}{}
+    \depedge[lvl=1]{3}{7}{}
+    \depedge[lvl=1]{3}{8}{}
+    \depedge[lvl=1]{3}{9}{}
+    \depedge[lvl=1]{3}{10}{}
+\end{dependency}
+
+\text{Discounts}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{discount_id} \& discount_type \& status \& description \& name \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{2}{}
+    \depedge[lvl=1]{1}{3}{}
+    \depedge[lvl=1]{1}{4}{}
+    \depedge[lvl=1]{1}{5}{}
+\end{dependency}
+
+\text{Seasoning_discount}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{discount_id} \& start_date \& end_date \& store_id \& discount_percentage\\
+    \end{deptext}
+    \depedge[lvl=1]{1}{2}{}
+    \depedge[lvl=1]{1}{3}{}
+    \depedge[lvl=1]{1}{4}{}
+    \depedge[lvl=1]{1}{5}{}
+\end{dependency}
+
+\text{Event_discount}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{discount_id} \& max_quantity \& product_id \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{2}{}
+    \depedge[lvl=1]{1}{3}{}
+\end{dependency}
+
+\text{Shipping_discount}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{discount_id} \& max_price \& store_id \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{2}{}
+    \depedge[lvl=1]{1}{3}{}
+\end{dependency}
+
+\text{Label}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{store_id} \& \underline{category_id}  \\
+    \end{deptext}
+\end{dependency}
+
+\text{Categories}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{category_id} \& name \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{2}{}
+\end{dependency}
+
+\text{Product_label}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{product_id} \& \underline{label_name} \& required \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{3}{}
+    \depedge[lvl=1]{2}{3}{}
+\end{dependency}
+
+\text{Product_label_item}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{product_id} \& \underline{label_name} \& name \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{3}{}
+    \depedge[lvl=1]{2}{3}{}
+\end{dependency}
+
+\subsection{Database Normalization}
+
+    In the cart relation, the store\_id partially depends on the product\_id, thereby violating the 2NF. All other relations comply with BCNF.
+
+\subsubsection{Updated Schema}
+\text{Carts}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{customer_id} \& \underline{product_id} \& \underline{cart_id} \& quantity \& event_discount_id \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{4}{}
+    \depedge[lvl=1]{2}{4}{}
+    \depedge[lvl=1]{3}{4}{}
+    \depedge[lvl=1]{1}{5}{}
+    \depedge[lvl=1]{2}{5}{}
+    \depedge[lvl=1]{3}{5}{}
+\end{dependency}
+
+\subsubsection{Updated SQL Statement}
+
+\begin{lstlisting}
+-- carts
+CREATE TABLE
+    IF NOT EXISTS carts (
+        customer_id SERIAL REFERENCES user_data(user_id),
+        product_id SERIAL REFERENCES products(product_id),
+        cart_id INTEGER NOT NULL,
+        product_quantity INT NOT NULL,
+        event_discount_id SERIAL REFERENCES discounts(discount_id),
+        PRIMARY KEY (
+            customer_id,
+            product_id,
+            cart_id
+        )
+    );
+\end{lstlisting}
+
+\text{After updating, all relations are in BCNF.}
+
+\newpage
+
+\section{Suggestions on Database Turning}
+
+\subsection{View}
+    在取得商店或商品資料時，常常需要join許多不同的表格，若建立良好的view，可使得開發人員不需寫過於複雜的query，同時也增加資料可讀性。
+\subsection{Index}
+    在做搜尋功能時，其中有用到store中的category欄位，若能將category做為index，就可以避免線性搜尋所造成的效能損失。
+\subsection{Database}
+    當初設計資料庫時，將store\_id紀錄進購物車內，但後來發現由product\_id就可以推算出store\_id，造成2NF的違反，經過正規化後將store\_id移除。
+
+\newpage
+
+\section{Additional Queries and Views}
+
+\subsection{First Query}
+
+\text{Get shops by search string: use nest queries, aggregate functions, order by clause}
+\begin{lstlisting}
+SELECT
+store_id,
+name,
+rate,
+picture,
+category_array
+FROM (
+    SELECT
+        store_id,
+        name,
+        rate,
+        picture, (
+            SELECT
+                jsonb_agg(
+                    jsonb_build_object(
+                        'category_id',
+                        categories.category_id,
+                        'category_name',
+                        categories.name
+                    )
+                ) as categories_item
+            FROM categories
+                NATURAL JOIN (
+                    SELECT labels.category_id
+                    FROM labels
+                    WHERE
+                        labels.store_id = stores.store_id
+                ) AS labels
+        ) AS category_array, (
+            SELECT COUNT(*) > 0
+            FROM products
+                LEFT JOIN stores as s ON products.store_id = stores.store_id
+            WHERE
+                products.store_id = stores.store_id
+                AND(
+                    products.name LIKE '%' || '飯' || '%'
+                    OR stores.name LIKE '%' || '飯' || '%'
+                    OR products.description LIKE '%' || '飯' || '%'
+                )
+        ) AS is_string_exits
+    FROM stores
+) as store
+WHERE is_string_exits = true
+ORDER BY store.rate DESC
+\end{lstlisting}
+
+\newpage
+\text{query result}
 \begin{figure}[hp]
-    \centerline{\includegraphics[width=40em]{pic/shop.png}}
-    \caption{shop page}
+    \centerline{\includegraphics[width=40em]{result/result-1.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newline
+\newpage
+
+\subsection{Second Query}
+\text{Get products selling statistics by date: use group by clause}
+\begin{lstlisting}
+SELECT
+    carts.product_id,
+    products.name,
+    SUM(carts.product_quantity)
+FROM carts
+    LEFT JOIN products ON carts.product_id = products.product_id
+    LEFT JOIN orders ON carts.store_id = orders.store_id AND carts.cart_id = orders.cart_id AND carts.customer_id = orders.user_id
+WHERE
+    orders.store_id = 1
+    AND orders.status >= 6
+    AND EXTRACT(
+        year
+        FROM
+            order_date
+    ) = 2020
+    AND EXTRACT(
+        month
+        FROM order_date
+    ) = 1
+GROUP BY
+    carts.product_id,
+    products.name
+\end{lstlisting}
+\text{query result}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=30em]{result/result-2.png}}
     \label{fig:enter-label}
 \end{figure}
 
+\newpage
+
+\subsection{Third Query}
+\text{Get all Product's information: use nest query, order by clause}
+\begin{lstlisting}
+SELECT
+    product_id,
+    store_id,
+    name,
+    description,
+    picture,
+    stock,
+    price,
+    status, (
+        SELECT
+            coalesce(
+                jsonb_agg(
+                    jsonb_build_object(
+                        'discount_max_quantity',
+                        max_quantity,
+                        'product_id',
+                        product_id,
+                        'discount_name',
+                        name,
+                        'discount_description',
+                        description,
+                        'discount_id',
+                        discount_id,
+                        'status',
+                        status
+                    )
+                ),
+                '[]'
+            ) AS event_discount
+        FROM discounts
+            NATURAL JOIN (
+                SELECT
+                    event_discount.discount_id,
+                    event_discount.max_quantity,
+                    event_discount.product_id
+                FROM event_discount
+                WHERE
+                    event_discount.product_id = products.product_id
+            ) AS discountInfo
+    ) AS event_discount_array, (
+        SELECT
+            coalesce(
+                jsonb_agg(
+                    jsonb_build_object(
+                        'product_id',
+                        product_id,
+                        'label_name',
+                        label_name,
+                        'required',
+                        required,
+                        'item_array', (
+                            SELECT (
+                                    jsonb_agg(
+                                        jsonb_build_object('name', label_item.item_name)
+                                    )
+                                ) AS item_array
+                            FROM label_item
+                            WHERE
+                                label_item.label_name = product_label.label_name
+                                AND label_item.product_id = product_label.product_id
+                        )
+                    )
+                ),
+                '[]'
+            ) AS product_label_array
+        FROM product_label
+        WHERE
+            product_label.product_id = products.product_id
+    )
+FROM products
+WHERE store_id = 1 AND status != 0
+ORDER BY product_id;
+\end{lstlisting}
+\text{query result}
 \begin{figure}[hp]
-    \centerline{\includegraphics[width=40em]{pic/cart.png}}    
-    \caption{cart page}
+    \centerline{\includegraphics[width=40em]{result/result-3.png}}
     \label{fig:enter-label}
 \end{figure}
 
+\newpage
+
+\section{Conclusions and Future Work}
 \newpage
 
 \section{Glossary}

@@ -17,6 +17,7 @@
 	});
 
 	async function login() {
+		let maxAge = 60 * 60 * 24; // 1 day
 		const res = await fetch(backendPath + '/login', {
 			method: 'POST',
 			credentials: 'include',
@@ -28,7 +29,7 @@
 		if (res.status == 200) {
 			await res
 				.json()
-				.then((data) => (document.cookie = 'jwttoken=' + data + '; path=/' + '; samesite=strict'));
+				.then((data) => (document.cookie = 'jwttoken=' + data + '; path=/' + '; samesite=strict' + '; max-age=' + maxAge));
 			// console.log((await getId()).valueOf());
 			goto('/shops');
 		} else if (res.status == 403) {

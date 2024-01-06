@@ -9,7 +9,7 @@
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
 	import OkButton from '$lib/components/PUA/OkButton.svelte';
-	import { Logout } from '$lib/components/PUA/Logout';
+	import { logout } from '$lib/components/PUA/logout';
 	export let data: PageData;
 	console.log(data);
 
@@ -281,7 +281,7 @@
 					<OkButton
 						text="Logout"
 						onclick={() => {
-							Logout();
+							logout();
 							return null;
 						}}
 					></OkButton>

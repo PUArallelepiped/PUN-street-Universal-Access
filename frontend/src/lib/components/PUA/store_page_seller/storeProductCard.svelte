@@ -14,7 +14,7 @@
 
 <a
 	{href}
-	class="flex items-center justify-between rounded-3xl bg-white duration-150 hover:scale-[1.02]"
+	class="flex items-center justify-between overflow-hidden rounded-3xl bg-white duration-150 hover:scale-[1.02]"
 >
 	<div class="m-4 flex h-24 items-center">
 		<div class="h-24 w-24 overflow-hidden rounded-lg">
@@ -46,9 +46,9 @@
 		</div>
 		<button
 			on:click|preventDefault
-			class="transition-transform duration-200 hover:scale-125 active:scale-90"
+			class="w-28 transition-transform duration-200 hover:scale-125 active:scale-90"
 		>
-			<img src={transhcan} alt="" />
+			<img src={transhcan} width="21" height="24" alt="" />
 		</button>
 	</div>
 </a>

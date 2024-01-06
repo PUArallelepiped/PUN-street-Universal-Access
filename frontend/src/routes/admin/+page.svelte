@@ -4,6 +4,8 @@
 	import admin_icon from '$lib/assets/admin_icon.svg';
 	import AdminDataCard from '$lib/components/PUA/adminDataCard.svelte';
 	import { onMount } from 'svelte';
+	import { DenyButton } from '$lib';
+	import { goto } from '$app/navigation';
 
 	type userShort = {
 		user_id: number;
@@ -85,12 +87,33 @@
 	<div class="flex w-3/5 flex-col">
 		<div class="flex bg-PUA-stone">
 			<img src={admin_icon} alt="" class="my-6 ml-10 flex h-28 w-28" />
+
 			<div class="m-7 flex flex-col justify-between">
 				<div>
 					<div class="text-2xl text-PUA-gray">{userInfo.user_name}</div>
 					<div class="text-gray-300">{userInfo.user_email}</div>
 				</div>
 				<div class="text-xl text-PUA-gray">{userInfo.address}</div>
+			</div>
+			<div class=" mr-7 flex w-full flex-wrap items-center justify-end gap-2">
+				<div class="h-fit w-fit rounded-full bg-PUA-gray">
+					<DenyButton
+						onclick={() => {
+							goto('/order/updateOrderStatus');
+
+							return null;
+						}}>process order</DenyButton
+					>
+				</div>
+
+				<div class="h-fit w-fit rounded-full bg-PUA-gray">
+					<DenyButton
+						onclick={() => {
+							goto('/shops/1/store_page_seller');
+							return null;
+						}}>go my store</DenyButton
+					>
+				</div>
 			</div>
 		</div>
 		<div class="flex h-10">
@@ -126,7 +149,13 @@
 		</div>
 		<div class:hidden={profileTab != 1} class="hidden bg-white">
 			{#each orders as order}
-				<AdminDataCard firstCol={order.order_date} secondCol={order.user_name} type="order"
+				<AdminDataCard
+					firstCol={order.order_date}
+					secondCol={order.user_name}
+					type="order"
+					user_id={order.user_id}
+					store_id={order.store_id}
+					cart_id={order.cart_id}
 				></AdminDataCard>
 			{/each}
 		</div>

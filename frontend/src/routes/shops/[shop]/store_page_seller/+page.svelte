@@ -175,12 +175,14 @@
 	}
 
 	let myElement: HTMLDivElement | null = null;
+	let cardElement: HTMLDivElement | null = null;
+	let discardElement: HTMLDivElement | null = null;
 	let k = 0;
 
 	const toggleHeight = () => {
 		if (myElement) {
 			if (showProductCard) {
-				myElement.style.height = `${k}vh`;
+				myElement.style.height = `${k}px`;
 			} else {
 				myElement.style.height = `100vh`;
 			}
@@ -241,8 +243,17 @@
 		await getStoreResp();
 	}
 	$: {
-		k = 20 * productsList.length + 50;
+		let i = 0,
+			j = 0;
+		if (cardElement) {
+			i = cardElement.offsetHeight;
+		}
+		if (discardElement) {
+			j = discardElement.offsetHeight;
+		}
+		k = i + j + 100;
 		showProductCard;
+
 		toggleHeight();
 	}
 	onMount(async () => {
@@ -283,23 +294,26 @@
 				} overflow-y-hidden transition-all duration-[1300ms] ease-in-out`}
 			>
 				<div
+					bind:this={cardElement}
 					class={` ${
 						showProductCard ? ' translate-y-0 ' : 'translate-y-[-100%]'
-					}  transition-all duration-[1500ms] ease-in-out`}
+					}   transition-all duration-[1500ms] ease-in-out`}
 				>
 					<StoreProductCardArea bind:productListResponse={productsList} {shop_id}
 					></StoreProductCardArea>
 				</div>
 			</div>
-			<CategoryLabel text={'Shipping Discount List'}></CategoryLabel>
-			<div class="relative mx-5 space-y-4">
-				<div class="flex items-center gap-4">
-					<DiscountCard
-						bind:discountCardData={shippingList}
-						bind:dis_haved
-						on:click={() => (showModel = !showModel)}
-						{deleteDiscountCard}
-					></DiscountCard>
+			<div bind:this={discardElement}>
+				<CategoryLabel text={'Shipping Discount List'}></CategoryLabel>
+				<div class="relative mx-5 space-y-4">
+					<div class="flex items-center gap-4">
+						<DiscountCard
+							bind:discountCardData={shippingList}
+							bind:dis_haved
+							on:click={() => (showModel = !showModel)}
+							{deleteDiscountCard}
+						></DiscountCard>
+					</div>
 				</div>
 			</div>
 		</div>

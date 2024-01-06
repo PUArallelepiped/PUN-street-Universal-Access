@@ -29,7 +29,11 @@
 		if (res.status == 200) {
 			await res
 				.json()
-				.then((data) => (document.cookie = 'jwttoken=' + data + '; path=/' + '; samesite=strict' + '; max-age=' + maxAge));
+				.then(
+					(data) =>
+						(document.cookie =
+							'jwttoken=' + data + '; path=/' + '; samesite=strict' + '; max-age=' + maxAge)
+				);
 			// console.log((await getId()).valueOf());
 			goto('/shops');
 		} else if (res.status == 403) {

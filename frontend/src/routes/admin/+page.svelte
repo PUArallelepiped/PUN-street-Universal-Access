@@ -6,6 +6,8 @@
 	import { onMount } from 'svelte';
 	import { DenyButton } from '$lib';
 	import { goto } from '$app/navigation';
+	import { OkButton } from '$lib';
+	import { logout } from '$lib/components/PUA/logout';
 
 	type userShort = {
 		user_id: number;
@@ -146,6 +148,15 @@
 					ban={Boolean(user.status)}
 				></AdminDataCard>
 			{/each}
+			<div class="flex justify-center gap-32 px-28 pb-10 pt-10">
+				<OkButton
+					text="Logout"
+					onclick={() => {
+						logout();
+						return null;
+					}}
+				></OkButton>
+			</div>
 		</div>
 		<div class:hidden={profileTab != 1} class="hidden bg-white">
 			{#each orders as order}

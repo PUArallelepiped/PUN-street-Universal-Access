@@ -133,7 +133,19 @@
 					</div>
 				</div>
 			</form>
-			<button on:click={loginWithTwp}>login with TWP</button>
+			<div class="flex w-full items-center">
+				<div class="h-[2px] grow bg-PUA-dark-orange"></div>
+				<div class="p-4 text-center text-2xl font-bold text-PUA-dark-orange">Or With</div>
+				<div class="h-[2px] grow bg-PUA-dark-orange"></div>
+			</div>
+
+			<button
+				class="flex w-full justify-center gap-2 rounded-full bg-[#145142] p-2 text-xl font-bold text-white"
+				on:click={loginWithTwp}
+			>
+				<img src="https://noobdy.asuscomm.com/assets/logo-28e599d4.png" class="h-7" alt="" />
+				<div>Continue with TWP</div>
+			</button>
 		</div>
 	</div>
 </div>

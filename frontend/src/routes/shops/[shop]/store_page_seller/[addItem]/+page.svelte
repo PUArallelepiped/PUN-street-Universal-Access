@@ -51,7 +51,7 @@
 		description: '',
 		stock: 0,
 		event_discount_array: [],
-		picture: '',
+		picture: 'https://i.imgur.com/3i3tyXJ.gif',
 		status: 1
 	};
 	let current_discount_array = {
@@ -157,7 +157,7 @@
 		<div class="flex h-fit justify-start pb-10">
 			<div class="relative left-1/2 mt-6 h-full w-4/5 -translate-x-1/2 transform space-y-8">
 				<div
-					class=" flex w-full flex-col justify-center rounded-lg bg-white px-4 pb-0 pt-4 text-PUA-dark-red shadow"
+					class=" text-PUA-dark-red flex w-full flex-col justify-center rounded-lg bg-white px-4 pb-0 pt-4 shadow"
 				>
 					<input
 						required
@@ -197,7 +197,7 @@
 								/>
 							{/if}
 						</div>
-						<div class="flex w-64 flex-wrap items-baseline gap-3 pt-5 font-bold text-PUA-dark-red">
+						<div class="text-PUA-dark-red flex w-64 flex-wrap items-baseline gap-3 pt-5 font-bold">
 							<div class="text-2xl">NT$</div>
 							<input
 								required
@@ -237,9 +237,9 @@
 						></DisCountArea>
 
 						<div
-							class="flex h-[30px] w-full items-center border-b-[1px] border-solid border-PUA-stone"
+							class="border-PUA-stone flex h-[30px] w-full items-center border-b-[1px] border-solid"
 						>
-							<div class="font-bold text-PUA-stone">Set Status</div>
+							<div class="text-PUA-stone font-bold">Set Status</div>
 						</div>
 						<div class="m-4 flex justify-center gap-10">
 							{#each Status as { label }, index}

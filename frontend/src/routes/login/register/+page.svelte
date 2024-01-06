@@ -267,7 +267,7 @@
 					label="Password Check"
 				/>
 				<InputBox onInput={HandleInput} bind:value={userInfo.phone} type="" label="Phone Number" />
-				<!-- <InputBox bind:value={userInfo.birthday} type="" label="Birthday" /> -->
+				<InputBox bind:value={userInfo.birthday} type="date" label="Birthday" />
 				<InputBox onInput={HandleInput} bind:value={userInfo.address} type="" label="Address" />
 				<CheckBox on:click={CheckGoodPUA} value="si" id="goodPUA" text="Do you be a good PUA user?"
 				></CheckBox>

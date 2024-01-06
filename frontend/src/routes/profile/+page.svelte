@@ -8,6 +8,9 @@
 	import type { ActionResult } from '@sveltejs/kit';
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
+	import OkButton from '$lib/components/PUA/OkButton.svelte';
+	import { logout } from '$lib/components/PUA/logout';
+	import moment from 'moment';
 	export let data: PageData;
 	console.log(data);
 
@@ -262,7 +265,7 @@
 						</div>
 					</div>
 					<div class="flex bg-inherit font-['Inter'] text-2xl font-bold text-PUA-dark-orange">
-						userInfo.phone
+						{userInfo.phone}
 					</div>
 				</div>
 				<div class="">
@@ -272,8 +275,17 @@
 						</div>
 					</div>
 					<div class="flex bg-inherit font-['Inter'] text-2xl font-bold text-PUA-dark-orange">
-						{userInfo.birthday}
+						{moment(userInfo.birthday).format('YYYY-MM-DD')}
 					</div>
+				</div>
+				<div class="flex justify-center gap-32 px-28 pt-20">
+					<OkButton
+						text="Logout"
+						onclick={() => {
+							logout();
+							return null;
+						}}
+					></OkButton>
 				</div>
 			</div>
 

@@ -4,6 +4,7 @@
 	import order_icon from '$lib/assets/order_icon.svg';
 	import customer_icon from '$lib/assets/customer_icon.svg';
 	import seller_icon from '$lib/assets/seller_icon.svg';
+	import { goto } from '$app/navigation';
 
 	export let firstCol: string;
 	export let secondCol: string;
@@ -11,6 +12,10 @@
 	export let userID: number = 0;
 
 	export let ban: boolean = true;
+
+	export let store_id = 1;
+	export let cart_id = 1;
+	export let user_id = 1;
 
 	async function banUserById(userID: number) {
 		const resp = await fetch(backendPath + '/admin/ban-user/' + userID.toString(), {
@@ -42,7 +47,7 @@
 	class:border-PUA-red={!ban}
 	class="mx-12 my-3 flex justify-between rounded-2xl border-2 hover:bg-slate-200"
 >
-	<button class="w-full">
+	<div class="w-full">
 		<div class="flex items-center justify-between">
 			<div class="flex items-center">
 				{#if type === 'customer'}
@@ -60,6 +65,9 @@
 			<div class="m-6">
 				{#if type === 'order'}
 					<button
+						on:click={() => {
+							goto('history/detail/' + user_id + '/' + store_id + '/' + cart_id);
+						}}
 						class="border-2 border-PUA-dark-red px-7 py-0 text-PUA-dark-red hover:bg-PUA-dark-red hover:text-white"
 						>Detail</button
 					>
@@ -77,5 +85,5 @@
 				{/if}
 			</div>
 		</div>
-	</button>
+	</div>
 </div>

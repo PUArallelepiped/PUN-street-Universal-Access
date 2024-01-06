@@ -20,13 +20,13 @@
 	class:hover:scale-[1.02]={status != 2}
 	class="flex items-center justify-between rounded-3xl duration-150"
 >
-	<div class="m-4 flex h-24 items-center">
+	<div class="m-4 flex h-24 w-full items-center">
 		<div class="h-24 w-24 overflow-hidden rounded-lg">
-			<img src={imgUrl} alt="" class="h-full object-cover object-center" />
+			<img src={imgUrl} alt="" class="h-24 w-24 object-cover object-center" />
 		</div>
-		<div class="mx-5 flex h-full flex-col content-start gap-1">
+		<div class="mx-5 flex h-full w-full flex-col content-start gap-1 overflow-hidden">
 			<div
-				class="flex flex-col content-start text-xl md:flex-row md:items-center md:text-2xl lg:flex-row lg:items-center lg:text-2xl"
+				class="flex w-3/4 flex-col content-start text-xl md:flex-row md:items-center md:text-2xl lg:flex-row lg:items-center lg:text-2xl"
 			>
 				<div class="mr-1 font-semibold text-PUA-dark-orange">{name}</div>
 				<div class="md:flew-row flex flex-col sm:flex-row lg:flex-row">
@@ -42,8 +42,9 @@
 					{/if}
 				</div>
 			</div>
-			<div class="whitespace-pre-line text-base font-normal text-PUA-dark-gray">
-				{description}
+			<div class="overflow-hidden whitespace-pre-line text-base font-normal text-PUA-dark-gray">
+				<!-- {description} -->
+				<p class="break-words">{description}</p>
 			</div>
 		</div>
 	</div>

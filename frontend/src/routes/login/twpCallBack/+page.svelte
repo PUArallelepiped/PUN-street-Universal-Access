@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
-	import { twpUrl } from '$lib/components/PUA/env';
 	import type { ActionResult } from '@sveltejs/kit';
 	import { deserialize } from '$app/forms';
 
@@ -26,7 +25,7 @@
 		});
 		const actionResult: ActionResult = deserialize(await resp.text());
 		if (actionResult.type === 'success') {
-			//shopInfos = actionResult.data as shopListResponse[];
+			goto(actionResult.data as unknown as string);
 		}
 	});
 </script>

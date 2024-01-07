@@ -135,3 +135,12 @@ func (pu *productUsecase) DeleteProduct(ctx context.Context, id int64) error {
 
 	return nil
 }
+
+func (pu *productUsecase) RecommendProductByProductID(ctx context.Context, id int64) (*[]swagger.RecommendInfo, error) {
+	products, err := pu.productRepo.RecommendProductByProductID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return products, nil
+}

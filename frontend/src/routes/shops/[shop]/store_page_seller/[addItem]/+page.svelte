@@ -51,7 +51,7 @@
 		description: '',
 		stock: 0,
 		event_discount_array: [],
-		picture: 'https://i.imgur.com/3i3tyXJ.gif',
+		picture: '',
 		status: 1
 	};
 	let current_discount_array = {

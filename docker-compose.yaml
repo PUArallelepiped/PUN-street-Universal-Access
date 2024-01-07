@@ -1,6 +1,19 @@
 version: '3.8'
 
 services:
+  frontend:
+    image: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    working_dir: /app/client
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app/client
+    entrypoint: npm run dev -- --host
+    restart: always
   go-server:
       image: go-server
       build:

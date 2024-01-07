@@ -472,7 +472,7 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /product/{productID}/recommand:
+  /product/{productID}/recommend:
     get:
       tags:
       - customer
@@ -495,7 +495,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductArray'
+                $ref: '#/components/schemas/RecommendInfoArray'
         "500":
           description: Unexpected error
   /product/{productID}:
@@ -2724,3 +2724,33 @@ components:
         price_high: 1000
         price_low: 0
         search_string: pasta
+    RecommendInfo:
+      required:
+      - picture
+      - product_id
+      - product_name
+      - store_id
+      type: object
+      properties:
+        store_id:
+          type: number
+          example: 1
+        product_id:
+          type: number
+          example: 1
+        picture:
+          type: string
+          example: https://i.imgur.com/1.jpg
+        product_name:
+          type: string
+          example: pasta
+      example:
+        store_id: 1
+        product_id: 1
+        picture: https://i.imgur.com/1.jpg
+        product_name: pasta
+    RecommendInfoArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/RecommendInfo'
+      x-schema-name: RecommendInfoArray

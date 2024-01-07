@@ -305,7 +305,7 @@
 						</div>
 					</div>
 					<div class="flex bg-inherit font-['Inter'] text-2xl font-bold text-PUA-dark-orange">
-						 	●●●●●●
+						●●●●●●
 					</div>
 				</div>
 			</div>

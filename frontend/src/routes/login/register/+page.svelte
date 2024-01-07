@@ -71,7 +71,7 @@
 				}
 				if (context[index].text === 'Complete Store Info') {
 					userInfo.StoreRegisterInfo = storeInfo;
-					console.log(userInfo);
+					// console.log(userInfo);
 				}
 				if (context[index + 1].text === 'Complete!') {
 					Register();
@@ -99,6 +99,14 @@
 			return true;
 		}
 	}
+	function CheckPhone(value: string) {
+		let regex = new RegExp('^[0-9]{10}$');
+		return !regex.test(value);
+	}
+	function CheckEmail(value: string) {
+		let regex = new RegExp('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$');
+		return !regex.test(value);
+	}
 	function CheckGoodPUA() {
 		goodPUA = !goodPUA;
 		return;
@@ -125,7 +133,8 @@
 			storeInfo.name === '' ||
 			storeInfo.description === '' ||
 			storeInfo.address === '' ||
-			storeInfo.shipping_fee === null
+			storeInfo.shipping_fee === null ||
+			storeInfo.shipping_fee === ''
 		) {
 			return true;
 		} else {
@@ -133,6 +142,7 @@
 		}
 	}
 	function HandleError(context: string) {
+		errorMsgVisible = false;
 		if (context === 'Complete basic information') {
 			errorMsg = 'Please fill in all the blanks';
 			if (CheckUserInfoNull()) {
@@ -140,6 +150,12 @@
 				errorMsgVisible = true;
 			} else if (CheckPassword()) {
 				errorMsg = 'Password not match';
+				errorMsgVisible = true;
+			} else if (CheckPhone(userInfo.phone)) {
+				errorMsg = 'Phone number must be 10 digits';
+				errorMsgVisible = true;
+			} else if (CheckEmail(userInfo.user_email)) {
+				errorMsg = 'Email format is incorrect';
 				errorMsgVisible = true;
 			}
 		} else if (context === 'Complete Store Info') {
@@ -154,7 +170,12 @@
 		}
 	}
 	function HandleInput() {
-		errorMsgVisible = false;
+		if (context[2].status) {
+			HandleError(context[2].text);
+		} else if (context[1].status) {
+			HandleError(context[1].text);
+		}
+		// errorMsgVisible = false;
 	}
 	function GotoLogin() {
 		goto('/login');
@@ -246,7 +267,7 @@
 					label="Password Check"
 				/>
 				<InputBox onInput={HandleInput} bind:value={userInfo.phone} type="" label="Phone Number" />
-				<!-- <InputBox bind:value={userInfo.birthday} type="" label="Birthday" /> -->
+				<InputBox bind:value={userInfo.birthday} type="date" label="Birthday" />
 				<InputBox onInput={HandleInput} bind:value={userInfo.address} type="" label="Address" />
 				<CheckBox on:click={CheckGoodPUA} value="si" id="goodPUA" text="Do you be a good PUA user?"
 				></CheckBox>

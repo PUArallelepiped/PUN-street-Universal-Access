@@ -14,6 +14,7 @@ type ProductRepo interface {
 	AddDiscountByProductID(ctx context.Context, event *swagger.EventDiscount) error
 	AddProductLabel(ctx context.Context, productId int64, label_name string, required bool) error
 	AddProductLabelItem(ctx context.Context, productId int64, labelName string, name string) error
+	RecommendProductByProductID(ctx context.Context, id int64) (*[]swagger.RecommendInfo, error)
 }
 
 type ProductUsecase interface {
@@ -22,4 +23,5 @@ type ProductUsecase interface {
 	AddByStoreId(ctx context.Context, id int64, product *swagger.ProductInfoWithLabelAndDiscount) error
 	AddProductDiscountLabel(ctx context.Context, id int64, product *swagger.ProductInfoWithLabelAndDiscount) error
 	DeleteProduct(ctx context.Context, id int64) error
+	RecommendProductByProductID(ctx context.Context, id int64) (*[]swagger.RecommendInfo, error)
 }

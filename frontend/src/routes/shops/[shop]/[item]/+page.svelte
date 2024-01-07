@@ -6,6 +6,9 @@
 	import { backendPath } from '$lib/components/PUA/env';
 	import { goto } from '$app/navigation';
 	import { getId } from '$lib/components/PUA/getId';
+	import right_allow from '$lib/assets/right_allow.svg';
+	import left_allow from '$lib/assets/left_allow.svg';
+	import RecommandCard from '$lib/components/PUA/recommandCard.svelte';
 	export let data: PageData;
 	let shop_id = data.shop;
 	let item_id = data.item;
@@ -139,9 +142,23 @@
 			goto('/login');
 		}
 	}
+
+	let screenWidth = 0;
+
 	onMount(async () => {
 		getProductResp();
+		screenWidth = window.innerWidth - 94;
 	});
+
+	let k = 0;
+
+	let myElement: HTMLDivElement | null = null;
+	let myElementWidth = 0;
+	$: {
+		if (myElement) {
+			myElementWidth = myElement.clientWidth;
+		}
+	}
 </script>
 
 {#await getProductResp() then}
@@ -208,6 +225,66 @@
 
 						<OkButton onclick={PostProductResp} text="Add Cart"></OkButton>
 					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<p class="p-3 text-2xl font-bold text-PUA-dark-red">Recommand</p>
+	<div class=" flex h-60 w-full justify-center">
+		<div class=" absolute z-10 h-52 w-full">
+			<div class="flex h-full w-full justify-between">
+				<div>
+					<button
+						on:click={() => {
+							if (k != 0) {
+								k = k + 144 + 8;
+							}
+						}}
+						disabled={k === 0}
+						class="flex h-full w-10 items-center justify-center bg-gray-300 shadow-lg shadow-zinc-400 hover:bg-zinc-400 hover:disabled:bg-gray-300"
+					>
+						<img src={left_allow} alt="" class=" h-7 w-7" />
+					</button>
+				</div>
+
+				<button
+					on:click={() => {
+						if (k - 144 - 8 >= -myElementWidth) {
+							k = k - 144 - 8;
+						}
+					}}
+					disabled={k - 144 - 8 <= -myElementWidth}
+					class="group flex h-full w-10 items-center justify-center bg-gray-300 shadow-lg shadow-zinc-400 hover:bg-zinc-400 hover:disabled:bg-gray-300"
+				>
+					<img src={right_allow} alt="" class=" h-7 w-7" />
+				</button>
+			</div>
+		</div>
+
+		<div class="absolute z-20 flex h-56" style={`width: ${screenWidth}px`}>
+			<div class="mx-2 h-full w-full overflow-hidden">
+				<div
+					class="flex w-fit gap-2 duration-300"
+					style={`transform: translateX(${k}px);`}
+					bind:this={myElement}
+				>
+					<RecommandCard></RecommandCard>
+					<RecommandCard></RecommandCard>
+					<RecommandCard></RecommandCard>
+					<RecommandCard></RecommandCard>
+					<RecommandCard></RecommandCard>
+					<RecommandCard></RecommandCard>
+					<RecommandCard></RecommandCard>
+					<RecommandCard></RecommandCard>
+					<RecommandCard></RecommandCard>
+					<RecommandCard></RecommandCard>
+					<RecommandCard></RecommandCard>
+					<RecommandCard></RecommandCard>
+					<RecommandCard></RecommandCard>
+					<RecommandCard></RecommandCard>
+					<RecommandCard></RecommandCard>
+					<RecommandCard></RecommandCard>
 				</div>
 			</div>
 		</div>

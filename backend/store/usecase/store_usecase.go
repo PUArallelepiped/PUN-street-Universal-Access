@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
@@ -38,8 +37,6 @@ func (su *storeUsecase) GetAllStore(ctx context.Context, searchInfo *swagger.Sea
 		return nil, err
 	}
 
-	fmt.Println(store)
-
 	//if user search by category
 	if len(searchInfo.CategoryArray) != 0 {
 		for _, category := range searchInfo.CategoryArray {
@@ -48,10 +45,8 @@ func (su *storeUsecase) GetAllStore(ctx context.Context, searchInfo *swagger.Sea
 				logrus.Error(err)
 				return nil, err
 			}
-			fmt.Println(storeByCategory)
 			*store = findIntersection(*store, *storeByCategory)
 		}
-
 	}
 	//if user search by string
 	if searchInfo.SearchString != "" {
@@ -60,7 +55,6 @@ func (su *storeUsecase) GetAllStore(ctx context.Context, searchInfo *swagger.Sea
 			logrus.Error(err)
 			return nil, err
 		}
-		fmt.Println(storeByString)
 		*store = findIntersection(*store, *storeByString)
 	}
 

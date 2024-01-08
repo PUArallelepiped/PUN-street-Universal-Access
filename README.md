@@ -16,12 +16,22 @@ PUA
 
 ### env
 
-```
+```bash
 cd frontend
 npm install
+
+cp .example.env .env
 ```
 
-### run
+### for local run
+
+``BACKEND_PATH='http://localhost:5000/api/v1'``
+
+### for docker run
+
+``BACKEND_PATH='http://go-server:5000/api/v1'``
+
+### run at local
 
 ```bash
 cd frontend
@@ -79,12 +89,17 @@ gofmt -l -d .
 ```bash
 docker-compose up --detach
 ```
+
 #### only run go-server
+
 > if go.mod/go.sum have changed, u should rebuild go-server image
+
 ```bash
 docker-compose up go-server
 ```
-#### only run postgres 
+
+#### only run postgres
+
 ```bash
 docker-compose up postgres-db
 ```

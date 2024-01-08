@@ -18,7 +18,7 @@ PUA
 
 ```bash
 cd frontend
-npm install
+npm install --legacy-peer-deps
 
 cp .example.env .env
 ```
@@ -44,7 +44,7 @@ it will auto reload after code change
 
 ### env
 
-```
+```bash
 go mod download
 ```
 

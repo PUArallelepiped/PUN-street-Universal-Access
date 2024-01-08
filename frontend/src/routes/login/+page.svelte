@@ -5,6 +5,9 @@
 	import { ErrorMessage } from '$lib';
 	import NisePanda from '$lib/assets/nise_panda.png';
 	import { PUBLIC_TWPURL as twpUrl, PUBLIC_BACKEND_PATH as backendPath } from '$env/static/public';
+	import type { Action } from './$types';
+	import type { ActionResult } from '@sveltejs/kit';
+	import { deserialize } from '$app/forms';
 
 	let user_email = '';
 	let password = '';
@@ -17,26 +20,18 @@
 	});
 
 	async function login() {
-		let maxAge = 60 * 60 * 24; // 1 day
-		const res = await fetch(backendPath + '/login', {
+		let formData = new FormData();
+		formData.append('user_email', user_email);
+		formData.append('password', password);
+		const res = await fetch('?/login', {
 			method: 'POST',
-			credentials: 'include',
-			body: JSON.stringify({
-				user_email,
-				password
-			})
+			body: formData
 		});
-		if (res.status == 200) {
-			await res
-				.json()
-				.then(
-					(data) =>
-						(document.cookie =
-							'jwttoken=' + data + '; path=/' + '; samesite=strict' + '; max-age=' + maxAge)
-				);
-			// console.log((await getId()).valueOf());
+		const text: ActionResult = deserialize(await res.text().then((data) => data));
+		let data = text.data;
+		if (data == '200') {
 			goto('/shops');
-		} else if (res.status == 403) {
+		} else if (data == 403) {
 			errorMsg = 'You got banned, haha';
 			errorMsgVisible = true;
 		} else {

@@ -1,6 +1,7 @@
-import { backendPath, twpUrl } from '$lib/components/PUA/env';
 import type { PageServerLoad } from './$types';
 import type { Cookies } from '@sveltejs/kit';
+import { PUBLIC_TWPURL as twpUrl } from '$env/static/public';
+import { BACKEND_PATH as backendPath } from '$env/static/private';
 
 export const load: PageServerLoad = async ({ url }) => {
 	const state = url.searchParams.get('state');

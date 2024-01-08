@@ -148,7 +148,7 @@
 				class="flex w-full justify-center gap-2 rounded-full bg-[#145142] p-2 text-xl font-bold text-white"
 				on:click={loginWithTwp}
 			>
-				<img src="https://noobdy.asuscomm.com/assets/logo-28e599d4.png" class="h-7" alt="" />
+				<img src={twpUrl + '/assets/logo-28e599d4.png'} class="h-7" alt="" />
 				<div>Continue with TWP</div>
 			</button>
 		</div>

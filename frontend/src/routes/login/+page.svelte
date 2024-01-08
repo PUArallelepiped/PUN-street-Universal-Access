@@ -4,8 +4,7 @@
 	import InputBox from '$lib/components/PUA/InputBox.svelte';
 	import { ErrorMessage } from '$lib';
 	import NisePanda from '$lib/assets/nise_panda.png';
-	import { PUBLIC_TWPURL as twpUrl, PUBLIC_BACKEND_PATH as backendPath } from '$env/static/public';
-	import type { Action } from './$types';
+	import { PUBLIC_TWPURL as twpUrl } from '$env/static/public';
 	import type { ActionResult } from '@sveltejs/kit';
 	import { deserialize } from '$app/forms';
 

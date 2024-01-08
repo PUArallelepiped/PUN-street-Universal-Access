@@ -105,7 +105,7 @@ const getTwpUserInfo = async (access_token: string) => {
 };
 
 const Login = async (email: string, cookies: Cookies) => {
-	let maxAge = 60 * 60 * 24; // 1 day
+	const maxAge = 60 * 60 * 24; // 1 day
 	const res = await fetch(backendPath + '/login', {
 		method: 'POST',
 		credentials: 'include',

@@ -18,7 +18,7 @@ PUA
 
 ```bash
 cd frontend
-npm install
+npm install --legacy-peer-deps
 
 cp .example.env .env
 ```
@@ -44,7 +44,7 @@ it will auto reload after code change
 
 ### env
 
-```
+```bash
 go mod download
 ```
 
@@ -87,7 +87,7 @@ gofmt -l -d .
 > detach is background run, if want see its output remove --detach
 
 ```bash
-docker-compose up --detach
+docker-compose up --detach --build
 ```
 
 #### only run go-server

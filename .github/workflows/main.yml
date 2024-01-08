@@ -18,7 +18,7 @@ jobs:
       - name: Prettier
         working-directory: ./frontend
         run: |
-          npm ci
+          npm ci --legacy-peer-deps
           npm run lint
   gofmt:
     runs-on: ubuntu-latest

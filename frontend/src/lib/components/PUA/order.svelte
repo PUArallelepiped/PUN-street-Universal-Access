@@ -10,7 +10,7 @@
 		ShippingCoupon
 	} from '$lib';
 	import type { storeOrderInfo } from '$lib';
-	import { backendPath } from './env';
+	import { PUBLIC_BACKEND_PATH as backendPath } from '$env/static/public';
 	import { getId } from './getId';
 
 	export let showDetail: boolean;

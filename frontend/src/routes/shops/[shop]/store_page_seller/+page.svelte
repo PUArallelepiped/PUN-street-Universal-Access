@@ -5,7 +5,7 @@
 	import TagLabelArea from '$lib/components/PUA/store_page_seller/tagLabelArea.svelte';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
-	import { backendPath } from '$lib/components/PUA/env';
+	import { PUBLIC_BACKEND_PATH as backendPath } from '$env/static/public';
 	export let data: PageData;
 	let shop_id = data.shop;
 

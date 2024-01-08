@@ -3,9 +3,9 @@
 	import Star from '$lib/assets/Star.svg';
 	import noStar from '$lib/assets/noStar.svg';
 	import { onMount } from 'svelte';
-	import { backendPath } from './env';
 	import { goto } from '$app/navigation';
 	import TagStar from './tag/tagStar.svelte';
+	import { PUBLIC_BACKEND_PATH as backendPath } from '$env/static/public';
 	export let avgRate: number = 4.87;
 	export let shopName: string;
 	export let date: string;

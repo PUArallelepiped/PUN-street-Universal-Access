@@ -1,5 +1,5 @@
 import type { storeOrderInfo } from '$lib';
-import { backendPath } from '$lib/components/PUA/env';
+import { BACKEND_PATH as backendPath } from '$env/static/private';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }) => {

@@ -3,7 +3,7 @@
 	import { DiscountArea, Checkcontainer, OkButton, NeedChooseLabel } from '$lib/index';
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
-	import { backendPath } from '$lib/components/PUA/env';
+	import { PUBLIC_BACKEND_PATH as backendPath } from '$env/static/public';
 	import { goto } from '$app/navigation';
 	import { getId } from '$lib/components/PUA/getId';
 	import right_allow from '$lib/assets/right_allow.svg';

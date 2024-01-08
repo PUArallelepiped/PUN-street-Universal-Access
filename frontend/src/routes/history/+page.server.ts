@@ -1,7 +1,7 @@
-import { backendPath } from '$lib/components/PUA/env.js';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { getIdByToken } from '$lib/components/PUA/getId';
+import { BACKEND_PATH as backendPath } from '$env/static/private';
 
 type historyInfoType = {
 	customer_id: number;

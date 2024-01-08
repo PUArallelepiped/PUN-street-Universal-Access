@@ -4,10 +4,10 @@
 	import Casher from '$lib/assets/casher.svg';
 	import InputBox from '$lib/components/PUA/InputBox.svelte';
 	import OkButton from '$lib/components/PUA/OkButton.svelte';
-	import { backendPath } from '$lib/components/PUA/env';
 	import ErrorMessage from '$lib/components/PUA/ErrorMessage.svelte';
 	import { goto } from '$app/navigation';
 	import { CheckBox } from '$lib';
+	import { PUBLIC_BACKEND_PATH as backendPath } from '$env/static/public';
 
 	let context: { text: string; status: boolean }[] = [
 		{ text: 'Choose User Type', status: true },

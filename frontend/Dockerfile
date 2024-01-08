@@ -1,5 +1,14 @@
-FROM node:16.11.1-alpine3.14
+FROM node:21-alpine3.18
 WORKDIR /app/client
 
-COPY package.json package-lock.json ./
-RUN npm install
+COPY ./  ./
+
+# Clean install all node modules
+RUN npm ci --legacy-peer-deps
+
+# Build SvelteKit app
+RUN npm run build
+
+# Delete source code files that were used to build the app that are no longer needed
+RUN rm -rf src/ static/ emailTemplates/ docker-compose.yml
+CMD ["node","build"]

@@ -1,5 +1,5 @@
 import { goto } from '$app/navigation';
-import { backendPath } from './env';
+import { BACKEND_PATH as backendPath } from '$env/static/private';
 
 export async function validateToken() {
 	const response = await fetch(backendPath + '/validate', {

@@ -21,6 +21,7 @@ func NewProductHandler(e *gin.Engine, productUsecase domain.ProductUsecase) {
 
 	v1 := e.Group("/api/v1")
 	{
+		v1.GET("/product/:productID/recommend", handler.RecommendProduct)
 		v1.GET("/product/:productID", handler.GetProductByProductID)
 		v1.GET("/store/:storeID/products", handler.GetProductsByStoreId)
 		v1.POST("/store/:storeID/add-product", handler.AddProduct)
@@ -102,4 +103,22 @@ func (s *ProductHandler) DeleteProduct(c *gin.Context) {
 	}
 
 	c.Status(200)
+}
+
+func (s *ProductHandler) RecommendProduct(c *gin.Context) {
+	productID, err := strconv.ParseInt(c.Param("productID"), 10, 64)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(400)
+		return
+	}
+
+	products, err := s.ProductUsecase.RecommendProductByProductID(c, productID)
+	if err != nil {
+		logrus.Error(err)
+		c.Status(500)
+		return
+	}
+
+	c.JSON(200, products)
 }

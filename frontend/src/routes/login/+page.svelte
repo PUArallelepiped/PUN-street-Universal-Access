@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { backendPath, twpUrl } from '$lib/components/PUA/env';
+	import { twpUrl } from '$lib/components/PUA/env';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import InputBox from '$lib/components/PUA/InputBox.svelte';
 	import { ErrorMessage } from '$lib';
 	import NisePanda from '$lib/assets/nise_panda.png';
+	import { PUBLIC_BACKEND_PATH as backendPath } from '$env/static/public';
 
 	let user_email = '';
 	let password = '';

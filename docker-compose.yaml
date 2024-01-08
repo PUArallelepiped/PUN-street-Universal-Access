@@ -8,12 +8,14 @@ services:
       dockerfile: Dockerfile
     container_name: frontend
     working_dir: /app/client
+    environment:
+      # Internal server error messages will not send stacktrace to the browser in production
+      - NODE_ENV=production
+    # Points to a file with the sensitive environment variables
+    env_file:
+      - ./frontend/.env
     ports:
-      - "5173:5173"
-    volumes:
-      - ./frontend:/app/client
-    entrypoint: npm run dev -- --host
-    restart: always
+      - 5050:3000
   go-server:
       image: go-server
       build:

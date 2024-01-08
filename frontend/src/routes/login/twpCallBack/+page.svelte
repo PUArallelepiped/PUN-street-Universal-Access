@@ -30,4 +30,6 @@
 	});
 </script>
 
-<div>test</div>
+<div class="flex h-full w-full items-center justify-center text-4xl font-bold text-PUA-dark-orange">
+	loading
+</div>

@@ -59,7 +59,7 @@ export const actions = {
 				description: 'twp user',
 				address: twpUserInfo.address,
 				shipping_fee: 100,
-				picture: twpUserInfo.image_url
+				picture: twpUrl + twpUserInfo.image_url
 			};
 			const userInfo: UserInfo = {
 				user_name: twpUserInfo.name,

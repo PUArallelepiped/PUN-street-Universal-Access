@@ -105,6 +105,7 @@ const getTwpUserInfo = async (access_token: string) => {
 };
 
 const Login = async (email: string, cookies: Cookies) => {
+	const maxAge = 60 * 60 * 24; // 1 day
 	const res = await fetch(backendPath + '/login', {
 		method: 'POST',
 		credentials: 'include',
@@ -115,7 +116,12 @@ const Login = async (email: string, cookies: Cookies) => {
 	});
 	if (res.status == 200) {
 		await res.json().then((data) => {
-			cookies.set('jwttoken', data, { path: '/', sameSite: 'strict' });
+			cookies.set('jwttoken', data, {
+				maxAge: maxAge,
+				path: '/',
+				sameSite: 'strict',
+				httpOnly: false
+			});
 		});
 		return true;
 	} else {

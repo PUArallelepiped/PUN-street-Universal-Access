@@ -35,3 +35,29 @@ async function getCart(storeId: string) {
 	}
 	return [];
 }
+
+export const actions = {
+	updateOrderStatus: async ({ request }) => {
+		try {
+			const data = await request.formData();
+			const store_id = data.get('store_id');
+			const cart_id = data.get('cart_id');
+			const user_id = data.get('user_id');
+
+			await fetch(
+				backendPath +
+					`/seller/update-order-status/customer/` +
+					user_id +
+					`/cart/` +
+					cart_id +
+					`/store/` +
+					store_id,
+				{
+					method: 'PUT'
+				}
+			);
+		} catch {
+			throw redirect(307, '/login');
+		}
+	}
+};

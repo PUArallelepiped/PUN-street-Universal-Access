@@ -3,25 +3,17 @@
 	import OrderStatusCard from '$lib/components/PUA/orderStatusCard.svelte';
 	import { page } from '$app/stores';
 	import type { PageData } from './$types';
-	import { PUBLIC_BACKEND_PATH as backendPath } from '$env/static/public';
 
 	export let data: PageData;
 
 	async function postAndChangeStatus(index: number) {
-		await fetch(
-			backendPath +
-				`/seller/update-order-status/customer/` +
-				data.orderRespList[index].user_id +
-				`/cart/` +
-				data.orderRespList[index].cart_id +
-				`/store/` +
-				data.orderRespList[index].store_id,
-			{
-				method: 'PUT'
-			}
-		);
-		await invalidateAll();
+		let formData = new FormData();
+		formData.append('cart_id', data.orderRespList[index].cart_id.toString());
+		formData.append('user_id', data.orderRespList[index].user_id.toString());
+		formData.append('store_id', data.orderRespList[index].store_id.toString());
 
+		await fetch('?/updateOrderStatus', { method: 'POST', body: formData });
+		await invalidateAll();
 		return;
 	}
 

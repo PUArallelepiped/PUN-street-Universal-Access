@@ -4,8 +4,6 @@
 	export let product_picture: string;
 	export let product_price: number = 160;
 	export let product_name: string = '茶碗蒸';
-	export let description: string =
-		'鮮甜柴魚高湯配上香菇、雞腿肉，口感滑潤好滋味。可能不太適合拿來...';
 	export let product_quantity: number = 1;
 	export let discountQuantity: number;
 	export let discountId: number;
@@ -18,15 +16,16 @@
 <div class="flex h-32 w-96 flex-col rounded-xl bg-white p-2.5">
 	<a href={'/shops/' + store_id + '/' + product_id}>
 		<div class="flex gap-4">
-			<img
-				class="flex h-20 w-20 truncate rounded-xl object-cover shadow-inner"
-				src={product_picture}
-				alt="img"
-			/>
-			<div class="flex flex-col gap-3">
-				<div class="text-2xl font-bold text-orange-950">{product_name}</div>
-				<div class="truncate text-sm font-normal text-neutral-400">
-					{description}
+			<div class="h-20 w-20">
+				<img
+					class="flex h-20 w-20 truncate rounded-xl object-cover shadow-inner"
+					src={product_picture}
+					alt="img"
+				/>
+			</div>
+			<div class="flex w-3/4 flex-col gap-3">
+				<div class="line-clamp-2 text-ellipsis break-words text-2xl font-bold text-orange-950">
+					{product_name}
 				</div>
 			</div>
 		</div>

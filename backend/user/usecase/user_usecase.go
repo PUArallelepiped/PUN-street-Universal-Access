@@ -167,7 +167,7 @@ func (su *UserUsecase) RegisterUser(ctx context.Context, user *swagger.RegisterI
 	if user.StoreRegisterInfo != nil {
 		// register store
 		logrus.Info("register store")
-		id, err := su.userRepo.RegisterUser(ctx, user, "011")
+		id, err := su.userRepo.RegisterUser(ctx, user, "store")
 		if err != nil {
 			logrus.Error(err)
 			return err
@@ -180,7 +180,7 @@ func (su *UserUsecase) RegisterUser(ctx context.Context, user *swagger.RegisterI
 	} else {
 		// register user
 		logrus.Info("register user")
-		_, err := su.userRepo.RegisterUser(ctx, user, "001")
+		_, err := su.userRepo.RegisterUser(ctx, user, "customer")
 		if err != nil {
 			logrus.Error(err)
 			return err

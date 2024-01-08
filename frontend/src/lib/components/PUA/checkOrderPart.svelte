@@ -2,8 +2,8 @@
 	import { goto, invalidateAll } from '$app/navigation';
 	import { PUALabel } from '$lib';
 	import drone from '$lib/assets/drone.png';
+	import { PUBLIC_BACKEND_PATH as backendPath } from '$env/static/public';
 	import OkButton from './OkButton.svelte';
-	import { backendPath } from './env';
 	import { getId } from './getId';
 	import ProgressBar from './progressBar.svelte';
 

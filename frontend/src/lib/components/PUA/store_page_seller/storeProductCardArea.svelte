@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { StoreProductCard } from '$lib';
+	import { PUBLIC_BACKEND_PATH as backendPath } from '$env/static/public';
 	import TagAdd from '../tag/tagAdd.svelte';
-	import { backendPath } from '../env';
 	export let productListResponse: {
 		name: string;
 		description: string;

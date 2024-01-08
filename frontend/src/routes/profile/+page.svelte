@@ -1,12 +1,16 @@
 <script lang="ts">
+	import Casher from '$lib/assets/picturecasher_head.svg';
 	import wallet from '$lib/assets/profile_wallet.svg';
-	import OkButton from '$lib/components/PUA/OkButton.svelte';
 	import DenyButton from '$lib/components/PUA/denyButton.svelte';
 	import Chart, { type ChartItem } from 'chart.js/auto';
 	import { onMount } from 'svelte';
 	import { deserialize } from '$app/forms';
 	import type { ActionResult } from '@sveltejs/kit';
 	import type { PageData } from './$types';
+	import { goto } from '$app/navigation';
+	import OkButton from '$lib/components/PUA/OkButton.svelte';
+	import { logout } from '$lib/components/PUA/logout';
+	import moment from 'moment';
 	export let data: PageData;
 	console.log(data);
 
@@ -160,7 +164,11 @@
 <div class="flex justify-center">
 	<div class="flex min-h-screen w-full flex-col lg:w-3/5">
 		<div class=" flex items-center gap-7 bg-PUA-stone px-11 py-6">
-			<img src={wallet} alt="" class="" />
+			{#if userInfo.authority === 'store'}
+				<img src={Casher} alt="" class="" />
+			{:else if userInfo.authority === 'customer'}
+				<img src={wallet} alt="" class="" />
+			{/if}
 			<div class=" flex grow flex-col gap-6">
 				<div class="flex flex-col">
 					<div class=" text-2xl font-bold text-PUA-gray">{userInfo.user_name}</div>
@@ -168,12 +176,28 @@
 				</div>
 				<div class=" text-xl font-bold text-PUA-gray">{userInfo.address}</div>
 			</div>
-			<div class="h-fit w-fit rounded-full bg-PUA-gray">
-				<DenyButton
-					onclick={() => {
-						return null;
-					}}>go my store</DenyButton
-				>
+			<div class="flex h-full w-full flex-wrap items-center justify-end gap-2">
+				{#if userInfo.authority === 'store'}
+					<div class="h-fit w-fit rounded-full bg-PUA-gray">
+						<DenyButton
+							onclick={() => {
+								goto('/order/updateOrderStatus');
+
+								return null;
+							}}>process order</DenyButton
+						>
+					</div>
+
+					<div class="h-fit w-fit rounded-full bg-PUA-gray">
+						<DenyButton
+							onclick={() => {
+								goto('/shops/' + userInfo.user_id.toString() + '/store_page_seller');
+
+								return null;
+							}}>go my store</DenyButton
+						>
+					</div>
+				{/if}
 			</div>
 		</div>
 		<div class=" bg-PUA-dark-gray">
@@ -204,21 +228,23 @@
 						class=" h-1 w-full"
 					></div>
 				</div>
-				<div class="grow">
-					<button
-						class:bg-white={currentTab == 2}
-						class:bg-gray-300={currentTab != 2}
-						class="w-full bg-gray-300 py-3 text-center text-2xl font-bold text-PUA-dark-red"
-						on:click={() => {
-							currentTab = 2;
-						}}>Statistic</button
-					>
-					<div
-						class:bg-PUA-dark-red={currentTab == 2}
-						class:bg-gray-300={currentTab != 2}
-						class=" h-1 w-full"
-					></div>
-				</div>
+				{#if userInfo.authority === 'store'}
+					<div class="grow">
+						<button
+							class:bg-white={currentTab == 2}
+							class:bg-gray-300={currentTab != 2}
+							class="w-full bg-gray-300 py-3 text-center text-2xl font-bold text-PUA-dark-red"
+							on:click={() => {
+								currentTab = 2;
+							}}>Statistic</button
+						>
+						<div
+							class:bg-PUA-dark-red={currentTab == 2}
+							class:bg-gray-300={currentTab != 2}
+							class=" h-1 w-full"
+						></div>
+					</div>
+				{/if}
 			</div>
 		</div>
 
@@ -228,11 +254,9 @@
 					<div class="inline-flex items-center justify-center rounded-full bg-gray-300 px-5">
 						<div class="text-base font-bold leading-tight text-PUA-dark-orange">User Name</div>
 					</div>
-					<input
-						type="text"
-						value={userInfo.user_name}
-						class="flex text-2xl font-bold text-PUA-dark-orange underline focus:outline-none"
-					/>
+					<div class="flex font-['Inter'] text-2xl font-bold text-PUA-dark-orange">
+						{userInfo.user_name}
+					</div>
 				</div>
 				<div class="">
 					<div class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5">
@@ -240,11 +264,9 @@
 							Phone
 						</div>
 					</div>
-					<input
-						type="text"
-						value={userInfo.phone}
-						class="flex bg-inherit font-['Inter'] text-2xl font-bold text-PUA-dark-orange underline focus:outline-none"
-					/>
+					<div class="flex bg-inherit font-['Inter'] text-2xl font-bold text-PUA-dark-orange">
+						{userInfo.phone}
+					</div>
 				</div>
 				<div class="">
 					<div class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5">
@@ -252,23 +274,15 @@
 							Birthday
 						</div>
 					</div>
-					<input
-						type="text"
-						value={userInfo.birthday}
-						class="flex bg-inherit font-['Inter'] text-2xl font-bold text-PUA-dark-orange underline focus:outline-none"
-					/>
+					<div class="flex bg-inherit font-['Inter'] text-2xl font-bold text-PUA-dark-orange">
+						{moment(userInfo.birthday).format('YYYY-MM-DD')}
+					</div>
 				</div>
-				<div class="flex justify-center gap-32">
-					<DenyButton
-						onclick={() => {
-							return null;
-						}}
-					>
-						Clear
-					</DenyButton>
+				<div class="flex justify-center gap-32 px-28 pt-20">
 					<OkButton
-						text="Save Change"
+						text="Logout"
 						onclick={() => {
+							logout();
 							return null;
 						}}
 					></OkButton>
@@ -280,11 +294,9 @@
 					<div class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5">
 						<div class="  text-base font-bold leading-tight text-PUA-dark-orange">Email</div>
 					</div>
-					<input
-						type="text"
-						value={userInfo.user_email}
-						class="flex bg-inherit font-['Inter'] text-2xl font-bold text-PUA-dark-orange underline focus:outline-none"
-					/>
+					<div class="flex bg-inherit font-['Inter'] text-2xl font-bold text-PUA-dark-orange">
+						{userInfo.user_email}
+					</div>
 				</div>
 				<div class="py-5">
 					<div class="inline-flex items-center justify-center gap-5 rounded-full bg-gray-300 px-5">
@@ -292,21 +304,9 @@
 							Password
 						</div>
 					</div>
-					<input
-						type="text"
-						value={userInfo.password}
-						class="flex bg-inherit font-['Inter'] text-2xl font-bold text-PUA-dark-orange underline focus:outline-none"
-					/>
-				</div>
-				<div class="flex gap-32 px-28 pt-5">
-					<button
-						class="rounded-full bg-gray-300 px-14 font-['Inter'] text-xl font-bold text-PUA-dark-orange"
-						>Cancel</button
-					>
-					<button
-						class="rounded-full bg-PUA-orange px-10 font-['Inter'] text-xl font-bold text-white"
-						>Save change</button
-					>
+					<div class="flex bg-inherit font-['Inter'] text-2xl font-bold text-PUA-dark-orange">
+						●●●●●●
+					</div>
 				</div>
 			</div>
 			<div class:hidden={currentTab != 2} class="hidden w-full p-20">

@@ -3,7 +3,7 @@
 	import OrderStatusCard from '$lib/components/PUA/orderStatusCard.svelte';
 	import { page } from '$app/stores';
 	import type { PageData } from './$types';
-	import { backendPath } from '$lib/components/PUA/env';
+	import { PUBLIC_BACKEND_PATH as backendPath } from '$env/static/public';
 
 	export let data: PageData;
 

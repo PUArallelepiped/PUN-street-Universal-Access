@@ -1,7 +1,7 @@
-import { backendPath } from '$lib/components/PUA/env.js';
 import { getIdByToken } from '$lib/components/PUA/getId.js';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types.js';
+import { BACKEND_PATH as backendPath } from '$env/static/private';
 
 export const actions = {
 	monthStatistic: async ({ request, cookies }) => {

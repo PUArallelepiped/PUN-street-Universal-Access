@@ -1,8 +1,8 @@
-import { backendPath } from '$lib/components/PUA/env';
 import type { shopListResponse } from '$lib';
 import type { PageServerLoad } from './$types.js';
 import { redirect } from '@sveltejs/kit';
 import { getIdByToken } from '$lib/components/PUA/getId.js';
+import { BACKEND_PATH as backendPath } from '$env/static/private';
 
 export const load: PageServerLoad = async ({ cookies }) => {
 	try {

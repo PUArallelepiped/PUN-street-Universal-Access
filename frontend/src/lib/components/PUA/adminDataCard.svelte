@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { backendPath } from '$lib/components/PUA/env';
-
 	import order_icon from '$lib/assets/order_icon.svg';
 	import customer_icon from '$lib/assets/customer_icon.svg';
 	import seller_icon from '$lib/assets/seller_icon.svg';
 	import { goto } from '$app/navigation';
+	import { PUBLIC_BACKEND_PATH as backendPath } from '$env/static/public';
 
 	export let firstCol: string;
 	export let secondCol: string;

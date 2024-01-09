@@ -207,7 +207,7 @@
 		});
 		const exists = await res.json();
 		// console.log(exists)
-		if (res.status == 200 && exists === true) {
+		if (res.status === 200 && exists === true) {
 			return true;
 		} else {
 			return false;

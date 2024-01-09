@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { goto, invalidateAll } from '$app/navigation';
-	import watermelon from '$lib/assets/watermelon.png';
+	import { goto } from '$app/navigation';
 
 	export let recommend: {
 		store_id: number;
@@ -22,7 +21,7 @@
 		<div class="flex h-full flex-col items-center gap-2">
 			<img src={recommend.picture} alt="" class=" h-28 w-28 rounded-lg object-cover" />
 			<div
-				class="text-PUA-dark-red line-clamp-2 w-full text-ellipsis break-words text-center font-bold"
+				class="line-clamp-2 w-full text-ellipsis break-words text-center font-bold text-PUA-dark-red"
 			>
 				{recommend.product_name}
 			</div>

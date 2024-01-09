@@ -26,7 +26,7 @@
 			method: 'POST',
 			body: formData
 		});
-		const text: ActionResult = deserialize(await res.text().then((data) => data));
+		const text: ActionResult = deserialize(await res.text());
 		let data = text.data;
 		if (data == '200') {
 			goto('/shops');

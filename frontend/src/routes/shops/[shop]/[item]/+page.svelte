@@ -252,7 +252,7 @@
 	</div>
 
 	<div class="flex justify-center">
-		<p class="  w-4/5 p-3 text-2xl font-bold text-PUA-dark-red">Recommand</p>
+		<p class="  w-4/5 p-3 text-2xl font-bold text-PUA-dark-red">Recommend</p>
 	</div>
 	<div class=" flex h-60 w-full justify-center">
 		<div bind:this={ctrlElement} class=" absolute z-10 h-52 w-4/5">

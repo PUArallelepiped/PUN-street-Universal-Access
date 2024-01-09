@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { goto, invalidateAll } from '$app/navigation';
-	import { PUALabel } from '$lib';
 	import drone from '$lib/assets/drone.png';
 	import { PUBLIC_BACKEND_PATH as backendPath } from '$env/static/public';
 	import OkButton from './OkButton.svelte';
@@ -75,11 +74,6 @@
 				<img src={drone} alt="" class="h-20 w-32 rounded-xl object-cover" />
 				<img src={drone} alt="" class="h-20 w-32 rounded-xl object-cover" />
 			</div>
-			<PUALabel
-				labelName="Taking Address"
-				value="a street a street asterrt a street  bbbbbbbbbbbbbb"
-				left={true}
-			></PUALabel>
 		</div>
 	</div>
 </div>

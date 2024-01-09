@@ -75,11 +75,6 @@
 				<img src={drone} alt="" class="h-20 w-32 rounded-xl object-cover" />
 				<img src={drone} alt="" class="h-20 w-32 rounded-xl object-cover" />
 			</div>
-			<PUALabel
-				labelName="Taking Address"
-				value="a street a street asterrt a street  bbbbbbbbbbbbbb"
-				left={true}
-			></PUALabel>
 		</div>
 	</div>
 </div>

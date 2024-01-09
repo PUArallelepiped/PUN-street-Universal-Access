@@ -253,7 +253,7 @@ func (p *postgresqlProductRepo) RecommendProductByProductID(ctx context.Context,
 	product_id != $1
 	GROUP BY product_id
 	ORDER BY count DESC
-	LIMIT 10) AS result
+	LIMIT 15) AS result WHERE status != 0
 	`
 
 	rows, err := p.db.Query(sqlStatement, id)

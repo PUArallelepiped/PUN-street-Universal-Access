@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { backendPath } from '$lib/components/PUA/env';
-
 	import admin_icon from '$lib/assets/admin_icon.svg';
 	import AdminDataCard from '$lib/components/PUA/adminDataCard.svelte';
 	import { onMount } from 'svelte';
 	import { DenyButton } from '$lib';
 	import { goto } from '$app/navigation';
+	import { OkButton } from '$lib';
+	import { logout } from '$lib/components/PUA/logout';
+	import { PUBLIC_BACKEND_PATH as backendPath } from '$env/static/public';
 
 	type userShort = {
 		user_id: number;
@@ -146,6 +147,15 @@
 					ban={Boolean(user.status)}
 				></AdminDataCard>
 			{/each}
+			<div class="flex justify-center gap-32 px-28 pb-10 pt-10">
+				<OkButton
+					text="Logout"
+					onclick={() => {
+						logout();
+						return null;
+					}}
+				></OkButton>
+			</div>
 		</div>
 		<div class:hidden={profileTab != 1} class="hidden bg-white">
 			{#each orders as order}

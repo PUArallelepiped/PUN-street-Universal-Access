@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { backendPath } from '$lib/components/PUA/env';
+	import { PUBLIC_BACKEND_PATH as backendPath } from '$env/static/public';
 	import { Textarea, DisCountArea, OkButton, StatusButton, ErrorMsg } from '$lib/index';
 	import AddCategoryAndItemArea from '$lib/components/PUA/addCategoryAndItemArea.svelte';
 	import ChangeDiscountPage from '$lib/components/PUA/changeDiscountPage.svelte';
@@ -51,7 +51,7 @@
 		description: '',
 		stock: 0,
 		event_discount_array: [],
-		picture: 'https://i.imgur.com/3i3tyXJ.gif',
+		picture: '',
 		status: 1
 	};
 	let current_discount_array = {

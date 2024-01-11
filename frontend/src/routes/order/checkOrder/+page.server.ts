@@ -1,7 +1,7 @@
-import { backendPath } from '$lib/components/PUA/env.js';
 import type { PageServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
 import { getIdByToken } from '$lib/components/PUA/getId';
+import { BACKEND_PATH as backendPath } from '$env/static/private';
 type orderInfoType = {
 	user_id: number;
 	cart_id: number;

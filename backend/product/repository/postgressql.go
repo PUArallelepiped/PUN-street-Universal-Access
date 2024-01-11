@@ -243,3 +243,33 @@ func (p *postgresqlProductRepo) AddProductLabelItem(ctx context.Context, product
 
 	return nil
 }
+
+func (p *postgresqlProductRepo) RecommendProductByProductID(ctx context.Context, id int64) (*[]swagger.RecommendInfo, error) {
+	sqlStatement := `
+	SELECT store_id, product_id, name, picture from products NATURAL JOIN
+	(SELECT product_id, count(*) from carts WHERE
+	(carts.customer_id , carts.cart_id) in 
+	(SELECT customer_id, cart_id FROM carts WHERE product_id = $1) AND
+	product_id != $1
+	GROUP BY product_id
+	ORDER BY count DESC
+	LIMIT 10) AS result
+	`
+
+	rows, err := p.db.Query(sqlStatement, id)
+	if err != nil {
+		return nil, err
+	}
+
+	products := &[]swagger.RecommendInfo{}
+	for rows.Next() {
+		product := &swagger.RecommendInfo{}
+		err := rows.Scan(&product.StoreId, &product.ProductId, &product.ProductName, &product.Picture)
+		if err != nil {
+			return nil, err
+		}
+		*products = append(*products, *product)
+	}
+
+	return products, nil
+}

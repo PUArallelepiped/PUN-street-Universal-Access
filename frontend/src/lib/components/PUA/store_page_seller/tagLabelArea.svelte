@@ -3,7 +3,7 @@
 	import TagAdd from '../tag/tagAdd.svelte';
 	import TagLabel from '../tag/tagLabel.svelte';
 	import TagMenu from '../tag/tagMenu.svelte';
-	import { backendPath } from '../env';
+	import { PUBLIC_BACKEND_PATH as backendPath } from '$env/static/public';
 	export let tagText: { category_id: number; category_name: string }[];
 	export let tagText_all: { category_id: number; category_name: string }[];
 	export let star_score = '';

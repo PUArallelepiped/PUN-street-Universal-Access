@@ -8,7 +8,7 @@
 	import { getId } from '$lib/components/PUA/getId';
 	import right_allow from '$lib/assets/right_allow.svg';
 	import left_allow from '$lib/assets/left_allow.svg';
-	import RecommandCard from '$lib/components/PUA/recommandCard.svelte';
+	import RecommendCard from '$lib/components/PUA/recommendCard.svelte';
 	export let data: PageData;
 	let shop_id = data.shop;
 	let item_id = data.item;
@@ -47,6 +47,14 @@
 		discount_id: number | null;
 		store_id: number;
 	};
+
+	type recommendRespTye = {
+		store_id: number;
+		product_id: number;
+		picture: string;
+		product_name: string;
+	};
+
 	let product: productRespType = {
 		store_id: 1,
 		product_label_array: [
@@ -112,6 +120,7 @@
 		discount_id: 1,
 		store_id: 1
 	};
+	let recommend: recommendRespTye[] = [];
 	async function getProductResp() {
 		const res = await fetch(backendPath + `/product/` + item_id);
 
@@ -143,20 +152,32 @@
 		}
 	}
 
-	let screenWidth = 0;
+	async function getRecommendResp() {
+		const res = await fetch(backendPath + `/product/` + item_id + `/recommend`);
 
+		if (res.status == 200) {
+			recommend = await res.json();
+			console.log('re', recommend);
+		}
+		return;
+	}
 	onMount(async () => {
 		getProductResp();
-		screenWidth = window.innerWidth - 94;
+		getRecommendResp();
 	});
 
 	let k = 0;
 
 	let myElement: HTMLDivElement | null = null;
+	let ctrlElement: HTMLDivElement | null = null;
 	let myElementWidth = 0;
+	let ctrlElementWidth = 0;
 	$: {
-		if (myElement) {
-			myElementWidth = myElement.clientWidth;
+		myElementWidth = recommend.length * 144;
+	}
+	$: {
+		if (ctrlElement) {
+			ctrlElementWidth = ctrlElement.clientWidth - 80;
 		}
 	}
 </script>
@@ -230,9 +251,11 @@
 		</div>
 	</div>
 
-	<p class="p-3 text-2xl font-bold text-PUA-dark-red">Recommand</p>
+	<div class="flex justify-center">
+		<p class="  w-4/5 p-3 text-2xl font-bold text-PUA-dark-red">Recommend</p>
+	</div>
 	<div class=" flex h-60 w-full justify-center">
-		<div class=" absolute z-10 h-52 w-full">
+		<div bind:this={ctrlElement} class=" absolute z-10 h-52 w-4/5">
 			<div class="flex h-full w-full justify-between">
 				<div>
 					<button
@@ -250,41 +273,28 @@
 
 				<button
 					on:click={() => {
-						if (k - 144 - 8 >= -myElementWidth) {
+						if (myElementWidth - Math.abs(k) + 100 >= ctrlElementWidth) {
 							k = k - 144 - 8;
 						}
 					}}
-					disabled={k - 144 - 8 <= -myElementWidth}
+					disabled={myElementWidth - Math.abs(k) + 100 < ctrlElementWidth ||
+						myElementWidth <= ctrlElementWidth}
 					class="group flex h-full w-10 items-center justify-center bg-gray-300 shadow-lg shadow-zinc-400 hover:bg-zinc-400 hover:disabled:bg-gray-300"
 				>
 					<img src={right_allow} alt="" class=" h-7 w-7" />
 				</button>
 			</div>
 		</div>
-
-		<div class="absolute z-20 flex h-56" style={`width: ${screenWidth}px`}>
+		<div class="absolute z-20 flex h-56 w-4/5" style={`width: ${ctrlElementWidth}px`}>
 			<div class="mx-2 h-full w-full overflow-hidden">
 				<div
 					class="flex w-fit gap-2 duration-300"
 					style={`transform: translateX(${k}px);`}
 					bind:this={myElement}
 				>
-					<RecommandCard></RecommandCard>
-					<RecommandCard></RecommandCard>
-					<RecommandCard></RecommandCard>
-					<RecommandCard></RecommandCard>
-					<RecommandCard></RecommandCard>
-					<RecommandCard></RecommandCard>
-					<RecommandCard></RecommandCard>
-					<RecommandCard></RecommandCard>
-					<RecommandCard></RecommandCard>
-					<RecommandCard></RecommandCard>
-					<RecommandCard></RecommandCard>
-					<RecommandCard></RecommandCard>
-					<RecommandCard></RecommandCard>
-					<RecommandCard></RecommandCard>
-					<RecommandCard></RecommandCard>
-					<RecommandCard></RecommandCard>
+					{#each recommend as subrec}
+						<RecommendCard recommend={subrec}></RecommendCard>
+					{/each}
 				</div>
 			</div>
 		</div>

@@ -179,12 +179,13 @@ func (p *postgresqlCartRepo) AddOrderByCartInfo(ctx context.Context, customerId 
     ($1, 
 	(SELECT current_cart_id FROM user_data WHERE user_id = $1),
 	$2, 
-	(SELECT COALESCE(
-		(SELECT discount_id
-		FROM seasoning_discount
-		WHERE start_date <= $3 AND end_date >= $3),
-		1
-	) AS discount_id),
+	(SELECT (SELECT 
+    COALESCE(
+    (SELECT discount_id
+    FROM seasoning_discount
+    WHERE 
+        start_date <= $3 AND 
+        end_date >= $3 LIMIT 1) ,1)) AS discount_id),
 	(SELECT COALESCE(shipping_discount.discount_id, 1) FROM shipping_discount LEFT JOIN
 	discounts ON shipping_discount.discount_id = discounts.discount_id
 	WHERE shipping_discount.store_id = $2 AND discounts.status = 1),

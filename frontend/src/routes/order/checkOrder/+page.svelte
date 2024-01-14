@@ -1,7 +1,17 @@
 <script lang="ts">
 	import CheckOrderPart from '$lib/components/PUA/checkOrderPart.svelte';
 	import type { PageData } from './$types';
+	import { onMount } from 'svelte';
 	export let data: PageData;
+
+	let socket;
+
+	onMount(() => {
+		socket = new WebSocket('ws://localhost:5000/socket');
+		socket.addEventListener('open', function (event) {
+			console.log(event);
+		});
+	});
 </script>
 
 <div class="flex flex-col gap-24 py-5">

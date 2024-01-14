@@ -1,10 +1,13 @@
 package delivery
 
 import (
+	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
+	"github.com/gorilla/websocket"
 	"github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
@@ -32,6 +35,7 @@ func NewCartHandler(e *gin.Engine, cartUsecase domain.CartUsecase) {
 		v1.PUT("/seller/update-order-status/customer/:userID/cart/:cartID/store/:storeID", handler.UpdateOrderStatus)
 		v1.GET("/seller/store/:storeID/orders", handler.GetSellerOrders)
 	}
+	e.GET("/socket", handler.SocketHandler)
 }
 func (ch *CartHandler) GetAllHistory(c *gin.Context) {
 	userID, err := strconv.ParseInt(c.Param("userID"), 10, 64)
@@ -218,4 +222,43 @@ func (ch *CartHandler) GetSellerOrders(c *gin.Context) {
 	}
 
 	c.JSON(200, orders)
+}
+
+func (ch *CartHandler) SocketHandler(c *gin.Context) {
+	upGrader := websocket.Upgrader{
+		CheckOrigin: func(r *http.Request) bool {
+			return true
+		},
+		ReadBufferSize:  1024,
+		WriteBufferSize: 1024,
+	}
+
+	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	defer func() {
+		closeSocketErr := ws.Close()
+		if closeSocketErr != nil {
+			panic(err)
+		}
+	}()
+
+	for {
+		// msgType, msg, err := ws.ReadMessage()
+		// if err != nil {
+		// 	panic(err)
+		// }
+		// fmt.Printf("Message Type: %d, Message: %s\n", msgType, string(msg))
+		err = ws.WriteJSON(struct {
+			Reply string `json:"reply"`
+		}{
+			Reply: "Echo...",
+		})
+		if err != nil {
+			panic(err)
+		}
+		time.Sleep(3 * time.Second)
+	}
 }

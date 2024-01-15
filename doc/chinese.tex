@@ -12,6 +12,10 @@
 \usepackage{makecell}
 \usepackage{listings} % Maybe for code block
 \usepackage{underscore}
+% \renewcommand\familydefault{\sfdefault}
+\usepackage{tikz-dependency}
+\usepackage{amsmath}
+\usepackage{minted}
 
 % If you don't like separate files, use this:
 % \usepackage{filecontents}
@@ -62,6 +66,30 @@
 
 \renewcommand{\arraystretch}{1.2} % table row height
 
+\depstyle{lvl}{%
+    edge height=2.5ex,
+    % edge unit distance=#1*2.5ex, % Another way of controlling the appearance of the edges.
+    edge below,
+    edge horizontal padding=0,
+    edge vertical padding=(#1-1)*3ex,
+    text only label, % No need for label for functional dependencies.
+    edge slant=0, % Right angles
+    rounded corners=0,
+    edge style={>=triangle 60} % Change the style of the arrowheads.
+}
+\tikzset{
+    matrix/.append style={column sep=0.4cm} % Adding some distance between the attributes.
+}
+\tikzstyle{TxtBook}=[% Style to mimic the textbook Fundamentals of Database Systems.
+    column sep=0cm, % No distance between two attributes.
+    nodes={%
+        fill=gray!20,
+        draw=black,
+        inner xsep=1ex,
+        inner ysep=1ex
+    }
+]
+
 %----------------------------------------------------------
 
 \begin{document}
@@ -107,7 +135,7 @@
       郭丞軒 & 110590001 & t110590001@ntut.org.tw \\
       王熯竑 & 110590002 & t110590002@ntut.org.tw \\
       陸艿寰 & 110590007 & t110590007@ntut.org.tw \\
-      陳姿安 & 110590017 & t1105900017@ntut.org.tw \\
+      陳姿安 & 110590017 & t110590017@ntut.org.tw \\
       劉承翰 & 110590018 & t110590018@ntut.org.tw \\
       歐佳昀 & 110590450 & t110590450@ntut.org.tw \\
     \end{tabular}
@@ -115,7 +143,7 @@
     \vspace{2cm}
     {\SixteenTitle Department of Computer Science \& Information Engineering National Taipei University of Technology \par}
     \vspace{16pt}
-    {\SixteenTitle 10/11/2023 \par}
+    {\SixteenTitle 01/11/2024 \par}
 \end{center}
 \clearpage
 
@@ -201,7 +229,7 @@ SRMS)
 本系統採用前後端分離架構開發，以便團隊成員分工。我們採用svelte作為前端框架，後端利用golang撰寫，資料庫管理系統則使用postgreSQL。
 
 
-\subsection{符號描述 (Notation Description) (if any)}
+\subsection{符號描述 (Notation Description)}
 
 \newcommand{\notationDescTableCol}{ | p{6.5em} | p{32em} |}
 
@@ -247,12 +275,17 @@ SRMS)
 
 \begin{figure*}[h]
     \centering
-    \includegraphics[width=40em]{System-Architecture-Diagram.png}
-    \caption{系統架構圖}
+    \includegraphics[width=31em]{System-Architecture-Diagram.png}
     \label{fig:enter-label}
 \end{figure*}
 
+\begin{figure*}[h]
+    \centering
+    \includegraphics[width=30em]{System-Architecture-Diagram2.png}
+    \label{fig:enter-label}
+\end{figure*}
 %\cite{aws_arch_diagram}
+\newpage
 
 \subsection{操作概念 (Operational Concepts or User Stories)}
 \begin{itemize}
@@ -458,7 +491,6 @@ SRMS)
     \end{tabular}
 \end{center}
 
-% lethe
 \subsection{商業規則與限制 (Business Rules and Integrity Constrains)}
 
 \noindent\begin{tabular}{ | p{6.5em} | p{32em} |}
@@ -494,16 +526,6 @@ WOS-B-007 & 資料庫初始狀態要有所有員工和系統管理員的資訊 \
 
 \newpage
 
-\section{Logical Database Schema}
-\subsection{Schema of the Database}
-
-\begin{figure*}[h]
-    \centerline{\includegraphics[width=40em]{schema-diagram.jpg}}    
-    \caption{database schema}
-    \label{fig:enter-label}
-\end{figure*}
-
-\newpage
 \subsection{Data Dictionary}
 %User
 \noindent\begin{tabular}{ | p{7em} | p{5.5em} |p{5.5em} | p{4.5em} | p{11em} |}
@@ -722,7 +744,9 @@ WOS-B-007 & 資料庫初始狀態要有所有員工和系統管理員的資訊 \
   \hline
   total_price & INTEGER &  & Not Null & 總金額 \\
   \hline
-  discount_id & SERIAL & Foreign&Not Null &折扣ID\\
+  seasoning_discount_id & SERIAL & Foreign&Not Null &季節折扣ID\\
+  \hline
+  shipping_discount_id & SERIAL & Foreign&Not Null &運費折扣ID\\
   \hline
   cart_id& SERIAL & \makecell[l]{Primary \\ Foreign} &Not Null &購物車ID\\
   \hline
@@ -734,10 +758,7 @@ WOS-B-007 & 資料庫初始狀態要有所有員工和系統管理員的資訊 \
   \hline
   taking_address & VARCHAR &  & Not Null & 運送地址 \\
   \hline
-  status & INTEGER &  & Not Null & \makecell[l]{訂單狀態\\0=未結帳\\1=已結帳\\2=接受訂單\\3=製作訂單\\4=運送中\\5=已送達\\6＝確認訂單} \\
-  \hline
-  
-  name & VARCHAR &  &Not Null &折扣名稱\\
+  status & INTEGER &  & Not Null & \makecell[l]{訂單狀態\\0=未結帳\\1=已結帳\\2=接受訂單\\3=製作訂單\\4=運送中\\5=已送達\\6＝確認訂單\\7=已評分} \\
   \hline
 \end{tabular}
 
@@ -796,6 +817,17 @@ WOS-B-007 & 資料庫初始狀態要有所有員工和系統管理員的資訊 \
   name & VARCHAR & Primary & Not Null & 選項名稱\\
   \hline
 \end{tabular}
+
+\newpage
+
+\section{Logical Database Schema}
+\subsection{Schema of the Database}
+
+\begin{figure*}[h]
+    \centerline{\includegraphics[width=40em]{schema-diagram.jpg}}    
+    \caption{database schema}
+    \label{fig:enter-label}
+\end{figure*}
 
 \newpage
 
@@ -1175,7 +1207,7 @@ INSERT INTO label_item (product_id, label_name, item_name) VALUES
 
 \newpage
 
-\subsection{Size of Each table}
+\subsection{Estimation Size of Each table}
 
 \noindent\begin{tabular}{ | p{8em} | p{6.5em} | p{6.5em} | p{8em} |}
   \hline 
@@ -1273,39 +1305,578 @@ INSERT INTO label_item (product_id, label_name, item_name) VALUES
 \end{tabular}
 
 \newpage
+\section{Functional Dependencies and Database Normalization}
+\subsection{Functional Dependencies of the Database Schema}
 
-\section{Implementation and Demonstration of the Database System }
+\text{User_data}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{User_id} \& name \& email \& address \& password \& authority \& phone \& cart_id \& status \& birthday \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{2}{}
+    \depedge[lvl=1]{1}{3}{}
+    \depedge[lvl=1]{1}{4}{}
+    \depedge[lvl=1]{1}{5}{}
+    \depedge[lvl=1]{1}{6}{}
+    \depedge[lvl=1]{1}{7}{}
+    \depedge[lvl=1]{1}{8}{}
+    \depedge[lvl=1]{1}{9}{}
+    \depedge[lvl=1]{1}{10}{}
+\end{dependency}
 
-\subsection{Snapshots of GUI}
+\text{Products}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{product_id} \& name \& description \& store_id \& picture \& price \& stock \& status \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{2}{}
+    \depedge[lvl=1]{1}{3}{}
+    \depedge[lvl=1]{1}{4}{}
+    \depedge[lvl=1]{1}{5}{}
+    \depedge[lvl=1]{1}{6}{}
+    \depedge[lvl=1]{1}{7}{}
+    \depedge[lvl=1]{1}{8}{}
+\end{dependency}
+
+\text{Stores}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{store_id} \& name \& rate \& picture \& address \& description \& shipping_fee \&rate_count \& status \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{2}{}
+    \depedge[lvl=1]{1}{3}{}
+    \depedge[lvl=1]{1}{4}{}
+    \depedge[lvl=1]{1}{5}{}
+    \depedge[lvl=1]{1}{6}{}
+    \depedge[lvl=1]{1}{7}{}
+    \depedge[lvl=1]{1}{8}{}
+    \depedge[lvl=1]{1}{9}{}
+\end{dependency}
+
+\text{Carts}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{customer_id} \& \underline{product_id} \& \underline{cart_id} \& quantity \& event_discount_id \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{4}{}
+    \depedge[lvl=1]{2}{4}{}
+    \depedge[lvl=1]{3}{4}{}
+    \depedge[lvl=1]{1}{5}{}
+    \depedge[lvl=1]{2}{5}{}
+    \depedge[lvl=1]{3}{5}{}
+\end{dependency}
+
+\text{Order}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{customer_id} \& \underline{store_id} \& \underline{cart_id} \& date \& price \& sea_dis \& ship_dis \& method \& address \& status \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{4}{}
+    \depedge[lvl=1]{1}{5}{}
+    \depedge[lvl=1]{1}{6}{}
+    \depedge[lvl=1]{1}{7}{}
+    \depedge[lvl=1]{1}{8}{}
+    \depedge[lvl=1]{1}{9}{}
+    \depedge[lvl=1]{1}{10}{}
+    \depedge[lvl=1]{2}{4}{}
+    \depedge[lvl=1]{2}{5}{}
+    \depedge[lvl=1]{2}{6}{}
+    \depedge[lvl=1]{2}{7}{}
+    \depedge[lvl=1]{2}{8}{}
+    \depedge[lvl=1]{2}{9}{}
+    \depedge[lvl=1]{2}{10}{}
+    \depedge[lvl=1]{3}{4}{}
+    \depedge[lvl=1]{3}{5}{}
+    \depedge[lvl=1]{3}{6}{}
+    \depedge[lvl=1]{3}{7}{}
+    \depedge[lvl=1]{3}{8}{}
+    \depedge[lvl=1]{3}{9}{}
+    \depedge[lvl=1]{3}{10}{}
+\end{dependency}
+
+\text{Discounts}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{discount_id} \& discount_type \& status \& description \& name \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{2}{}
+    \depedge[lvl=1]{1}{3}{}
+    \depedge[lvl=1]{1}{4}{}
+    \depedge[lvl=1]{1}{5}{}
+\end{dependency}
+
+\text{Seasoning_discount}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{discount_id} \& start_date \& end_date \& store_id \& discount_percentage\\
+    \end{deptext}
+    \depedge[lvl=1]{1}{2}{}
+    \depedge[lvl=1]{1}{3}{}
+    \depedge[lvl=1]{1}{4}{}
+    \depedge[lvl=1]{1}{5}{}
+\end{dependency}
+
+\text{Event_discount}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{discount_id} \& max_quantity \& product_id \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{2}{}
+    \depedge[lvl=1]{1}{3}{}
+\end{dependency}
+
+\text{Shipping_discount}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{discount_id} \& max_price \& store_id \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{2}{}
+    \depedge[lvl=1]{1}{3}{}
+\end{dependency}
+
+\text{Label}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{store_id} \& \underline{category_id}  \\
+    \end{deptext}
+\end{dependency}
+
+\text{Categories}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{category_id} \& name \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{2}{}
+\end{dependency}
+
+\text{Product_label}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{product_id} \& \underline{label_name} \& required \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{3}{}
+    \depedge[lvl=1]{2}{3}{}
+\end{dependency}
+
+\text{Product_label_item}
+\newline
+\begin{dependency}
+    \begin{deptext}[TxtBook] % Applying the TxtBook style.
+        \underline{product_id} \& \underline{label_name} \& name \\
+    \end{deptext}
+    \depedge[lvl=1]{1}{3}{}
+    \depedge[lvl=1]{2}{3}{}
+\end{dependency}
+
+All relations are in BCNF.
+
+\newpage
+
+\section{The User Guide of the System}
+
+\subsection{System Installation Description}
+
+\subsubsection{Environment}
+\begin{enumerate}
+    \item Windows, Linux
+    \item Docker
+\end{enumerate}
+
+\subsubsection{Installation}
+\begin{enumerate}
+    \item clone project repository \href{https://github.com/PUArallelepiped/PUN-street-Universal-Access}{github}
+    \item run command \texttt{cp frontend/.example.env frontend/.env}
+    \item run command \texttt{docker-compose up --build}
+    \item go to http://localhost:5050
+\end{enumerate}
+
+\newpage
+
+\subsection{The User Manual of the System}
+
+\subsubsection{user}
+
+\text{user can register seller or customer}
 \begin{figure}[hp]
-    \centerline{\includegraphics[width=40em]{pic/login.png}}
-    \caption{login page}
+    \centerline{\includegraphics[width=40em]{gui-snapshot/user/register-customer-1.png}}
     \label{fig:enter-label}
 \end{figure}
-
 \begin{figure}[hp]
-    \centerline{\includegraphics[width=40em]{pic/shop.png}}
-    \caption{shop page}
+    \centerline{\includegraphics[width=40em]{gui-snapshot/user/register-customer-2.png}}
     \label{fig:enter-label}
 \end{figure}
+\newpage
 
 \begin{figure}[hp]
-    \centerline{\includegraphics[width=40em]{pic/cart.png}}    
-    \caption{cart page}
+    \centerline{\includegraphics[width=40em]{gui-snapshot/user/register-seller.png}}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/user/register-customer-3.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newpage
+\text{user can login (with PUA account or with TWP\cite{twp_project} account)}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/user/login-page.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newpage
+
+\subsubsection{customer}
+\text{customer can browse shops}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/customer/shoplist.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newline
+\text{customer can search shops with price, tag or string}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/customer/search.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newpage
+\text{customer can browse products}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/customer/shop.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newline
+\newpage
+\text{customer can buy products}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/customer/item.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newline
+\text{customer can view cart (cart can apply discount)}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/customer/cart.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newpage
+\text{customer can view order}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/customer/check-order.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newline
+\text{customer can view history}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/customer/history.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newline
+\newpage
+
+\subsubsection{seller}
+\text{seller can edit shop (edit tag)}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/seller/store-edit.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newline
+\text{seller can edit (create) products}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/seller/item.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newpage
+\text{seller can edit (create) discounts}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=20em]{gui-snapshot/seller/discount.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newline
+\text{seller can view and update order}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/seller/order-status.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newpage
+\text{seller can get statistics of the shop}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=30em]{gui-snapshot/seller/statistic.png}}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=30em]{gui-snapshot/seller/statistic-1.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newpage
+
+\subsubsection{admin}
+
+\text{admin can ban/unban users}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/admin/user.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newpage
+\text{admin can view all orders}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{gui-snapshot/admin/order.png}}
     \label{fig:enter-label}
 \end{figure}
 
 \newpage
 
-\section{Glossary}
+
+\section{Suggestions on Database Turning}
+
+\subsection{View}
+    在取得商店或商品資料時，常常需要join許多不同的表格，若建立良好的view，可使得開發人員不需寫過於複雜的query，同時也增加資料可讀性。
+\subsection{Index}
+    在做搜尋功能時，其中有用到store中的category欄位，若能將category做為index，就可以避免線性搜尋所造成的效能損失。
+
 \newpage
 
+\section{Additional Queries and Views}
+
+\subsection{First Query}
+
+\text{Get shops by search string: use nest queries, aggregate functions, order by clause}
+\begin{lstlisting}
+SELECT
+store_id,
+name,
+rate,
+picture,
+category_array
+FROM (
+    SELECT
+        store_id,
+        name,
+        rate,
+        picture, (
+            SELECT
+                jsonb_agg(
+                    jsonb_build_object(
+                        'category_id',
+                        categories.category_id,
+                        'category_name',
+                        categories.name
+                    )
+                ) as categories_item
+            FROM categories
+                NATURAL JOIN (
+                    SELECT labels.category_id
+                    FROM labels
+                    WHERE
+                        labels.store_id = stores.store_id
+                ) AS labels
+        ) AS category_array, (
+            SELECT COUNT(*) > 0
+            FROM products
+                LEFT JOIN stores as s ON products.store_id = stores.store_id
+            WHERE
+                products.store_id = stores.store_id
+                AND(
+                    products.name LIKE '%' || '飯' || '%'
+                    OR stores.name LIKE '%' || '飯' || '%'
+                    OR products.description LIKE '%' || '飯' || '%'
+                )
+        ) AS is_string_exits
+    FROM stores
+) as store
+WHERE is_string_exits = true
+ORDER BY store.rate DESC
+\end{lstlisting}
+
+\newpage
+\text{query result}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{result/result-1.png}}
+    \label{fig:enter-label}
+\end{figure}
+\newline
+\newpage
+
+\subsection{Second Query}
+\text{Get products selling statistics by date: use group by clause}
+\begin{lstlisting}
+SELECT
+    carts.product_id,
+    products.name,
+    SUM(carts.product_quantity)
+FROM carts
+    LEFT JOIN products ON carts.product_id = products.product_id
+    LEFT JOIN orders ON carts.store_id = orders.store_id AND carts.cart_id = orders.cart_id AND carts.customer_id = orders.user_id
+WHERE
+    orders.store_id = 1
+    AND orders.status >= 6
+    AND EXTRACT(
+        year
+        FROM
+            order_date
+    ) = 2020
+    AND EXTRACT(
+        month
+        FROM order_date
+    ) = 1
+GROUP BY
+    carts.product_id,
+    products.name
+\end{lstlisting}
+\text{query result}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=30em]{result/result-2.png}}
+    \label{fig:enter-label}
+\end{figure}
+
+\newpage
+
+\subsection{Third Query}
+\text{Get all Product's information: use nest query, order by clause}
+\begin{lstlisting}
+SELECT
+    product_id,
+    store_id,
+    name,
+    description,
+    picture,
+    stock,
+    price,
+    status, (
+        SELECT
+            coalesce(
+                jsonb_agg(
+                    jsonb_build_object(
+                        'discount_max_quantity',
+                        max_quantity,
+                        'product_id',
+                        product_id,
+                        'discount_name',
+                        name,
+                        'discount_description',
+                        description,
+                        'discount_id',
+                        discount_id,
+                        'status',
+                        status
+                    )
+                ),
+                '[]'
+            ) AS event_discount
+        FROM discounts
+            NATURAL JOIN (
+                SELECT
+                    event_discount.discount_id,
+                    event_discount.max_quantity,
+                    event_discount.product_id
+                FROM event_discount
+                WHERE
+                    event_discount.product_id = products.product_id
+            ) AS discountInfo
+    ) AS event_discount_array, (
+        SELECT
+            coalesce(
+                jsonb_agg(
+                    jsonb_build_object(
+                        'product_id',
+                        product_id,
+                        'label_name',
+                        label_name,
+                        'required',
+                        required,
+                        'item_array', (
+                            SELECT (
+                                    jsonb_agg(
+                                        jsonb_build_object('name', label_item.item_name)
+                                    )
+                                ) AS item_array
+                            FROM label_item
+                            WHERE
+                                label_item.label_name = product_label.label_name
+                                AND label_item.product_id = product_label.product_id
+                        )
+                    )
+                ),
+                '[]'
+            ) AS product_label_array
+        FROM product_label
+        WHERE
+            product_label.product_id = products.product_id
+    )
+FROM products
+WHERE store_id = 1 AND status != 0
+ORDER BY product_id;
+\end{lstlisting}
+\text{query result}
+\begin{figure}[hp]
+    \centerline{\includegraphics[width=40em]{result/result-3.png}}
+    \label{fig:enter-label}
+\end{figure}
+
+\newpage
+
+\section{Conclusions and Future Work}
+\subsection{Conclusions}
+\begin{itemize}
+    \item[郭丞軒] 
+    這次專案的開發涉及許多領域，從團隊管理、資料庫設計、到文件撰寫及前後端架構等，很多東西都是我第一次接觸。因此，常常在開發過程中搞砸許多事情，造成開發上的困難以及不斷的重構。但也很幸運地受到組員們及組外顧問的幫助，得以讓這次的專案順利進行，也讓我從中得到許多寶貴的經驗。
+    \item[王熯竑] 
+    這次的專案開發是我第一次接觸前.後.後.資料庫端網頁程式設計，也是我第一次接近管理專案，導致需要看很多code review，進而使用github action與npm lint幫助我管理專案，在中途有很多PR都因爲我身兼拆除炸彈的使命與另外一個專案管理的事情還有與Dr.Smell對抗的學分競爭，導致拖延很多個禮拜才進行code review，幸好有生產力爆發的組員才得以順利完成專案。在前後端溝通的問題或是組內資訊流通的問題，我使用了每個禮拜發佈一個週報來解決，他可以順便當成一個Todo-List，雖然最後證實他沒有很大幫助，但是他取代了每次都不知道要開甚麼的會議，節省了時間。
+    
+    在資料庫設計的部分有很多綱要的決策常被忘記，導致又花了很多時間得到一摸一樣的結論，需要hyjl(會議記錄，出自本地顧問)來解決這個問題。
+
+    前端的部分使用的svelte是非常有趣的框架，他擁有魔法的語法，加速我們的開發進度，他的缺點大概就是網路上的資料常常會過期，需要另外解決。Tailwind也是另外一個非常好框架，有邏輯的解決了css問題，網頁跑版的問題才可以縮到很小，但是礙於時間問題沒有處理RWD。
+    \item[陸艿寰] 
+    透過這次資料庫專案，我學到了資料庫除了只有儲存資料，還有它背後儲存資料時所需的複雜邏輯與規則、及使其運行所需的軟/硬體。在專案中我主要接觸到了UI製作，並學習到了製作及實現他人設計的困難之處與其解決方法。
+
+    專案製作中還有許多其他關鍵的技術。如設計資料庫架構、實現資料庫邏輯、銜接資料庫與UI功能...等。這些技術的製作過程讓我學習到各功能製作者互相溝通是非常重要的事情，必須充分交流、協調才能避免製作遇上瓶頸。
+
+    最後各階段報告時老師的指點也讓我受益良多，以淺顯易懂的話語指出設計或實作的瑕疵/不足，讓我們有機會回去修改，拿出更好的成果。
+    \item[陳姿安] 
+    這次專案幾乎所有事情都是初次體驗。
+
+    在專案負責後端部份，初次與golang相處一段時間後發現寫起來覺得蠻舒適的，且我們採用的框架將後端切得很乾淨寫起來非常順手。
+    
+    此次也獲得了一些文件撰寫的經驗、也經歷的重構文件的經驗，相信下次設計api的時候會更順利。
+    透過這個專案我也獲得了設計網頁界面的經驗，從來沒想過自己會有設計網頁的一天，雖然實做不是由自己完成，但是看到自己設計的UI被慢慢實踐出來很開心，每天看到都想修改但這對負責實做的人並不是很道德，所以我放棄了這樣的想法。
+
+    也因為負責了後端所以有機會寫到不少sql，起初以為sql只是insert select update一些簡單的操作，後來上課後才發現原來sql可以寫的相當複雜，且好的魔法sql可以將網頁的效率提高，sql想寫多長就有多長。
+    親切的組員讓我當慣老闆，我非常的開心，希望以後還有機會當慣老闆。
+    \item[劉承翰]
+    資料庫這門課讓連後端都沒碰過的我第一次知道後端的概念與做法，在實作的過程中還發現有從計算機網路學到的概念可以結合使用，發現還挺有趣的。雖然整體沒辦法貢獻太多(sorry)，開PR還常常被拒絕，但看其他coding實力強的人寫code也學到蠻多東西的。這次花最久的時間應該就是看code了吧，每次有新的PR就會嘗試理解它的原理，也趁機會學習一下架構與別人的coding style:D。
+   \item[歐佳昀]
+    經過資料庫系統的專案後，我對於資料庫系統的應用有了更深一層的認知，並且也有實際的感覺，原來他不僅僅是作為一門學科，更是資工系學生在開發一個電商專案時，實際會用到的知識。
+    而在專案中，除了資料庫的基礎知識運用外，我也獲得相當多的經驗，像是前端的開發、 ui 的設計、與人交流、溝通的技巧等等，或者是分析一個網站的需求，諸如使用的情境，細節等，更重要的是去實際體會了投入心血的感覺，並且在樂在其中，這才是最重要的。
+
+    我堅信，一份作業需要帶給學生的，不僅僅是對知識運用的掌握度，更是需要帶給學生新的體驗與認識，而團體的作業更是能體會到不同思維間的碰撞。而我在最後深刻去了解老師說的話，為何這份作業，卻希望我們能放在自己未來的履歷上 ? 更是因為這是我們從頭開始去作出的專案，因此才具有理解和掌握，與認知和成就感。 
+
+    這份專案的完成，而掌握到的知識，不管是討論各項系統與api，或者是邏輯性的去提出自己的需求，甚至是自我學習的能力，都是我在這份專案有所學、有所悟的地方，也希望在未來可以充分運用這些經驗，來補足自己的能力。
+    \item[組外顧問]
+    我的專業在這個組別得到比原本組別更多的尊重，10 / 10 推薦擔任顧問 
+\end{itemize}
+
+\subsection{Future Work}
+PUA 目前已經是個非常完善的系統，未來的目標是將其統推廣到全校以及北科周圍的店家，並引入無人機作為外送載體，不只節省人力成本，也使得狹小的美食街不再充滿汽、機車，帶給商家及學生更美好的環境。
+
+我們也計畫在之後與『太白粉專賣店 too white powder (TWP)』合作，讓商家可以透過PUA向TWP訂購原物料，使供應鏈管理更為便利。
+
+\newpage
 
 \section{References}
 \printbibliography[heading=none]
 \newpage
 
 \section{Appendix}
+Demo video link \href{https://www.youtube.com/playlist?list=PLBGxrBkKAa3qo2uLVUKfLOQeE1iUDgnIc}{link} 
+
+The link to the system deployed on a public domain \href{https://pua.noobdy.com}{link}
 \newpage
 
 \end{document}

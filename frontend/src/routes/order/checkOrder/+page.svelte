@@ -9,7 +9,6 @@
 
 	onMount(() => {
 		let webSocketPath = 'ws' + PUBLIC_BACKEND_PATH.slice(4) + '/socket';
-		// socket = new WebSocket('ws://localhost:5000/socket');
 		socket = new WebSocket(webSocketPath);
 		socket.addEventListener('message', function (event) {
 			// console.log(event);

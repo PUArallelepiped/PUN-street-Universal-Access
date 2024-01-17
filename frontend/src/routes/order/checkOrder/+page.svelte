@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { PUBLIC_BACKEND_PATH } from '$env/static/public';
 	import CheckOrderPart from '$lib/components/PUA/checkOrderPart.svelte';
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
@@ -7,7 +8,9 @@
 	let socket;
 
 	onMount(() => {
-		socket = new WebSocket('ws://localhost:5000/socket');
+		let webSocketPath = 'ws' + PUBLIC_BACKEND_PATH.slice(4) + '/socket';
+		// socket = new WebSocket('ws://localhost:5000/socket');
+		socket = new WebSocket(webSocketPath);
 		socket.addEventListener('message', function (event) {
 			// console.log(event);
 			if (event.data == 'update') {

@@ -39,7 +39,7 @@ func NewCartHandler(e *gin.Engine, cartUsecase domain.CartUsecase) {
 		v1.PUT("/seller/update-order-status/customer/:userID/cart/:cartID/store/:storeID", handler.UpdateOrderStatus)
 		v1.GET("/seller/store/:storeID/orders", handler.GetSellerOrders)
 	}
-	e.GET("/socket", handler.SocketHandler)
+	e.GET("/api/v1/socket", handler.SocketHandler)
 }
 func (ch *CartHandler) GetAllHistory(c *gin.Context) {
 	userID, err := strconv.ParseInt(c.Param("userID"), 10, 64)

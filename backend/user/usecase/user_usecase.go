@@ -228,6 +228,7 @@ func (su *UserUsecase) UploadImage(ctx context.Context, file *multipart.FileHead
 
 	return responseInfo.Image.Url, err
 }
+
 func (su *UserUsecase) GetUserIdByCookie(ctx context.Context, token string) (int64, error) {
 	jwtSecret := []byte(viper.GetString("JWT_SECRET"))
 	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {

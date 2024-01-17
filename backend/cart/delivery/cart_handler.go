@@ -1,25 +1,29 @@
 package delivery
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/domain"
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
+	"github.com/golang-jwt/jwt"
 	"github.com/gorilla/websocket"
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 
 	"github.com/gin-gonic/gin"
 )
 
 type CartHandler struct {
 	CartUsecase domain.CartUsecase
+	Subscribers map[int64]map[*websocket.Conn]struct{}
 }
 
 func NewCartHandler(e *gin.Engine, cartUsecase domain.CartUsecase) {
 	handler := &CartHandler{
 		CartUsecase: cartUsecase,
+		Subscribers: make(map[int64](map[*websocket.Conn]struct{})),
 	}
 	v1 := e.Group("/api/v1")
 	{
@@ -203,6 +207,8 @@ func (ch *CartHandler) UpdateOrderStatus(c *gin.Context) {
 		return
 	}
 
+	ch.notifySubscribers(customerID)
+
 	c.JSON(200, order)
 }
 
@@ -235,30 +241,45 @@ func (ch *CartHandler) SocketHandler(c *gin.Context) {
 
 	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
-		panic(err)
+		logrus.Error(err)
 	}
 
-	defer func() {
-		closeSocketErr := ws.Close()
-		if closeSocketErr != nil {
-			panic(err)
-		}
-	}()
-
-	for {
-		// msgType, msg, err := ws.ReadMessage()
-		// if err != nil {
-		// 	panic(err)
-		// }
-		// fmt.Printf("Message Type: %d, Message: %s\n", msgType, string(msg))
-		err = ws.WriteJSON(struct {
-			Reply string `json:"reply"`
-		}{
-			Reply: "Echo...",
-		})
-		if err != nil {
-			panic(err)
-		}
-		time.Sleep(3 * time.Second)
+	token, _ := c.Cookie("jwttoken")
+	userId, _ := ch.GetUserId(token)
+	// add new subscriber to map by userId
+	if _, ok := ch.Subscribers[userId]; !ok {
+		ch.Subscribers[userId] = make(map[*websocket.Conn]struct{})
 	}
+	ch.Subscribers[userId][ws] = struct{}{}
+}
+
+func (ch *CartHandler) notifySubscribers(userId int64) {
+	fmt.Println("notifySubscribers")
+	for sub := range ch.Subscribers {
+		fmt.Println(sub, ch.Subscribers[sub])
+	}
+
+	if subscribers, ok := ch.Subscribers[userId]; ok {
+		for subscriber := range subscribers {
+			// send message to subscriber
+			err := subscriber.WriteMessage(websocket.TextMessage, []byte("update"))
+			if err != nil {
+				logrus.Error(err)
+				delete(subscribers, subscriber)
+				subscriber.Close()
+			}
+		}
+	}
+}
+
+func (ch *CartHandler) GetUserId(token string) (int64, error) {
+	jwtSecret := []byte(viper.GetString("JWT_SECRET"))
+	tokenClaims, err := jwt.ParseWithClaims(token, &domain.Claims{}, func(token *jwt.Token) (interface{}, error) {
+		return jwtSecret, nil
+	})
+	if err != nil {
+		return 0, err
+	}
+	id := tokenClaims.Claims.(*domain.Claims).Id
+	return id, nil
 }

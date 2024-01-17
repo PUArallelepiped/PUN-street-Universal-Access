@@ -8,8 +8,11 @@
 
 	onMount(() => {
 		socket = new WebSocket('ws://localhost:5000/socket');
-		socket.addEventListener('open', function (event) {
-			console.log(event);
+		socket.addEventListener('message', function (event) {
+			// console.log(event);
+			if (event.data == 'update') {
+				location.reload();
+			}
 		});
 	});
 </script>

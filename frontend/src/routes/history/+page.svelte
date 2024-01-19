@@ -19,6 +19,7 @@
 			img={history.store_picture}
 			cartId={history.cart_id}
 			userID={history.customer_id}
+			rate={history.rate}
 		></HistoryCard>
 	{/each}
 </div>

@@ -10,5 +10,6 @@ CREATE TABLE
         Order_date TIMESTAMP,
         taking_address VARCHAR(255),
         taking_method INTEGER,
+        rate INTEGER,
         PRIMARY KEY (cart_id, store_id, user_id)
     )

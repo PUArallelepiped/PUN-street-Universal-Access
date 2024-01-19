@@ -1,7 +1,22 @@
 <script lang="ts">
+	import { PUBLIC_BACKEND_PATH } from '$env/static/public';
 	import CheckOrderPart from '$lib/components/PUA/checkOrderPart.svelte';
 	import type { PageData } from './$types';
+	import { onMount } from 'svelte';
 	export let data: PageData;
+
+	let socket;
+
+	onMount(() => {
+		let webSocketPath = 'ws' + PUBLIC_BACKEND_PATH.slice(4) + '/socket';
+		socket = new WebSocket(webSocketPath);
+		socket.addEventListener('message', function (event) {
+			// console.log(event);
+			if (event.data == 'update') {
+				location.reload();
+			}
+		});
+	});
 </script>
 
 <div class="flex flex-col gap-24 py-5">

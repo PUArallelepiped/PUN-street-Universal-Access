@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/PUArallelepiped/PUN-street-Universal-Access/swagger"
+	"github.com/golang-jwt/jwt"
 )
 
 type CartRepo interface {
@@ -47,4 +48,11 @@ type IDs struct {
 	CartID int64
 
 	StoreID int64
+}
+
+type Claims struct {
+	Email     string `json:"email"`
+	Id        int64  `json:"id"`
+	Authority string `json:"authority"`
+	jwt.StandardClaims
 }

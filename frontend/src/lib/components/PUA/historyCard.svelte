@@ -27,17 +27,20 @@
 		return rateList;
 	}
 	async function rateStore(index: number) {
-		if (rate > 0){
-			return null
+		if (rate > 0) {
+			return null;
 		}
 
 		try {
-			fetch(backendPath + '/customer/' + userID + '/cart/' + cartId + '/store/' + storeId + '/rate', {
-				method: 'POST',
-				body: JSON.stringify({
-					rate: index
-				})
-			});
+			fetch(
+				backendPath + '/customer/' + userID + '/cart/' + cartId + '/store/' + storeId + '/rate',
+				{
+					method: 'POST',
+					body: JSON.stringify({
+						rate: index
+					})
+				}
+			);
 			rate = index;
 		} catch {
 			rate = index;

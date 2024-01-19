@@ -250,13 +250,33 @@ paths:
           description: bad request
         "500":
           description: Unexpected error
-  /store/{storeID}/rate:
+  /customer/{userID}/cart/{cartID]/store/{storeID}/rate:
     post:
       tags:
       - customer
       - store
       summary: rate a store
       parameters:
+      - name: userID
+        in: path
+        description: The ID of the user to rate.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
+      - name: cartID
+        in: path
+        description: The ID of the cart to rate.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "1"
+              x-content-type: application/json
       - name: storeID
         in: path
         description: The ID of the store to rate.
@@ -1886,6 +1906,7 @@ components:
       - cart_id
       - customer_id
       - order_date
+      - rate
       - status
       - store_id
       - store_name
@@ -1927,6 +1948,10 @@ components:
           type: integer
           format: int64
           example: 1
+        rate:
+          type: integer
+          format: int64
+          example: 1
       example:
         store_id: 1
         cart_id: 1
@@ -1937,6 +1962,7 @@ components:
         customer_id: 1
         store_rate: 3.0
         status: 1
+        rate: 1
     HistoryArray:
       type: array
       items:

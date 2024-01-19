@@ -101,6 +101,11 @@ func (su *storeUsecase) GetAllProductSellingById(ctx context.Context, id int64, 
 	return productStatistics, nil
 }
 
-func (su *storeUsecase) CalculateRate(ctx context.Context, id int64, rate swagger.RateInfo) error {
-	return su.storeRepo.CalculateRate(ctx, id, rate)
+func (su *storeUsecase) CalculateRate(ctx context.Context, customerId int64, cartID int64, storeID int64, rate swagger.RateInfo) error {
+	err := su.storeRepo.UpdateOrderRate(ctx, customerId, cartID, storeID, rate)
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+	return su.storeRepo.CalculateRate(ctx, storeID, rate)
 }

@@ -1,9 +1,12 @@
 <script lang="ts">
 	export let routes: { path: string; title: string }[];
 	import { page } from '$app/stores';
-	const urlArr = $page.url.href.split('/');
-	console.log(urlArr[3]);
-	console.log(routes[1].path.split('/')[1]);
+	import { navigating } from '$app/stores';
+	let urlArr = $page.url.href.split('/');
+
+	$: if ($navigating) {
+		urlArr = $page.url.href.split('/');
+	}
 </script>
 
 <div class="flex h-20 place-content-between bg-white shadow-md">

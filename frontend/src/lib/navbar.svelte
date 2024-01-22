@@ -1,5 +1,9 @@
 <script lang="ts">
 	export let routes: { path: string; title: string }[];
+	import { page } from '$app/stores';
+	const urlArr = $page.url.href.split('/');
+	console.log(urlArr[3]);
+	console.log(routes[1].path.split('/')[1]);
 </script>
 
 <div class="flex h-20 place-content-between bg-white shadow-md">
@@ -17,7 +21,13 @@
 			class="invisible flex h-full w-0 items-center justify-end gap-10 lg:visible lg:w-max lg:px-10"
 		>
 			{#each routes as r}
-				<a href={r.path} class="block p-2">{r.title}</a>
+				<a
+					href={r.path}
+					class:text-PUA-dark-red={urlArr[3] === r.path.split('/')[1]}
+					class:font-bold={urlArr[3] === r.path.split('/')[1]}
+					class:font-medium={urlArr[3] !== r.path.split('/')[1]}
+					class="block p-2 text-lg">{r.title}</a
+				>
 			{/each}
 		</div>
 		<a href="/cart" class="m-3 flex items-center rounded-xl bg-red-800 p-3 text-white">

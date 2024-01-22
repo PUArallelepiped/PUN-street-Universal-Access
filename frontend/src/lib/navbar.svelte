@@ -6,6 +6,9 @@
 
 	$: if ($navigating) {
 		urlArr = $page.url.href.split('/');
+		if (urlArr.length < 4) {
+			urlArr.push('');
+		}
 	}
 </script>
 

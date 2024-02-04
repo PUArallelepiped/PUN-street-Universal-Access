@@ -38,7 +38,7 @@
 							src={watermelon}
 							alt=""
 							width="100"
-							height="1000"
+							height="100"
 							class="mr-4 h-32 w-32 rounded-full shadow"
 						/>
 						<div

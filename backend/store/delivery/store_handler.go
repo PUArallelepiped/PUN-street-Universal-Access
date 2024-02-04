@@ -24,7 +24,7 @@ func NewStoreHandler(e *gin.Engine, storeUsecase domain.StoreUsecase) {
 		v1.POST("/stores", handler.GetStores)
 		v1.GET("/store/:storeID/get-statistics/:year", handler.GetStatistics)
 		v1.GET("/store/:storeID/get-selling/:year/:month", handler.GetSelling)
-		v1.POST("/store/:storeID/rate", handler.PostRate)
+		v1.POST("/customer/:userID/cart/:cartID/store/:storeID/rate", handler.PostRate)
 	}
 }
 
@@ -107,10 +107,15 @@ func (s *StoreHandler) GetSelling(c *gin.Context) {
 }
 
 func (s *StoreHandler) PostRate(c *gin.Context) {
-
-	storeID, err := strconv.ParseInt(c.Param("storeID"), 10, 64)
-	if err != nil {
-		return
+	userID, userErr := strconv.ParseInt(c.Param("userID"), 10, 64)
+	cartID, cartErr := strconv.ParseInt(c.Param("cartID"), 10, 64)
+	storeID, storeErr := strconv.ParseInt(c.Param("storeID"), 10, 64)
+	for _, err := range []error{storeErr, userErr, cartErr} {
+		if err != nil {
+			logrus.Error(err)
+			c.Status(400)
+			return
+		}
 	}
 
 	var rate swagger.RateInfo
@@ -120,7 +125,7 @@ func (s *StoreHandler) PostRate(c *gin.Context) {
 		return
 	}
 
-	if err := s.StoreUsecase.CalculateRate(c, storeID, rate); err != nil {
+	if err := s.StoreUsecase.CalculateRate(c, userID, cartID, storeID, rate); err != nil {
 		logrus.Error(err)
 		c.Status(500)
 		return

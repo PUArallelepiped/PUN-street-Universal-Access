@@ -26,4 +26,6 @@ type HistoryInfo struct {
 	StorePicture string `json:"store_picture"`
 
 	Status int64 `json:"status"`
+
+	Rate int64 `json:"rate"`
 }

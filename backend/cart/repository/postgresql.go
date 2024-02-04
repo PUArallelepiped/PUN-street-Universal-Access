@@ -21,9 +21,10 @@ func NewPostgressqlCartRepo(db *sql.DB) domain.CartRepo {
 
 func (p *postgresqlCartRepo) GetAllHistoryById(ctx context.Context, id int64) (*[]swagger.HistoryInfo, error) {
 	sqlStatement := `
-	SELECT orders.store_id, orders.cart_id, orders.order_date, orders.total_price, orders.user_id AS customer_id, orders.status, 
+	SELECT orders.store_id, orders.cart_id, orders.order_date, orders.total_price, orders.user_id AS customer_id, orders.status, orders.rate, 
 	stores.name AS store_name, stores.picture AS store_picture, stores.rate AS store_rate
-	FROM orders LEFT JOIN stores ON orders.store_id = stores.store_id WHERE orders.user_id = $1 AND orders.status = 6;
+	FROM orders LEFT JOIN stores ON orders.store_id = stores.store_id WHERE orders.user_id = $1 AND orders.status = 6
+	ORDER BY orders.order_date DESC
 	`
 
 	rows, err := p.db.Query(sqlStatement, id)
@@ -36,7 +37,7 @@ func (p *postgresqlCartRepo) GetAllHistoryById(ctx context.Context, id int64) (*
 	for rows.Next() {
 		history := &swagger.HistoryInfo{}
 		err := rows.Scan(&history.StoreId, &history.CartId, &history.OrderDate,
-			&history.TotalPrice, &history.CustomerId, &history.Status,
+			&history.TotalPrice, &history.CustomerId, &history.Status, &history.Rate,
 			&history.StoreName, &history.StorePicture, &history.StoreRate)
 		if err != nil {
 			logrus.Error(err)
@@ -175,7 +176,7 @@ func (p *postgresqlCartRepo) AddProductToCart(ctx context.Context, customerId in
 func (p *postgresqlCartRepo) AddOrderByCartInfo(ctx context.Context, customerId int64, storeId int64) error {
 	sqlStatement := `
 	INSERT INTO orders (user_id, cart_id, store_id, seasoning_discount_id, 
-		shipping_discount_id, status, total_price, Order_date, taking_address, taking_method) VALUES 
+		shipping_discount_id, status, total_price, Order_date, taking_address, taking_method, rate) VALUES 
     ($1, 
 	(SELECT current_cart_id FROM user_data WHERE user_id = $1),
 	$2, 
@@ -193,7 +194,7 @@ func (p *postgresqlCartRepo) AddOrderByCartInfo(ctx context.Context, customerId 
 	0, 
 	'2020-01-01 00:00:00', 
 	(SELECT address FROM user_data WHERE user_id = $1), 
-	1)
+	1, 0)
 	`
 	dt := time.Now().Format("01-02-2006 15:04:05")
 

@@ -270,3 +270,17 @@ func (p *postgresqlStoreRepo) CalculateRate(ctx context.Context, id int64, rate 
 	}
 	return nil
 }
+
+func (p *postgresqlStoreRepo) UpdateOrderRate(ctx context.Context, customerId int64, cartID int64, storeID int64, rate swagger.RateInfo) error {
+	sqlStatement := `
+	UPDATE orders set rate = $1
+	WHERE user_id =$2 AND cart_id =$3 AND store_id = $4 AND rate = 0
+	`
+
+	_, err := p.db.Exec(sqlStatement, rate.Rate, customerId, cartID, storeID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

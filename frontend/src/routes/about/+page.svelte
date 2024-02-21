@@ -135,7 +135,7 @@
 						<div
 							class=" w-96 text-xl font-bold text-transparent transition-all duration-[2000] ease-linear group-hover:text-PUA-stone"
 						>
-							<p>+ Name : GLU</p>
+							<p>+ Name : glu</p>
 
 							<div class="my-2 h-[2px] w-full bg-PUA-stone"></div>
 							<p>+ C'est la vie</p>

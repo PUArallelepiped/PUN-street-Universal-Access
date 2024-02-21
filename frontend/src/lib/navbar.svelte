@@ -29,9 +29,12 @@
 			{#each routes as r}
 				<a
 					href={r.path}
-					class:text-PUA-dark-red={urlArr[3] === r.path.split('/')[1]}
-					class:font-bold={urlArr[3] === r.path.split('/')[1]}
-					class:font-medium={urlArr[3] !== r.path.split('/')[1]}
+					class:text-PUA-dark-red={urlArr[3] === r.path.split('/')[1] ||
+						(r.path.split('/')[1] === 'profile' && urlArr[3] === 'admin')}
+					class:font-bold={urlArr[3] === r.path.split('/')[1] ||
+						(r.path.split('/')[1] === 'profile' && urlArr[3] === 'admin')}
+					class:font-medium={urlArr[3] !== r.path.split('/')[1] &&
+						(r.path.split('/')[1] !== 'profile' || urlArr[3] !== 'admin')}
 					class="block p-2 text-lg">{r.title}</a
 				>
 			{/each}
